@@ -1,0 +1,2 @@
+format:
+	receiver message ( argument1, argument2,... argumentN );

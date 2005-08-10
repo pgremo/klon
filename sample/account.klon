@@ -1,0 +1,13 @@
+Account := Object clone
+Account balance := 0
+Account deposit  := method(v, balance = balance + v)
+Account withdraw := method(v, balance = balance - v)
+Account show := method(
+  write("Account balance: $", balance, "\n")
+)
+
+myAccount := Account clone
+myAccount show
+"Depositing $10\n" print
+myAccount deposit(10)
+myAccount show

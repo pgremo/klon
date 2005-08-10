@@ -1,0 +1,52 @@
+<project name="klon" default="grammar.generate.grammatica">
+
+	<property name="src" value="src/main/java" />
+	<property name="src.grammar" value="src/main/grammatica" />
+	<property name="lib" value="lib" />
+	<property name="docs" value="target/docs" />
+	<property name="docs.generated" value="target/docs-generated" />
+
+	<path id="classpath">
+		<filelist dir="${lib}">
+			<file name="antlr/jars/antlr-2.7.5.jar" />
+			<file name="checkstyle/jars/checkstyle-4.0-beta4.jar" />
+			<file name="commons-beanutils/jars/commons-beanutils-1.7.0.jar" />
+			<file name="commons-logging/jars/commons-logging-1.0.3.jar" />
+			<file name="regexp/jars/regexp-1.3.jar" />
+			<file name="grammatica/jars/grammatica-1.5.alpha1.jar" />
+		</filelist>
+	</path>
+
+	<taskdef resource="checkstyletask.properties">
+		<classpath refid="classpath" />
+	</taskdef>
+
+	<taskdef name="grammatica" classname="net.percederberg.grammatica.ant.GrammaticaTask">
+		<classpath refid="classpath" />
+	</taskdef>
+
+	<target name="grammar.generate.grammatica">
+		<grammatica grammar="${src.grammar}/klon.grammar">
+			<java dir="src/main/grammatica" package="klon.grammar.grammatica" public="true" />
+		</grammatica>
+	</target>
+
+
+	<target name="checkstyle.report">
+		<mkdir dir="${docs.generated}" />
+		<checkstyle config="checkstyle_checks.xml" failOnViolation="false" failureProperty="audit.failed">
+			<formatter type="xml" tofile="${docs.generated}/checkstyle-report.xml" />
+			<fileset dir="${src}" includes="**/*.java" />
+		</checkstyle>
+		<path id="src.id" path="${src}" />
+		<pathconvert pathsep="," property="src.parameter" refid="src.id" />
+		<style in="${docs.generated}/checkstyle-report.xml" out="${docs}/checkstyle-report.html" style="checkstyle-noframes-sorted.xsl">
+			<param name="src" expression="${src.parameter}" />
+		</style>
+		<copy file="style/maven-base.css" todir="${docs}" />
+		<copy file="style/maven-theme.css" todir="${docs}" />
+		<copy file="style/project.css" todir="${docs}" />
+		<fail message="Audit failed." if="audit.failed" />
+	</target>
+
+</project>

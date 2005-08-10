@@ -1,0 +1,41 @@
+%header%
+
+GRAMMARTYPE = "LL"
+
+AUTHOR = "Patrick Gremo"
+
+%tokens%
+
+OPERATOR            = <<([:='~!@$%\^&*\-+\\<>|?/.]+)|(return|break|continue)>>
+IDENTIFIER          = <<[a-zA-Z][a-zA-Z0-9_]*>>
+STRING              = <<("[^"]*")>>
+NUMBER              = <<(-?[0-9]+)|(-?[0-9]*\.[0-9]+(e-?[0-9]+)?)>>
+TERMINATOR          = <<[\r\n;]>>
+COMMA               = ","
+LPAREN              = "("
+RPAREN              = ")"
+LBRACK              = "["
+RBRACK              = "]"
+LBRACE              = "{"
+RBRACE              = "}"
+WHITE_SPACE         = <<[ \t]+>> %ignore%
+POUND_COMMENT       = <<#.*>> %ignore%
+SLASH_COMMENT       = <<//.*>> %ignore%
+MULTI_COMMENT       = <</\*([^*]|\*[^/])*\*/>> %ignore%
+
+
+%productions%
+
+MessageChain 	= ( Message | TERMINATOR )+ ;        
+
+Message = Symbol Arguments? Attached? ;
+
+Arguments = "(" MessageChain { "," MessageChain } ")" ;
+
+Attached = Message;
+        
+Symbol = IDENTIFIER
+       | OPERATOR
+       | STRING
+       | NUMBER ;
+       

@@ -15,13 +15,20 @@ public class KlonParserTest extends TestCase {
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
     Node actual = parser.parse();
     assertNotNull(actual);
+    assertEquals("\"Hello world!\\n\" print", actual.getValue(0)
+      .toString());
   }
 
   public void testCloneAssignment() throws Exception {
-    Reader input = new StringReader("Account := Object clone\nAccount balance := 0");
+    Reader input = new StringReader(
+      "Account := Object clone\nAccount balance := 0");
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
     Node actual = parser.parse();
     assertNotNull(actual);
+    assertEquals(
+      "setSlot(\"Account\", Object clone);\nAccount setSlot(\"balance\", 0)",
+      actual.getValue(0)
+        .toString());
   }
 
   public void testMessage() throws Exception {
@@ -29,6 +36,35 @@ public class KlonParserTest extends TestCase {
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
     Node actual = parser.parse();
     assertNotNull(actual);
+    assertEquals("do(\"something\", 1)", actual.getValue(0)
+      .toString());
+  }
+
+  public void testOperations() throws Exception {
+    Reader input = new StringReader("1 + 2 + 3");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("1 +(2) +(3)", actual.getValue(0)
+      .toString());
+  }
+
+  public void testGroupingEnd() throws Exception {
+    Reader input = new StringReader("1 + (2 * 3)");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("1 +(2 *(3))", actual.getValue(0)
+      .toString());
+  }
+
+  public void testGroupingBegin() throws Exception {
+    Reader input = new StringReader("(1 + 2) * 3");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("(1 +(2)) *(3)", actual.getValue(0)
+      .toString());
   }
 
   public void testFactorial() throws Exception {

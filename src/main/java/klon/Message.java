@@ -25,13 +25,17 @@ public class Message extends Expression {
   public Message getAttached() {
     return attached;
   }
+  
+  public void setAttached(Message value){
+    attached = value;
+  }
 
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
     for (Expression current : arguments) {
       if (result.length() > 0) {
-        result.append(",");
+        result.append(", ");
       }
       result.append(current);
     }

@@ -1,9 +1,7 @@
 package klon.grammar.grammatica;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import klon.Expression;
 import klon.Message;
@@ -15,13 +13,6 @@ import net.percederberg.grammatica.parser.Production;
 import net.percederberg.grammatica.parser.Token;
 
 public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
-
-  private static final Map<String, String> SPECIAL_OPERATORS = new HashMap<String, String>();
-
-  static {
-    SPECIAL_OPERATORS.put(":=", "setSlot");
-    SPECIAL_OPERATORS.put("=", "updateSlot");
-  }
 
   @Override
   protected Node exitMessageChain(Production node) {
@@ -36,49 +27,93 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
 
   @Override
   protected Node exitMessage(Production node) {
+    Node result = node;
+    if (result != null && result.getChildCount() == 1) {
+      result = result.getChildAt(0);
+    }
+    return result;
+  }
+
+  @Override
+  protected Node exitStandardMessage(Production node) {
     int child = 0;
 
-    Token selector = (Token) node.getChildAt(child++);
+    String selector = null;
+    Node parsedSelector = node.getChildAt(child);
+    if (parsedSelector instanceof Token) {
+      selector = ((Token) parsedSelector).getImage();
+      child++;
+    }
 
     List<Expression> actualArgs = new ArrayList<Expression>();
-    Production parsedArgs = (Production) node.getChildAt(child);
+    Node parsedArgs = node.getChildAt(child);
     if (parsedArgs != null && parsedArgs.getId() == ARGUMENTS) {
-      actualArgs.addAll((List<Expression>) parsedArgs.getValue(0));
+      if (selector == null) {
+        selector = (String) parsedArgs.getValue(0);
+      }
+      actualArgs.addAll((List<Expression>) parsedArgs.getValue(1));
       child++;
     }
 
     Message actualAttached = null;
-    Production parsedAtt = (Production) node.getChildAt(child);
+    Node parsedAtt = node.getChildAt(child);
     if (parsedAtt != null && parsedAtt.getId() == ATTACHED) {
       actualAttached = (Message) parsedAtt.getChildAt(0)
         .getValue(0);
-      if (selector.getId() == OPERATOR) {
+      if (parsedSelector.getId() == OPERATOR) {
         actualArgs.add(actualAttached);
-        actualAttached = null;
+        Message newAttached = actualAttached.getAttached();
+        actualAttached.setAttached(null);
+        actualAttached = newAttached;
       }
     }
 
-    // convert special operators, ie: x := thing to setSlot("x", thing)
-    String selectorString = selector.getImage();
-    if (selector.getId() == IDENTIFIER && actualAttached != null) {
-      String newSelector = SPECIAL_OPERATORS.get(actualAttached.getSelector());
-      if (newSelector != null) {
-        actualArgs = actualAttached.getArguments();
-        actualArgs.add(0, new StringLiteral(selectorString));
-        selectorString = newSelector;
-        actualAttached = null;
-      }
-    }
+    node.addValue(new Message(selector, actualAttached, actualArgs));
+    return node;
+  }
 
-    node.addValue(new Message(selectorString, actualAttached, actualArgs));
+  @Override
+  protected Node exitSlotSet(Production node) {
+    Token selector = (Token) node.getChildAt(0);
+    Message attached = (Message) node.getChildAt(2)
+      .getChildAt(0)
+      .getValue(0);
+    List<Expression> arguments = new ArrayList<Expression>();
+    arguments.add(new StringLiteral(selector.getImage()));
+    arguments.add(attached);
+    node.addValue(new Message("setSlot", null, arguments));
+    return node;
+  }
+
+  @Override
+  protected Node exitSlotUpdate(Production node) {
+    Token selector = (Token) node.getChildAt(0);
+    Message attached = (Message) node.getChildAt(2)
+      .getChildAt(0)
+      .getValue(0);
+    List<Expression> arguments = new ArrayList<Expression>();
+    arguments.add(new StringLiteral(selector.getImage()));
+    arguments.add(attached);
+    node.addValue(new Message("updateSlot", null, arguments));
     return node;
   }
 
   @Override
   protected Node exitArguments(Production node) {
+    Node parsedGroup = node.getChildAt(0);
+    if (parsedGroup instanceof Token) {
+      String selector = "";
+      String group = ((Token) parsedGroup).getImage();
+      if (group.equals("{")) {
+        selector = "{}";
+      } else if (group.equals("[")) {
+        selector = "[]";
+      }
+      node.addValue(selector);
+    }
     int count = node.getChildCount();
     List<Expression> values = new ArrayList<Expression>(count);
-    for (int i = 0; i < count; i++) {
+    for (int i = 1; i < count; i++) {
       values.add((Expression) node.getChildAt(i)
         .getValue(0));
     }
@@ -115,11 +150,6 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
 
   @Override
   protected Node exitComma(Token node) {
-    return null;
-  }
-
-  @Override
-  protected Node exitLparen(Token node) {
     return null;
   }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<module name="Checker">
+	<module name="TreeWalker">
+		<module name="Header">
+		    <property name="headerFile" value="LICENSE.txt"/>
+		</module>
+		<module name="CovariantEquals"/>
+		<module name="EqualsHashCode"/>
+		<module name="ExplicitInitialization"/>
+		<module name="HiddenField">
+    	<property name="tokens" value="VARIABLE_DEF"/>
+		</module>
+		<module name="InnerAssignment"/>
+		<module name="MultipleVariableDeclarations"/>
+		<module name="ParameterAssignment"/>
+		<module name="ReturnCount">
+    	<property name="max" value="1"/>
+		</module>
+		<module name="SimplifyBooleanReturn"/>
+		<module name="StringLiteralEquality"/>
+		<module name="SuperClone"/>
+		<module name="SuperFinalize"/>
+		<module name="UnnecessaryParentheses"/>
+		
+		<module name="FinalClass"/>
+		<module name="HideUtilityClassConstructor"/>
+		
+		<module name="CyclomaticComplexity">
+			<property name="max" value="5"/>
+		</module>
+	</module>
+</module>

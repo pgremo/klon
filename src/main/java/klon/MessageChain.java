@@ -13,7 +13,7 @@ public class MessageChain extends Expression {
     StringBuilder result = new StringBuilder();
     for (Message current : messages) {
       if (result.length() > 0) {
-        result.append(" ");
+        result.append(";\n");
       }
       result.append(current);
     }

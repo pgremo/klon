@@ -10,6 +10,29 @@ import net.percederberg.grammatica.parser.Parser;
 
 public class KlonParserTest extends TestCase {
 
+  public void testParseNumber() throws Exception {
+    String[][] expected = new String[][]{
+        {"123.0", "123"},
+        {"123.456", "123.456"},
+        {"0.456", "0.456"},
+        {".456", "0.456"},
+        {"123e-2", "1.23"},
+        {"123e2", "12300"},
+        {"123.456e-2", "1.23456"},
+        {"123.456e2", "12345.6"},
+        {"0x0", "0"},
+        {"0x0F", "15"},
+        {"0XeE", "238"}};
+    for (String[] current : expected) {
+      Reader input = new StringReader(current[0]);
+      Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+      Node actual = parser.parse();
+      assertNotNull(actual);
+      assertEquals(current[1], actual.getValue(0)
+        .toString());
+    }
+  }
+
   public void testHelloWorld() throws Exception {
     Reader input = new StringReader("\"Hello world!\\n\" print");
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
@@ -46,6 +69,24 @@ public class KlonParserTest extends TestCase {
     Node actual = parser.parse();
     assertNotNull(actual);
     assertEquals("1 +(2) +(3)", actual.getValue(0)
+      .toString());
+  }
+
+  public void testBraceGrouping() throws Exception {
+    Reader input = new StringReader("{2 * 3}");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("brace(2 *(3))", actual.getValue(0)
+      .toString());
+  }
+
+  public void testBracketGrouping() throws Exception {
+    Reader input = new StringReader("[2 * 3]");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("bracket(2 *(3))", actual.getValue(0)
       .toString());
   }
 
@@ -86,6 +127,15 @@ public class KlonParserTest extends TestCase {
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
     Node actual = parser.parse();
     assertNotNull(actual);
+  }
+
+  public void testComments() throws Exception {
+    Reader input = new FileReader("sample/comments.klon");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("setSlot(\"a\", b)", actual.getValue(0)
+      .toString());
   }
 
 }

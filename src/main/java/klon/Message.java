@@ -1,5 +1,6 @@
 package klon;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Message extends Expression {
@@ -41,18 +42,18 @@ public class Message extends Expression {
 
   @Override
   public String toString() {
-    StringBuilder result = new StringBuilder();
-    for (Expression current : arguments) {
-      if (result.length() > 0) {
-        result.append(", ");
-      }
-      result.append(current);
-    }
+    StringBuilder result = new StringBuilder(selector.toString());
     if (arguments.size() > 0) {
-      result.insert(0, "(")
-        .append(")");
+      result.append("(");
+      Iterator<Message> iterator = arguments.iterator();
+      while (iterator.hasNext()) {
+        result.append(iterator.next());
+        if (iterator.hasNext()) {
+          result.append(", ");
+        }
+      }
+      result.append(")");
     }
-    result.insert(0, selector);
     if (attached != null) {
       result.append(" ")
         .append(attached);

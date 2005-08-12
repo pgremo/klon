@@ -2,7 +2,7 @@ package klon;
 
 import klon.reflection.Up;
 
-public class Lobby {
+public final class Lobby {
 
   public static final KlonObject Lobby;
   public static final KlonObject Nil;

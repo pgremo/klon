@@ -10,7 +10,7 @@ import java.util.Map;
 import klon.KlonObject;
 import klon.Lobby;
 
-public class Up extends KlonObject {
+public final class Up extends KlonObject {
 
   public static final Up UP = new Up();
   private static final Map<String, Map<String, KlonObject>> cache = new HashMap<String, Map<String, KlonObject>>();

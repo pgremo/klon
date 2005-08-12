@@ -1,0 +1,8 @@
+ #!/usr/local/bin/klon
+ 
+ a := b // add a comment to a line
+
+ /* comment out a group
+ a := 1
+ b := 2
+ */

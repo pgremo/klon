@@ -5,7 +5,7 @@ import java.io.Serializable;
 import klon.KlonException;
 import klon.reflection.ExposedAs;
 
-public class KlonNumber implements Serializable {
+public final class KlonNumber implements Serializable {
 
   private static final long serialVersionUID = -763318978728958575L;
 
@@ -100,6 +100,9 @@ public class KlonNumber implements Serializable {
   @ExposedAs("sqrt")
   public static Object squareRoot(Double receiver) {
     return Math.sqrt(receiver);
+  }
+
+  private KlonNumber() {
   }
 
 }

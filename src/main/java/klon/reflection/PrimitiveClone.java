@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 
 import klon.KlonException;
 import klon.KlonObject;
-import klon.Message;
+import klon.KlonMessage;
 
 public class PrimitiveClone extends KlonObject {
 
@@ -14,7 +14,7 @@ public class PrimitiveClone extends KlonObject {
     this.constructor = constructor;
   }
 
-  public KlonObject activate(KlonObject receiver, Message message)
+  public KlonObject activate(KlonObject receiver, KlonMessage message)
       throws KlonException {
     Object result = null;
     try {

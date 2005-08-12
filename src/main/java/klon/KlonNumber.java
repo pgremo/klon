@@ -1,13 +1,23 @@
-package klon.wrapper.java.lang;
+package klon;
 
-import java.io.Serializable;
+import java.text.NumberFormat;
 
-import klon.KlonException;
 import klon.reflection.ExposedAs;
 
-public final class KlonNumber implements Serializable {
+public class KlonNumber extends KlonObject {
 
-  private static final long serialVersionUID = -763318978728958575L;
+  private static NumberFormat formatter = NumberFormat.getInstance();
+  static {
+    formatter.setGroupingUsed(false);
+    formatter.setMinimumFractionDigits(0);
+    formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
+  }
+
+  private double value;
+
+  public KlonNumber(double value) {
+    this.value = value;
+  }
 
   @ExposedAs("+")
   public static Object add(Double receiver, Object arg) throws KlonException {
@@ -102,7 +112,9 @@ public final class KlonNumber implements Serializable {
     return Math.sqrt(receiver);
   }
 
-  private KlonNumber() {
+  @Override
+  public String toString() {
+    return formatter.format(value);
   }
 
 }

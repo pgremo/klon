@@ -9,7 +9,7 @@ public final class Lobby {
   public static final KlonObject Object;
 
   static {
-    Nil = Up.UP.up(new Nil());
+    Nil = Up.UP.up(new KlonNil());
     Object = Up.UP.up(new Object());
     Lobby = Up.UP.up(Lobby.class);
   }

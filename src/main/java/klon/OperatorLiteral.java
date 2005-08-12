@@ -1,6 +1,6 @@
 package klon;
 
-public class OperatorLiteral extends Literal {
+public class OperatorLiteral extends KlonObject {
 
   private String selector;
 

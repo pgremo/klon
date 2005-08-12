@@ -1,10 +1,10 @@
 package klon;
 
-public class StringLiteral extends Literal {
+public class KlonString extends KlonObject {
 
   private String value;
 
-  public StringLiteral(String value) {
+  public KlonString(String value) {
     this.value = value;
   }
 

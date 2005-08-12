@@ -3,40 +3,40 @@ package klon;
 import java.util.Iterator;
 import java.util.List;
 
-public class Message extends Expression {
+public class KlonMessage extends KlonObject {
 
-  private Literal selector;
-  private List<Message> arguments;
-  private Message attached;
-  private Message next;
+  private KlonObject selector;
+  private List<KlonMessage> arguments;
+  private KlonMessage attached;
+  private KlonMessage next;
 
-  public Message(Literal selector, Message attached, List<Message> arguments) {
+  public KlonMessage(KlonObject selector, KlonMessage attached, List<KlonMessage> arguments) {
     this.selector = selector;
     this.attached = attached;
     this.arguments = arguments;
   }
 
-  public List<Message> getArguments() {
+  public List<KlonMessage> getArguments() {
     return arguments;
   }
 
-  public Literal getSelector() {
+  public KlonObject getSelector() {
     return selector;
   }
 
-  public Message getAttached() {
+  public KlonMessage getAttached() {
     return attached;
   }
 
-  public void setAttached(Message value) {
+  public void setAttached(KlonMessage value) {
     attached = value;
   }
 
-  public Message getNext() {
+  public KlonMessage getNext() {
     return next;
   }
 
-  public void setNext(Message next) {
+  public void setNext(KlonMessage next) {
     this.next = next;
   }
 
@@ -45,7 +45,7 @@ public class Message extends Expression {
     StringBuilder result = new StringBuilder(selector.toString());
     if (arguments.size() > 0) {
       result.append("(");
-      Iterator<Message> iterator = arguments.iterator();
+      Iterator<KlonMessage> iterator = arguments.iterator();
       while (iterator.hasNext()) {
         result.append(iterator.next());
         if (iterator.hasNext()) {

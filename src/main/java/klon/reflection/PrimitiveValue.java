@@ -3,10 +3,9 @@ package klon.reflection;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import klon.Expression;
 import klon.KlonException;
 import klon.KlonObject;
-import klon.Message;
+import klon.KlonMessage;
 
 public class PrimitiveValue extends KlonObject {
 
@@ -16,10 +15,10 @@ public class PrimitiveValue extends KlonObject {
     this.field = field;
   }
 
-  public KlonObject activate(KlonObject receiver, Message message)
+  public KlonObject activate(KlonObject receiver, KlonMessage message)
       throws KlonException {
     KlonObject result;
-    List<Expression> arguments = message.getArguments();
+    List<KlonMessage> arguments = message.getArguments();
     if (arguments.size() > 0) {
       KlonObject parameter = arguments.get(0);
       try {

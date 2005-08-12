@@ -1,6 +1,6 @@
 package klon;
 
-public class IdentifierLiteral extends Literal {
+public class IdentifierLiteral extends KlonObject {
 
   private String selector;
 

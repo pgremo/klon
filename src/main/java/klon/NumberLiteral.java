@@ -1,6 +1,15 @@
 package klon;
 
-public class NumberLiteral extends Expression {
+import java.text.NumberFormat;
+
+public class NumberLiteral extends Literal {
+
+  private static NumberFormat formatter = NumberFormat.getInstance();
+  static {
+    formatter.setGroupingUsed(false);
+    formatter.setMinimumFractionDigits(0);
+    formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
+  }
 
   private double value;
 
@@ -10,7 +19,7 @@ public class NumberLiteral extends Expression {
 
   @Override
   public String toString() {
-    return Double.toString(value);
+    return formatter.format(value);
   }
 
 }

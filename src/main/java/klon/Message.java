@@ -4,30 +4,39 @@ import java.util.List;
 
 public class Message extends Expression {
 
-  private String selector;
-  private List<Expression> arguments;
+  private Literal selector;
+  private List<Message> arguments;
   private Message attached;
+  private Message next;
 
-  public Message(String selector, Message attached, List<Expression> arguments) {
+  public Message(Literal selector, Message attached, List<Message> arguments) {
     this.selector = selector;
     this.attached = attached;
     this.arguments = arguments;
   }
 
-  public List<Expression> getArguments() {
+  public List<Message> getArguments() {
     return arguments;
   }
 
-  public String getSelector() {
+  public Literal getSelector() {
     return selector;
   }
 
   public Message getAttached() {
     return attached;
   }
-  
-  public void setAttached(Message value){
+
+  public void setAttached(Message value) {
     attached = value;
+  }
+
+  public Message getNext() {
+    return next;
+  }
+
+  public void setNext(Message next) {
+    this.next = next;
   }
 
   @Override
@@ -43,12 +52,16 @@ public class Message extends Expression {
       result.insert(0, "(")
         .append(")");
     }
+    result.insert(0, selector);
     if (attached != null) {
       result.append(" ")
         .append(attached);
     }
-    return result.insert(0, selector)
-      .toString();
+    if (next != null) {
+      result.append(";\n")
+        .append(next);
+    }
+    return result.toString();
   }
 
 }

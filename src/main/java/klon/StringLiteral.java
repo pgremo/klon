@@ -1,6 +1,6 @@
 package klon;
 
-public class StringLiteral extends Expression {
+public class StringLiteral extends Literal {
 
   private String value;
 

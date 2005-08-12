@@ -6,10 +6,11 @@ AUTHOR = "Patrick Gremo"
 
 %tokens%
 
-OPERATOR            = <<([:='~!@$%\^&*\-+\\<>|?/.]+)|(return|break|continue)>>
+DECIMAL_NUMBER      = <<((-?[0-9]+)|(-?[0-9]*\.[0-9]+))(e-?[0-9]+)?>>
+HEX_NUMBER          = <<0[xX][0-9a-fA-F]+>>
+OPERATOR            = <<[:='~!@$%\^&*\-+\\<>|?/.]+>>
 IDENTIFIER          = <<[a-zA-Z][a-zA-Z0-9_]*>>
 STRING              = <<("[^"]*")>>
-NUMBER              = <<(-?[0-9]+)|(-?[0-9]*\.[0-9]+(e-?[0-9]+)?)>>
 TERMINATOR          = <<[\r\n;]>>
 SET                 = ":="
 UPDATE              = "="
@@ -49,5 +50,5 @@ Attached = Message;
 Symbol = IDENTIFIER
        | OPERATOR
        | STRING
-       | NUMBER ;
-       
+       | DECIMAL_NUMBER
+       | HEX_NUMBER ;      

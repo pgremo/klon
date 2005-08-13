@@ -1,17 +1,19 @@
 package klon;
 
-public class Runtime {
+public class Runtime extends KlonObject {
 
-  public KlonObject eval(KlonObject receiver, KlonObject locals, KlonMessage message)
-      throws KlonException {
-    KlonMessage outer = message;
-    while (outer != null) {
-      KlonMessage inner = message;
-      while (inner != null) {
-        receiver = receiver.send(receiver, locals, inner);
-        inner = inner.getAttached();
+  public KlonObject eval(KlonObject receiver, KlonObject locals,
+      KlonMessage message) throws KlonException {
+    KlonObject result = null;
+    for (KlonMessage outer = message; outer != null; outer = outer.getNext()) {
+      for (KlonMessage inner = outer; inner != null; inner = inner
+          .getAttached()) {
+        result = inner.getLiteral();
+        if (result == null) {
+          result = receiver.send(receiver, locals, inner);
+        }
+        receiver = result;
       }
-      outer = outer.getNext();
       receiver = locals;
     }
     return receiver;

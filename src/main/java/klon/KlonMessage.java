@@ -1,35 +1,47 @@
 package klon;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class KlonMessage extends KlonObject {
 
   private KlonObject selector;
-  private List<KlonMessage> arguments;
+  private KlonObject literal;
+  private List<KlonMessage> arguments = new ArrayList<KlonMessage>();
   private KlonMessage attached;
   private KlonMessage next;
-
-  public KlonMessage(KlonObject selector, KlonMessage attached, List<KlonMessage> arguments) {
-    this.selector = selector;
-    this.attached = attached;
-    this.arguments = arguments;
-  }
 
   public List<KlonMessage> getArguments() {
     return arguments;
   }
 
-  public KlonObject getSelector() {
-    return selector;
+  public int getArgumentCount() {
+    return arguments.size();
+  }
+
+  public void addArgument(KlonMessage message) {
+    arguments.add(message);
+  }
+
+  public KlonMessage getArgument(int index) {
+    return arguments.get(index);
   }
 
   public KlonMessage getAttached() {
     return attached;
   }
 
-  public void setAttached(KlonMessage value) {
-    attached = value;
+  public void setAttached(KlonMessage attached) {
+    this.attached = attached;
+  }
+
+  public KlonObject getLiteral() {
+    return literal;
+  }
+
+  public void setLiteral(KlonObject literal) {
+    this.literal = literal;
   }
 
   public KlonMessage getNext() {
@@ -40,9 +52,23 @@ public class KlonMessage extends KlonObject {
     this.next = next;
   }
 
+  public KlonObject getSelector() {
+    return selector;
+  }
+
+  public void setSelector(KlonObject selector) {
+    this.selector = selector;
+  }
+
   @Override
   public String toString() {
-    StringBuilder result = new StringBuilder(selector.toString());
+    StringBuilder result = new StringBuilder();
+    if (selector != null) {
+      result.append(selector);
+    }
+    if (literal != null) {
+      result.append(literal);
+    }
     if (arguments.size() > 0) {
       result.append("(");
       Iterator<KlonMessage> iterator = arguments.iterator();
@@ -55,12 +81,10 @@ public class KlonMessage extends KlonObject {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ")
-        .append(attached);
+      result.append(" ").append(attached);
     }
     if (next != null) {
-      result.append(";\n")
-        .append(next);
+      result.append(";\n").append(next);
     }
     return result.toString();
   }

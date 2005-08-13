@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 import klon.reflection.ExposedAs;
 
-public class KlonNumber extends KlonObject {
+public class KlonNumber extends KlonObject implements Literal {
 
   private static NumberFormat formatter = NumberFormat.getInstance();
   static {

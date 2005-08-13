@@ -1,6 +1,6 @@
 package klon;
 
-public class KlonString extends KlonObject {
+public class KlonString extends KlonObject implements Literal {
 
   private String value;
 

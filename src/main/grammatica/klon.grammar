@@ -35,15 +35,15 @@ Message = StandardMessage
         | SlotSet
         | SlotUpdate ;
         
-StandardMessage = ( Arguments | Symbol Arguments? ) Attached? ;
+StandardMessage = ( Group | Symbol Group? ) Attached? ;
 
 SlotSet = IDENTIFIER ":=" Attached ;
 
 SlotUpdate = IDENTIFIER "=" Attached ;
 
-Arguments = "(" MessageChain { "," MessageChain } ")"
-          | "{" MessageChain { "," MessageChain } "}"
-          | "[" MessageChain { "," MessageChain } "]" ;
+Group = "(" MessageChain { "," MessageChain } ")"
+      | "{" MessageChain { "," MessageChain } "}"
+      | "[" MessageChain { "," MessageChain } "]" ;
 
 Attached = Message;
         

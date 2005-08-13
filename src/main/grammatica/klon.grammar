@@ -6,8 +6,7 @@ AUTHOR = "Patrick Gremo"
 
 %tokens%
 
-DECIMAL_NUMBER      = <<((-?[0-9]+)|(-?[0-9]*\.[0-9]+))(e-?[0-9]+)?>>
-HEX_NUMBER          = <<0[xX][0-9a-fA-F]+>>
+NUMBER      = <<((-?[0-9]+)|(-?[0-9]*\.[0-9]+))(e-?[0-9]+)?|0[xX][0-9a-fA-F]+>>
 OPERATOR            = <<[:='~!@$%\^&*\-+\\<>|?/.]+>>
 IDENTIFIER          = <<[a-zA-Z][a-zA-Z0-9_]*>>
 STRING              = <<("[^"]*")>>
@@ -32,14 +31,11 @@ MULTI_COMMENT       = <</\*([^*]|\*[^/])*\*/>> %ignore%
 MessageChain 	= ( Message | TERMINATOR )+ ;        
 
 Message = StandardMessage
-        | SlotSet
-        | SlotUpdate ;
+        | SlotOperation ;
         
 StandardMessage = ( Group | Symbol Group? ) Attached? ;
 
-SlotSet = IDENTIFIER ":=" Attached ;
-
-SlotUpdate = IDENTIFIER "=" Attached ;
+SlotOperation = IDENTIFIER ( SET | UPDATE ) Attached ;
 
 Group = "(" MessageChain { "," MessageChain } ")"
       | "{" MessageChain { "," MessageChain } "}"
@@ -50,5 +46,4 @@ Attached = Message;
 Symbol = IDENTIFIER
        | OPERATOR
        | STRING
-       | DECIMAL_NUMBER
-       | HEX_NUMBER ;      
+       | NUMBER ;      

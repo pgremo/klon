@@ -11,6 +11,7 @@ import klon.KlonString;
 import klon.Literal;
 import klon.OperatorLiteral;
 import net.percederberg.grammatica.parser.Node;
+import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
 import net.percederberg.grammatica.parser.Token;
 
@@ -27,6 +28,39 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
       current.setNext(next);
     }
     node.addValue(next);
+  }
+
+  @Override
+  protected void childStandardMessage(Production node, Node child)
+      throws ParseException {
+    KlonMessage message = (KlonMessage) node.getValue(0);
+    if (message == null) {
+      message = new KlonMessage();
+      node.addValue(message);
+      KlonObject subject = (KlonObject) child.getValue(0);
+      if (subject instanceof Literal) {
+        message.setLiteral(subject);
+      } else {
+        message.setSelector(subject);
+      }
+    }
+    if (child.getId() == GROUP) {
+      Iterable<KlonMessage> allValues = (Iterable<KlonMessage>) child
+          .getValue(1);
+      for (KlonMessage arg : allValues) {
+        message.addArgument(arg);
+      }
+    }
+    if (child.getId() == ATTACHED) {
+      KlonMessage attached = (KlonMessage) child.getChildAt(0).getValue(0);
+      if (message.getSelector() instanceof OperatorLiteral) {
+        message.addArgument(attached);
+        KlonMessage newAttached = attached.getAttached();
+        attached.setAttached(null);
+        attached = newAttached;
+      }
+      message.setAttached(attached);
+    }
   }
 
   @Override
@@ -48,55 +82,20 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitStandardMessage(Production node) {
+  protected Node exitSlotOperation(Production node) {
+    KlonString slotName = new KlonString(((Token) node.getChildAt(0))
+        .getImage());
+    KlonMessage attached = (KlonMessage) node
+        .getChildAt(2)
+          .getChildAt(0)
+          .getValue(0);
+    KlonMessage identifier = new KlonMessage();
+    identifier.setLiteral(slotName);
     KlonMessage result = new KlonMessage();
-
-    int child = 0;
-
-    Node current = node.getChildAt(child++);
-    KlonObject subject = (KlonObject) current.getValue(0);
-    if (subject instanceof Literal) {
-      result.setLiteral(subject);
-    } else {
-      result.setSelector(subject);
-    }
-    if (current instanceof Token) {
-      current = node.getChildAt(child++);
-    }
-
-    if (current != null && current.getId() == GROUP) {
-      Iterable<KlonMessage> allValues = (Iterable<KlonMessage>) current
-          .getValue(1);
-      for (KlonMessage arg : allValues) {
-        result.addArgument(arg);
-      }
-      current = node.getChildAt(child);
-    }
-
-    if (current != null && current.getId() == ATTACHED) {
-      KlonMessage attached = (KlonMessage) current.getChildAt(0).getValue(0);
-      if (subject instanceof OperatorLiteral) {
-        result.addArgument(attached);
-        KlonMessage newAttached = attached.getAttached();
-        attached.setAttached(null);
-        attached = newAttached;
-      }
-      result.setAttached(attached);
-    }
-
+    result.setSelector((KlonObject) node.getChildAt(1).getValue(0));
+    result.addArgument(identifier);
+    result.addArgument(attached);
     node.addValue(result);
-    return node;
-  }
-
-  @Override
-  protected Node exitSlotSet(Production node) {
-    createSlotOperation(node, new IdentifierLiteral("setSlot"));
-    return node;
-  }
-
-  @Override
-  protected Node exitSlotUpdate(Production node) {
-    createSlotOperation(node, new IdentifierLiteral("updateSlot"));
     return node;
   }
 
@@ -118,15 +117,13 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitDecimalNumber(Token node) {
-    node.addValue(new KlonNumber(Double.parseDouble(node.getImage())));
-    return node;
-  }
-
-  @Override
-  protected Node exitHexNumber(Token node) {
-    node.addValue(new KlonNumber(Integer.parseInt(node.getImage().substring(2),
-        16)));
+  protected Node exitNumber(Token node) {
+    String image = node.getImage();
+    if (image.startsWith("0x") || image.startsWith(("0X"))) {
+      node.addValue(new KlonNumber(Integer.parseInt(image.substring(2), 16)));
+    } else {
+      node.addValue(new KlonNumber(Double.parseDouble(image)));
+    }
     return node;
   }
 
@@ -134,6 +131,18 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   protected Node exitString(Token node) {
     String value = node.getImage();
     node.addValue(new KlonString(value.substring(1, value.length() - 1)));
+    return node;
+  }
+
+  @Override
+  protected Node exitSet(Token node) {
+    node.addValue(new IdentifierLiteral("setSlot"));
+    return node;
+  }
+
+  @Override
+  protected Node exitUpdate(Token node) {
+    node.addValue(new IdentifierLiteral("updateSlot"));
     return node;
   }
 
@@ -178,22 +187,6 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   @Override
   protected Node exitRbrack(Token node) {
     return null;
-  }
-
-  private void createSlotOperation(Production node, KlonObject selector) {
-    KlonString slotName = new KlonString(((Token) node.getChildAt(0))
-        .getImage());
-    KlonMessage attached = (KlonMessage) node
-        .getChildAt(2)
-          .getChildAt(0)
-          .getValue(0);
-    KlonMessage identifier = new KlonMessage();
-    identifier.setLiteral(slotName);
-    KlonMessage result = new KlonMessage();
-    result.setSelector(selector);
-    result.addArgument(identifier);
-    result.addArgument(attached);
-    node.addValue(result);
   }
 
   private Node compressPath(Production node) {

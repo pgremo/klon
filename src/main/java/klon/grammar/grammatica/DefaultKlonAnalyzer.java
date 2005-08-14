@@ -3,13 +3,12 @@ package klon.grammar.grammatica;
 import java.util.ArrayList;
 import java.util.List;
 
-import klon.IdentifierLiteral;
+import klon.KlonSymbol;
 import klon.KlonMessage;
 import klon.KlonNumber;
 import klon.KlonObject;
 import klon.KlonString;
 import klon.Literal;
-import klon.OperatorLiteral;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
@@ -37,6 +36,7 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
     if (message == null) {
       message = new KlonMessage();
       node.addValue(message);
+      node.addValue(child.getValue(1));
       KlonObject subject = (KlonObject) child.getValue(0);
       if (subject instanceof Literal) {
         message.setLiteral(subject);
@@ -44,16 +44,16 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
         message.setSelector(subject);
       }
     }
+    
     if (child.getId() == GROUP) {
-      Iterable<KlonMessage> allValues = (Iterable<KlonMessage>) child
-          .getValue(1);
-      for (KlonMessage arg : allValues) {
+      for (KlonMessage arg : (Iterable<KlonMessage>) child.getValue(2)) {
         message.addArgument(arg);
       }
     }
+    
     if (child.getId() == ATTACHED) {
       KlonMessage attached = (KlonMessage) child.getChildAt(0).getValue(0);
-      if (message.getSelector() instanceof OperatorLiteral) {
+      if ((Integer) node.getValue(1) == OPERATOR) {
         message.addArgument(attached);
         KlonMessage newAttached = attached.getAttached();
         attached.setAttached(null);
@@ -68,9 +68,10 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
     if (child != null) {
       if (node.getValueCount() == 0) {
         node.addValue(child.getValue(0));
+        node.addValue(child.getValue(1));
         node.addValue(new ArrayList<KlonMessage>());
       } else {
-        List<KlonMessage> group = (List<KlonMessage>) node.getValue(1);
+        List<KlonMessage> group = (List<KlonMessage>) node.getValue(2);
         group.add((KlonMessage) child.getValue(0));
       }
     }
@@ -106,13 +107,15 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
 
   @Override
   protected Node exitIdentifier(Token node) {
-    node.addValue(new IdentifierLiteral(node.getImage()));
+    node.addValue(new KlonSymbol(node.getImage()));
+    node.addValue(node.getId());
     return node;
   }
 
   @Override
   protected Node exitOperator(Token node) {
-    node.addValue(new OperatorLiteral(node.getImage()));
+    node.addValue(new KlonSymbol(node.getImage()));
+    node.addValue(node.getId());
     return node;
   }
 
@@ -124,6 +127,7 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
     } else {
       node.addValue(new KlonNumber(Double.parseDouble(image)));
     }
+    node.addValue(node.getId());
     return node;
   }
 
@@ -131,18 +135,19 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   protected Node exitString(Token node) {
     String value = node.getImage();
     node.addValue(new KlonString(value.substring(1, value.length() - 1)));
+    node.addValue(node.getId());
     return node;
   }
 
   @Override
   protected Node exitSet(Token node) {
-    node.addValue(new IdentifierLiteral("setSlot"));
+    node.addValue(new KlonSymbol("setSlot"));
     return node;
   }
 
   @Override
   protected Node exitUpdate(Token node) {
-    node.addValue(new IdentifierLiteral("updateSlot"));
+    node.addValue(new KlonSymbol("updateSlot"));
     return node;
   }
 
@@ -158,19 +163,22 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
 
   @Override
   protected Node exitLparen(Token node) {
-    node.addValue(new IdentifierLiteral(""));
+    node.addValue(new KlonSymbol(""));
+    node.addValue(node.getId());
     return node;
   }
 
   @Override
   protected Node exitLbrace(Token node) {
-    node.addValue(new IdentifierLiteral("brace"));
+    node.addValue(new KlonSymbol("brace"));
+    node.addValue(node.getId());
     return node;
   }
 
   @Override
   protected Node exitLbrack(Token node) {
-    node.addValue(new IdentifierLiteral("bracket"));
+    node.addValue(new KlonSymbol("bracket"));
+    node.addValue(node.getId());
     return node;
   }
 

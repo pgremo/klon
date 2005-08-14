@@ -1,43 +1,33 @@
 package klon;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import klon.reflection.ExposedAs;
-import klon.reflection.SlotFactory;
 
 public class KlonObject {
 
-  private static final SlotFactory factory = new SlotFactory();
-  private Object down;
-  private Map<String, KlonObject> slots;
+  private List<Map<String, KlonObject>> slots;
 
-  public void setSlots(Map<String, KlonObject> slots) {
-    this.slots = slots;
-  }
-
-  public void down(Object down) {
-    this.down = down;
-  }
-
-  public Object down() {
-    return down;
-  }
-
-  public KlonObject send(KlonObject receiver, KlonObject locals, KlonMessage message)
-      throws KlonException {
-    return receiver;
+  public void addSlots(Map<String, KlonObject> slots) {
+    this.slots.add(slots);
   }
 
   public KlonObject getSlot(String key) {
     KlonObject result = null;
-    result = slots.get(key);
-    if (result == null) {
-      KlonObject superSlot = slots.get("super");
-      if (superSlot != null) {
-        result = superSlot.getSlot(key);
-      }
+    Iterator<Map<String, KlonObject>> iterator = slots.iterator();
+    while (iterator.hasNext() && result == null) {
+      Map<String, KlonObject> current = iterator.next();
+      result = current.get(key);
     }
     return result;
+  }
+
+  @ExposedAs("clone")
+  public static KlonObject send(KlonObject receiver, KlonObject locals,
+      KlonMessage message) throws KlonException {
+    return receiver;
   }
 
   @ExposedAs("clone")
@@ -67,7 +57,6 @@ public class KlonObject {
   @ExposedAs("==")
   public KlonObject equals(KlonObject reciever, KlonObject locals,
       KlonMessage message) {
-    return equals(message.getArguments()
-      .get(0)) ? Lobby.Lobby : Lobby.Nil;
+    return equals(message.getArguments().get(0)) ? Lobby.Lobby : Lobby.Nil;
   }
 }

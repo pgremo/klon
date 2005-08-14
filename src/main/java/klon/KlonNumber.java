@@ -18,6 +18,10 @@ public class KlonNumber extends KlonObject implements Literal {
   public KlonNumber(double value) {
     this.value = value;
   }
+  
+  public double getValue(){
+    return value;
+  }
 
   @ExposedAs("+")
   public static Object add(Double receiver, Object arg) throws KlonException {

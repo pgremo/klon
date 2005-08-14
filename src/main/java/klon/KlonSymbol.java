@@ -1,10 +1,10 @@
 package klon;
 
-public class IdentifierLiteral extends KlonObject {
+public class KlonSymbol extends KlonObject {
 
   private String selector;
 
-  public IdentifierLiteral(String selector) {
+  public KlonSymbol(String selector) {
     this.selector = selector;
   }
 

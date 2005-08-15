@@ -5,10 +5,27 @@ import java.util.List;
 import java.util.Map;
 
 import klon.reflection.ExposedAs;
+import klon.reflection.Identity;
 
 public class KlonObject {
 
   private List<Map<String, KlonObject>> slots;
+  private Object down;
+
+  public KlonObject() {
+  }
+
+  public KlonObject(Identity frame) {
+
+  }
+
+  public void setDown(Object value) {
+    this.down = value;
+  }
+
+  public Object down() {
+    return down;
+  }
 
   public void addSlots(Map<String, KlonObject> slots) {
     this.slots.add(slots);
@@ -25,15 +42,9 @@ public class KlonObject {
   }
 
   @ExposedAs("clone")
-  public static KlonObject send(KlonObject receiver, KlonObject locals,
-      KlonMessage message) throws KlonException {
+  public static KlonObject send(KlonObject receiver, KlonMessage message)
+      throws KlonException {
     return receiver;
-  }
-
-  @ExposedAs("clone")
-  public static KlonObject clone(KlonObject reciever, KlonObject locals,
-      KlonMessage message) {
-    return null;
   }
 
   @ExposedAs("getSlot")
@@ -57,6 +68,7 @@ public class KlonObject {
   @ExposedAs("==")
   public KlonObject equals(KlonObject reciever, KlonObject locals,
       KlonMessage message) {
-    return equals(message.getArguments().get(0)) ? Lobby.Lobby : Lobby.Nil;
+    return equals(message.getArguments()
+      .get(0)) ? Lobby.Lobby : Lobby.Nil;
   }
 }

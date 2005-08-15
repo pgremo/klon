@@ -1,13 +1,12 @@
 package klon.reflection;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 import klon.KlonException;
-import klon.KlonObject;
 import klon.KlonMessage;
+import klon.KlonObject;
 
-public class PrimitiveValue extends KlonObject {
+public class PrimitiveValue implements Slot {
 
   private Field field;
 
@@ -15,30 +14,23 @@ public class PrimitiveValue extends KlonObject {
     this.field = field;
   }
 
-  public KlonObject activate(KlonObject receiver, KlonMessage message)
+  public KlonObject activate(Identity receiver, KlonMessage message)
       throws KlonException {
     KlonObject result;
-    List<KlonMessage> arguments = message.getArguments();
-    if (arguments.size() > 0) {
-      KlonObject parameter = arguments.get(0);
-      try {
-        field.set(receiver, parameter.down());
-        result = parameter;
-      } catch (Exception e) {
-        throw new KlonException(e);
+    try {
+      if (message.getArgumentCount() > 0) {
+        field.set(receiver.down(), message.eval(receiver.up(), 0)
+          .down());
       }
-    } else {
-      try {
-        result = Up.UP.up(field.get(receiver));
-      } catch (Exception e) {
-        throw new KlonException(e);
-      }
+      result = Up.UP.up(field.get(receiver));
+    } catch (Exception e) {
+      throw new KlonException(e);
     }
     return result;
   }
 
   public String toString() {
-    return "Primitive Value";
+    return "Primitive Value: " + field;
   }
 
 }

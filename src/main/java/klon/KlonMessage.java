@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import klon.reflection.ExposedAs;
+
 public class KlonMessage extends KlonObject {
 
   private KlonObject selector;
@@ -60,6 +62,36 @@ public class KlonMessage extends KlonObject {
     this.selector = selector;
   }
 
+  @ExposedAs("eval")
+  public static KlonObject eval(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    KlonObject self = receiver;
+    for (KlonMessage outer = message; outer != null; outer = outer.getNext()) {
+      receiver = self;
+      for (KlonMessage inner = outer; inner != null; inner = inner.getAttached()) {
+        KlonObject result = inner.getLiteral();
+        if (result == null) {
+          result = KlonObject.send(receiver, inner);
+        }
+        receiver = result;
+      }
+    }
+    return receiver;
+  }
+
+  public KlonObject eval(KlonObject receiver, int index) throws KlonException {
+    return KlonMessage.eval(receiver, arguments.get(index));
+  }
+
+  public double evalAsNumber(KlonObject receiver, int index)
+      throws KlonException {
+    KlonObject result = eval(receiver, index);
+    if (!(result instanceof KlonNumber)) {
+      throw new KlonException("result must be a number");
+    }
+    return ((KlonNumber) result).getValue();
+  }
+
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
@@ -81,10 +113,12 @@ public class KlonMessage extends KlonObject {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ").append(attached);
+      result.append(" ")
+        .append(attached);
     }
     if (next != null) {
-      result.append(";\n").append(next);
+      result.append(";\n")
+        .append(next);
     }
     return result.toString();
   }

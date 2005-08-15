@@ -33,6 +33,15 @@ public class KlonParserTest extends TestCase {
     }
   }
 
+  public void testSuperOperator() throws Exception {
+    Reader input = new StringReader("super(do stuff)");
+    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
+    Node actual = parser.parse();
+    assertNotNull(actual);
+    assertEquals("super(do stuff)", actual.getValue(0)
+      .toString());
+  }
+
   public void testHelloWorld() throws Exception {
     Reader input = new StringReader("\"Hello world!\\n\" print");
     Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());

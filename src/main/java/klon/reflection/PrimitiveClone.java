@@ -6,7 +6,7 @@ import klon.KlonException;
 import klon.KlonObject;
 import klon.KlonMessage;
 
-public class PrimitiveClone extends KlonObject {
+public class PrimitiveClone implements Slot {
 
   private Constructor constructor;
 
@@ -14,11 +14,17 @@ public class PrimitiveClone extends KlonObject {
     this.constructor = constructor;
   }
 
-  public KlonObject activate(KlonObject receiver, KlonMessage message)
+  public KlonObject activate(Identity receiver, KlonMessage message)
       throws KlonException {
     Object result = null;
     try {
-      result = constructor.newInstance(message.getDownArguments());
+      KlonObject uppedReceiver = receiver.up();
+      Object[] arguments = new Object[message.getArgumentCount()];
+      for (int i = 0; i < message.getArgumentCount(); i++) {
+        arguments[i] = message.eval(uppedReceiver, i)
+          .down();
+      }
+      result = constructor.newInstance(arguments);
     } catch (Exception e) {
       throw new KlonException(e);
     }
@@ -26,6 +32,6 @@ public class PrimitiveClone extends KlonObject {
   }
 
   public String toString() {
-    return "Primitive Clone";
+    return "Primitive Clone: " + constructor;
   }
 }

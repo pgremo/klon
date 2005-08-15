@@ -36,7 +36,7 @@ public final class Up extends KlonObject {
 
   private KlonObject up(Object o, Class c, boolean isInstance) {
     KlonObject result = new KlonObject();
-    result.down(o);
+    result.setDown(o);
     result.setSlots(getSlots(c, isInstance));
     return result;
   }
@@ -116,7 +116,7 @@ public final class Up extends KlonObject {
           && Modifier.isStatic(modifiers)) {
         ExposedAs exposed = current.getAnnotation(ExposedAs.class);
         if (exposed != null) {
-          builder.addSlot(exposed.value(), new PrimitiveExposedMethod(current),
+          builder.addSlot(exposed.value(), new ExposedMethod(current),
             true);
         }
       }

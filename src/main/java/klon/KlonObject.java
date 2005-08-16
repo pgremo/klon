@@ -9,13 +9,23 @@ public class KlonObject {
 
   protected KlonObject parent;
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
+  protected Object attached;
 
   public KlonObject() {
-
+    this(null, null);
   }
 
   public KlonObject(KlonObject parent) {
+    this(parent, null);
+  }
+
+  public KlonObject(KlonObject parent, Object attached) {
     this.parent = parent;
+    this.attached = attached;
+  }
+
+  public Object getAttached() {
+    return attached;
   }
 
   public KlonObject activate(KlonObject receiver, Message message)
@@ -86,6 +96,27 @@ public class KlonObject {
     Configurator.configure(KlonObject.class, slots);
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    boolean result = false;
+    if (this == obj) {
+      result = true;
+    } else {
+      if (obj instanceof KlonObject) {
+        if (parent == null && ((KlonObject) obj).parent == null) {
+          result = true;
+        } else if (parent != null && ((KlonObject) obj).parent != null
+            && parent.equals(((KlonObject) obj).parent)) {
+          result = true;
+        }
+        if (result && slots.equals(((KlonObject) obj).slots)) {
+          result = true;
+        }
+      }
+    }
+    return result;
+  }
+
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, Message message)
       throws KlonException {
@@ -137,9 +168,10 @@ public class KlonObject {
   }
 
   @ExposedAs("==")
-  public KlonObject equals(KlonObject receiver, Message message) {
-    return equals(message.getArguments()
-      .get(0)) ? Lobby.Lobby : Lobby.Nil;
+  public KlonObject equals(KlonObject receiver, Message message)
+      throws KlonException {
+    return receiver.equals(message.getArguments()
+      .get(0)) ? receiver : Lobby.Nil;
   }
 
 }

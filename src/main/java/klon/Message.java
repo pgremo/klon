@@ -96,7 +96,7 @@ public class Message extends KlonObject {
     if (!(result instanceof KlonNumber)) {
       throw new KlonException("result must be a number");
     }
-    return ((KlonNumber) result).getValue();
+    return (Double) ((KlonNumber) result).getAttached();
   }
 
   public String evalAsString(KlonObject receiver, int index)
@@ -105,7 +105,7 @@ public class Message extends KlonObject {
     if (!(result instanceof KlonString)) {
       throw new KlonException("result must be a string");
     }
-    return ((KlonString) result).getValue();
+    return (String) ((KlonString) result).getAttached();
   }
 
   @Override

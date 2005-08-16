@@ -13,14 +13,13 @@ public class KlonNumber extends KlonObject {
     formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
   }
 
-  private double value;
-
   public KlonNumber(double value) {
-    this.value = value;
+    super(Lobby.Object, value);
   }
 
-  public double getValue() {
-    return value;
+  @Override
+  public String toString() {
+    return formatter.format(attached);
   }
 
   @ExposedAs("+")
@@ -114,11 +113,6 @@ public class KlonNumber extends KlonObject {
   @ExposedAs("sqrt")
   public static Object squareRoot(Double receiver) {
     return Math.sqrt(receiver);
-  }
-
-  @Override
-  public String toString() {
-    return formatter.format(value);
   }
 
 }

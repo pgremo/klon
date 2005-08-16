@@ -7,7 +7,7 @@ public final class Lobby extends KlonObject {
   public static final KlonObject Object;
 
   static {
-    Nil = new KlonNil();
+    Nil = new Nil();
     Object = new KlonObject();
     Lobby = new Lobby();
   }

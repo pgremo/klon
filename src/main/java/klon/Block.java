@@ -1,23 +1,27 @@
 package klon;
 
-public class KlonBlock extends KlonObject {
+public class Block extends KlonObject {
 
   private String[] parameters;
-  private KlonMessage code;
+  private Message code;
 
-  public KlonBlock(String[] parameters, KlonMessage code) {
-    this.parameters = parameters;
+  public Block(Message code) {
     this.code = code;
   }
 
+  public void setParameters(String[] parameters) {
+    this.parameters = parameters;
+  }
+
   @Override
-  public KlonObject activate(KlonObject receiver, KlonMessage message)
+  public KlonObject activate(KlonObject receiver, Message message)
       throws KlonException {
     KlonObject scope = receiver.clone();
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     for (int i = 0; i < limit; i++) {
       scope.setSlot(parameters[i], message.eval(receiver, i));
     }
+    scope.setSlot("self", receiver);
     return code.eval(scope);
   }
 

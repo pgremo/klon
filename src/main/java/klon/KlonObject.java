@@ -18,7 +18,7 @@ public class KlonObject {
     this.parent = parent;
   }
 
-  public KlonObject activate(KlonObject receiver, KlonMessage message)
+  public KlonObject activate(KlonObject receiver, Message message)
       throws KlonException {
     return this;
   }
@@ -27,7 +27,7 @@ public class KlonObject {
     return new KlonObject(this);
   }
 
-  public KlonObject send(KlonMessage message) throws KlonException {
+  public KlonObject send(Message message) throws KlonException {
     String name = message.getSelector()
       .getSelector();
     KlonObject result = getSlot(name);
@@ -78,31 +78,35 @@ public class KlonObject {
     return result;
   }
 
+  public KlonObject slotNames() {
+    return new Set(slots.keySet());
+  }
+
   public void configure() {
     Configurator.configure(KlonObject.class, slots);
   }
 
   @ExposedAs("clone")
-  public static KlonObject clone(KlonObject receiver, KlonMessage message)
+  public static KlonObject clone(KlonObject receiver, Message message)
       throws KlonException {
     return receiver.clone();
   }
 
   @ExposedAs("send")
-  public static KlonObject send(KlonObject receiver, KlonMessage message)
+  public static KlonObject send(KlonObject receiver, Message message)
       throws KlonException {
     return receiver.send(message);
   }
 
   @ExposedAs("getSlot")
-  public static KlonObject getSlot(KlonObject receiver, KlonMessage message)
+  public static KlonObject getSlot(KlonObject receiver, Message message)
       throws KlonException {
     String name = message.evalAsString(receiver, 0);
     return receiver.getSlot(name);
   }
 
   @ExposedAs("setSlot")
-  public static KlonObject setSlot(KlonObject receiver, KlonMessage message)
+  public static KlonObject setSlot(KlonObject receiver, Message message)
       throws KlonException {
     String name = message.evalAsString(receiver, 0);
     KlonObject value = message.eval(receiver, 1);
@@ -111,7 +115,7 @@ public class KlonObject {
   }
 
   @ExposedAs("updateSlot")
-  public static KlonObject updateSlot(KlonObject receiver, KlonMessage message)
+  public static KlonObject updateSlot(KlonObject receiver, Message message)
       throws KlonException {
     String name = message.evalAsString(receiver, 0);
     KlonObject value = message.eval(receiver, 1);
@@ -120,14 +124,20 @@ public class KlonObject {
   }
 
   @ExposedAs("removeSlot")
-  public static KlonObject removeSlot(KlonObject receiver, KlonMessage message)
+  public static KlonObject removeSlot(KlonObject receiver, Message message)
       throws KlonException {
     String name = message.evalAsString(receiver, 0);
     return receiver.removeSlot(name);
   }
 
+  @ExposedAs("slotNames")
+  public static KlonObject slotNames(KlonObject receiver, Message message)
+      throws KlonException {
+    return receiver.slotNames();
+  }
+
   @ExposedAs("==")
-  public KlonObject equals(KlonObject receiver, KlonMessage message) {
+  public KlonObject equals(KlonObject receiver, Message message) {
     return equals(message.getArguments()
       .get(0)) ? Lobby.Lobby : Lobby.Nil;
   }

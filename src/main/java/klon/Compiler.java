@@ -8,7 +8,7 @@ import klon.grammar.grammatica.KlonParser;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.Parser;
 
-public class KlonCompiler {
+public class Compiler {
 
   public KlonObject forString(String value) throws KlonException {
     try {

@@ -3,7 +3,7 @@ package klon.reflection;
 import java.lang.reflect.Method;
 
 import klon.KlonException;
-import klon.KlonMessage;
+import klon.Message;
 import klon.KlonObject;
 
 public class ExposedMethod extends KlonObject {
@@ -15,7 +15,7 @@ public class ExposedMethod extends KlonObject {
   }
 
   @Override
-  public KlonObject activate(KlonObject receiver, KlonMessage message)
+  public KlonObject activate(KlonObject receiver, Message message)
       throws KlonException {
     KlonObject result = null;
     try {

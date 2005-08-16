@@ -7,17 +7,19 @@ public class KlonObjectTest extends TestCase {
   public void testSlotOperations() throws Exception {
     KlonObject object = new KlonObject();
     object.configure();
-    KlonCompiler compiler = new KlonCompiler();
-    KlonMessage message = (KlonMessage) compiler.forString("Account := 1");
+    Compiler compiler = new Compiler();
+    Message message = (Message) compiler.forString("Account := 1");
     KlonObject value = object.send(message);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("1", ((KlonNumber) value).toString());
-    message = (KlonMessage) compiler.forString("Account");
+    message = (Message) compiler.forString("Account");
     value = object.send(message);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("1", ((KlonNumber) value).toString());
+    message = (Message) compiler.forString("slotNames");
+    System.out.println(object.send(message));
   }
 
 }

@@ -3,12 +3,13 @@ package klon.grammar.grammatica;
 import java.util.ArrayList;
 import java.util.List;
 
-import klon.Message;
 import klon.KlonNumber;
 import klon.KlonObject;
 import klon.KlonString;
+import klon.Message;
 import klon.Symbol;
 import net.percederberg.grammatica.parser.Node;
+import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
 import net.percederberg.grammatica.parser.Token;
 
@@ -117,15 +118,20 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitNumber(Token node) {
-    String image = node.getImage();
-    if (image.startsWith("0x") || image.startsWith(("0X"))) {
-      node.addValue(new KlonNumber(Integer.parseInt(image.substring(2), 16)));
-    } else {
-      node.addValue(new KlonNumber(Double.parseDouble(image)));
+  protected Node exitNumber(Token node) throws ParseException {
+    try {
+      String image = node.getImage();
+      if (image.startsWith("0x") || image.startsWith(("0X"))) {
+        node.addValue(new KlonNumber(Integer.parseInt(image.substring(2), 16)));
+      } else {
+        node.addValue(new KlonNumber(Double.parseDouble(image)));
+      }
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
-    node.addValue(node.getId());
-    return node;
   }
 
   @Override

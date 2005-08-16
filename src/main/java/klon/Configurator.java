@@ -13,7 +13,7 @@ public final class Configurator {
   }
 
   public static void configure(Class type, Map<String, KlonObject> slots) {
-    for (Method current : type.getMethods()) {
+    for (Method current : type.getDeclaredMethods()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         slots.put(exposedAs.value(), new ExposedMethod(current));

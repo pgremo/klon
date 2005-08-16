@@ -3,7 +3,8 @@ package klon;
 public class KlonString extends KlonObject {
 
   public KlonString(String value) {
-    super(Lobby.Object, value);
+    // TODO: Need Object form Lobby
+    super(null, value);
   }
 
   @Override

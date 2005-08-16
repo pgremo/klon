@@ -15,8 +15,8 @@ public class KlonObject {
     this(null, null);
   }
 
-  public KlonObject(KlonObject parent) {
-    this(parent, null);
+  public KlonObject(Object attached) {
+    this(null, attached);
   }
 
   public KlonObject(KlonObject parent, Object attached) {
@@ -24,17 +24,25 @@ public class KlonObject {
     this.attached = attached;
   }
 
+  public void configure() throws KlonException {
+    Configurator.configure(KlonObject.class, slots);
+  }
+
+  public KlonObject clone() {
+    return new KlonObject(this);
+  }
+
   public Object getAttached() {
     return attached;
+  }
+
+  public void setAttached(Object attached) {
+    this.attached = attached;
   }
 
   public KlonObject activate(KlonObject receiver, Message message)
       throws KlonException {
     return this;
-  }
-
-  public KlonObject clone() {
-    return new KlonObject(this);
   }
 
   public KlonObject send(Message message) throws KlonException {
@@ -90,10 +98,6 @@ public class KlonObject {
 
   public KlonObject slotNames() {
     return new Set(slots.keySet());
-  }
-
-  public void configure() {
-    Configurator.configure(KlonObject.class, slots);
   }
 
   @Override
@@ -170,8 +174,9 @@ public class KlonObject {
   @ExposedAs("==")
   public KlonObject equals(KlonObject receiver, Message message)
       throws KlonException {
+    // TODO: need nil from lobby
     return receiver.equals(message.getArguments()
-      .get(0)) ? receiver : Lobby.Nil;
+      .get(0)) ? receiver : null;
   }
 
 }

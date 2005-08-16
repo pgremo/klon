@@ -1,20 +1,23 @@
 package klon;
 
 import junit.framework.TestCase;
-import klon.reflection.Up;
 
 public class KlonObjectTest extends TestCase {
 
-//  public void testPerform() throws KlonException {
-//    KlonObject target = Up.UP.up(Boolean.TRUE);
-//    KlonObject result = KlonObject.perform(target, Up.UP.up(new Message(
-//      "booleanValue", new KlonObject[0])));
-//    assertTrue(KlonObject.equals(target, target) == target);
-//    assertTrue(KlonObject.equals(target, result) == Lobby.Nil);
-//  }
-
-  public void testConstructor() throws Exception {
-    KlonObject expected = new KlonObject();
+  public void testSlotOperations() throws Exception {
+    KlonObject object = new KlonObject();
+    object.configure();
+    KlonCompiler compiler = new KlonCompiler();
+    KlonMessage message = (KlonMessage) compiler.forString("Account := 1");
+    KlonObject value = object.send(message);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonNumber);
+    assertEquals("1", ((KlonNumber) value).toString());
+    message = (KlonMessage) compiler.forString("Account");
+    value = object.send(message);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonNumber);
+    assertEquals("1", ((KlonNumber) value).toString());
   }
 
 }

@@ -1,14 +1,14 @@
 package klon;
 
-public class KlonString extends KlonObject implements Literal {
+public class KlonString extends KlonObject {
 
   private String value;
 
   public KlonString(String value) {
     this.value = value;
   }
-  
-  public String getValue(){
+
+  public String getValue() {
     return value;
   }
 

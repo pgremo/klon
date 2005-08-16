@@ -1,74 +1,135 @@
 package klon;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import klon.reflection.ExposedAs;
-import klon.reflection.Identity;
 
 public class KlonObject {
 
-  private List<Map<String, KlonObject>> slots;
-  private Object down;
+  protected KlonObject parent;
+  protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
 
   public KlonObject() {
-  }
-
-  public KlonObject(Identity frame) {
 
   }
 
-  public void setDown(Object value) {
-    this.down = value;
+  public KlonObject(KlonObject parent) {
+    this.parent = parent;
   }
 
-  public Object down() {
-    return down;
+  public KlonObject activate(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    return this;
   }
 
-  public void addSlots(Map<String, KlonObject> slots) {
-    this.slots.add(slots);
+  public KlonObject clone() {
+    return new KlonObject(this);
   }
 
-  public KlonObject getSlot(String key) {
-    KlonObject result = null;
-    Iterator<Map<String, KlonObject>> iterator = slots.iterator();
-    while (iterator.hasNext() && result == null) {
-      Map<String, KlonObject> current = iterator.next();
-      result = current.get(key);
+  public KlonObject send(KlonMessage message) throws KlonException {
+    String name = message.getSelector()
+      .getSelector();
+    KlonObject result = getSlot(name);
+    return result.activate(this, message);
+  }
+
+  public void setSlot(String name, KlonObject value) {
+    slots.put(name, value);
+  }
+
+  public KlonObject updateSlot(String name, KlonObject value)
+      throws MessageNotUnderstood {
+    KlonObject result;
+    if (slots.containsKey(name)) {
+      result = slots.put(name, value);
+    } else {
+      if (parent == null) {
+        throw new MessageNotUnderstood(name + " does not exist");
+      }
+      result = parent.updateSlot(name, value);
     }
     return result;
   }
 
+  public KlonObject getSlot(String name) throws MessageNotUnderstood {
+    KlonObject result;
+    if (slots.containsKey(name)) {
+      result = slots.get(name);
+    } else {
+      if (parent == null) {
+        throw new MessageNotUnderstood(name + " does not exist");
+      }
+      result = parent.getSlot(name);
+    }
+    return result;
+  }
+
+  public KlonObject removeSlot(String name) throws MessageNotUnderstood {
+    KlonObject result;
+    if (slots.containsKey(name)) {
+      result = slots.remove(name);
+    } else {
+      if (parent == null) {
+        throw new MessageNotUnderstood(name + " does not exist");
+      }
+      result = parent.removeSlot(name);
+    }
+    return result;
+  }
+
+  public void configure() {
+    Configurator.configure(KlonObject.class, slots);
+  }
+
   @ExposedAs("clone")
+  public static KlonObject clone(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    return receiver.clone();
+  }
+
+  @ExposedAs("send")
   public static KlonObject send(KlonObject receiver, KlonMessage message)
       throws KlonException {
-    return receiver;
+    return receiver.send(message);
   }
 
   @ExposedAs("getSlot")
-  public static KlonObject getSlot(KlonObject reciever, KlonObject locals,
-      KlonMessage message) {
-    return null;
+  public static KlonObject getSlot(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    String name = message.evalAsString(receiver, 0);
+    return receiver.getSlot(name);
   }
 
   @ExposedAs("setSlot")
-  public static KlonObject setSlot(KlonObject reciever, KlonObject locals,
-      KlonMessage message) {
-    return null;
+  public static KlonObject setSlot(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    String name = message.evalAsString(receiver, 0);
+    KlonObject value = message.eval(receiver, 1);
+    receiver.setSlot(name, value);
+    return value;
+  }
+
+  @ExposedAs("updateSlot")
+  public static KlonObject updateSlot(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    String name = message.evalAsString(receiver, 0);
+    KlonObject value = message.eval(receiver, 1);
+    receiver.updateSlot(name, value);
+    return value;
   }
 
   @ExposedAs("removeSlot")
-  public static KlonObject removeSlot(KlonObject reciever, KlonObject locals,
-      KlonMessage message) {
-    return null;
+  public static KlonObject removeSlot(KlonObject receiver, KlonMessage message)
+      throws KlonException {
+    String name = message.evalAsString(receiver, 0);
+    return receiver.removeSlot(name);
   }
 
   @ExposedAs("==")
-  public KlonObject equals(KlonObject reciever, KlonObject locals,
-      KlonMessage message) {
+  public KlonObject equals(KlonObject receiver, KlonMessage message) {
     return equals(message.getArguments()
       .get(0)) ? Lobby.Lobby : Lobby.Nil;
   }
+
 }

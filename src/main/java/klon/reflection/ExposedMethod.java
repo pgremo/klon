@@ -6,16 +6,16 @@ import klon.KlonException;
 import klon.KlonMessage;
 import klon.KlonObject;
 
-public class ExposedMethod implements Slot {
+public class ExposedMethod extends KlonObject {
 
   private Method method;
 
   public ExposedMethod(Method method) {
-    super();
     this.method = method;
   }
 
-  public KlonObject activate(Identity receiver, KlonMessage message)
+  @Override
+  public KlonObject activate(KlonObject receiver, KlonMessage message)
       throws KlonException {
     KlonObject result = null;
     try {
@@ -27,7 +27,7 @@ public class ExposedMethod implements Slot {
   }
 
   public String toString() {
-    return "Primitive Function: " + method;
+    return "Exposed Method: " + method;
   }
 
 }

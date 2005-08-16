@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 import klon.reflection.ExposedAs;
 
-public class KlonNumber extends KlonObject implements Literal {
+public class KlonNumber extends KlonObject {
 
   private static NumberFormat formatter = NumberFormat.getInstance();
   static {
@@ -18,8 +18,8 @@ public class KlonNumber extends KlonObject implements Literal {
   public KlonNumber(double value) {
     this.value = value;
   }
-  
-  public double getValue(){
+
+  public double getValue() {
     return value;
   }
 

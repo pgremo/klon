@@ -1,17 +1,15 @@
 package klon;
 
-import klon.reflection.Up;
-
-public final class Lobby {
+public final class Lobby extends KlonObject {
 
   public static final KlonObject Lobby;
   public static final KlonObject Nil;
   public static final KlonObject Object;
 
   static {
-    Nil = Up.UP.up(new KlonNil());
-    Object = Up.UP.up(new Object());
-    Lobby = Up.UP.up(Lobby.class);
+    Nil = new KlonNil();
+    Object = new KlonObject();
+    Lobby = new Lobby();
   }
 
   private Lobby() {

@@ -8,8 +8,13 @@ public class KlonSymbol extends KlonObject {
     this.selector = selector;
   }
 
+  public String getSelector() {
+    return selector;
+  }
+
   @Override
   public String toString() {
     return selector;
   }
+
 }

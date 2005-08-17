@@ -70,6 +70,25 @@ public class KlonNumberTest extends TestCase {
   }
 
   /*
+   * Test method for 'klon.KlonNumber.isEqual(KlonObject, Message)'
+   */
+  public void testIsEqual() throws Exception {
+    KlonObject object = Klon.ROOT;
+    Compiler compiler = new Compiler();
+    Message message = (Message) compiler.forString("2 == 3");
+    KlonObject value = message.eval(object);
+    assertNotNull(value);
+    assertTrue(value instanceof Nil);
+    assertEquals("Nil", value.toString());
+
+    message = (Message) compiler.forString("2 == 2");
+    value = message.eval(object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonNumber);
+    assertEquals("2", value.toString());
+  }
+
+  /*
    * Test method for 'klon.KlonNumber.lessThan(KlonObject, Message)'
    */
   public void testLessThan() throws Exception {

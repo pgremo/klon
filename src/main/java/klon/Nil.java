@@ -17,4 +17,9 @@ public class Nil extends KlonObject {
       .get(0)) ? Klon.ROOT : Klon.ROOT.getSlot("Nil");
   }
 
+  @Override
+  public String toString() {
+    return "Nil";
+  }
+
 }

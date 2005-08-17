@@ -91,8 +91,20 @@ public class KlonNumber extends KlonObject {
     throw new KlonException("Illegal Argument for ^");
   }
 
+  @ExposedAs("==")
+  public static KlonObject isEquals(KlonObject receiver, Message message)
+      throws KlonException {
+    KlonObject argument = message.eval(receiver, 0);
+    if (receiver instanceof KlonNumber && argument instanceof KlonNumber) {
+      Double o1 = (Double) receiver.getAttached();
+      Double o2 = (Double) argument.getAttached();
+      return o1.compareTo(o2) == 0 ? argument : Klon.ROOT.getSlot("Nil");
+    }
+    throw new KlonException("Illegal Argument for ==");
+  }
+
   @ExposedAs("<")
-  public static Object lessThan(KlonObject receiver, Message message)
+  public static KlonObject lessThan(KlonObject receiver, Message message)
       throws KlonException {
     KlonObject argument = message.eval(receiver, 0);
     if (receiver instanceof KlonNumber && argument instanceof KlonNumber) {
@@ -104,7 +116,7 @@ public class KlonNumber extends KlonObject {
   }
 
   @ExposedAs(">")
-  public static Object greaterThan(KlonObject receiver, Message message)
+  public static KlonObject greaterThan(KlonObject receiver, Message message)
       throws KlonException {
     KlonObject argument = message.eval(receiver, 0);
     if (receiver instanceof KlonNumber && argument instanceof KlonNumber) {
@@ -116,7 +128,7 @@ public class KlonNumber extends KlonObject {
   }
 
   @ExposedAs("<=")
-  public static Object lessThanEquals(KlonObject receiver, Message message)
+  public static KlonObject lessThanEquals(KlonObject receiver, Message message)
       throws KlonException {
     KlonObject argument = message.eval(receiver, 0);
     if (receiver instanceof KlonNumber && argument instanceof KlonNumber) {
@@ -128,8 +140,8 @@ public class KlonNumber extends KlonObject {
   }
 
   @ExposedAs(">=")
-  public static Object greaterThanEquals(KlonObject receiver, Message message)
-      throws KlonException {
+  public static KlonObject greaterThanEquals(KlonObject receiver,
+      Message message) throws KlonException {
     KlonObject argument = message.eval(receiver, 0);
     if (receiver instanceof KlonNumber && argument instanceof KlonNumber) {
       Double o1 = (Double) receiver.getAttached();

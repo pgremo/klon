@@ -14,7 +14,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
   /*
@@ -27,7 +27,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
   /*
@@ -40,7 +40,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("21", ((KlonNumber) value).toString());
+    assertEquals("21", value.toString());
   }
 
   /*
@@ -53,7 +53,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("8", ((KlonNumber) value).toString());
+    assertEquals("8", value.toString());
   }
 
   /*
@@ -66,7 +66,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("8", ((KlonNumber) value).toString());
+    assertEquals("8", value.toString());
   }
 
   /*
@@ -79,7 +79,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("3", ((KlonNumber) value).toString());
+    assertEquals("3", value.toString());
   }
 
   /*
@@ -92,7 +92,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
   /*
@@ -111,7 +111,7 @@ public class KlonNumberTest extends TestCase {
     value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("3", ((KlonNumber) value).toString());
+    assertEquals("3", value.toString());
   }
 
   /*
@@ -124,13 +124,13 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
 
     message = (Message) compiler.forString("3 >= 2");
     value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
   /*
@@ -143,13 +143,13 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
 
     message = (Message) compiler.forString("-2 abs");
     value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
   /*
@@ -162,7 +162,7 @@ public class KlonNumberTest extends TestCase {
     KlonObject value = message.eval(object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
-    assertEquals("2", ((KlonNumber) value).toString());
+    assertEquals("2", value.toString());
   }
 
 }

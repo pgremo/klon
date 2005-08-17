@@ -81,21 +81,27 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitSlotOperation(Production node) {
-    KlonString slotName = new KlonString(
-      ((Token) node.getChildAt(0)).getImage());
-    Message attached = (Message) node.getChildAt(2)
-      .getChildAt(0)
-      .getValue(0);
-    Message identifier = new Message();
-    identifier.setLiteral(slotName);
-    Message result = new Message();
-    result.setSelector((Symbol) node.getChildAt(1)
-      .getValue(0));
-    result.addArgument(identifier);
-    result.addArgument(attached);
-    node.addValue(result);
-    return node;
+  protected Node exitSlotOperation(Production node) throws ParseException {
+    try {
+      KlonString slotName = new KlonString(
+        ((Token) node.getChildAt(0)).getImage());
+      Message attached = (Message) node.getChildAt(2)
+        .getChildAt(0)
+        .getValue(0);
+      Message identifier = new Message();
+      identifier.setLiteral(slotName);
+      Message result = new Message();
+      result.setSelector((Symbol) node.getChildAt(1)
+        .getValue(0));
+      result.addArgument(identifier);
+      result.addArgument(attached);
+      node.addValue(result);
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
+    }
+
   }
 
   @Override
@@ -135,11 +141,17 @@ public class DefaultKlonAnalyzer extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitString(Token node) {
-    String value = node.getImage();
-    node.addValue(new KlonString(value.substring(1, value.length() - 1)));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitString(Token node) throws ParseException {
+    try {
+      String value = node.getImage();
+      node.addValue(new KlonString(value.substring(1, value.length() - 1)));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
+    }
+
   }
 
   @Override

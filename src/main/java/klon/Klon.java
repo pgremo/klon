@@ -16,10 +16,14 @@ public class Klon {
     KlonObject number = new KlonNumber();
     ROOT.setSlot("Number", number);
 
+    KlonObject string = new KlonString();
+    ROOT.setSlot("String", string);
+
     try {
       object.configure();
       nil.configure();
       number.configure();
+      string.configure();
     } catch (Exception e) {
       e.printStackTrace();
     }

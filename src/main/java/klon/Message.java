@@ -90,7 +90,7 @@ public class Message extends KlonObject {
     return receiver;
   }
 
-  public double evalAsNumber(KlonObject receiver, int index)
+  public Double evalAsNumber(KlonObject receiver, int index)
       throws KlonException {
     KlonObject result = eval(receiver, index);
     if (!(result instanceof KlonNumber)) {

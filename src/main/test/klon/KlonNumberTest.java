@@ -78,7 +78,7 @@ public class KlonNumberTest extends TestCase {
     Message message = (Message) compiler.forString("2 == 3");
     KlonObject value = message.eval(object);
     assertNotNull(value);
-    assertTrue(value instanceof Nil);
+    assertTrue(value instanceof KlonNil);
     assertEquals("Nil", value.toString());
 
     message = (Message) compiler.forString("2 == 2");

@@ -2,29 +2,29 @@ package klon;
 
 import klon.reflection.ExposedAs;
 
-public class Nil extends KlonObject {
+public class KlonNil extends KlonObject {
 
-  public Nil() {
+  public KlonNil() {
     super();
   }
 
-  public Nil(Object attached) throws KlonException {
+  public KlonNil(Object attached) throws KlonException {
     super(Klon.ROOT.getSlot("Nil"), attached);
   }
 
-  public Nil(KlonObject parent, Object attached) {
+  public KlonNil(KlonObject parent, Object attached) {
     super(parent, attached);
   }
 
   @Override
   public void configure() throws KlonException {
     parent = Klon.ROOT.getSlot("Object");
-    Configurator.configure(Nil.class, slots);
+    Configurator.configure(KlonNil.class, slots);
   }
 
   @Override
   public KlonObject clone() {
-    return new Nil(this, attached);
+    return new KlonNil(this, attached);
   }
 
   @Override

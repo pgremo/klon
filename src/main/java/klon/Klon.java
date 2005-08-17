@@ -10,7 +10,7 @@ public class Klon {
     ROOT.setSlot("Klon", ROOT);
     ROOT.setSlot("Object", object);
 
-    KlonObject nil = new Nil();
+    KlonObject nil = new KlonNil();
     ROOT.setSlot("Nil", nil);
 
     KlonObject number = new KlonNumber();
@@ -18,6 +18,9 @@ public class Klon {
 
     KlonObject string = new KlonString();
     ROOT.setSlot("String", string);
+
+    KlonObject block = new KlonBlock();
+    ROOT.setSlot("Block", block);
 
     try {
       object.configure();

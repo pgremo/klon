@@ -8,7 +8,7 @@ public class KlonString extends KlonObject {
     super("");
   }
 
-  public KlonString(String value) throws KlonException {
+  public KlonString(Object value) throws KlonException {
     super(Klon.ROOT.getSlot("String"), value);
   }
 

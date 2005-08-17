@@ -26,7 +26,7 @@ public class KlonNumber extends KlonObject {
   }
 
   @Override
-  public void configure() throws MessageNotUnderstood {
+  public void configure() throws KlonException {
     parent = Klon.ROOT.getSlot("Object");
     Configurator.configure(KlonNumber.class, slots);
   }

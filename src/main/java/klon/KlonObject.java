@@ -57,39 +57,39 @@ public class KlonObject {
   }
 
   public KlonObject updateSlot(String name, KlonObject value)
-      throws MessageNotUnderstood {
+      throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.put(name, value);
     } else {
       if (parent == null) {
-        throw new MessageNotUnderstood(name + " does not exist");
+        throw new KlonException(name + " does not exist");
       }
       result = parent.updateSlot(name, value);
     }
     return result;
   }
 
-  public KlonObject getSlot(String name) throws MessageNotUnderstood {
+  public KlonObject getSlot(String name) throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.get(name);
     } else {
       if (parent == null) {
-        throw new MessageNotUnderstood(name + " does not exist");
+        throw new KlonException(name + " does not exist");
       }
       result = parent.getSlot(name);
     }
     return result;
   }
 
-  public KlonObject removeSlot(String name) throws MessageNotUnderstood {
+  public KlonObject removeSlot(String name) throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.remove(name);
     } else {
       if (parent == null) {
-        throw new MessageNotUnderstood(name + " does not exist");
+        throw new KlonException(name + " does not exist");
       }
       result = parent.removeSlot(name);
     }
@@ -107,10 +107,7 @@ public class KlonObject {
       result = true;
     } else {
       if (obj instanceof KlonObject) {
-        if (parent == null && ((KlonObject) obj).parent == null) {
-          result = true;
-        } else if (parent != null && ((KlonObject) obj).parent != null
-            && parent.equals(((KlonObject) obj).parent)) {
+        if (parent != null && parent.equals(((KlonObject) obj).parent)) {
           result = true;
         }
         if (result && slots.equals(((KlonObject) obj).slots)) {
@@ -133,14 +130,17 @@ public class KlonObject {
   @ExposedAs("send")
   public static KlonObject send(KlonObject receiver, Message message)
       throws KlonException {
-    return receiver.send(message);
+    KlonObject subject = message.eval(receiver, 0);
+    if (subject instanceof Message) {
+      return receiver.send((Message) subject);
+    }
+    throw new KlonException("invalid argument for send");
   }
 
   @ExposedAs("getSlot")
   public static KlonObject getSlot(KlonObject receiver, Message message)
       throws KlonException {
-    String name = message.evalAsString(receiver, 0);
-    return receiver.getSlot(name);
+    return receiver.getSlot(message.evalAsString(receiver, 0));
   }
 
   @ExposedAs("setSlot")
@@ -164,8 +164,7 @@ public class KlonObject {
   @ExposedAs("removeSlot")
   public static KlonObject removeSlot(KlonObject receiver, Message message)
       throws KlonException {
-    String name = message.evalAsString(receiver, 0);
-    return receiver.removeSlot(name);
+    return receiver.removeSlot(message.evalAsString(receiver, 0));
   }
 
   @ExposedAs("slotNames")

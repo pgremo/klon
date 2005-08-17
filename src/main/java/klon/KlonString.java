@@ -8,7 +8,7 @@ public class KlonString extends KlonObject {
     super("");
   }
 
-  public KlonString(String value) throws MessageNotUnderstood {
+  public KlonString(String value) throws KlonException {
     super(Klon.ROOT.getSlot("String"), value);
   }
 
@@ -17,7 +17,7 @@ public class KlonString extends KlonObject {
   }
 
   @Override
-  public void configure() throws MessageNotUnderstood {
+  public void configure() throws KlonException {
     parent = Klon.ROOT.getSlot("Object");
     Configurator.configure(KlonString.class, slots);
   }

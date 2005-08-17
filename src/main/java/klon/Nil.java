@@ -8,7 +8,7 @@ public class Nil extends KlonObject {
     super();
   }
 
-  public Nil(Object attached) throws MessageNotUnderstood {
+  public Nil(Object attached) throws KlonException {
     super(Klon.ROOT.getSlot("Nil"), attached);
   }
 
@@ -17,7 +17,7 @@ public class Nil extends KlonObject {
   }
 
   @Override
-  public void configure() throws MessageNotUnderstood {
+  public void configure() throws KlonException {
     parent = Klon.ROOT.getSlot("Object");
     Configurator.configure(Nil.class, slots);
   }

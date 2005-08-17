@@ -4,22 +4,40 @@ import klon.reflection.ExposedAs;
 
 public class Nil extends KlonObject {
 
-  @Override
-  public KlonObject activate(KlonObject receiver, Message message)
-      throws MessageNotUnderstood {
-    return Klon.ROOT.getSlot("Nil");
+  public Nil() {
+    super();
   }
 
-  @ExposedAs("==")
-  public KlonObject equals(KlonObject locals, Message message)
-      throws MessageNotUnderstood {
-    return equals(message.getArguments()
-      .get(0)) ? Klon.ROOT : Klon.ROOT.getSlot("Nil");
+  public Nil(Object attached) throws MessageNotUnderstood {
+    super(Klon.ROOT.getSlot("Nil"), attached);
+  }
+
+  public Nil(KlonObject parent, Object attached) {
+    super(parent, attached);
+  }
+
+  @Override
+  public void configure() throws MessageNotUnderstood {
+    parent = Klon.ROOT.getSlot("Object");
+    Configurator.configure(Nil.class, slots);
+  }
+
+  @Override
+  public KlonObject clone() {
+    return new Nil(this, attached);
   }
 
   @Override
   public String toString() {
     return "Nil";
+  }
+
+  @ExposedAs("==")
+  public static KlonObject isEquals(KlonObject receiver, Message message)
+      throws KlonException {
+    return receiver.equals(message.eval(receiver, 0))
+        ? Klon.ROOT.getSlot("Klon")
+        : Klon.ROOT.getSlot("Nil");
   }
 
 }

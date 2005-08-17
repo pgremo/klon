@@ -5,7 +5,7 @@ import klon.reflection.ExposedAs;
 public class KlonString extends KlonObject {
 
   public KlonString() {
-    super();
+    super("");
   }
 
   public KlonString(String value) throws MessageNotUnderstood {

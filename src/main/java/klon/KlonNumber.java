@@ -14,7 +14,7 @@ public class KlonNumber extends KlonObject {
   }
 
   public KlonNumber() {
-    super();
+    super(0);
   }
 
   public KlonNumber(double value) throws KlonException {

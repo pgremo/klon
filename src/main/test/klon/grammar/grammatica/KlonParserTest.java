@@ -1,12 +1,12 @@
 package klon.grammar.grammatica;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
-import java.io.StringReader;
 
 import junit.framework.TestCase;
-import net.percederberg.grammatica.parser.Node;
-import net.percederberg.grammatica.parser.Parser;
+import klon.Compiler;
+import klon.KlonObject;
 
 public class KlonParserTest extends TestCase {
 
@@ -24,127 +24,103 @@ public class KlonParserTest extends TestCase {
         {"0x0F", "15"},
         {"0XeE", "238"}};
     for (String[] current : expected) {
-      Reader input = new StringReader(current[0]);
-      Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-      Node actual = parser.parse();
-      assertNotNull(actual);
-      assertEquals(current[1], actual.getValue(0)
-        .toString());
+      KlonObject message = new Compiler().forString(current[0]);
+      assertNotNull(message);
+      assertEquals(current[1], message.toString());
     }
   }
 
   public void testSuperOperator() throws Exception {
-    Reader input = new StringReader("super(do stuff)");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("super(do stuff)", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("super(do stuff)");
+    assertNotNull(message);
+    assertEquals("super(do stuff)", message.toString());
   }
 
   public void testHelloWorld() throws Exception {
-    Reader input = new StringReader("\"Hello world!\\n\" print");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("\"Hello world!\\n\" print", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("\"Hello world!\\n\" print");
+    assertNotNull(message);
+    assertEquals("\"Hello world!\\n\" print", message.toString());
   }
 
   public void testCloneAssignment() throws Exception {
-    Reader input = new StringReader(
-      "Account := Object clone\nAccount balance := 0");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
+    KlonObject message = new Compiler().forString("Account := Object clone\nAccount balance := 0");
+    assertNotNull(message);
     assertEquals(
       "setSlot(\"Account\", Object clone);\nAccount setSlot(\"balance\", 0)",
-      actual.getValue(0)
-        .toString());
+      message.toString());
   }
 
   public void testMessage() throws Exception {
-    Reader input = new StringReader("do(\"something\", 1)");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("do(\"something\", 1)", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("do(\"something\", 1)");
+    assertNotNull(message);
+    assertEquals("do(\"something\", 1)", message.toString());
   }
 
   public void testOperations() throws Exception {
-    Reader input = new StringReader("1 + 2 + 3");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("1 +(2) +(3)", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("1 + 2 + 3");
+    assertNotNull(message);
+    assertEquals("1 +(2) +(3)", message.toString());
   }
 
   public void testBraceGrouping() throws Exception {
-    Reader input = new StringReader("{2 * 3}");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("brace(2 *(3))", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("{2 * 3}");
+    assertNotNull(message);
+    assertEquals("brace(2 *(3))", message.toString());
   }
 
   public void testBracketGrouping() throws Exception {
-    Reader input = new StringReader("[2 * 3]");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("bracket(2 *(3))", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("[2 * 3]");
+    assertNotNull(message);
+    assertEquals("bracket(2 *(3))", message.toString());
   }
 
   public void testGroupingEnd() throws Exception {
-    Reader input = new StringReader("1 + (2 * 3)");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("1 +(2 *(3))", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("1 + (2 * 3)");
+    assertNotNull(message);
+    assertEquals("1 +(2 *(3))", message.toString());
   }
 
   public void testGroupingBegin() throws Exception {
-    Reader input = new StringReader("(1 + 2) * 3");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("(1 +(2)) *(3)", actual.getValue(0)
-      .toString());
+    KlonObject message = new Compiler().forString("(1 + 2) * 3");
+    assertNotNull(message);
+    assertEquals("(1 +(2)) *(3)", message.toString());
   }
 
   public void testFactorial() throws Exception {
-    Reader input = new FileReader("sample/factorial.klon");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
+    File file = new File("sample/factorial.klon");
+    char[] data = new char[(int) file.length()];
+    Reader input = new FileReader(file);
+    input.read(data);
+    KlonObject message = new Compiler().forString(new String(data));
+    assertNotNull(message);
   }
 
   public void test99bob() throws Exception {
-    Reader input = new FileReader("sample/99bob.klon");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
+    File file = new File("sample/99bob.klon");
+    char[] data = new char[(int) file.length()];
+    Reader input = new FileReader(file);
+    input.read(data);
+    KlonObject message = new Compiler().forString(new String(data));
+    assertNotNull(message);
   }
 
   public void testAccount() throws Exception {
-    Reader input = new FileReader("sample/account.klon");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
+    File file = new File("sample/account.klon");
+    char[] data = new char[(int) file.length()];
+    Reader input = new FileReader(file);
+    input.read(data);
+    KlonObject message = new Compiler().forString(new String(data));
+    assertNotNull(message);
   }
 
   public void testComments() throws Exception {
-    Reader input = new FileReader("sample/comments.klon");
-    Parser parser = new KlonParser(input, new DefaultKlonAnalyzer());
-    Node actual = parser.parse();
-    assertNotNull(actual);
-    assertEquals("setSlot(\"a\", b)", actual.getValue(0)
-      .toString());
+    File file = new File("sample/comments.klon");
+    char[] data = new char[(int) file.length()];
+    Reader input = new FileReader(file);
+    input.read(data);
+    KlonObject message = new Compiler().forString(new String(data));
+    assertNotNull(message);
+    assertEquals("setSlot(\"a\", b)", message.toString());
   }
 
 }

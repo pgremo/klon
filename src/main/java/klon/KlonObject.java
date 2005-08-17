@@ -116,6 +116,9 @@ public class KlonObject {
         if (result && slots.equals(((KlonObject) obj).slots)) {
           result = true;
         }
+        if (result && attached != null) {
+          result = attached.equals(((KlonObject) obj).attached);
+        }
       }
     }
     return result;
@@ -172,11 +175,11 @@ public class KlonObject {
   }
 
   @ExposedAs("==")
-  public KlonObject equals(KlonObject receiver, Message message)
+  public static KlonObject isEquals(KlonObject receiver, Message message)
       throws KlonException {
-    // TODO: need nil from lobby
-    return receiver.equals(message.getArguments()
-      .get(0)) ? receiver : null;
+    return receiver.equals(message.eval(receiver, 0))
+        ? receiver
+        : Klon.ROOT.getSlot("Nil");
   }
 
 }

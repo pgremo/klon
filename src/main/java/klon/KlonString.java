@@ -27,6 +27,11 @@ public class KlonString extends KlonObject {
     return new KlonString(this, attached);
   }
 
+  @Override
+  public String toString() {
+    return "\"" + attached + "\"";
+  }
+
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, Message message)
       throws KlonException {
@@ -35,23 +40,6 @@ public class KlonString extends KlonObject {
           + message.evalAsString(receiver, 0));
     }
     throw new KlonException("Illegal Argument for +");
-  }
-
-  @ExposedAs("==")
-  public static KlonObject isEquals(KlonObject receiver, Message message)
-      throws KlonException {
-    KlonObject argument = message.eval(receiver, 0);
-    if (receiver instanceof KlonString && argument instanceof KlonString) {
-      String o1 = (String) receiver.getAttached();
-      String o2 = (String) argument.getAttached();
-      return o1.compareTo(o2) == 0 ? argument : Klon.ROOT.getSlot("Nil");
-    }
-    throw new KlonException("Illegal Argument for ==");
-  }
-
-  @Override
-  public String toString() {
-    return "\"" + attached + "\"";
   }
 
 }

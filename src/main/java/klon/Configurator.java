@@ -1,7 +1,6 @@
 package klon;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 import klon.reflection.ExposedAs;
 import klon.reflection.ExposedMethod;

@@ -18,7 +18,7 @@ public class KlonObjectTest extends TestCase {
     assertTrue(value instanceof KlonNumber);
     assertEquals("1", ((KlonNumber) value).toString());
     message = (Message) compiler.forString("slotNames");
-    System.out.println(object.perform(object, message));
+    System.out.println(object.getSlot("Object").slotNames());
   }
 
 }

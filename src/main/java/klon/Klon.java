@@ -5,9 +5,9 @@ public class Klon {
   public static final KlonObject ROOT;
 
   static {
-    KlonObject core = new KlonObject();
-    ROOT = new KlonObject(core, null);
-    KlonObject object = new KlonObject(ROOT, null);
+    KlonObject object = new KlonObject();
+    ROOT = new KlonObject(object, null);
+    object.setSlot("parent", ROOT);
     ROOT.setSlot("Klon", ROOT);
     ROOT.setSlot("Object", object);
 
@@ -27,7 +27,7 @@ public class Klon {
     ROOT.setSlot("Symbol", symbol);
 
     try {
-      core.configure();
+      object.configure();
       nil.configure();
       number.configure();
       string.configure();

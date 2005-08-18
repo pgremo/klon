@@ -1,6 +1,8 @@
 package klon;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import klon.reflection.ExposedAs;
@@ -48,47 +50,65 @@ public class KlonObject {
     slots.put(name, value);
   }
 
-  public KlonObject updateSlot(String name, KlonObject value)
-      throws KlonException {
+  private KlonObject updateSlot(String name, KlonObject value,
+      Collection<KlonObject> searchPath) throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.put(name, value);
     } else {
       KlonObject parent = slots.get("parent");
-      if (parent == null) {
+      if (parent == null || searchPath.contains(parent)) {
         throw new KlonException(name + " does not exist");
       }
-      result = parent.updateSlot(name, value);
+      searchPath.add(parent);
+      result = parent.updateSlot(name, value, searchPath);
     }
     return result;
   }
 
-  public KlonObject getSlot(String name) throws KlonException {
+  public KlonObject updateSlot(String name, KlonObject value)
+      throws KlonException {
+    return updateSlot(name, value, new HashSet<KlonObject>());
+  }
+
+  private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
+      throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.get(name);
     } else {
       KlonObject parent = slots.get("parent");
-      if (parent == null) {
+      if (parent == null || searchPath.contains(parent)) {
         throw new KlonException(name + " does not exist");
       }
-      result = parent.getSlot(name);
+      searchPath.add(parent);
+      result = parent.getSlot(name, searchPath);
     }
     return result;
   }
 
-  public KlonObject removeSlot(String name) throws KlonException {
+  public KlonObject getSlot(String name) throws KlonException {
+    return getSlot(name, new HashSet<KlonObject>());
+  }
+
+  private KlonObject removeSlot(String name, Collection<KlonObject> searchPath)
+      throws KlonException {
     KlonObject result;
     if (slots.containsKey(name)) {
       result = slots.remove(name);
     } else {
       KlonObject parent = slots.get("parent");
-      if (parent == null) {
+      if (parent == null || searchPath.contains(parent)) {
         throw new KlonException(name + " does not exist");
       }
-      result = parent.removeSlot(name);
+      searchPath.add(parent);
+      result = parent.removeSlot(name, searchPath);
     }
     return result;
+  }
+
+  public KlonObject removeSlot(String name) throws KlonException {
+    return removeSlot(name, new HashSet<KlonObject>());
   }
 
   public KlonObject slotNames() {
@@ -97,14 +117,16 @@ public class KlonObject {
 
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
+    KlonObject result;
     String name = (String) message.getSelector().getPrimitive();
     try {
-      KlonObject result = getSlot(name);
-      return result.activate(this, context, message);
+      KlonObject slot = getSlot(name);
+      result = slot.activate(this, context, message);
     } catch (KlonException e) {
-      KlonObject result = context.getSlot(name);
-      return result.activate(this, context, message);
+      KlonObject slot = context.getSlot(name);
+      result = slot.activate(this, context, message);
     }
+    return result;
   }
 
   @Override

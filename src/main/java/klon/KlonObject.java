@@ -7,7 +7,6 @@ import klon.reflection.ExposedAs;
 
 public class KlonObject {
 
-  protected KlonObject parent;
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   protected Object primitive;
 
@@ -20,12 +19,12 @@ public class KlonObject {
   }
 
   public KlonObject(KlonObject parent, Object attached) {
-    this.parent = parent;
+    slots.put("parent", parent);
     this.primitive = attached;
   }
 
   public void configure() throws KlonException {
-    Configurator.configure(KlonObject.class, slots);
+    Configurator.configure(KlonObject.class, this);
   }
 
   public KlonObject clone() {
@@ -55,6 +54,7 @@ public class KlonObject {
     if (slots.containsKey(name)) {
       result = slots.put(name, value);
     } else {
+      KlonObject parent = slots.get("parent");
       if (parent == null) {
         throw new KlonException(name + " does not exist");
       }
@@ -68,6 +68,7 @@ public class KlonObject {
     if (slots.containsKey(name)) {
       result = slots.get(name);
     } else {
+      KlonObject parent = slots.get("parent");
       if (parent == null) {
         throw new KlonException(name + " does not exist");
       }
@@ -81,6 +82,7 @@ public class KlonObject {
     if (slots.containsKey(name)) {
       result = slots.remove(name);
     } else {
+      KlonObject parent = slots.get("parent");
       if (parent == null) {
         throw new KlonException(name + " does not exist");
       }
@@ -112,10 +114,7 @@ public class KlonObject {
       result = true;
     } else {
       if (obj instanceof KlonObject) {
-        if (parent != null && parent.equals(((KlonObject) obj).parent)) {
-          result = true;
-        }
-        if (result && slots.equals(((KlonObject) obj).slots)) {
+        if (slots.equals(((KlonObject) obj).slots)) {
           result = true;
         }
         if (result && primitive != null) {
@@ -188,16 +187,16 @@ public class KlonObject {
   @ExposedAs("block")
   public static KlonObject block(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    int count = message.getArgumentCount();
-    String[] parameters = new String[count - 1];
-    for (int i = 0; i < count - 1; i++) {
+    int count = message.getArgumentCount() - 1;
+    String[] parameters = new String[count];
+    for (int i = 0; i < count; i++) {
       KlonObject current = message.getArgument(i).getSelector();
       if (current == null) {
         throw new KlonException(current + " must be a Symbol");
       }
       parameters[i] = (String) current.getPrimitive();
     }
-    return new KlonBlock(new Block(parameters, message.getArgument(count - 1)));
+    return new KlonBlock(new Block(parameters, message.getArgument(count)));
   }
 
   @ExposedAs("==")

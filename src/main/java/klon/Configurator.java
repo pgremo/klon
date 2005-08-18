@@ -12,7 +12,7 @@ public final class Configurator {
 
   }
 
-  public static void configure(Class type, Map<String, KlonObject> slots)
+  public static void configure(Class type, KlonObject slots)
       throws KlonException {
     for (Method current : type.getDeclaredMethods()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
@@ -45,7 +45,7 @@ public final class Configurator {
           throw new KlonException(identity + " second parameter must be a "
               + KlonException.class + ".");
         }
-        slots.put(exposedAs.value(), new ExposedMethod(current));
+        slots.setSlot(exposedAs.value(), new ExposedMethod(current));
       }
     }
   }

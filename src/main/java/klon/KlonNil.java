@@ -18,8 +18,8 @@ public class KlonNil extends KlonObject {
 
   @Override
   public void configure() throws KlonException {
-    parent = Klon.ROOT.getSlot("Object");
-    Configurator.configure(KlonNil.class, slots);
+    slots.put("parent", Klon.ROOT.getSlot("Object"));
+    Configurator.configure(KlonNil.class, this);
   }
 
   @Override
@@ -36,8 +36,8 @@ public class KlonNil extends KlonObject {
   public static KlonObject isEquals(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
     return receiver.equals(message.eval(receiver, 0))
-        ? Klon.ROOT.getSlot("Klon")
-        : Klon.ROOT.getSlot("Nil");
+        ? receiver.getSlot("Klon")
+        : receiver.getSlot("Nil");
   }
 
 }

@@ -16,8 +16,8 @@ public class KlonSymbol extends KlonObject {
 
   @Override
   public void configure() throws KlonException {
-    parent = Klon.ROOT.getSlot("Object");
-    Configurator.configure(KlonSymbol.class, slots);
+    slots.put("parent", Klon.ROOT.getSlot("Object"));
+    Configurator.configure(KlonSymbol.class, this);
   }
 
   @Override

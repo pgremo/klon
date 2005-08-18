@@ -16,8 +16,8 @@ public class KlonBlock extends KlonObject {
 
   @Override
   public void configure() throws KlonException {
-    parent = Klon.ROOT.getSlot("Object");
-    Configurator.configure(KlonBlock.class, slots);
+    slots.put("parent", Klon.ROOT.getSlot("Object"));
+    Configurator.configure(KlonBlock.class, this);
   }
 
   @Override

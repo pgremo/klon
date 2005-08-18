@@ -18,8 +18,8 @@ public class KlonString extends KlonObject {
 
   @Override
   public void configure() throws KlonException {
-    parent = Klon.ROOT.getSlot("Object");
-    Configurator.configure(KlonString.class, slots);
+    slots.put("parent", Klon.ROOT.getSlot("Object"));
+    Configurator.configure(KlonString.class, this);
   }
 
   @Override

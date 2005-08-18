@@ -34,7 +34,7 @@ public class Block {
     for (; i < limit; i++) {
       scope.setSlot(parameters[i], message.eval(context, i));
     }
-    KlonObject nil = Klon.ROOT.getSlot("Nil");
+    KlonObject nil = receiver.getSlot("Nil");
     for (; i < parameters.length; i++) {
       scope.setSlot(parameters[i], nil);
     }

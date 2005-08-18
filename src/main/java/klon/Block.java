@@ -9,6 +9,10 @@ public class Block {
     this.parameters = parameters;
     this.code = code;
   }
+  
+  public Message getCode(){
+    return code;
+  }
 
   @Override
   public String toString() {

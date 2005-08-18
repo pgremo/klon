@@ -15,11 +15,11 @@ public class ExposedMethod extends KlonObject {
   }
 
   @Override
-  public KlonObject activate(KlonObject receiver, Message message)
+  public KlonObject activate(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
     KlonObject result = null;
     try {
-      result = (KlonObject) method.invoke(null, receiver, message);
+      result = (KlonObject) method.invoke(null, receiver, context, message);
     } catch (Exception e) {
       throw new KlonException(e);
     }

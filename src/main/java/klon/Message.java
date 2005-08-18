@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Message extends KlonObject {
 
-  private Symbol selector;
+  private KlonSymbol selector;
   private KlonObject literal;
   private List<Message> arguments = new ArrayList<Message>();
   private Message attached;
@@ -52,42 +52,34 @@ public class Message extends KlonObject {
     this.next = next;
   }
 
-  public Symbol getSelector() {
+  public KlonSymbol getSelector() {
     return selector;
   }
 
-  public void setSelector(Symbol selector) {
+  public void setSelector(KlonSymbol selector) {
     this.selector = selector;
   }
 
-  public KlonObject eval(KlonObject receiver) throws KlonException {
+  public KlonObject eval(KlonObject receiver, KlonObject context) throws KlonException {
     KlonObject self = receiver;
     for (Message outer = this; outer != null; outer = outer.getNext()) {
       receiver = self;
       for (Message inner = outer; inner != null; inner = inner.getAttached()) {
         KlonObject result = inner.getLiteral();
         if (result == null) {
-          result = receiver.send(inner);
+          result = receiver.perform(context, inner);
         }
         receiver = result;
+      }
+      if (outer.getNext() != null){
+        receiver = context;
       }
     }
     return receiver;
   }
 
-  public KlonObject eval(KlonObject receiver, int index) throws KlonException {
-    KlonObject self = receiver;
-    for (Message outer = arguments.get(index); outer != null; outer = outer.getNext()) {
-      receiver = self;
-      for (Message inner = outer; inner != null; inner = inner.getAttached()) {
-        KlonObject result = inner.getLiteral();
-        if (result == null) {
-          result = receiver.send(inner);
-        }
-        receiver = result;
-      }
-    }
-    return receiver;
+  public KlonObject eval(KlonObject context, int index) throws KlonException {
+    return arguments.get(index).eval(context, context);
   }
 
   public Double evalAsNumber(KlonObject receiver, int index)
@@ -96,7 +88,7 @@ public class Message extends KlonObject {
     if (!(result instanceof KlonNumber)) {
       throw new KlonException("result must be a number");
     }
-    return (Double) ((KlonNumber) result).getAttached();
+    return (Double) ((KlonNumber) result).getPrimitive();
   }
 
   public String evalAsString(KlonObject receiver, int index)
@@ -105,7 +97,7 @@ public class Message extends KlonObject {
     if (!(result instanceof KlonString)) {
       throw new KlonException("result must be a string");
     }
-    return (String) ((KlonString) result).getAttached();
+    return (String) ((KlonString) result).getPrimitive();
   }
 
   @Override
@@ -129,12 +121,10 @@ public class Message extends KlonObject {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ")
-        .append(attached);
+      result.append(" ").append(attached);
     }
     if (next != null) {
-      result.append(";\n")
-        .append(next);
+      result.append(";\n").append(next);
     }
     return result.toString();
   }

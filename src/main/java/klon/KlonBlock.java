@@ -22,18 +22,18 @@ public class KlonBlock extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    return new KlonBlock(this, attached);
+    return new KlonBlock(this, primitive);
   }
 
   @Override
   public String toString() {
-    return attached.toString();
+    return String.valueOf(primitive);
   }
 
   @Override
-  public KlonObject activate(KlonObject receiver, Message message)
+  public KlonObject activate(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
-    return ((Block) attached).activate(receiver, message);
+    return ((Block) primitive).activate(receiver, context, message);
   }
 
 }

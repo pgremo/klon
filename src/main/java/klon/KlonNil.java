@@ -24,7 +24,7 @@ public class KlonNil extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    return new KlonNil(this, attached);
+    return new KlonNil(this, primitive);
   }
 
   @Override
@@ -33,7 +33,7 @@ public class KlonNil extends KlonObject {
   }
 
   @ExposedAs("==")
-  public static KlonObject isEquals(KlonObject receiver, Message message)
+  public static KlonObject isEquals(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
     return receiver.equals(message.eval(receiver, 0))
         ? Klon.ROOT.getSlot("Klon")

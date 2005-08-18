@@ -47,8 +47,8 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       node.addValue(message);
       node.addValue(child.getValue(1));
       Object subject = child.getValue(0);
-      if (subject instanceof Symbol) {
-        message.setSelector((Symbol) subject);
+      if (subject instanceof KlonSymbol) {
+        message.setSelector((KlonSymbol) subject);
       } else {
         message.setLiteral((KlonObject) subject);
       }
@@ -61,8 +61,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     }
 
     if (child.getId() == ATTACHED) {
-      Message attached = (Message) child.getChildAt(0)
-        .getValue(0);
+      Message attached = (Message) child.getChildAt(0).getValue(0);
       if ((Integer) node.getValue(1) == OPERATOR) {
         message.addArgument(attached);
         Message newAttached = attached.getAttached();
@@ -95,23 +94,20 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   @Override
   protected Node exitSlotOperation(Production node) throws ParseException {
     try {
-      KlonString slotName = new KlonString(
-        ((Token) node.getChildAt(0)).getImage());
-      Message attached = (Message) node.getChildAt(2)
-        .getChildAt(0)
-        .getValue(0);
+      KlonString slotName = new KlonString(((Token) node.getChildAt(0))
+          .getImage());
+      Message attached = (Message) node.getChildAt(2).getChildAt(0).getValue(0);
       Message identifier = new Message();
       identifier.setLiteral(slotName);
       Message result = new Message();
-      result.setSelector((Symbol) node.getChildAt(1)
-        .getValue(0));
+      result.setSelector((KlonSymbol) node.getChildAt(1).getValue(0));
       result.addArgument(identifier);
       result.addArgument(attached);
       node.addValue(result);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(),
-        node.getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
     }
 
   }
@@ -122,17 +118,27 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitIdentifier(Token node) {
-    node.addValue(new Symbol(node.getImage()));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitIdentifier(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol(node.getImage()));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
-  protected Node exitOperator(Token node) {
-    node.addValue(new Symbol(node.getImage()));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitOperator(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol(node.getImage()));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
@@ -147,8 +153,8 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(),
-        node.getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
     }
   }
 
@@ -160,22 +166,32 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(),
-        node.getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
     }
 
   }
 
   @Override
-  protected Node exitSet(Token node) {
-    node.addValue(new Symbol("setSlot"));
-    return node;
+  protected Node exitSet(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol("setSlot"));
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
-  protected Node exitUpdate(Token node) {
-    node.addValue(new Symbol("updateSlot"));
-    return node;
+  protected Node exitUpdate(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol("updateSlot"));
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
@@ -189,24 +205,39 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   }
 
   @Override
-  protected Node exitLparen(Token node) {
-    node.addValue(new Symbol(""));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitLparen(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol(""));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
-  protected Node exitLbrace(Token node) {
-    node.addValue(new Symbol("brace"));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitLbrace(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol("brace"));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override
-  protected Node exitLbrack(Token node) {
-    node.addValue(new Symbol("bracket"));
-    node.addValue(node.getId());
-    return node;
+  protected Node exitLbrack(Token node) throws ParseException {
+    try {
+      node.addValue(new KlonSymbol("bracket"));
+      node.addValue(node.getId());
+      return node;
+    } catch (Exception e) {
+      throw new ParseException(node.getId(), e.getMessage(), node
+          .getStartLine(), node.getStartColumn());
+    }
   }
 
   @Override

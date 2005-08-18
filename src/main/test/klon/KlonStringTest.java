@@ -11,7 +11,7 @@ public class KlonStringTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler.forString("\"Hello\" + \" \" + \"World\"");
-    KlonObject value = message.eval(object);
+    KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
     assertEquals("\"Hello World\"", value.toString());
@@ -24,13 +24,13 @@ public class KlonStringTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler.forString("\"Hello\" == \"World\"");
-    KlonObject value = message.eval(object);
+    KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals("Nil", value.toString());
 
     message = (Message) compiler.forString("\"Hello\" == \"Hello\"");
-    value = message.eval(object);
+    value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
     assertEquals("\"Hello\"", value.toString());

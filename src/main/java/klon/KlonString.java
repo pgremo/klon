@@ -24,20 +24,20 @@ public class KlonString extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    return new KlonString(this, attached);
+    return new KlonString(this, primitive);
   }
 
   @Override
   public String toString() {
-    return "\"" + attached + "\"";
+    return "\"" + primitive + "\"";
   }
 
   @ExposedAs("+")
-  public static KlonObject append(KlonObject receiver, Message message)
+  public static KlonObject append(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
     if (receiver instanceof KlonString) {
-      return new KlonString((String) receiver.getAttached()
-          + message.evalAsString(receiver, 0));
+      return new KlonString((String) receiver.getPrimitive()
+          + message.evalAsString(context, 0));
     }
     throw new KlonException("Illegal Argument for +");
   }

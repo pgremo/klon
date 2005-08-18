@@ -8,17 +8,17 @@ public class KlonObjectTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler.forString("Account := 1");
-    KlonObject value = message.eval(object);
+    KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("1", ((KlonNumber) value).toString());
     message = (Message) compiler.forString("Account");
-    value = object.send(message);
+    value = object.perform(object, message);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("1", ((KlonNumber) value).toString());
     message = (Message) compiler.forString("slotNames");
-    System.out.println(object.send(message));
+    System.out.println(object.perform(object, message));
   }
 
 }

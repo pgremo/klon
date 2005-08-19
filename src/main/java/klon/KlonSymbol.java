@@ -1,16 +1,16 @@
 package klon;
 
-public class KlonSymbol extends KlonObject {
+public class KlonSymbol extends KlonObject<String> {
 
   public KlonSymbol() {
     super("");
   }
 
-  public KlonSymbol(Object value) throws KlonException {
+  public KlonSymbol(String value) throws KlonException {
     super(Klon.ROOT.getSlot("Symbol"), value);
   }
 
-  public KlonSymbol(KlonObject parent, Object attached) {
+  public KlonSymbol(KlonObject parent, String attached) {
     super(parent, attached);
   }
 

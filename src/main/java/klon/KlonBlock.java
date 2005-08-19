@@ -2,17 +2,17 @@ package klon;
 
 import klon.reflection.ExposedAs;
 
-public class KlonBlock extends KlonObject {
+public class KlonBlock extends KlonObject<Block> {
 
   public KlonBlock() {
     super();
   }
 
-  public KlonBlock(Object value) throws KlonException {
+  public KlonBlock(Block value) throws KlonException {
     super(Klon.ROOT.getSlot("Block"), value);
   }
 
-  public KlonBlock(KlonObject parent, Object attached) {
+  public KlonBlock(KlonObject parent, Block attached) {
     super(parent, attached);
   }
 
@@ -35,7 +35,7 @@ public class KlonBlock extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return ((Block) primitive).activate(receiver, context, message);
+    return primitive.activate(receiver, context, message);
   }
 
   @ExposedAs("ifTrue")

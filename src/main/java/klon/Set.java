@@ -1,6 +1,6 @@
 package klon;
 
-public class Set extends KlonObject {
+public class Set extends KlonObject<Set> {
 
   private java.util.Set storage;
 
@@ -10,10 +10,6 @@ public class Set extends KlonObject {
 
   public Set() {
     super();
-  }
-
-  public Set(KlonObject parent) {
-    super(parent);
   }
 
   @Override

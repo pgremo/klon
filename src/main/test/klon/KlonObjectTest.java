@@ -54,4 +54,19 @@ public class KlonObjectTest extends TestCase {
     assertEquals("10", ((KlonNumber) value).toString());
   }
 
+  public void testCondition() throws Exception {
+    KlonObject object = Klon.ROOT;
+    Compiler compiler = new Compiler();
+    Message message = (Message) compiler.forString("Thing := Object clone; Thing total := 10; Thing ?total");
+    KlonObject value = message.eval(object, object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonNumber);
+    assertEquals("10", ((KlonNumber) value).toString());
+
+    message = (Message) compiler.forString("Thing ?blah");
+    value = message.eval(object, object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonNil);
+    assertEquals(object.getSlot("Nil"), value);
+  }
 }

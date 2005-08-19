@@ -7,20 +7,20 @@ import java.util.Map;
 
 import klon.reflection.ExposedAs;
 
-public class KlonObject {
+public class KlonObject<T> {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
-  protected Object primitive;
+  protected T primitive;
 
   public KlonObject() {
     this(null, null);
   }
 
-  public KlonObject(Object attached) {
+  public KlonObject(T attached) {
     this(null, attached);
   }
 
-  public KlonObject(KlonObject parent, Object attached) {
+  public KlonObject(KlonObject parent, T attached) {
     slots.put("parent", parent);
     this.primitive = attached;
   }
@@ -30,15 +30,11 @@ public class KlonObject {
   }
 
   public KlonObject clone() {
-    return new KlonObject(this, primitive);
+    return new KlonObject<Object>(this, primitive);
   }
 
   public Object getPrimitive() {
     return primitive;
-  }
-
-  public void setPrimitive(Object primitive) {
-    this.primitive = primitive;
   }
 
   public KlonObject activate(KlonObject receiver, KlonObject context,
@@ -272,10 +268,8 @@ public class KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
     KlonObject result = nil;
     KlonObject scope = context.clone();
-    Message condition = message.getArgument(0);
-    Message code = message.getArgument(1);
-    if (!nil.equals(condition.eval(scope, scope))) {
-      result = code.eval(scope, scope);
+    if (!nil.equals(message.eval(scope, 0))) {
+      result = message.eval(scope, 1);
     }
     return result;
   }
@@ -287,4 +281,18 @@ public class KlonObject {
         .getSlot("Nil");
   }
 
+  @ExposedAs("?")
+  public static KlonObject condition(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject result = receiver.getSlot("Nil");
+    Message target = message.getArgument(0);
+    try {
+      if (context.getSlot((String) target.getSelector().getPrimitive()) != null) {
+        result = target.eval(context, context);
+      }
+    } catch (KlonException e) {
+
+    }
+    return result;
+  }
 }

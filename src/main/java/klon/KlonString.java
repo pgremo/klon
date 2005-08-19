@@ -2,17 +2,17 @@ package klon;
 
 import klon.reflection.ExposedAs;
 
-public class KlonString extends KlonObject {
+public class KlonString extends KlonObject<String> {
 
   public KlonString() {
     super("");
   }
 
-  public KlonString(Object value) throws KlonException {
+  public KlonString(String value) throws KlonException {
     super(Klon.ROOT.getSlot("String"), value);
   }
 
-  public KlonString(KlonObject parent, Object attached) {
+  public KlonString(KlonObject parent, String attached) {
     super(parent, attached);
   }
 

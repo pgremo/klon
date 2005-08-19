@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 import klon.reflection.ExposedAs;
 
-public class KlonNumber extends KlonObject {
+public class KlonNumber extends KlonObject<Double> {
 
   private static NumberFormat formatter = NumberFormat.getInstance();
   static {
@@ -14,14 +14,14 @@ public class KlonNumber extends KlonObject {
   }
 
   public KlonNumber() {
-    super(0);
+    super(0D);
   }
 
   public KlonNumber(Double value) throws KlonException {
     super(Klon.ROOT.getSlot("Number"), value);
   }
 
-  public KlonNumber(KlonObject parent, Object attached) {
+  public KlonNumber(KlonObject parent, Double attached) {
     super(parent, attached);
   }
 

@@ -6,7 +6,7 @@ public class Klon {
 
   static {
     KlonObject object = new KlonObject();
-    ROOT = new KlonObject(object, null);
+    ROOT = new KlonObject<Object>(object, null);
     object.setSlot("parent", ROOT);
     ROOT.setSlot("Klon", ROOT);
     ROOT.setSlot("Object", object);

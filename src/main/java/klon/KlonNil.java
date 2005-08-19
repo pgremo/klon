@@ -2,7 +2,7 @@ package klon;
 
 import klon.reflection.ExposedAs;
 
-public class KlonNil extends KlonObject {
+public class KlonNil extends KlonObject<Object> {
 
   public KlonNil() {
     super();

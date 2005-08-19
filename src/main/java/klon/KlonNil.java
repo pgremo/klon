@@ -1,6 +1,5 @@
 package klon;
 
-import klon.reflection.ExposedAs;
 
 public class KlonNil extends KlonObject<Object> {
 

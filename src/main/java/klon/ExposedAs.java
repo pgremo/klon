@@ -1,4 +1,4 @@
-package klon.reflection;
+package klon;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

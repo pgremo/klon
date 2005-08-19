@@ -2,8 +2,6 @@ package klon;
 
 import java.lang.reflect.Method;
 
-import klon.reflection.ExposedAs;
-import klon.reflection.ExposedMethod;
 
 public final class Configurator {
 
@@ -44,7 +42,7 @@ public final class Configurator {
           throw new KlonException(identity + " second parameter must be a "
               + KlonException.class + ".");
         }
-        slots.setSlot(exposedAs.value(), new ExposedMethod(current));
+        slots.setSlot(exposedAs.value(), new KlonExposedMethod(current));
       }
     }
   }

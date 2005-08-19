@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import klon.reflection.ExposedAs;
 
 public class KlonObject<T> {
 
@@ -108,7 +107,7 @@ public class KlonObject<T> {
   }
 
   public KlonObject slotNames() {
-    return new Set(slots.keySet());
+    return new KlonSet(slots.keySet());
   }
 
   public KlonObject perform(KlonObject context, Message message)

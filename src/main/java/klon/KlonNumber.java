@@ -2,7 +2,6 @@ package klon;
 
 import java.text.NumberFormat;
 
-import klon.reflection.ExposedAs;
 
 public class KlonNumber extends KlonObject<Double> {
 

@@ -1,14 +1,14 @@
 package klon;
 
-public class Set extends KlonObject<Set> {
+public class KlonSet extends KlonObject<KlonSet> {
 
   private java.util.Set storage;
 
-  public Set(java.util.Set storage) {
+  public KlonSet(java.util.Set storage) {
     this.storage = storage;
   }
 
-  public Set() {
+  public KlonSet() {
     super();
   }
 

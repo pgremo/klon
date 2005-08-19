@@ -1,4 +1,4 @@
-package klon.grammar.grammatica;
+package klon;
 
 import java.io.File;
 import java.io.FileReader;

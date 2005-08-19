@@ -1,5 +1,6 @@
 package klon;
 
+
 public class Klon {
 
   public static final KlonObject ROOT;
@@ -26,6 +27,9 @@ public class Klon {
     KlonObject symbol = new KlonSymbol();
     ROOT.setSlot("Symbol", symbol);
 
+    KlonObject exposedMethod = new KlonExposedMethod();
+    ROOT.setSlot("Symbol", exposedMethod);
+
     try {
       object.configure();
       nil.configure();
@@ -33,6 +37,7 @@ public class Klon {
       string.configure();
       block.configure();
       symbol.configure();
+      exposedMethod.configure();
     } catch (Exception e) {
       e.printStackTrace();
     }

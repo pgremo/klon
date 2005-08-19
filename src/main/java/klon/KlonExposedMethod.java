@@ -1,23 +1,19 @@
-package klon.reflection;
+package klon;
 
 import java.lang.reflect.Method;
 
-import klon.Klon;
-import klon.KlonException;
-import klon.Message;
-import klon.KlonObject;
 
-public class ExposedMethod extends KlonObject<Method> {
+public class KlonExposedMethod extends KlonObject<Method> {
 
-  public ExposedMethod() {
+  public KlonExposedMethod() {
     super();
   }
 
-  public ExposedMethod(Method attached) throws KlonException {
+  public KlonExposedMethod(Method attached) throws KlonException {
     super(Klon.ROOT.getSlot("Object"), attached);
   }
 
-  public ExposedMethod(KlonObject parent, Method attached) {
+  public KlonExposedMethod(KlonObject parent, Method attached) {
     super(parent, attached);
   }
 
@@ -31,6 +27,17 @@ public class ExposedMethod extends KlonObject<Method> {
       throw new KlonException(e);
     }
     return result;
+  }
+
+  @Override
+  public void configure() throws KlonException {
+    slots.put("parent", Klon.ROOT.getSlot("Object"));
+    Configurator.configure(KlonExposedMethod.class, this);
+  }
+
+  @Override
+  public KlonObject clone() {
+    return new KlonExposedMethod(this, primitive);
   }
 
   public String toString() {

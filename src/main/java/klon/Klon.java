@@ -28,7 +28,10 @@ public class Klon {
     ROOT.setSlot("Symbol", symbol);
 
     KlonObject exposedMethod = new KlonExposedMethod();
-    ROOT.setSlot("Symbol", exposedMethod);
+    ROOT.setSlot("ExposedMethod", exposedMethod);
+
+    KlonObject set = new KlonSet();
+    ROOT.setSlot("Set", set);
 
     try {
       object.configure();
@@ -38,6 +41,7 @@ public class Klon {
       block.configure();
       symbol.configure();
       exposedMethod.configure();
+      set.configure();
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -146,7 +146,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     try {
       String image = node.getImage();
       if (image.startsWith("0x") || image.startsWith(("0X"))) {
-        node.addValue(new KlonNumber(Integer.parseInt(image.substring(2), 16)));
+        node.addValue(new KlonNumber((double)Integer.parseInt(image.substring(2), 16)));
       } else {
         node.addValue(new KlonNumber(Double.parseDouble(image)));
       }

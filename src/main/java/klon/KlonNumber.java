@@ -17,7 +17,7 @@ public class KlonNumber extends KlonObject {
     super(0);
   }
 
-  public KlonNumber(Object value) throws KlonException {
+  public KlonNumber(Double value) throws KlonException {
     super(Klon.ROOT.getSlot("Number"), value);
   }
 

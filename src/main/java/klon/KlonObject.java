@@ -221,6 +221,65 @@ public class KlonObject {
     return new KlonBlock(new Block(parameters, message.getArgument(count)));
   }
 
+  @ExposedAs("for")
+  public static KlonObject forLoop(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject result = receiver.getSlot("Nil");
+    KlonObject scope = context.clone();
+    String counter = (String) message
+        .getArgument(0)
+          .getSelector()
+          .getPrimitive();
+    int start = message.evalAsNumber(context, 1).intValue();
+    int end = message.evalAsNumber(context, 2).intValue();
+    int increment;
+    Message code;
+    if (message.getArgumentCount() == 5) {
+      increment = message.evalAsNumber(context, 3).intValue();
+      code = message.getArgument(4);
+    } else {
+      increment = (int) Math.signum(end - start);
+      code = message.getArgument(3);
+    }
+    boolean done = start == end;
+    int i = start;
+    while (!done) {
+      scope.setSlot(counter, new KlonNumber((double) i));
+      result = code.eval(scope, scope);
+      i += increment;
+      done = increment > 0 ? i >= end : i <= end;
+    }
+    return result;
+  }
+
+  @ExposedAs("while")
+  public static KlonObject whileLoop(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject result = nil;
+    KlonObject scope = context.clone();
+    Message condition = message.getArgument(0);
+    Message code = message.getArgument(1);
+    while (!nil.equals(condition.eval(scope, scope))) {
+      result = code.eval(scope, scope);
+    }
+    return result;
+  }
+
+  @ExposedAs("if")
+  public static KlonObject ifBranch(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject result = nil;
+    KlonObject scope = context.clone();
+    Message condition = message.getArgument(0);
+    Message code = message.getArgument(1);
+    if (!nil.equals(condition.eval(scope, scope))) {
+      result = code.eval(scope, scope);
+    }
+    return result;
+  }
+
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

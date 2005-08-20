@@ -10,7 +10,7 @@ public class KlonNumberTest extends TestCase {
   public void testAdd() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("1 + 1");
+    Message message = (Message) compiler.fromString("1 + 1");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -23,7 +23,7 @@ public class KlonNumberTest extends TestCase {
   public void testSubtract() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("5 - 3");
+    Message message = (Message) compiler.fromString("5 - 3");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -36,7 +36,7 @@ public class KlonNumberTest extends TestCase {
   public void testMultiply() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("7 * 3");
+    Message message = (Message) compiler.fromString("7 * 3");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -49,7 +49,7 @@ public class KlonNumberTest extends TestCase {
   public void testDivide() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("48 / 6");
+    Message message = (Message) compiler.fromString("48 / 6");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -62,7 +62,7 @@ public class KlonNumberTest extends TestCase {
   public void testPower() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 ^ 3");
+    Message message = (Message) compiler.fromString("2 ^ 3");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -75,13 +75,13 @@ public class KlonNumberTest extends TestCase {
   public void testIsEqual() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 == 3");
+    Message message = (Message) compiler.fromString("2 == 3");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals("Nil", value.toString());
 
-    message = (Message) compiler.forString("2 == 2");
+    message = (Message) compiler.fromString("2 == 2");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -94,7 +94,7 @@ public class KlonNumberTest extends TestCase {
   public void testLessThan() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 < 3");
+    Message message = (Message) compiler.fromString("2 < 3");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -107,7 +107,7 @@ public class KlonNumberTest extends TestCase {
   public void testGreaterThan() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("3 > 2");
+    Message message = (Message) compiler.fromString("3 > 2");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -120,13 +120,13 @@ public class KlonNumberTest extends TestCase {
   public void testLessThanEquals() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 <= 2");
+    Message message = (Message) compiler.fromString("2 <= 2");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("2", ((KlonNumber) value).toString());
 
-    message = (Message) compiler.forString("2 <= 3");
+    message = (Message) compiler.fromString("2 <= 3");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -139,13 +139,13 @@ public class KlonNumberTest extends TestCase {
   public void testGreaterThanEquals() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 >= 2");
+    Message message = (Message) compiler.fromString("2 >= 2");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("2", value.toString());
 
-    message = (Message) compiler.forString("3 >= 2");
+    message = (Message) compiler.fromString("3 >= 2");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -158,13 +158,13 @@ public class KlonNumberTest extends TestCase {
   public void testAbsoluteValue() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("2 abs");
+    Message message = (Message) compiler.fromString("2 abs");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("2", value.toString());
 
-    message = (Message) compiler.forString("-2 abs");
+    message = (Message) compiler.fromString("-2 abs");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
@@ -177,7 +177,7 @@ public class KlonNumberTest extends TestCase {
   public void testSquareRoot() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("4 sqrt");
+    Message message = (Message) compiler.fromString("4 sqrt");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);

@@ -10,18 +10,18 @@ import klon.grammar.grammatica.KlonConstants;
 import klon.grammar.grammatica.KlonParser;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.ParseException;
-import net.percederberg.grammatica.parser.Parser;
 import net.percederberg.grammatica.parser.Production;
 import net.percederberg.grammatica.parser.Token;
 
 public class Compiler extends KlonAnalyzer implements KlonConstants {
 
-  public KlonObject forString(String value) throws KlonException {
+  public KlonObject fromString(String value) throws KlonException {
+    return fromReader(new StringReader(value));
+  }
+
+  public KlonObject fromReader(Reader input) throws KlonException {
     try {
-      Reader input = new StringReader(value);
-      Parser parser = new KlonParser(input, this);
-      Node actual = parser.parse();
-      return (KlonObject) actual.getValue(0);
+      return (KlonObject) new KlonParser(input, this).parse().getValue(0);
     } catch (Exception e) {
       throw new KlonException(e);
     }
@@ -146,7 +146,8 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     try {
       String image = node.getImage();
       if (image.startsWith("0x") || image.startsWith(("0X"))) {
-        node.addValue(new KlonNumber((double)Integer.parseInt(image.substring(2), 16)));
+        node.addValue(new KlonNumber((double) Integer.parseInt(image
+            .substring(2), 16)));
       } else {
         node.addValue(new KlonNumber(Double.parseDouble(image)));
       }

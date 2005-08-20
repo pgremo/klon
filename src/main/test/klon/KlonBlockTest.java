@@ -8,13 +8,13 @@ public class KlonBlockTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler
-        .forString("setter := block(a,self result := a)");
+        .fromString("setter := block(a,self result := a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
     assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
 
-    message = (Message) compiler.forString("setter(\"Hello\")");
+    message = (Message) compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
@@ -24,13 +24,13 @@ public class KlonBlockTest extends TestCase {
   public void testIfTrue() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
-    Message message = (Message) compiler.forString("block(1 == 1) ifTrue(13)");
+    Message message = (Message) compiler.fromString("block(1 == 1) ifTrue(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("13", ((KlonNumber) value).toString());
 
-    message = (Message) compiler.forString("block(1 == 12) ifTrue(13)");
+    message = (Message) compiler.fromString("block(1 == 12) ifTrue(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
@@ -41,13 +41,13 @@ public class KlonBlockTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler
-        .forString("block(1 == 12) ifFalse(13)");
+        .fromString("block(1 == 12) ifFalse(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("13", ((KlonNumber) value).toString());
 
-    message = (Message) compiler.forString("block(1 == 1) ifFalse(13)");
+    message = (Message) compiler.fromString("block(1 == 1) ifFalse(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
@@ -58,7 +58,7 @@ public class KlonBlockTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler
-        .forString("a := 0; block(a < 10) whileTrue(a = a + 1)");
+        .fromString("a := 0; block(a < 10) whileTrue(a = a + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
@@ -70,7 +70,7 @@ public class KlonBlockTest extends TestCase {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
     Message message = (Message) compiler
-        .forString("a := 20; block(a < 10) whileFalse(a = a - 1)");
+        .fromString("a := 20; block(a < 10) whileFalse(a = a - 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);

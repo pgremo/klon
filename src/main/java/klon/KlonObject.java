@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-
 public class KlonObject<T> {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
@@ -106,7 +105,7 @@ public class KlonObject<T> {
     return removeSlot(name, new HashSet<KlonObject>());
   }
 
-  public KlonObject slotNames() {
+  public KlonObject slotNames() throws KlonException {
     return new KlonSet(slots.keySet());
   }
 

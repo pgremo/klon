@@ -1,30 +1,30 @@
 package klon;
 
-import java.util.Set;
+import java.util.List;
 
-public class KlonSet extends KlonObject<Set> {
+public class KlonList extends KlonObject<List> {
 
-  public KlonSet() {
+  public KlonList() {
     super();
   }
 
-  public KlonSet(Set value) throws KlonException {
+  public KlonList(List value) throws KlonException {
     super(Klon.ROOT.getSlot("List"), value);
   }
 
-  public KlonSet(KlonObject parent, Set attached) {
+  public KlonList(KlonObject parent, List attached) {
     super(parent, attached);
   }
 
   @Override
   public void configure() throws KlonException {
     slots.put("parent", Klon.ROOT.getSlot("Object"));
-    Configurator.configure(KlonSet.class, this);
+    Configurator.configure(KlonList.class, this);
   }
 
   @Override
   public KlonObject clone() {
-    return new KlonSet(this, primitive);
+    return new KlonList(this, primitive);
   }
 
   @Override

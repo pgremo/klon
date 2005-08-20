@@ -1,5 +1,6 @@
 package klon;
 
+import java.util.Map;
 
 public class Klon {
 
@@ -33,7 +34,23 @@ public class Klon {
     KlonObject set = new KlonSet();
     ROOT.setSlot("Set", set);
 
+    KlonObject list = new KlonList();
+    ROOT.setSlot("List", list);
+
+    KlonObject arguments = new KlonList();
+    ROOT.setSlot("Arguments", arguments);
+
     try {
+      KlonObject properties = new KlonObject();
+      for (Map.Entry<Object, Object> current : System
+          .getProperties()
+            .entrySet()) {
+        properties.setSlot(current.getKey().toString(), new KlonString(current
+            .getValue()
+              .toString()));
+      }
+      ROOT.setSlot("Properties", properties);
+
       object.configure();
       nil.configure();
       number.configure();

@@ -200,6 +200,17 @@ public class KlonObject<T> {
     return receiver.getSlot("Nil");
   }
 
+  @ExposedAs("exit")
+  public static KlonObject exit(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    int result = 0;
+    if (message.getArgumentCount() == 1) {
+      result = message.evalAsNumber(context, 0).intValue();
+    }
+    System.exit(result);
+    return receiver.getSlot("Nil");
+  }
+
   @ExposedAs("block")
   public static KlonObject block(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

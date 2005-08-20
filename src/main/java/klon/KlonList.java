@@ -29,7 +29,14 @@ public class KlonList extends KlonObject<List> {
 
   @Override
   public String toString() {
-    return primitive.toString();
+    StringBuilder result = new StringBuilder();
+    for (Object current : primitive) {
+      if (result.length() > 0) {
+        result.append(", ");
+      }
+      result.append(current.toString());
+    }
+    return result.toString();
   }
 
 }

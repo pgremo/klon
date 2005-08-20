@@ -141,6 +141,11 @@ public class KlonObject<T> {
     return result;
   }
 
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+  }
+
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

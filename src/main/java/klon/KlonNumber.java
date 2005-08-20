@@ -2,7 +2,6 @@ package klon;
 
 import java.text.NumberFormat;
 
-
 public class KlonNumber extends KlonObject<Double> {
 
   private static NumberFormat formatter = NumberFormat.getInstance();
@@ -78,6 +77,16 @@ public class KlonNumber extends KlonObject<Double> {
           / message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for /");
+  }
+
+  @ExposedAs("%")
+  public static KlonObject modulus(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    if (receiver instanceof KlonNumber) {
+      return new KlonNumber((Double) receiver.getPrimitive()
+          % message.evalAsNumber(context, 0));
+    }
+    throw new KlonException("Illegal Argument for ^");
   }
 
   @ExposedAs("^")

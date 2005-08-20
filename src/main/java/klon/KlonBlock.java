@@ -1,6 +1,5 @@
 package klon;
 
-
 public class KlonBlock extends KlonObject<Block> {
 
   public KlonBlock() {
@@ -34,7 +33,8 @@ public class KlonBlock extends KlonObject<Block> {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return primitive.activate(receiver, context, message);
+    return primitive == null ? getSlot("Nil") : primitive.activate(receiver, context,
+        message);
   }
 
   @ExposedAs("ifTrue")

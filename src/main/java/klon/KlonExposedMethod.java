@@ -2,7 +2,6 @@ package klon;
 
 import java.lang.reflect.Method;
 
-
 public class KlonExposedMethod extends KlonObject<Method> {
 
   public KlonExposedMethod() {
@@ -21,10 +20,15 @@ public class KlonExposedMethod extends KlonObject<Method> {
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = null;
-    try {
-      result = (KlonObject) primitive.invoke(null, receiver, context, message);
-    } catch (Exception e) {
-      throw new KlonException(e);
+    if (primitive == null) {
+      result = getSlot("Nil");
+    } else {
+      try {
+        result = (KlonObject) primitive
+            .invoke(null, receiver, context, message);
+      } catch (Exception e) {
+        throw new KlonException(e);
+      }
     }
     return result;
   }

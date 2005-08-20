@@ -37,9 +37,6 @@ public class Klon {
     KlonObject list = new KlonList();
     ROOT.setSlot("List", list);
 
-    KlonObject arguments = new KlonList();
-    ROOT.setSlot("Arguments", arguments);
-
     try {
       KlonObject properties = new KlonObject();
       for (Map.Entry<Object, Object> current : System

@@ -31,38 +31,35 @@ public class KlonObject<T> {
     return new KlonObject<Object>(this, primitive);
   }
 
-  public Object getPrimitive() {
-    return primitive;
-  }
-
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return this;
+  }
+
+  public T getPrimitive() {
+    return primitive;
   }
 
   public void setSlot(String name, KlonObject value) {
     slots.put(name, value);
   }
 
-  private KlonObject updateSlot(String name, KlonObject value,
+  private void updateSlot(String name, KlonObject value,
       Collection<KlonObject> searchPath) throws KlonException {
-    KlonObject result;
     if (slots.containsKey(name)) {
-      result = slots.put(name, value);
+      slots.put(name, value);
     } else {
       KlonObject parent = slots.get("parent");
       if (parent == null || searchPath.contains(parent)) {
         throw new KlonException(name + " does not exist");
       }
       searchPath.add(parent);
-      result = parent.updateSlot(name, value, searchPath);
+      parent.updateSlot(name, value, searchPath);
     }
-    return result;
   }
 
-  public KlonObject updateSlot(String name, KlonObject value)
-      throws KlonException {
-    return updateSlot(name, value, new HashSet<KlonObject>());
+  public void updateSlot(String name, KlonObject value) throws KlonException {
+    updateSlot(name, value, new HashSet<KlonObject>());
   }
 
   private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
@@ -87,22 +84,21 @@ public class KlonObject<T> {
 
   private KlonObject removeSlot(String name, Collection<KlonObject> searchPath)
       throws KlonException {
-    KlonObject result;
+    KlonObject result = null;
     if (slots.containsKey(name)) {
       result = slots.remove(name);
     } else {
       KlonObject parent = slots.get("parent");
-      if (parent == null || searchPath.contains(parent)) {
-        throw new KlonException(name + " does not exist");
+      if (parent != null && !searchPath.contains(parent)) {
+        searchPath.add(parent);
+        result = parent.removeSlot(name, searchPath);
       }
-      searchPath.add(parent);
-      result = parent.removeSlot(name, searchPath);
     }
     return result;
   }
 
-  public KlonObject removeSlot(String name) throws KlonException {
-    return removeSlot(name, new HashSet<KlonObject>());
+  public void removeSlot(String name) throws KlonException {
+    removeSlot(name, new HashSet<KlonObject>());
   }
 
   public KlonObject slotNames() throws KlonException {
@@ -111,16 +107,15 @@ public class KlonObject<T> {
 
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
-    KlonObject result;
-    String name = (String) message.getSelector().getPrimitive();
-    try {
-      KlonObject slot = getSlot(name);
-      result = slot.activate(this, context, message);
-    } catch (KlonException e) {
-      KlonObject slot = context.getSlot(name);
-      result = slot.activate(this, context, message);
+    String name = message.getSelector().getPrimitive();
+    KlonObject slot = getSlot(name);
+    if (slot == null) {
+      slot = context.getSlot(name);
     }
-    return result;
+    if (slot == null) {
+      throw new KlonException(name + " does not exist");
+    }
+    return slot.activate(this, context, message);
   }
 
   @Override
@@ -189,7 +184,25 @@ public class KlonObject<T> {
   @ExposedAs("removeSlot")
   public static KlonObject removeSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.removeSlot(message.evalAsString(context, 0));
+    receiver.removeSlot(message.evalAsString(context, 0));
+    return receiver;
+  }
+
+  @ExposedAs("foreach")
+  public static KlonObject foreach(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject result = receiver.getSlot("Nil");
+    KlonObject scope = context.clone();
+    String name = message.getArgument(0).getSelector().getPrimitive();
+    String value = message.getArgument(1).getSelector().getPrimitive();
+    Message code = message.getArgument(2);
+    for (Object item : context.slots.entrySet()) {
+      Map.Entry<String, KlonObject> current = (Map.Entry<String, KlonObject>) item;
+      scope.setSlot(name, new KlonString(current.getKey()));
+      scope.setSlot(value, current.getValue());
+      result = code.eval(scope, scope);
+    }
+    return result;
   }
 
   @ExposedAs("slotNames")
@@ -236,10 +249,7 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = context.clone();
-    String counter = (String) message
-        .getArgument(0)
-          .getSelector()
-          .getPrimitive();
+    String counter = message.getArgument(0).getSelector().getPrimitive();
     int start = message.evalAsNumber(context, 1).intValue();
     int end = message.evalAsNumber(context, 2).intValue();
     int increment;
@@ -301,7 +311,7 @@ public class KlonObject<T> {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
     try {
-      if (context.getSlot((String) target.getSelector().getPrimitive()) != null) {
+      if (context.getSlot(target.getSelector().getPrimitive()) != null) {
         result = target.eval(context, context);
       }
     } catch (KlonException e) {

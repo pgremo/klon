@@ -316,8 +316,8 @@ public class KlonObject<T> {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
     try {
-      if (context.getSlot(target.getSelector().getPrimitive()) != null) {
-        result = target.eval(context, context);
+      if (receiver.getSlot(target.getSelector().getPrimitive()) != null) {
+        result = receiver.perform(context, target);
       }
     } catch (KlonException e) {
 

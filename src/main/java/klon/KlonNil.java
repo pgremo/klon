@@ -1,6 +1,5 @@
 package klon;
 
-
 public class KlonNil extends KlonObject<Object> {
 
   public KlonNil() {
@@ -28,15 +27,14 @@ public class KlonNil extends KlonObject<Object> {
 
   @Override
   public String toString() {
-    return "Nil";
+    return "";
   }
 
   @ExposedAs("==")
-  public static KlonObject isEquals(KlonObject receiver, KlonObject context, Message message)
-      throws KlonException {
-    return receiver.equals(message.eval(receiver, 0))
-        ? receiver.getSlot("Klon")
-        : receiver.getSlot("Nil");
+  public static KlonObject isEquals(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.equals(message.eval(receiver, 0)) ? receiver
+        .getSlot("Klon") : receiver.getSlot("Nil");
   }
 
 }

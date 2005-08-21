@@ -138,7 +138,8 @@ public class KlonObject<T> {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+    return primitive == null ? getClass().getSimpleName() + "@"
+        + Integer.toHexString(hashCode()) : String.valueOf(primitive);
   }
 
   @ExposedAs("clone")
@@ -196,7 +197,7 @@ public class KlonObject<T> {
     String name = message.getArgument(0).getSelector().getPrimitive();
     String value = message.getArgument(1).getSelector().getPrimitive();
     Message code = message.getArgument(2);
-    for (Object item : context.slots.entrySet()) {
+    for (Object item : receiver.slots.entrySet()) {
       Map.Entry<String, KlonObject> current = (Map.Entry<String, KlonObject>) item;
       scope.setSlot(name, new KlonString(current.getKey()));
       scope.setSlot(value, current.getValue());
@@ -277,11 +278,10 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     KlonObject result = nil;
-    KlonObject scope = context.clone();
     Message condition = message.getArgument(0);
     Message code = message.getArgument(1);
-    while (!nil.equals(condition.eval(scope, scope))) {
-      result = code.eval(scope, scope);
+    while (!nil.equals(condition.eval(context, context))) {
+      result = code.eval(context, context);
     }
     return result;
   }
@@ -291,9 +291,14 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     KlonObject result = nil;
-    KlonObject scope = context.clone();
-    if (!nil.equals(message.eval(scope, 0))) {
-      result = message.eval(scope, 1);
+    if (message.getArgumentCount() == 1) {
+      result = message.eval(context, 0);
+    } else {
+      if (!nil.equals(message.eval(context, 0))) {
+        result = message.eval(context, 1);
+      } else if (message.getArgumentCount() == 3) {
+        result = message.eval(context, 2);
+      }
     }
     return result;
   }

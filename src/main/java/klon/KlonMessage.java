@@ -25,9 +25,4 @@ public class KlonMessage extends KlonObject<Message> {
     return new KlonMessage(this, primitive);
   }
 
-  @Override
-  public String toString() {
-    return primitive == null ? super.toString() : primitive.toString();
-  }
-
 }

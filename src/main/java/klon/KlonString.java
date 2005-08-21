@@ -1,6 +1,5 @@
 package klon;
 
-
 public class KlonString extends KlonObject<String> {
 
   public KlonString() {
@@ -32,13 +31,10 @@ public class KlonString extends KlonObject<String> {
   }
 
   @ExposedAs("+")
-  public static KlonObject append(KlonObject receiver, KlonObject context, Message message)
-      throws KlonException {
-    if (receiver instanceof KlonString) {
-      return new KlonString((String) receiver.getPrimitive()
-          + message.evalAsString(context, 0));
-    }
-    throw new KlonException("Illegal Argument for +");
+  public static KlonObject append(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return new KlonString(receiver.getPrimitive().toString()
+        + message.eval(context, 0).getPrimitive().toString());
   }
 
 }

@@ -41,7 +41,7 @@ public class Klon {
     ROOT.setSlot("Message", message);
 
     try {
-      KlonObject properties = new KlonObject();
+      KlonObject properties = object.clone();
       for (Map.Entry<Object, Object> current : System
           .getProperties()
             .entrySet()) {

@@ -44,8 +44,4 @@ public class KlonExposedMethod extends KlonObject<Method> {
     return new KlonExposedMethod(this, primitive);
   }
 
-  public String toString() {
-    return "Exposed Method: " + primitive;
-  }
-
 }

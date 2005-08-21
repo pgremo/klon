@@ -39,6 +39,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     node.addValue(next);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void childStandardMessage(Production node, Node child) {
     Message message = (Message) node.getValue(0);
@@ -72,6 +73,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected void childGroup(Production node, Node child) {
     if (child != null) {

@@ -2,20 +2,29 @@ package klon;
 
 import java.lang.reflect.Method;
 
-
 public final class Configurator {
 
   private Configurator() {
 
   }
 
-  public static void configure(Class type, KlonObject slots)
+  @SuppressWarnings("unchecked")
+  public static void configure(KlonObject root, KlonObject target, Class type)
       throws KlonException {
+    Prototype prototype = (Prototype) type.getAnnotation(Prototype.class);
+    if (prototype == null) {
+      throw new KlonException(type + " has not Prototype annotation.");
+    }
+    String parent = prototype.parent();
+    if (!"".equals(parent)) {
+      target.setSlot("parent", root.getSlot(parent));
+    }
     for (Method current : type.getDeclaredMethods()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         String identity = "'" + current.getName() + "' in "
-            + current.getDeclaringClass() + " exposed as '" + exposedAs.value() + "'";
+            + current.getDeclaringClass() + " exposed as '" + exposedAs.value()
+            + "'";
         if (!KlonObject.class.equals(current.getReturnType())) {
           throw new KlonException(identity + " must have a return type of "
               + KlonObject.class + ".");
@@ -42,7 +51,7 @@ public final class Configurator {
           throw new KlonException(identity + " second parameter must be a "
               + KlonException.class + ".");
         }
-        slots.setSlot(exposedAs.value(), new KlonExposedMethod(current));
+        target.setSlot(exposedAs.value(), new KlonExposedMethod(current));
       }
     }
   }

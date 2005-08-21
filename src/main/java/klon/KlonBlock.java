@@ -1,5 +1,6 @@
 package klon;
 
+@Prototype(name = "Block", parent = "Object")
 public class KlonBlock extends KlonObject<Block> {
 
   public KlonBlock() {
@@ -16,8 +17,7 @@ public class KlonBlock extends KlonObject<Block> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonBlock.class, this);
+    Configurator.configure(root, this, KlonBlock.class);
   }
 
   @Override

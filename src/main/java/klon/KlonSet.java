@@ -2,6 +2,7 @@ package klon;
 
 import java.util.Set;
 
+@Prototype(name = "Set", parent = "Object")
 public class KlonSet extends KlonObject<Set> {
 
   public KlonSet() {
@@ -18,8 +19,7 @@ public class KlonSet extends KlonObject<Set> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonSet.class, this);
+    Configurator.configure(root, this, KlonSet.class);
   }
 
   @Override

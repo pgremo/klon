@@ -2,6 +2,7 @@ package klon;
 
 import java.lang.reflect.Method;
 
+@Prototype(name = "ExposedMethod", parent = "Object")
 public class KlonExposedMethod extends KlonObject<Method> {
 
   public KlonExposedMethod() {
@@ -35,8 +36,7 @@ public class KlonExposedMethod extends KlonObject<Method> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonExposedMethod.class, this);
+    Configurator.configure(root, this, KlonExposedMethod.class);
   }
 
   @Override

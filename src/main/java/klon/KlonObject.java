@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+@Prototype(name = "Object")
 public class KlonObject<T> {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
@@ -24,13 +25,14 @@ public class KlonObject<T> {
   }
 
   public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(KlonObject.class, this);
+    Configurator.configure(root, this, KlonObject.class);
   }
 
   public KlonObject clone() {
     return new KlonObject<Object>(this, primitive);
   }
 
+  @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return this;
@@ -142,6 +144,7 @@ public class KlonObject<T> {
         + Integer.toHexString(hashCode()) : String.valueOf(primitive);
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

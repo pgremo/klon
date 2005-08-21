@@ -2,6 +2,7 @@ package klon;
 
 import java.text.NumberFormat;
 
+@Prototype(name = "Number", parent = "Object")
 public class KlonNumber extends KlonObject<Double> {
 
   private static NumberFormat formatter = NumberFormat.getInstance();
@@ -25,8 +26,7 @@ public class KlonNumber extends KlonObject<Double> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonNumber.class, this);
+    Configurator.configure(root, this, KlonNumber.class);
   }
 
   @Override

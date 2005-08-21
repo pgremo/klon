@@ -2,6 +2,7 @@ package klon;
 
 import java.util.List;
 
+@Prototype(name = "List", parent = "Object")
 public class KlonList extends KlonObject<List> {
 
   public KlonList() {
@@ -18,8 +19,7 @@ public class KlonList extends KlonObject<List> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonList.class, this);
+    Configurator.configure(root, this, KlonList.class);
   }
 
   @Override

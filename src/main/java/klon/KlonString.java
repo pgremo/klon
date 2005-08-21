@@ -1,5 +1,6 @@
 package klon;
 
+@Prototype(name = "String", parent = "Object")
 public class KlonString extends KlonObject<String> {
 
   public KlonString() {
@@ -16,8 +17,7 @@ public class KlonString extends KlonObject<String> {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    slots.put("parent", root.getSlot("Object"));
-    Configurator.configure(KlonString.class, this);
+    Configurator.configure(root, this, KlonString.class);
   }
 
   @Override

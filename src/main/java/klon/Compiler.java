@@ -15,13 +15,13 @@ import net.percederberg.grammatica.parser.Token;
 
 public class Compiler extends KlonAnalyzer implements KlonConstants {
 
-  public KlonObject fromString(String value) throws KlonException {
+  public Message fromString(String value) throws KlonException {
     return fromReader(new StringReader(value));
   }
 
-  public KlonObject fromReader(Reader input) throws KlonException {
+  public Message fromReader(Reader input) throws KlonException {
     try {
-      return (KlonObject) new KlonParser(input, this).parse().getValue(0);
+      return (Message) new KlonParser(input, this).parse().getValue(0);
     } catch (Exception e) {
       throw new KlonException(e);
     }

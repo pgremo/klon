@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Message extends KlonObject {
+public class Message {
 
   private KlonSymbol selector;
   private KlonObject literal;
@@ -60,7 +60,8 @@ public class Message extends KlonObject {
     this.selector = selector;
   }
 
-  public KlonObject eval(KlonObject receiver, KlonObject context) throws KlonException {
+  public KlonObject eval(KlonObject receiver, KlonObject context)
+      throws KlonException {
     KlonObject self = receiver;
     for (Message outer = this; outer != null; outer = outer.getNext()) {
       receiver = self;
@@ -71,7 +72,7 @@ public class Message extends KlonObject {
         }
         receiver = result;
       }
-      if (outer.getNext() != null){
+      if (outer.getNext() != null) {
         receiver = context;
       }
     }

@@ -31,7 +31,7 @@ public class Shell {
             depth--;
           }
         }
-        Message message = (Message) compiler.fromString(buffer.toString());
+        Message message = compiler.fromString(buffer.toString());
         KlonObject value = message.eval(Klon.ROOT, Klon.ROOT);
         out.println(value);
         out.flush();

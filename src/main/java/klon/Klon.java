@@ -37,6 +37,9 @@ public class Klon {
     KlonObject list = new KlonList();
     ROOT.setSlot("List", list);
 
+    KlonObject message = new KlonMessage();
+    ROOT.setSlot("Message", message);
+
     try {
       KlonObject properties = new KlonObject();
       for (Map.Entry<Object, Object> current : System
@@ -56,6 +59,7 @@ public class Klon {
       symbol.configure();
       exposedMethod.configure();
       set.configure();
+      message.configure();
     } catch (Exception e) {
       e.printStackTrace();
     }

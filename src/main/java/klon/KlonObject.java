@@ -156,8 +156,8 @@ public class KlonObject<T> {
   public static KlonObject send(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject subject = message.eval(context, 0);
-    if (subject instanceof Message) {
-      return receiver.perform(context, message);
+    if (subject instanceof KlonMessage) {
+      return receiver.perform(context, (Message) subject.getPrimitive());
     }
     throw new KlonException("invalid argument for send");
   }

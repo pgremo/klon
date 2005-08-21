@@ -23,7 +23,7 @@ public class KlonObject<T> {
     this.primitive = attached;
   }
 
-  public void configure() throws KlonException {
+  public void configure(KlonObject root) throws KlonException {
     Configurator.configure(KlonObject.class, this);
   }
 

@@ -17,8 +17,8 @@ public class KlonList extends KlonObject<List> {
   }
 
   @Override
-  public void configure() throws KlonException {
-    slots.put("parent", Klon.ROOT.getSlot("Object"));
+  public void configure(KlonObject root) throws KlonException {
+    slots.put("parent", root.getSlot("Object"));
     Configurator.configure(KlonList.class, this);
   }
 

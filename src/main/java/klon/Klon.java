@@ -51,16 +51,16 @@ public class Klon {
       }
       ROOT.setSlot("Properties", properties);
 
-      object.configure();
-      nil.configure();
-      number.configure();
-      string.configure();
-      block.configure();
-      symbol.configure();
-      exposedMethod.configure();
-      set.configure();
-      list.configure();
-      message.configure();
+      object.configure(ROOT);
+      nil.configure(ROOT);
+      number.configure(ROOT);
+      string.configure(ROOT);
+      block.configure(ROOT);
+      symbol.configure(ROOT);
+      exposedMethod.configure(ROOT);
+      set.configure(ROOT);
+      list.configure(ROOT);
+      message.configure(ROOT);
     } catch (Exception e) {
       e.printStackTrace();
     }

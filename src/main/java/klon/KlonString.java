@@ -27,7 +27,7 @@ public class KlonString extends KlonObject<String> {
 
   @Override
   public String toString() {
-    return "\"" + primitive + "\"";
+    return primitive;
   }
 
   @ExposedAs("+")
@@ -40,7 +40,7 @@ public class KlonString extends KlonObject<String> {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.println("\"" + receiver.getPrimitive() + "\"");
+    System.out.print(receiver.getPrimitive());
     return receiver.getSlot("Nil");
   }
 

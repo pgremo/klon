@@ -18,7 +18,7 @@ public class KlonBlockTest extends TestCase {
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("\"Hello\"", value.toString());
+    assertEquals("Hello", value.toString());
   }
 
   public void testIfTrue() throws Exception {

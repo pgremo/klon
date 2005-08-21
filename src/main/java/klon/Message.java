@@ -108,7 +108,11 @@ public class Message {
       result.append(selector);
     }
     if (literal != null) {
-      result.append(literal);
+      if (literal instanceof KlonString) {
+        result.append("\"").append(literal).append("\"");
+      } else {
+        result.append(literal);
+      }
     }
     if (arguments.size() > 0) {
       result.append("(");

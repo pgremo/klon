@@ -49,7 +49,7 @@ public class KlonSet extends KlonObject<Set> {
       }
       result.append(current.toString());
     }
-    System.out.println(result.toString());
+    System.out.print(result.toString());
     return receiver.getSlot("Nil");
   }
 

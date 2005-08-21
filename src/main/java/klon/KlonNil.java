@@ -30,6 +30,13 @@ public class KlonNil extends KlonObject<Object> {
     return "";
   }
 
+  @ExposedAs("print")
+  public static KlonObject print(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    System.out.print("");
+    return receiver.getSlot("Nil");
+  }
+
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

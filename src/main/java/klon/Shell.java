@@ -14,8 +14,8 @@ public class Shell {
   public void process(Reader in, PrintWriter out, PrintWriter error)
       throws KlonException {
     Compiler compiler = new Compiler();
+    Message reportMessage = compiler.fromString("print; writeLine");
     StringBuilder buffer = new StringBuilder();
-    Message printMessage = compiler.fromString("print");
     while (true) {
       out.print(PROMPT);
       out.flush();
@@ -35,7 +35,7 @@ public class Shell {
         }
         Message message = compiler.fromString(buffer.toString());
         KlonObject value = message.eval(Klon.ROOT, Klon.ROOT);
-        printMessage.eval(value, value);
+        reportMessage.eval(value, value);
       } catch (Exception e) {
         e.printStackTrace(error);
         error.flush();

@@ -168,7 +168,7 @@ public class KlonNumber extends KlonObject<Double> {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.println(formatter.format(receiver.getPrimitive()));
+    System.out.print(formatter.format(receiver.getPrimitive()));
     return receiver.getSlot("Nil");
   }
 

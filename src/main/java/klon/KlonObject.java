@@ -215,8 +215,26 @@ public class KlonObject<T> {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.println(receiver.getClass().getSimpleName() + "@"
+    System.out.print(receiver.getClass().getSimpleName() + "@"
         + Integer.toHexString(receiver.hashCode()));
+    return receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("write")
+  public static KlonObject write(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    Message printMessage = new Compiler().fromString("print");
+    for (int i = 0; i < message.getArgumentCount(); i++) {
+      printMessage.eval(message.eval(context, i), context);
+    }
+    return receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("writeLine")
+  public static KlonObject writeLine(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    write(receiver, context, message);
+    System.out.println();
     return receiver.getSlot("Nil");
   }
 

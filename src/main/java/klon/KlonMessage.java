@@ -25,4 +25,11 @@ public class KlonMessage extends KlonObject<Message> {
     return new KlonMessage(this, primitive);
   }
 
+  @ExposedAs("print")
+  public static KlonObject print(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    System.out.println(receiver.getPrimitive());
+    return receiver.getSlot("Nil");
+  }
+
 }

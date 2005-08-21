@@ -39,4 +39,18 @@ public class KlonList extends KlonObject<List> {
     return result.toString();
   }
 
+  @ExposedAs("print")
+  public static KlonObject print(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    StringBuilder result = new StringBuilder();
+    for (Object current : (Iterable) receiver.getPrimitive()) {
+      if (result.length() > 0) {
+        result.append(", ");
+      }
+      result.append(current.toString());
+    }
+    System.out.println(result.toString());
+    return receiver.getSlot("Nil");
+  }
+
 }

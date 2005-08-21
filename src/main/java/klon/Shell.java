@@ -11,9 +11,11 @@ public class Shell {
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
 
-  public void process(Reader in, PrintWriter out, PrintWriter error) {
+  public void process(Reader in, PrintWriter out, PrintWriter error)
+      throws KlonException {
     Compiler compiler = new Compiler();
     StringBuilder buffer = new StringBuilder();
+    Message printMessage = compiler.fromString("print");
     while (true) {
       out.print(PROMPT);
       out.flush();
@@ -33,8 +35,7 @@ public class Shell {
         }
         Message message = compiler.fromString(buffer.toString());
         KlonObject value = message.eval(Klon.ROOT, Klon.ROOT);
-        out.println(value);
-        out.flush();
+        printMessage.eval(value, value);
       } catch (Exception e) {
         e.printStackTrace(error);
         error.flush();

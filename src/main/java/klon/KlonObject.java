@@ -215,7 +215,8 @@ public class KlonObject<T> {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.println(receiver);
+    System.out.println(receiver.getClass().getSimpleName() + "@"
+        + Integer.toHexString(receiver.hashCode()));
     return receiver.getSlot("Nil");
   }
 

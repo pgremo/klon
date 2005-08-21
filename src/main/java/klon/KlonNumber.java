@@ -165,4 +165,11 @@ public class KlonNumber extends KlonObject<Double> {
     throw new KlonException("Illegal Argument for sqrt");
   }
 
+  @ExposedAs("print")
+  public static KlonObject print(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    System.out.println(formatter.format(receiver.getPrimitive()));
+    return receiver.getSlot("Nil");
+  }
+
 }

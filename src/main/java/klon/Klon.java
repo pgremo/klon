@@ -59,6 +59,7 @@ public class Klon {
       symbol.configure();
       exposedMethod.configure();
       set.configure();
+      list.configure();
       message.configure();
     } catch (Exception e) {
       e.printStackTrace();

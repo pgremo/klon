@@ -30,4 +30,11 @@ public class KlonSymbol extends KlonObject<String> {
     return primitive.toString();
   }
 
+  @ExposedAs("print")
+  public static KlonObject print(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    System.out.println(receiver.getPrimitive());
+    return receiver.getSlot("Nil");
+  }
+
 }

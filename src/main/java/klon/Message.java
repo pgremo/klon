@@ -89,7 +89,7 @@ public class Message {
     if (!(result instanceof KlonNumber)) {
       throw new KlonException("result must be a number");
     }
-    return (Double) ((KlonNumber) result).getPrimitive();
+    return ((KlonNumber) result).getPrimitive();
   }
 
   public String evalAsString(KlonObject receiver, int index)
@@ -98,7 +98,7 @@ public class Message {
     if (!(result instanceof KlonString)) {
       throw new KlonException("result must be a string");
     }
-    return (String) ((KlonString) result).getPrimitive();
+    return ((KlonString) result).getPrimitive();
   }
 
   @Override

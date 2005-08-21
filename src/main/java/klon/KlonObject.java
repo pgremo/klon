@@ -228,7 +228,8 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     Message printMessage = new Compiler().fromString("print");
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      printMessage.eval(message.eval(context, i), context);
+      KlonObject target = message.eval(context, i);
+      target.perform(context, printMessage);
     }
     return receiver.getSlot("Nil");
   }

@@ -30,11 +30,13 @@ public class KlonSet extends KlonObject<Set> {
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
-    for (Object current : primitive) {
-      if (result.length() > 0) {
-        result.append(", ");
+    if (primitive != null) {
+      for (Object current : primitive) {
+        if (result.length() > 0) {
+          result.append(", ");
+        }
+        result.append(current.toString());
       }
-      result.append(current.toString());
     }
     return result.toString();
   }

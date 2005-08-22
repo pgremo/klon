@@ -326,6 +326,45 @@ public class KlonObject<T> {
     return result;
   }
 
+  @ExposedAs("and")
+  public static KlonObject and(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject nil = receiver.getSlot("Nil");
+    return nil.equals(message.eval(context, 0)) ? nil : receiver;
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("or")
+  public static KlonObject of(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver;
+  }
+
+  @ExposedAs("ifFalse")
+  public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("ifTrue")
+  public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return message.eval(context, 1);
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("ifNil")
+  public static KlonObject ifNil(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver;
+  }
+
+  @ExposedAs("isNil")
+  public static KlonObject isNil(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.getSlot("Nil");
+  }
+
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

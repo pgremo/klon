@@ -2,11 +2,16 @@
 
 	<property name="src" value="src/main/java" />
 	<property name="src.grammar" value="src/main/grammatica" />
+	<property name="classes" value="target/classes" />
+	<property name="test" value="src/main/test" />
+	<property name="test.classes" value="target/test-classes" />
+	<property name="coverage.classes" value="target/coverage-classes" />
 	<property name="lib" value="lib" />
 	<property name="docs" value="target/docs" />
 	<property name="docs.generated" value="target/docs-generated" />
 
 	<path id="classpath">
+		<pathelement path="${classes}" />
 		<filelist dir="${lib}">
 			<file name="antlr/jars/antlr-2.7.5.jar" />
 			<file name="checkstyle/jars/checkstyle-4.0-beta4.jar" />
@@ -14,6 +19,9 @@
 			<file name="commons-logging/jars/commons-logging-1.0.3.jar" />
 			<file name="regexp/jars/regexp-1.3.jar" />
 			<file name="grammatica/jars/grammatica-1.5.alpha1.jar" />
+			<file name="junit/jars/junit-3.8.1.jar" />
+			<file name="emma/jars/emma.jar" />
+			<file name="emma/jars/emma_ant.jar" />
 		</filelist>
 	</path>
 
@@ -25,12 +33,15 @@
 		<classpath refid="classpath" />
 	</taskdef>
 
+	<taskdef resource="emma_ant.properties">
+		<classpath refid="classpath" />
+	</taskdef>
+
 	<target name="grammar.generate.grammatica">
 		<grammatica grammar="${src.grammar}/klon.grammar">
 			<java dir="src/main/grammatica" package="klon.grammar.grammatica" public="true" />
 		</grammatica>
 	</target>
-
 
 	<target name="checkstyle.report">
 		<mkdir dir="${docs.generated}" />
@@ -48,5 +59,98 @@
 		<copy file="style/project.css" todir="${docs}" />
 		<fail message="Audit failed." if="audit.failed" />
 	</target>
+	
+	<target name="compile">
+		<mkdir dir="${classes}" />
+		<javac fork="true" destdir="${classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
+			<classpath refid="classpath" />
+			<src path="${src}" />
+			<src path="${src.grammar}" />
+		</javac>
+<!--		
+		<copy todir="${classes}">
+			<fileset dir="${resource}" includes="**/*.*" />
+		</copy>
+-->		
+	</target>
+
+	<target name="junit.compile" depends="compile">
+		<mkdir dir="${test.classes}" />
+		<javac destdir="${test.classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
+			<classpath>
+				<pathelement location="${classes}" />
+				<path refid="classpath" />
+			</classpath>
+			<src path="${test}" />
+		</javac>
+	</target>
+
+	<target name="junit.run">
+		<mkdir dir="${docs.generated}" />
+		<junit printsummary="on" errorProperty="test.failed" failureProperty="test.failed">
+			<classpath>
+				<pathelement location="${coverage.classes}" />
+				<pathelement location="${test.classes}" />
+				<path refid="classpath" />
+			</classpath>
+			<formatter type="plain" usefile="false" />
+			<formatter type="xml" />
+			<batchtest fork="true" todir="${docs.generated}">
+				<fileset dir="${test.classes}" includes="**/*Test.class" />
+			</batchtest>
+			<sysproperty key="emma.coverage.out.file" value="${docs.generated}/coverage.emma" />
+			<sysproperty key="emma.coverage.out.merge" value="true" />
+			<sysproperty key="com.jcoverage.rawcoverage.dir" value="${docs.generated}" />
+			<sysproperty key="coverage.data.path" value="${docs.generated}/coverage/coverage.ser" />
+		</junit>
+	</target>
+
+	<target name="junit.report">
+		<mkdir dir="${docs}" />
+		<dirname property="junit.dir" file="${ant.file.junit}" />
+		<junitreport todir="${docs.generated}">
+			<fileset dir="${docs.generated}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="noframes" todir="${docs}" styledir="${junit.dir}" />
+		</junitreport>
+		<move file="${docs}/junit-noframes.html" tofile="${docs}/junit-report.html" />
+		<copy file="style/maven-base.css" todir="${docs}" />
+		<copy file="style/maven-theme.css" todir="${docs}" />
+		<copy file="style/project.css" todir="${docs}" />
+	</target>
+
+	<target name="junit.evaluate">
+		<fail message="Tests failed." if="test.failed" />
+	</target>
+
+	<target name="junit" depends="junit.compile, junit.run, junit.report, junit.evaluate" />
+
+	<target name="emma.compile" depends="compile">
+		<mkdir dir="${docs.generated}" />
+		<mkdir dir="${coverage.classes}" />
+		<emma enabled="true">
+			<instr instrpath="${classes}" outdir="${coverage.classes}" mode="copy" metadatafile="${docs.generated}/metadata.emma" merge="true" />
+		</emma>
+	</target>
+
+	<target name="emma.report">
+		<mkdir dir="${docs}" />
+		<emma enabled="true">
+			<report>
+				<sourcepath>
+					<dirset dir="${basedir}">
+						<include name="${src}" />
+					</dirset>
+				</sourcepath>
+				<fileset dir="${docs.generated}">
+					<include name="*.emma" />
+				</fileset>
+				<html outfile="${docs}/emma-report.html" />
+			</report>
+		</emma>
+	</target>
+
+	<target name="emma" depends="emma.compile, junit, emma.report" />
 
 </project>

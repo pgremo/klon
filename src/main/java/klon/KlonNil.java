@@ -34,7 +34,32 @@ public class KlonNil extends KlonObject<Object> {
   public static KlonObject print(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     System.out.print("");
-    return receiver.getSlot("Nil");
+    return receiver;
+  }
+
+  @ExposedAs("and")
+  public static KlonObject and(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver;
+  }
+
+  @ExposedAs("or")
+  public static KlonObject of(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject other = message.eval(context, 0);
+    return receiver.equals(other) ? receiver : other;
+  }
+
+  @ExposedAs("ifNil")
+  public static KlonObject ifNil(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return message.eval(context, 0);
+  }
+
+  @ExposedAs("isNil")
+  public static KlonObject isNil(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.getSlot("Klon");
   }
 
   @ExposedAs("==")

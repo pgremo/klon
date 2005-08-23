@@ -1,6 +1,5 @@
 package klon;
 
-import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;

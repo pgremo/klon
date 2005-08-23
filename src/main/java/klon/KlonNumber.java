@@ -13,15 +13,16 @@ public class KlonNumber extends KlonObject<Double> {
   }
 
   public KlonNumber() throws KlonException {
-    super(0D);
+    this(0D);
   }
 
   public KlonNumber(Double value) throws KlonException {
-    super(Klon.ROOT.getSlot("Number"), value);
+    this(Klon.ROOT.getSlot("Number"), value);
   }
 
   public KlonNumber(KlonObject parent, Double attached) {
     super(parent, attached);
+    this.prototype = KlonNumber.class.getAnnotation(Prototype.class);
   }
 
   @Override

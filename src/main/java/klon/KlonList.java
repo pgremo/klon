@@ -5,16 +5,17 @@ import java.util.List;
 @Prototype(name = "List", parent = "Object")
 public class KlonList extends KlonObject<List> {
 
-  public KlonList() {
-    super();
+  public KlonList() throws KlonException {
+    this(null);
   }
 
   public KlonList(List value) throws KlonException {
-    super(Klon.ROOT.getSlot("List"), value);
+    this(Klon.ROOT.getSlot("List"), value);
   }
 
   public KlonList(KlonObject parent, List attached) {
     super(parent, attached);
+    this.prototype = KlonList.class.getAnnotation(Prototype.class);
   }
 
   @Override

@@ -4,15 +4,16 @@ package klon;
 public class KlonString extends KlonObject<String> {
 
   public KlonString() throws KlonException {
-    super("");
+    this("");
   }
 
   public KlonString(String value) throws KlonException {
-    super(Klon.ROOT.getSlot("String"), value);
+    this(Klon.ROOT.getSlot("String"), value);
   }
 
   public KlonString(KlonObject parent, String attached) {
     super(parent, attached);
+    this.prototype = KlonString.class.getAnnotation(Prototype.class);
   }
 
   @Override

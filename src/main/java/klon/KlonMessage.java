@@ -3,16 +3,17 @@ package klon;
 @Prototype(name = "Message", parent = "Object")
 public class KlonMessage extends KlonObject<Message> {
 
-  public KlonMessage() {
-    super();
+  public KlonMessage() throws KlonException {
+    this(null);
   }
 
   public KlonMessage(Message attached) throws KlonException {
-    super(attached);
+    this(Klon.ROOT.getSlot("Message"), attached);
   }
 
   public KlonMessage(KlonObject parent, Message attached) {
     super(parent, attached);
+    this.prototype = KlonMessage.class.getAnnotation(Prototype.class);
   }
 
   @Override

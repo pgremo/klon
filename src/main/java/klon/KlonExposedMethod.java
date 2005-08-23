@@ -5,16 +5,17 @@ import java.lang.reflect.Method;
 @Prototype(name = "ExposedMethod", parent = "Object")
 public class KlonExposedMethod extends KlonObject<Method> {
 
-  public KlonExposedMethod() {
-    super();
+  public KlonExposedMethod() throws KlonException {
+    this(null);
   }
 
   public KlonExposedMethod(Method attached) throws KlonException {
-    super(Klon.ROOT.getSlot("ExposedMethod"), attached);
+    this(Klon.ROOT.getSlot("ExposedMethod"), attached);
   }
 
   public KlonExposedMethod(KlonObject parent, Method attached) {
     super(parent, attached);
+    this.prototype = KlonExposedMethod.class.getAnnotation(Prototype.class);
   }
 
   @Override

@@ -10,6 +10,7 @@ public class KlonObject<T> {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   protected T primitive;
+  protected Prototype prototype;
 
   public KlonObject() {
     this(null, null);
@@ -22,6 +23,7 @@ public class KlonObject<T> {
   public KlonObject(KlonObject parent, T attached) {
     slots.put("parent", parent);
     this.primitive = attached;
+    this.prototype = KlonObject.class.getAnnotation(Prototype.class);
   }
 
   public void configure(KlonObject root) throws KlonException {
@@ -43,7 +45,7 @@ public class KlonObject<T> {
   }
 
   public String getType() {
-    return getClass().getAnnotation(Prototype.class).name();
+    return prototype.name();
   }
 
   public void setSlot(String name, KlonObject value) {

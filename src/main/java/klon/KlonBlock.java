@@ -3,16 +3,17 @@ package klon;
 @Prototype(name = "Block", parent = "Object")
 public class KlonBlock extends KlonObject<Block> {
 
-  public KlonBlock() {
-    super();
+  public KlonBlock() throws KlonException {
+    this(null);
   }
 
   public KlonBlock(Block value) throws KlonException {
-    super(Klon.ROOT.getSlot("Block"), value);
+    this(Klon.ROOT.getSlot("Block"), value);
   }
 
   public KlonBlock(KlonObject parent, Block attached) {
     super(parent, attached);
+    this.prototype = KlonBlock.class.getAnnotation(Prototype.class);
   }
 
   @Override

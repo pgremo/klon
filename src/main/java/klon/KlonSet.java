@@ -1,15 +1,14 @@
 package klon;
 
-import java.util.Set;
 
 @Prototype(name = "Set", parent = "Object")
-public class KlonSet extends KlonObject<Set> {
+public class KlonSet extends KlonObject {
 
   public KlonSet() {
     super();
   }
 
-  public KlonSet(KlonObject parent, Set attached) {
+  public KlonSet(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonSet.class.getAnnotation(Prototype.class);
   }
@@ -20,7 +19,7 @@ public class KlonSet extends KlonObject<Set> {
   }
 
   @Override
-  public KlonObject clone(Set subject) {
+  public KlonObject clone(Object subject) {
     return new KlonSet(this, subject);
   }
 

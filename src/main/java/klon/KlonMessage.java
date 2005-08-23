@@ -1,13 +1,13 @@
 package klon;
 
 @Prototype(name = "Message", parent = "Object")
-public class KlonMessage extends KlonObject<Message> {
+public class KlonMessage extends KlonObject {
 
   public KlonMessage() {
     super();
   }
 
-  public KlonMessage(KlonObject parent, Message attached) {
+  public KlonMessage(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonMessage.class.getAnnotation(Prototype.class);
   }
@@ -18,7 +18,7 @@ public class KlonMessage extends KlonObject<Message> {
   }
 
   @Override
-  public KlonObject clone(Message subject) {
+  public KlonObject clone(Object subject) {
     return new KlonMessage(this, subject);
   }
 

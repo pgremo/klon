@@ -20,6 +20,7 @@ public class Shell {
       int depth = 0;
       char current = (char) 0;
       buffer.setLength(0);
+      boolean quotting = false;
       try {
         while ("\n".indexOf(current) == -1 || depth > 0) {
           current = (char) in.read();
@@ -29,6 +30,14 @@ public class Shell {
           }
           if (CLOSE_GROUP.indexOf(current) > -1) {
             depth--;
+          }
+          if ('"' == current) {
+            quotting = !quotting;
+            if (quotting) {
+              depth++;
+            } else {
+              depth--;
+            }
           }
         }
         Message message = compiler.fromString(buffer.toString());

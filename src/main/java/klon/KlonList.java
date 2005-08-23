@@ -1,15 +1,14 @@
 package klon;
 
-import java.util.List;
 
 @Prototype(name = "List", parent = "Object")
-public class KlonList extends KlonObject<List> {
+public class KlonList extends KlonObject {
 
   public KlonList() {
     super();
   }
 
-  public KlonList(KlonObject parent, List attached) {
+  public KlonList(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonList.class.getAnnotation(Prototype.class);
   }
@@ -20,7 +19,7 @@ public class KlonList extends KlonObject<List> {
   }
 
   @Override
-  public KlonObject clone(List subject) {
+  public KlonObject clone(Object subject) {
     return new KlonList(this, subject);
   }
 

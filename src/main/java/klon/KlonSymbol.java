@@ -1,13 +1,13 @@
 package klon;
 
 @Prototype(name = "Symbol", parent = "Object")
-public class KlonSymbol extends KlonObject<String> {
+public class KlonSymbol extends KlonObject {
 
   public KlonSymbol() {
     super();
   }
 
-  public KlonSymbol(KlonObject parent, String attached) {
+  public KlonSymbol(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonSymbol.class.getAnnotation(Prototype.class);
   }
@@ -18,7 +18,7 @@ public class KlonSymbol extends KlonObject<String> {
   }
 
   @Override
-  public KlonObject clone(String subject) {
+  public KlonObject clone(Object subject) {
     return new KlonSymbol(this, subject);
   }
 

@@ -103,7 +103,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 <= 2");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), ((KlonNumber) value));
+    assertEquals(object.getSlot("Number").clone(2D), value);
 
     message = compiler.fromString("2 <= 3");
     value = message.eval(object, object);

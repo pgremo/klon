@@ -1,13 +1,13 @@
 package klon;
 
 @Prototype(name = "String", parent = "Object")
-public class KlonString extends KlonObject<String> {
+public class KlonString extends KlonObject {
 
   public KlonString() {
     super();
   }
 
-  public KlonString(KlonObject parent, String attached) {
+  public KlonString(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonString.class.getAnnotation(Prototype.class);
   }
@@ -18,7 +18,7 @@ public class KlonString extends KlonObject<String> {
   }
 
   @Override
-  public KlonObject clone(String subject) {
+  public KlonObject clone(Object subject) {
     return new KlonString(this, subject);
   }
 

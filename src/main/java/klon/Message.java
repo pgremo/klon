@@ -111,7 +111,7 @@ public class Message {
       result.append(selector);
     }
     if (literal != null) {
-      if (literal instanceof KlonString) {
+      if ("String".equals(literal.getType())) {
         result.append("\"").append(literal).append("\"");
       } else {
         result.append(literal);

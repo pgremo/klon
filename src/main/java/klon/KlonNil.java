@@ -1,7 +1,7 @@
 package klon;
 
 @Prototype(name = "Nil", parent = "Object")
-public class KlonNil extends KlonObject<Object> {
+public class KlonNil extends KlonObject {
 
   public KlonNil() {
     super();

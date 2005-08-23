@@ -6,17 +6,17 @@ import java.util.HashSet;
 import java.util.Map;
 
 @Prototype(name = "Object", parent = "Klon")
-public class KlonObject<T> {
+public class KlonObject {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
-  protected T primitive;
+  protected Object primitive;
   protected Prototype prototype;
 
   public KlonObject() {
     this(null, null);
   }
 
-  public KlonObject(KlonObject parent, T attached) {
+  public KlonObject(KlonObject parent, Object attached) {
     slots.put("parent", parent);
     this.primitive = attached;
     this.prototype = KlonObject.class.getAnnotation(Prototype.class);
@@ -30,8 +30,8 @@ public class KlonObject<T> {
     return clone(primitive);
   }
 
-  public KlonObject clone(T subject) {
-    return new KlonObject<Object>(this, subject);
+  public KlonObject clone(Object subject) {
+    return new KlonObject(this, subject);
   }
 
   @SuppressWarnings("unused")
@@ -40,7 +40,7 @@ public class KlonObject<T> {
     return this;
   }
 
-  public T getPrimitive() {
+  public Object getPrimitive() {
     return primitive;
   }
 
@@ -114,7 +114,7 @@ public class KlonObject<T> {
 
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
-    String name = message.getSelector().getPrimitive();
+    String name = (String) message.getSelector().getPrimitive();
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = context.getSlot(name);
@@ -214,11 +214,10 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = context.clone();
-    String name = message.getArgument(0).getSelector().getPrimitive();
-    String value = message.getArgument(1).getSelector().getPrimitive();
+    String name = (String) message.getArgument(0).getSelector().getPrimitive();
+    String value = (String) message.getArgument(1).getSelector().getPrimitive();
     Message code = message.getArgument(2);
-    for (Object item : receiver.slots.entrySet()) {
-      Map.Entry<String, KlonObject> current = (Map.Entry<String, KlonObject>) item;
+    for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
       scope.setSlot(name, receiver.getSlot("String").clone(current.getKey()));
       scope.setSlot(value, current.getValue());
       result = code.eval(scope, scope);
@@ -290,7 +289,10 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = context.clone();
-    String counter = message.getArgument(0).getSelector().getPrimitive();
+    String counter = (String) message
+        .getArgument(0)
+          .getSelector()
+          .getPrimitive();
     int start = message.evalAsNumber(context, 1).intValue();
     int end = message.evalAsNumber(context, 2).intValue();
     int increment;
@@ -304,7 +306,7 @@ public class KlonObject<T> {
     }
     int i = start;
     while (!(increment > 0 ? i > end : i < end)) {
-      scope.setSlot(counter, receiver.getSlot("Number").clone((double) i));
+      scope.setSlot(counter, receiver.getSlot("Number").clone(i));
       result = code.eval(scope, scope);
       i += increment;
     }
@@ -407,7 +409,7 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
-    if (receiver.getSlot(target.getSelector().getPrimitive()) != null) {
+    if (receiver.getSlot((String) target.getSelector().getPrimitive()) != null) {
       result = receiver.perform(context, target);
     }
     return result;

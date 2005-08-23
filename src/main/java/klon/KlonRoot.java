@@ -3,7 +3,7 @@ package klon;
 import java.util.Arrays;
 import java.util.Map;
 
-public class KlonRoot extends KlonObject<String[]> {
+public class KlonRoot extends KlonObject {
 
   public KlonRoot(String[] args) {
     this.primitive = args;
@@ -63,7 +63,8 @@ public class KlonRoot extends KlonObject<String[]> {
     }
     setSlot("Properties", properties);
 
-    setSlot("Arguments", getSlot("List").clone(Arrays.asList(primitive)));
+    setSlot("Arguments", getSlot("List").clone(
+        Arrays.asList((String[]) primitive)));
 
   }
 

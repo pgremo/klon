@@ -1,13 +1,13 @@
 package klon;
 
 @Prototype(name = "Block", parent = "Object")
-public class KlonBlock extends KlonObject<Block> {
+public class KlonBlock extends KlonObject {
 
   public KlonBlock() {
     super();
   }
 
-  public KlonBlock(KlonObject parent, Block attached) {
+  public KlonBlock(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonBlock.class.getAnnotation(Prototype.class);
   }
@@ -18,15 +18,15 @@ public class KlonBlock extends KlonObject<Block> {
   }
 
   @Override
-  public KlonObject clone(Block subject) {
+  public KlonObject clone(Object subject) {
     return new KlonBlock(this, subject);
   }
 
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return primitive == null ? getSlot("Nil") : primitive.activate(receiver,
-        context, message);
+    return primitive == null ? getSlot("Nil") : ((Block) primitive).activate(
+        receiver, context, message);
   }
 
   @ExposedAs("ifTrue")
@@ -77,7 +77,8 @@ public class KlonBlock extends KlonObject<Block> {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").clone(String.valueOf(receiver.getPrimitive()));
+    return receiver.getSlot("String").clone(
+        String.valueOf(receiver.getPrimitive()));
   }
 
 }

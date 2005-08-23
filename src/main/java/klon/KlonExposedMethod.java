@@ -3,13 +3,13 @@ package klon;
 import java.lang.reflect.Method;
 
 @Prototype(name = "ExposedMethod", parent = "Object")
-public class KlonExposedMethod extends KlonObject<Method> {
+public class KlonExposedMethod extends KlonObject {
 
   public KlonExposedMethod() {
     super();
   }
 
-  public KlonExposedMethod(KlonObject parent, Method attached) {
+  public KlonExposedMethod(KlonObject parent, Object attached) {
     super(parent, attached);
     this.prototype = KlonExposedMethod.class.getAnnotation(Prototype.class);
   }
@@ -22,8 +22,8 @@ public class KlonExposedMethod extends KlonObject<Method> {
       result = getSlot("Nil");
     } else {
       try {
-        result = (KlonObject) primitive
-            .invoke(null, receiver, context, message);
+        result = (KlonObject) ((Method) primitive).invoke(null, receiver,
+            context, message);
       } catch (Exception e) {
         Throwable cause = e.getCause();
         if (cause instanceof KlonException) {
@@ -41,7 +41,7 @@ public class KlonExposedMethod extends KlonObject<Method> {
   }
 
   @Override
-  public KlonObject clone(Method subject) {
+  public KlonObject clone(Object subject) {
     return new KlonExposedMethod(this, subject);
   }
 

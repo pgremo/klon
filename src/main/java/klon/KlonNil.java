@@ -3,12 +3,8 @@ package klon;
 @Prototype(name = "Nil", parent = "Object")
 public class KlonNil extends KlonObject<Object> {
 
-  public KlonNil() throws KlonException {
-    this(null);
-  }
-
-  public KlonNil(Object attached) throws KlonException {
-    this(Klon.ROOT.getSlot("Nil"), attached);
+  public KlonNil() {
+    super();
   }
 
   public KlonNil(KlonObject parent, Object attached) {
@@ -22,8 +18,8 @@ public class KlonNil extends KlonObject<Object> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonNil(this, primitive);
+  public KlonObject clone(Object subject) {
+    return this;
   }
 
   @Override
@@ -35,7 +31,7 @@ public class KlonNil extends KlonObject<Object> {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return new KlonString("");
+    return receiver.getSlot("String").clone("");
   }
 
   @ExposedAs("and")

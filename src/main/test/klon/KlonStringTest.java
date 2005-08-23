@@ -4,18 +4,20 @@ import junit.framework.TestCase;
 
 public class KlonStringTest extends TestCase {
 
+  private KlonObject object;
+
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    Klon.init(new String[0]);
+    object = new KlonRoot(new String[0]);
+    object.configure(object);
   }
 
   /*
    * Test method for 'klon.KlonString.add(KlonObject, Message)'
    */
   public void testAdd() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("\"Hello\" + \" \" + \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -27,8 +29,7 @@ public class KlonStringTest extends TestCase {
    * Test method for 'klon.KlonNumber.isEqual(KlonObject, Message)'
    */
   public void testIsEqual() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("\"Hello\" == \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);

@@ -3,12 +3,8 @@ package klon;
 @Prototype(name = "Message", parent = "Object")
 public class KlonMessage extends KlonObject<Message> {
 
-  public KlonMessage() throws KlonException {
-    this(null);
-  }
-
-  public KlonMessage(Message attached) throws KlonException {
-    this(Klon.ROOT.getSlot("Message"), attached);
+  public KlonMessage() {
+    super();
   }
 
   public KlonMessage(KlonObject parent, Message attached) {
@@ -22,8 +18,8 @@ public class KlonMessage extends KlonObject<Message> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonMessage(this, primitive);
+  public KlonObject clone(Message subject) {
+    return new KlonMessage(this, subject);
   }
 
 }

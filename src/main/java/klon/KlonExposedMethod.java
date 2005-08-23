@@ -5,12 +5,8 @@ import java.lang.reflect.Method;
 @Prototype(name = "ExposedMethod", parent = "Object")
 public class KlonExposedMethod extends KlonObject<Method> {
 
-  public KlonExposedMethod() throws KlonException {
-    this(null);
-  }
-
-  public KlonExposedMethod(Method attached) throws KlonException {
-    this(Klon.ROOT.getSlot("ExposedMethod"), attached);
+  public KlonExposedMethod() {
+    super();
   }
 
   public KlonExposedMethod(KlonObject parent, Method attached) {
@@ -45,8 +41,8 @@ public class KlonExposedMethod extends KlonObject<Method> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonExposedMethod(this, primitive);
+  public KlonObject clone(Method subject) {
+    return new KlonExposedMethod(this, subject);
   }
 
 }

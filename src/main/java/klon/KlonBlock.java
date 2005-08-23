@@ -3,12 +3,8 @@ package klon;
 @Prototype(name = "Block", parent = "Object")
 public class KlonBlock extends KlonObject<Block> {
 
-  public KlonBlock() throws KlonException {
-    this(null);
-  }
-
-  public KlonBlock(Block value) throws KlonException {
-    this(Klon.ROOT.getSlot("Block"), value);
+  public KlonBlock() {
+    super();
   }
 
   public KlonBlock(KlonObject parent, Block attached) {
@@ -22,8 +18,8 @@ public class KlonBlock extends KlonObject<Block> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonBlock(this, primitive);
+  public KlonObject clone(Block subject) {
+    return new KlonBlock(this, subject);
   }
 
   @Override
@@ -81,7 +77,7 @@ public class KlonBlock extends KlonObject<Block> {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return new KlonString(String.valueOf(receiver.getPrimitive()));
+    return receiver.getSlot("String").clone(String.valueOf(receiver.getPrimitive()));
   }
 
 }

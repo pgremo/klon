@@ -50,7 +50,8 @@ public final class Configurator {
           throw new KlonException(identity + " second parameter must be a "
               + KlonException.class + ".");
         }
-        target.setSlot(exposedAs.value(), new KlonExposedMethod(current));
+        target.setSlot(exposedAs.value(), root.getSlot("ExposedMethod").clone(
+            current));
       }
     }
   }

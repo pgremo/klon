@@ -5,12 +5,8 @@ import java.util.List;
 @Prototype(name = "List", parent = "Object")
 public class KlonList extends KlonObject<List> {
 
-  public KlonList() throws KlonException {
-    this(null);
-  }
-
-  public KlonList(List value) throws KlonException {
-    this(Klon.ROOT.getSlot("List"), value);
+  public KlonList() {
+    super();
   }
 
   public KlonList(KlonObject parent, List attached) {
@@ -24,8 +20,8 @@ public class KlonList extends KlonObject<List> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonList(this, primitive);
+  public KlonObject clone(List subject) {
+    return new KlonList(this, subject);
   }
 
   @Override
@@ -39,7 +35,7 @@ public class KlonList extends KlonObject<List> {
       }
       result.append(current.toString());
     }
-    return new KlonString(result.toString());
+    return receiver.getSlot("String").clone(result.toString());
   }
 
 }

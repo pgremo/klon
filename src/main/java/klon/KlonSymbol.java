@@ -3,12 +3,8 @@ package klon;
 @Prototype(name = "Symbol", parent = "Object")
 public class KlonSymbol extends KlonObject<String> {
 
-  public KlonSymbol() throws KlonException {
-    this("");
-  }
-
-  public KlonSymbol(String value) throws KlonException {
-    this(Klon.ROOT.getSlot("Symbol"), value);
+  public KlonSymbol() {
+    super();
   }
 
   public KlonSymbol(KlonObject parent, String attached) {
@@ -22,8 +18,8 @@ public class KlonSymbol extends KlonObject<String> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonSymbol(this, primitive);
+  public KlonObject clone(String subject) {
+    return new KlonSymbol(this, subject);
   }
 
 }

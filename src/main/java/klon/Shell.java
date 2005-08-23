@@ -10,8 +10,9 @@ public class Shell {
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
 
-  public void process(Reader in, PrintWriter out, PrintWriter error) {
-    Compiler compiler = new Compiler();
+  public void process(KlonObject root, Reader in, PrintWriter out,
+      PrintWriter error) {
+    Compiler compiler = new Compiler(root);
     StringBuilder buffer = new StringBuilder();
     while (true) {
       out.print(PROMPT);
@@ -31,7 +32,7 @@ public class Shell {
           }
         }
         Message message = compiler.fromString(buffer.toString());
-        KlonObject value = message.eval(Klon.ROOT, Klon.ROOT);
+        KlonObject value = message.eval(root, root);
         Message reportMessage = compiler.fromString("writeLine");
         Message argument = new Message();
         argument.setLiteral(value);
@@ -45,10 +46,11 @@ public class Shell {
   }
 
   public static void main(String[] args) throws Exception {
-    Klon.init(args);
-    new Shell().process(new InputStreamReader(System.in), new PrintWriter(
-        new OutputStreamWriter(System.out)), new PrintWriter(
-        new OutputStreamWriter(System.err)));
+    KlonObject root = new KlonRoot(args);
+    root.configure(root);
+    new Shell().process(root, new InputStreamReader(System.in),
+        new PrintWriter(new OutputStreamWriter(System.out)), new PrintWriter(
+            new OutputStreamWriter(System.err)));
   }
 
 }

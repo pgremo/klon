@@ -5,12 +5,8 @@ import java.util.Set;
 @Prototype(name = "Set", parent = "Object")
 public class KlonSet extends KlonObject<Set> {
 
-  public KlonSet() throws KlonException {
-    this(null);
-  }
-
-  public KlonSet(Set value) throws KlonException {
-    this(Klon.ROOT.getSlot("List"), value);
+  public KlonSet() {
+    super();
   }
 
   public KlonSet(KlonObject parent, Set attached) {
@@ -24,8 +20,8 @@ public class KlonSet extends KlonObject<Set> {
   }
 
   @Override
-  public KlonObject clone() {
-    return new KlonSet(this, primitive);
+  public KlonObject clone(Set subject) {
+    return new KlonSet(this, subject);
   }
 
   @Override
@@ -39,7 +35,7 @@ public class KlonSet extends KlonObject<Set> {
       }
       result.append(current.toString());
     }
-    return new KlonString(result.toString());
+    return receiver.getSlot("String").clone(result.toString());
   }
 
 }

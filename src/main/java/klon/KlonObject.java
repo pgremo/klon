@@ -16,10 +16,6 @@ public class KlonObject<T> {
     this(null, null);
   }
 
-  public KlonObject(T attached) throws KlonException {
-    this(Klon.ROOT.getSlot("Object"), attached);
-  }
-
   public KlonObject(KlonObject parent, T attached) {
     slots.put("parent", parent);
     this.primitive = attached;
@@ -31,7 +27,11 @@ public class KlonObject<T> {
   }
 
   public KlonObject clone() {
-    return new KlonObject<Object>(this, primitive);
+    return clone(primitive);
+  }
+
+  public KlonObject clone(T subject) {
+    return new KlonObject<Object>(this, subject);
   }
 
   @SuppressWarnings("unused")
@@ -109,7 +109,7 @@ public class KlonObject<T> {
   }
 
   public KlonObject slotNames() throws KlonException {
-    return new KlonSet(slots.keySet());
+    return getSlot("Set").clone(slots.keySet());
   }
 
   public KlonObject perform(KlonObject context, Message message)
@@ -160,7 +160,7 @@ public class KlonObject<T> {
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return new KlonString(receiver.getType());
+    return receiver.getSlot("String").clone(receiver.getType());
   }
 
   @ExposedAs("send")
@@ -219,7 +219,7 @@ public class KlonObject<T> {
     Message code = message.getArgument(2);
     for (Object item : receiver.slots.entrySet()) {
       Map.Entry<String, KlonObject> current = (Map.Entry<String, KlonObject>) item;
-      scope.setSlot(name, new KlonString(current.getKey()));
+      scope.setSlot(name, receiver.getSlot("String").clone(current.getKey()));
       scope.setSlot(value, current.getValue());
       result = code.eval(scope, scope);
     }
@@ -235,14 +235,15 @@ public class KlonObject<T> {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return new KlonString(receiver.getClass().getSimpleName() + "@"
-        + Integer.toHexString(receiver.hashCode()));
+    return receiver.getSlot("String").clone(
+        receiver.getClass().getSimpleName() + "@"
+            + Integer.toHexString(receiver.hashCode()));
   }
 
   @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    Message printMessage = new Compiler().fromString("asString");
+    Message printMessage = new Compiler(receiver).fromString("asString");
     for (int i = 0; i < message.getArgumentCount(); i++) {
       KlonObject target = message.eval(context, i);
       System.out.print(target.perform(context, printMessage));
@@ -281,7 +282,8 @@ public class KlonObject<T> {
       }
       parameters[i] = (String) current.getPrimitive();
     }
-    return new KlonBlock(new Block(parameters, message.getArgument(count)));
+    return receiver.getSlot("Block").clone(
+        new Block(parameters, message.getArgument(count)));
   }
 
   @ExposedAs("for")
@@ -303,7 +305,7 @@ public class KlonObject<T> {
     }
     int i = start;
     while (!(increment > 0 ? i > end : i < end)) {
-      scope.setSlot(counter, new KlonNumber((double) i));
+      scope.setSlot(counter, receiver.getSlot("Number").clone((double) i));
       result = code.eval(scope, scope);
       i += increment;
     }

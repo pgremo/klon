@@ -4,15 +4,17 @@ import junit.framework.TestCase;
 
 public class KlonObjectTest extends TestCase {
 
+  private KlonObject object;
+
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    Klon.init(new String[0]);
+    object = new KlonRoot(new String[0]);
+    object.configure(object);
   }
 
   public void testSlotOperations() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Account := 1");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -26,12 +28,11 @@ public class KlonObjectTest extends TestCase {
     message = compiler.fromString("removeSlot(\"Account\")");
     value = object.perform(object, message);
     assertNotNull(value);
-    assertEquals(Klon.ROOT, value);
+    assertEquals(object, value);
   }
 
   public void testUpdateNonSlot() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("dummy = 1");
     try {
       message.eval(object, object);
@@ -42,8 +43,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForIncrement() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := \"\"; for(a,1,10,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
@@ -52,8 +52,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForDecrement() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := \"\"; for(a,10,1,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
@@ -62,8 +61,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForStep() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := \"\"; for(a,10,1,-2,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
@@ -72,8 +70,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForEqual() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := \"\"; for(a,10,10,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
@@ -82,8 +79,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testAndNonNil() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Object and Object");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -91,8 +87,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testAndNil() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Object and Nil");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -100,8 +95,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testOrNonNil() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Object or Object");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -109,8 +103,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testOrNil() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Object or Nil");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
@@ -118,8 +111,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testWhile() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := 0; while(total < 10, total = total + 1)");
     KlonObject value = message.eval(object, object);
@@ -129,8 +121,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testIf() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("total := 0; if(total == 0, total = 10)");
     KlonObject value = message.eval(object, object);
@@ -146,8 +137,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testCondition() throws Exception {
-    KlonObject object = Klon.ROOT;
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(object);
     Message message = compiler
         .fromString("Thing := Object clone; Thing total := 10; Thing ?total");
     KlonObject value = message.eval(object, object);

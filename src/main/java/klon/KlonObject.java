@@ -1,5 +1,6 @@
 package klon;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +16,8 @@ public class KlonObject<T> {
     this(null, null);
   }
 
-  public KlonObject(T attached) {
-    this(null, attached);
+  public KlonObject(T attached) throws KlonException {
+    this(Klon.ROOT.getSlot("Object"), attached);
   }
 
   public KlonObject(KlonObject parent, T attached) {
@@ -66,16 +67,15 @@ public class KlonObject<T> {
 
   private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
       throws KlonException {
-    KlonObject result;
+    KlonObject result = null;
     if (slots.containsKey(name)) {
       result = slots.get(name);
     } else {
       KlonObject parent = slots.get("parent");
-      if (parent == null || searchPath.contains(parent)) {
-        throw new KlonException(name + " does not exist");
+      if (parent != null && !searchPath.contains(parent)) {
+        searchPath.add(parent);
+        result = parent.getSlot(name, searchPath);
       }
-      searchPath.add(parent);
-      result = parent.getSlot(name, searchPath);
     }
     return result;
   }
@@ -164,7 +164,12 @@ public class KlonObject<T> {
   @ExposedAs("getSlot")
   public static KlonObject getSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot(message.evalAsString(context, 0));
+    String name = message.evalAsString(context, 0);
+    KlonObject result = receiver.getSlot(name);
+    if (result == null) {
+      throw new KlonException(name + " does not exist");
+    }
+    return result;
   }
 
   @ExposedAs("setSlot")
@@ -215,23 +220,22 @@ public class KlonObject<T> {
     return receiver.slotNames();
   }
 
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.print(receiver.getClass().getSimpleName() + "@"
+    return new KlonString(receiver.getClass().getSimpleName() + "@"
         + Integer.toHexString(receiver.hashCode()));
-    return receiver.getSlot("Nil");
   }
 
   @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    Message printMessage = new Compiler().fromString("print");
+    Message printMessage = new Compiler().fromString("asString");
     for (int i = 0; i < message.getArgumentCount(); i++) {
       KlonObject target = message.eval(context, i);
-      target.perform(context, printMessage);
+      System.out.print(target.perform(context, printMessage));
     }
-    return receiver.getSlot("Nil");
+    return receiver;
   }
 
   @ExposedAs("writeLine")
@@ -239,7 +243,7 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     write(receiver, context, message);
     System.out.println();
-    return receiver.getSlot("Nil");
+    return receiver;
   }
 
   @ExposedAs("exit")
@@ -282,16 +286,14 @@ public class KlonObject<T> {
       increment = message.evalAsNumber(context, 3).intValue();
       code = message.getArgument(4);
     } else {
-      increment = (int) Math.signum(end - start);
+      increment = end - start < 0 ? -1 : 1;
       code = message.getArgument(3);
     }
-    boolean done = start == end;
     int i = start;
-    while (!done) {
+    while (!(increment > 0 ? i > end : i < end)) {
       scope.setSlot(counter, new KlonNumber((double) i));
       result = code.eval(scope, scope);
       i += increment;
-      done = increment > 0 ? i >= end : i <= end;
     }
     return result;
   }
@@ -312,12 +314,9 @@ public class KlonObject<T> {
   @ExposedAs("if")
   public static KlonObject ifBranch(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    KlonObject nil = receiver.getSlot("Nil");
-    KlonObject result = nil;
-    if (message.getArgumentCount() == 1) {
-      result = message.eval(context, 0);
-    } else {
-      if (!nil.equals(message.eval(context, 0))) {
+    KlonObject result = message.eval(context, 0);
+    if (message.getArgumentCount() > 1) {
+      if (!receiver.getSlot("Nil").equals(result)) {
         result = message.eval(context, 1);
       } else if (message.getArgumentCount() == 3) {
         result = message.eval(context, 2);
@@ -335,7 +334,7 @@ public class KlonObject<T> {
 
   @SuppressWarnings("unused")
   @ExposedAs("or")
-  public static KlonObject of(KlonObject receiver, KlonObject context,
+  public static KlonObject or(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver;
   }
@@ -349,7 +348,7 @@ public class KlonObject<T> {
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return message.eval(context, 1);
+    return message.eval(context, 0);
   }
 
   @SuppressWarnings("unused")
@@ -377,12 +376,8 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
-    try {
-      if (receiver.getSlot(target.getSelector().getPrimitive()) != null) {
-        result = receiver.perform(context, target);
-      }
-    } catch (KlonException e) {
-
+    if (receiver.getSlot(target.getSelector().getPrimitive()) != null) {
+      result = receiver.perform(context, target);
     }
     return result;
   }

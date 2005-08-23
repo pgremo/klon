@@ -8,19 +8,18 @@ import junit.framework.TestCase;
 
 public class KlonParserTest extends TestCase {
 
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    Klon.init(new String[0]);
+  }
+
   public void testParseNumber() throws Exception {
-    String[][] expected = new String[][]{
-        {"123.0", "123"},
-        {"123.456", "123.456"},
-        {"0.456", "0.456"},
-        {".456", "0.456"},
-        {"123e-2", "1.23"},
-        {"123e2", "12300"},
-        {"123.456e-2", "1.23456"},
-        {"123.456e2", "12345.6"},
-        {"0x0", "0"},
-        {"0x0F", "15"},
-        {"0XeE", "238"}};
+    String[][] expected = new String[][] { { "123.0", "123" },
+        { "123.456", "123.456" }, { "0.456", "0.456" }, { ".456", "0.456" },
+        { "123e-2", "1.23" }, { "123e2", "12300" },
+        { "123.456e-2", "1.23456" }, { "123.456e2", "12345.6" },
+        { "0x0", "0" }, { "0x0F", "15" }, { "0XeE", "238" } };
     for (String[] current : expected) {
       Message message = new Compiler().fromString(current[0]);
       assertNotNull(message);
@@ -41,11 +40,12 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testCloneAssignment() throws Exception {
-    Message message = new Compiler().fromString("Account := Object clone\nAccount balance := 0");
+    Message message = new Compiler()
+        .fromString("Account := Object clone\nAccount balance := 0");
     assertNotNull(message);
     assertEquals(
-      "setSlot(\"Account\", Object clone);\nAccount setSlot(\"balance\", 0)",
-      message.toString());
+        "setSlot(\"Account\", Object clone);\nAccount setSlot(\"balance\", 0)",
+        message.toString());
   }
 
   public void testMessage() throws Exception {

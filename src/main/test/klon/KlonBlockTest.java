@@ -4,6 +4,12 @@ import junit.framework.TestCase;
 
 public class KlonBlockTest extends TestCase {
 
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    Klon.init(new String[0]);
+  }
+
   public void testCreate() throws Exception {
     KlonObject object = Klon.ROOT;
     Compiler compiler = new Compiler();
@@ -19,6 +25,37 @@ public class KlonBlockTest extends TestCase {
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
     assertEquals("Hello", value.toString());
+  }
+
+  public void testInvalid() throws Exception {
+    KlonObject object = Klon.ROOT;
+    Compiler compiler = new Compiler();
+    Message message = compiler
+        .fromString("setter := block(\"a\",self result := a)");
+    try {
+      message.eval(object, object);
+      fail("expected exception");
+    } catch (KlonException e) {
+      assertEquals("null must be a Symbol", e.getMessage());
+    }
+  }
+
+  public void testInsuficientArguments() throws Exception {
+    KlonObject object = Klon.ROOT;
+    Compiler compiler = new Compiler();
+    Message message = compiler
+        .fromString("setter := block(a,b,self result := a + b)");
+    KlonObject value = message.eval(object, object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonBlock);
+    assertEquals("block(a, b, self setSlot(\"result\", a +(b)))", value
+        .toString());
+
+    message = compiler.fromString("setter(\"Hello\")");
+    value = message.eval(object, object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonString);
+    assertEquals("HelloNil", value.toString());
   }
 
   public void testIfTrue() throws Exception {

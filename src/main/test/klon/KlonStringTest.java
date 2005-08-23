@@ -4,6 +4,12 @@ import junit.framework.TestCase;
 
 public class KlonStringTest extends TestCase {
 
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+    Klon.init(new String[0]);
+  }
+
   /*
    * Test method for 'klon.KlonString.add(KlonObject, Message)'
    */

@@ -28,21 +28,8 @@ public class KlonSet extends KlonObject<Set> {
   }
 
   @Override
-  public String toString() {
-    StringBuilder result = new StringBuilder();
-    if (primitive != null) {
-      for (Object current : primitive) {
-        if (result.length() > 0) {
-          result.append(", ");
-        }
-        result.append(current.toString());
-      }
-    }
-    return result.toString();
-  }
-
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     StringBuilder result = new StringBuilder();
     for (Object current : (Iterable) receiver.getPrimitive()) {
@@ -51,8 +38,7 @@ public class KlonSet extends KlonObject<Set> {
       }
       result.append(current.toString());
     }
-    System.out.print(result.toString());
-    return receiver.getSlot("Nil");
+    return new KlonString(result.toString());
   }
 
 }

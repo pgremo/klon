@@ -12,8 +12,11 @@ public class Message {
   private Message attached;
   private Message next;
 
-  public List<Message> getArguments() {
-    return arguments;
+  public void setArguments(Message... args) {
+    arguments.clear();
+    for (Message current : args) {
+      arguments.add(current);
+    }
   }
 
   public int getArgumentCount() {

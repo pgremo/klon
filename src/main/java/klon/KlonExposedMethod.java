@@ -28,7 +28,11 @@ public class KlonExposedMethod extends KlonObject<Method> {
         result = (KlonObject) primitive
             .invoke(null, receiver, context, message);
       } catch (Exception e) {
-        throw new KlonException(e);
+        Throwable cause = e.getCause();
+        if (cause instanceof KlonException) {
+          throw (KlonException) cause;
+        }
+        throw new KlonException(cause);
       }
     }
     return result;
@@ -42,13 +46,6 @@ public class KlonExposedMethod extends KlonObject<Method> {
   @Override
   public KlonObject clone() {
     return new KlonExposedMethod(this, primitive);
-  }
-
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
-    System.out.println(receiver.getPrimitive());
-    return receiver.getSlot("Nil");
   }
 
 }

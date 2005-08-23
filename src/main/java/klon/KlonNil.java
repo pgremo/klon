@@ -27,14 +27,14 @@ public class KlonNil extends KlonObject<Object> {
 
   @Override
   public String toString() {
-    return "";
+    return "Nil";
   }
 
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
+  @Override
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.print("");
-    return receiver;
+    return new KlonString("");
   }
 
   @ExposedAs("and")

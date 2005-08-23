@@ -1,12 +1,13 @@
 package klon;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class Klon {
 
-  public static final KlonObject ROOT;
+  public static KlonObject ROOT;
 
-  static {
+  public static void init(String[] args) throws KlonException {
     KlonObject object = new KlonObject();
     ROOT = new KlonObject<Object>(object, null);
     object.setSlot("parent", ROOT);
@@ -40,30 +41,26 @@ public class Klon {
     KlonObject message = new KlonMessage();
     ROOT.setSlot("Message", message);
 
-    try {
-      KlonObject properties = object.clone();
-      for (Map.Entry<Object, Object> current : System
-          .getProperties()
-            .entrySet()) {
-        properties.setSlot(current.getKey().toString(), new KlonString(current
-            .getValue()
-              .toString()));
-      }
-      ROOT.setSlot("Properties", properties);
-
-      object.configure(ROOT);
-      nil.configure(ROOT);
-      number.configure(ROOT);
-      string.configure(ROOT);
-      block.configure(ROOT);
-      symbol.configure(ROOT);
-      exposedMethod.configure(ROOT);
-      set.configure(ROOT);
-      list.configure(ROOT);
-      message.configure(ROOT);
-    } catch (Exception e) {
-      e.printStackTrace();
+    KlonObject properties = object.clone();
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), new KlonString(current
+          .getValue()
+            .toString()));
     }
+    ROOT.setSlot("Properties", properties);
+
+    Klon.ROOT.setSlot("Arguments", new KlonList(Arrays.asList(args)));
+
+    object.configure(ROOT);
+    nil.configure(ROOT);
+    number.configure(ROOT);
+    string.configure(ROOT);
+    block.configure(ROOT);
+    symbol.configure(ROOT);
+    exposedMethod.configure(ROOT);
+    set.configure(ROOT);
+    list.configure(ROOT);
+    message.configure(ROOT);
   }
 
 }

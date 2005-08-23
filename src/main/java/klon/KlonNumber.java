@@ -12,7 +12,7 @@ public class KlonNumber extends KlonObject<Double> {
     formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
   }
 
-  public KlonNumber() {
+  public KlonNumber() throws KlonException {
     super(0D);
   }
 
@@ -165,11 +165,11 @@ public class KlonNumber extends KlonObject<Double> {
     throw new KlonException("Illegal Argument for sqrt");
   }
 
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
+  @Override
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.print(formatter.format(receiver.getPrimitive()));
-    return receiver.getSlot("Nil");
+    return new KlonString(formatter.format(receiver.getPrimitive()));
   }
 
 }

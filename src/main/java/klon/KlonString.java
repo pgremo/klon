@@ -3,7 +3,7 @@ package klon;
 @Prototype(name = "String", parent = "Object")
 public class KlonString extends KlonObject<String> {
 
-  public KlonString() {
+  public KlonString() throws KlonException {
     super("");
   }
 
@@ -25,23 +25,11 @@ public class KlonString extends KlonObject<String> {
     return new KlonString(this, primitive);
   }
 
-  @Override
-  public String toString() {
-    return primitive;
-  }
-
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return new KlonString(receiver.getPrimitive().toString()
-        + message.eval(context, 0).getPrimitive().toString());
-  }
-
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
-    System.out.print(receiver.getPrimitive());
-    return receiver.getSlot("Nil");
+    return new KlonString(String.valueOf(receiver.toString())
+        + message.eval(context, 0).toString());
   }
 
 }

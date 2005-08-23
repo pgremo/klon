@@ -1,8 +1,9 @@
 <project name="klon" default="grammar.generate.grammatica">
 
 	<property name="src" value="src/main/java" />
-	<property name="src.grammar" value="src/main/grammatica" />
 	<property name="classes" value="target/classes" />
+	<property name="grammar" value="src/main/grammatica" />
+	<property name="grammar.classes" value="target/grammar-classes" />
 	<property name="test" value="src/main/test" />
 	<property name="test.classes" value="target/test-classes" />
 	<property name="coverage.classes" value="target/coverage-classes" />
@@ -12,6 +13,7 @@
 
 	<path id="classpath">
 		<pathelement path="${classes}" />
+		<pathelement path="${grammar.classes}" />
 		<filelist dir="${lib}">
 			<file name="antlr/jars/antlr-2.7.5.jar" />
 			<file name="checkstyle/jars/checkstyle-4.0-beta4.jar" />
@@ -37,9 +39,13 @@
 		<classpath refid="classpath" />
 	</taskdef>
 
+	<target name="clean">
+		<delete dir="target" />
+	</target>
+
 	<target name="grammar.generate.grammatica">
-		<grammatica grammar="${src.grammar}/klon.grammar">
-			<java dir="src/main/grammatica" package="klon.grammar.grammatica" public="true" />
+		<grammatica grammar="${grammar}/klon.grammar">
+			<java dir="${grammar}" package="klon.grammar.grammatica" public="true" />
 		</grammatica>
 	</target>
 
@@ -59,19 +65,23 @@
 		<copy file="style/project.css" todir="${docs}" />
 		<fail message="Audit failed." if="audit.failed" />
 	</target>
-	
+
 	<target name="compile">
+		<mkdir dir="${grammar.classes}" />
+		<javac fork="true" destdir="${grammar.classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
+			<classpath refid="classpath" />
+			<src path="${grammar}" />
+		</javac>
 		<mkdir dir="${classes}" />
 		<javac fork="true" destdir="${classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
 			<classpath refid="classpath" />
 			<src path="${src}" />
-			<src path="${src.grammar}" />
 		</javac>
-<!--		
-		<copy todir="${classes}">
-			<fileset dir="${resource}" includes="**/*.*" />
-		</copy>
--->		
+		<!--		
+				<copy todir="${classes}">
+					<fileset dir="${resource}" includes="**/*.*" />
+				</copy>
+		-->
 	</target>
 
 	<target name="junit.compile" depends="compile">

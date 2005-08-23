@@ -3,7 +3,7 @@ package klon;
 @Prototype(name = "Symbol", parent = "Object")
 public class KlonSymbol extends KlonObject<String> {
 
-  public KlonSymbol() {
+  public KlonSymbol() throws KlonException {
     super("");
   }
 
@@ -23,18 +23,6 @@ public class KlonSymbol extends KlonObject<String> {
   @Override
   public KlonObject clone() {
     return new KlonSymbol(this, primitive);
-  }
-
-  @Override
-  public String toString() {
-    return primitive.toString();
-  }
-
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
-    System.out.print(receiver.getPrimitive());
-    return receiver.getSlot("Nil");
   }
 
 }

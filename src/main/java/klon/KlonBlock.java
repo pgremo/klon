@@ -76,11 +76,11 @@ public class KlonBlock extends KlonObject<Block> {
     return nil;
   }
 
-  @ExposedAs("print")
-  public static KlonObject print(KlonObject receiver, KlonObject context,
+  @Override
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.print(receiver.getPrimitive());
-    return receiver.getSlot("Nil");
+    return new KlonString(String.valueOf(receiver.getPrimitive()));
   }
 
 }

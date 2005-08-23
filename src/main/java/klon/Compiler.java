@@ -217,7 +217,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   @Override
   protected Node exitLparen(Token node) throws ParseException {
     try {
-      node.addValue(root.getSlot("Symbol").clone(""));
+      node.addValue(root.getSlot("Symbol").clone("parenthesis"));
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {

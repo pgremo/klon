@@ -384,8 +384,8 @@ public class KlonObject<T> {
         .getSlot("Nil");
   }
 
-  @ExposedAs("")
-  public static KlonObject eval(KlonObject receiver, KlonObject context,
+  @ExposedAs("parenthesis")
+  public static KlonObject parenthesis(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return message.eval(context, 0);
   }

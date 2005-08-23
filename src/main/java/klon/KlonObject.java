@@ -236,8 +236,7 @@ public class KlonObject<T> {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String").clone(
-        receiver.getClass().getSimpleName() + "@"
-            + Integer.toHexString(receiver.hashCode()));
+        receiver.getType() + "@" + Integer.toHexString(receiver.hashCode()));
   }
 
   @ExposedAs("write")
@@ -383,6 +382,24 @@ public class KlonObject<T> {
       Message message) throws KlonException {
     return receiver.equals(message.eval(context, 0)) ? receiver : receiver
         .getSlot("Nil");
+  }
+
+  @ExposedAs("")
+  public static KlonObject eval(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return message.eval(context, 0);
+  }
+
+  @ExposedAs("brace")
+  public static KlonObject brace(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return message.eval(context, 0);
+  }
+
+  @ExposedAs("bracket")
+  public static KlonObject bracket(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return message.eval(context, 0);
   }
 
   @ExposedAs("?")

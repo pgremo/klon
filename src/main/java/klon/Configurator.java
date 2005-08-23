@@ -8,10 +8,9 @@ public final class Configurator {
 
   }
 
-  @SuppressWarnings("unchecked")
-  public static void configure(KlonObject root, KlonObject target, Class type)
-      throws KlonException {
-    Prototype prototype = (Prototype) type.getAnnotation(Prototype.class);
+  public static void configure(KlonObject root, KlonObject target,
+      Class<? extends Object> type) throws KlonException {
+    Prototype prototype = type.getAnnotation(Prototype.class);
     if (prototype == null) {
       throw new KlonException(type + " has not Prototype annotation.");
     }

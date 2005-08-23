@@ -27,9 +27,6 @@ public class KlonObjectTest extends TestCase {
     value = object.perform(object, message);
     assertNotNull(value);
     assertEquals(Klon.ROOT, value);
-
-    message = compiler.fromString("slotNames");
-    System.out.println(object.getSlot("Object").slotNames());
   }
 
   public void testUpdateNonSlot() throws Exception {
@@ -140,7 +137,8 @@ public class KlonObjectTest extends TestCase {
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);
     assertEquals("10", ((KlonNumber) value).toString());
-    message = compiler.fromString("total := 10; if(total == 0, total = 10, total = 5)");
+    message = compiler
+        .fromString("total := 10; if(total == 0, total = 10, total = 5)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNumber);

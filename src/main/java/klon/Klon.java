@@ -8,37 +8,50 @@ public class Klon {
   public static KlonObject ROOT;
 
   public static void init(String[] args) throws KlonException {
-    KlonObject object = new KlonObject();
-    ROOT = new KlonObject<Object>(object, null);
-    object.setSlot("parent", ROOT);
+    ROOT = new KlonObject();
     ROOT.setSlot("Klon", ROOT);
+
+    KlonObject object = new KlonObject();
     ROOT.setSlot("Object", object);
-
-    KlonObject nil = new KlonNil();
-    ROOT.setSlot("Nil", nil);
-
-    KlonObject number = new KlonNumber();
-    ROOT.setSlot("Number", number);
+    ROOT.setSlot("parent", object);
 
     KlonObject string = new KlonString();
     ROOT.setSlot("String", string);
 
-    KlonObject block = new KlonBlock();
-    ROOT.setSlot("Block", block);
-
-    KlonObject symbol = new KlonSymbol();
-    ROOT.setSlot("Symbol", symbol);
-
     KlonObject exposedMethod = new KlonExposedMethod();
     ROOT.setSlot("ExposedMethod", exposedMethod);
 
+    object.configure(ROOT);
+    string.configure(ROOT);
+    exposedMethod.configure(ROOT);
+
+    KlonObject nil = new KlonNil();
+    nil.configure(ROOT);
+    ROOT.setSlot("Nil", nil);
+
+    KlonObject number = new KlonNumber();
+    number.configure(ROOT);
+    ROOT.setSlot("Number", number);
+
+    KlonObject block = new KlonBlock();
+    block.configure(ROOT);
+    ROOT.setSlot("Block", block);
+
+    KlonObject symbol = new KlonSymbol();
+    symbol.configure(ROOT);
+    ROOT.setSlot("Symbol", symbol);
+
+
     KlonObject set = new KlonSet();
+    set.configure(ROOT);
     ROOT.setSlot("Set", set);
 
     KlonObject list = new KlonList();
+    list.configure(ROOT);
     ROOT.setSlot("List", list);
 
     KlonObject message = new KlonMessage();
+    message.configure(ROOT);
     ROOT.setSlot("Message", message);
 
     KlonObject properties = object.clone();
@@ -51,16 +64,6 @@ public class Klon {
 
     Klon.ROOT.setSlot("Arguments", new KlonList(Arrays.asList(args)));
 
-    object.configure(ROOT);
-    nil.configure(ROOT);
-    number.configure(ROOT);
-    string.configure(ROOT);
-    block.configure(ROOT);
-    symbol.configure(ROOT);
-    exposedMethod.configure(ROOT);
-    set.configure(ROOT);
-    list.configure(ROOT);
-    message.configure(ROOT);
   }
 
 }

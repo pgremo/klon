@@ -89,19 +89,19 @@ public class Message {
   public Double evalAsNumber(KlonObject receiver, int index)
       throws KlonException {
     KlonObject result = eval(receiver, index);
-    if (!(result instanceof KlonNumber)) {
-      throw new KlonException("result must be a number");
+    if ("Number".equals(result.getType())) {
+      return (Double) result.getPrimitive();
     }
-    return ((KlonNumber) result).getPrimitive();
+    throw new KlonException("result must be a number");
   }
 
   public String evalAsString(KlonObject receiver, int index)
       throws KlonException {
     KlonObject result = eval(receiver, index);
-    if (!(result instanceof KlonString)) {
-      throw new KlonException("result must be a string");
+    if ("String".equals(result.getType())) {
+      return (String) result.getPrimitive();
     }
-    return ((KlonString) result).getPrimitive();
+    throw new KlonException("result must be a string");
   }
 
   @Override

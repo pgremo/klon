@@ -10,7 +10,7 @@ public class KlonExposedMethod extends KlonObject<Method> {
   }
 
   public KlonExposedMethod(Method attached) throws KlonException {
-    super(Klon.ROOT.getSlot("Object"), attached);
+    super(Klon.ROOT.getSlot("ExposedMethod"), attached);
   }
 
   public KlonExposedMethod(KlonObject parent, Method attached) {

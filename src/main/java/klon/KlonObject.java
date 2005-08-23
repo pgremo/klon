@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-@Prototype(name = "Object")
+@Prototype(name = "Object", parent = "Klon")
 public class KlonObject<T> {
 
   protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
@@ -40,6 +40,10 @@ public class KlonObject<T> {
 
   public T getPrimitive() {
     return primitive;
+  }
+
+  public String getType() {
+    return getClass().getAnnotation(Prototype.class).name();
   }
 
   public void setSlot(String name, KlonObject value) {
@@ -148,6 +152,13 @@ public class KlonObject<T> {
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.clone();
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("type")
+  public static KlonObject type(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return new KlonString(receiver.getType());
   }
 
   @ExposedAs("send")

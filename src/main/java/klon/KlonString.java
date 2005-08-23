@@ -32,4 +32,10 @@ public class KlonString extends KlonObject<String> {
         + message.eval(context, 0).toString());
   }
 
+  @Override
+  @ExposedAs("asString")
+  public static KlonObject asString(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return new KlonString(String.valueOf(receiver.getPrimitive()));
+  }
 }

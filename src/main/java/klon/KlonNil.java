@@ -7,10 +7,6 @@ public class KlonNil extends KlonObject {
     super();
   }
 
-  public KlonNil(KlonObject parent, Object attached) {
-    super(parent, attached);
-  }
-
   @Override
   public KlonObject duplicate(Object subject) {
     return this;
@@ -37,10 +33,11 @@ public class KlonNil extends KlonObject {
   }
 
   @ExposedAs("or")
-  public static KlonObject of(KlonObject receiver, KlonObject context,
+  public static KlonObject or(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject other = message.eval(context, 0);
-    return receiver.equals(other) ? receiver : other;
+    return receiver.getSlot("Nil")
+      .equals(other) ? receiver : other;
   }
 
   @ExposedAs("ifNil")

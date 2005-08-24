@@ -71,7 +71,7 @@ public class KlonRoot extends KlonObject {
     setSlot("Properties", properties);
 
     setSlot("Arguments", getSlot("List").duplicate(
-      Arrays.asList((String[]) primitive)));
+      Arrays.asList((String[]) data)));
 
   }
 

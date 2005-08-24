@@ -90,7 +90,7 @@ public class Message {
       throws KlonException {
     KlonObject result = eval(receiver, index);
     if ("Number".equals(result.getType())) {
-      return (Double) result.getPrimitive();
+      return (Double) result.getData();
     }
     throw new KlonException("result must be a number");
   }
@@ -99,7 +99,7 @@ public class Message {
       throws KlonException {
     KlonObject result = eval(receiver, index);
     if ("String".equals(result.getType())) {
-      return (String) result.getPrimitive();
+      return (String) result.getData();
     }
     throw new KlonException("result must be a string");
   }

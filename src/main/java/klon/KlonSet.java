@@ -16,7 +16,7 @@ public class KlonSet extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result;
-    Object primitive = receiver.getPrimitive();
+    Object primitive = receiver.getData();
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {

@@ -17,9 +17,9 @@ public class KlonString extends KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return receiver.getSlot("String")
       .duplicate(
-        receiver.getPrimitive() + String.valueOf(message.eval(context, 0)
+        receiver.getData() + String.valueOf(message.eval(context, 0)
           .perform(context, printMessage)
-          .getPrimitive()));
+          .getData()));
   }
 
   @SuppressWarnings("unused")

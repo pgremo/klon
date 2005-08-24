@@ -11,7 +11,7 @@ public class KlonObject {
 
   private Prototype prototype = getClass().getAnnotation(Prototype.class);
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
-  protected Object primitive;
+  protected Object data;
 
   public KlonObject() {
     this(null, null);
@@ -19,7 +19,7 @@ public class KlonObject {
 
   public KlonObject(KlonObject parent, Object primitive) {
     slots.put("parent", parent);
-    this.primitive = primitive;
+    this.data = primitive;
   }
 
   public void configure(KlonObject root) throws KlonException {
@@ -27,7 +27,7 @@ public class KlonObject {
   }
 
   public KlonObject duplicate() throws KlonException {
-    return duplicate(primitive);
+    return duplicate(data);
   }
 
   public KlonObject duplicate(Object subject) throws KlonException {
@@ -46,8 +46,8 @@ public class KlonObject {
     return this;
   }
 
-  public Object getPrimitive() {
-    return primitive;
+  public Object getData() {
+    return data;
   }
 
   public String getType() {
@@ -121,7 +121,7 @@ public class KlonObject {
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
     String name = (String) message.getSelector()
-      .getPrimitive();
+      .getData();
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = context.getSlot(name);
@@ -142,8 +142,8 @@ public class KlonObject {
         if (slots.equals(((KlonObject) obj).slots)) {
           result = true;
         }
-        if (result && primitive != null) {
-          result = primitive.equals(((KlonObject) obj).primitive);
+        if (result && data != null) {
+          result = data.equals(((KlonObject) obj).data);
         }
       }
     }
@@ -152,8 +152,8 @@ public class KlonObject {
 
   @Override
   public String toString() {
-    return primitive == null ? getClass().getSimpleName() + "@"
-        + Integer.toHexString(hashCode()) : String.valueOf(primitive);
+    return data == null ? getClass().getSimpleName() + "@"
+        + Integer.toHexString(hashCode()) : String.valueOf(data);
   }
 
   @SuppressWarnings("unused")
@@ -176,7 +176,7 @@ public class KlonObject {
       Message message) throws KlonException {
     KlonObject subject = message.eval(context, 0);
     if (subject instanceof KlonMessage) {
-      return receiver.perform(context, (Message) subject.getPrimitive());
+      return receiver.perform(context, (Message) subject.getData());
     }
     throw new KlonException("invalid argument for send");
   }
@@ -224,10 +224,10 @@ public class KlonObject {
     KlonObject scope = context.duplicate();
     String name = (String) message.getArgument(0)
       .getSelector()
-      .getPrimitive();
+      .getData();
     String value = (String) message.getArgument(1)
       .getSelector()
-      .getPrimitive();
+      .getData();
     Message code = message.getArgument(2);
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
       scope.setSlot(name, receiver.getSlot("String")
@@ -294,7 +294,7 @@ public class KlonObject {
       if (current == null) {
         throw new KlonException(current + " must be a Symbol");
       }
-      parameters[i] = (String) current.getPrimitive();
+      parameters[i] = (String) current.getData();
     }
     return receiver.getSlot("Block")
       .duplicate(new Block(parameters, message.getArgument(count)));
@@ -307,7 +307,7 @@ public class KlonObject {
     KlonObject scope = context.duplicate();
     String counter = (String) message.getArgument(0)
       .getSelector()
-      .getPrimitive();
+      .getData();
     int start = message.evalAsNumber(context, 1)
       .intValue();
     int end = message.evalAsNumber(context, 2)
@@ -442,7 +442,7 @@ public class KlonObject {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
     if (receiver.getSlot((String) target.getSelector()
-      .getPrimitive()) != null) {
+      .getData()) != null) {
       result = receiver.perform(context, target);
     }
     return result;

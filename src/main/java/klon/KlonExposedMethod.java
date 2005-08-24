@@ -17,11 +17,11 @@ public class KlonExposedMethod extends KlonObject {
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = null;
-    if (primitive == null) {
+    if (data == null) {
       result = getSlot("Nil");
     } else {
       try {
-        result = (KlonObject) ((Method) primitive).invoke(null, receiver,
+        result = (KlonObject) ((Method) data).invoke(null, receiver,
           context, message);
       } catch (Exception e) {
         Throwable cause = e.getCause();

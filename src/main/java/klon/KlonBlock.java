@@ -14,7 +14,7 @@ public class KlonBlock extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return primitive == null ? this : ((Block) primitive).activate(receiver,
+    return data == null ? this : ((Block) data).activate(receiver,
       context, message);
   }
 
@@ -23,7 +23,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     if (!nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getPrimitive())).getCode()))) {
+      ((Block) (receiver.getData())).getCode()))) {
       return message.getArgument(0)
         .eval(context, context);
     }
@@ -35,7 +35,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     if (nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getPrimitive())).getCode()))) {
+      ((Block) (receiver.getData())).getCode()))) {
       return message.getArgument(0)
         .eval(context, context);
     }
@@ -47,7 +47,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     while (!nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getPrimitive())).getCode()))) {
+      ((Block) (receiver.getData())).getCode()))) {
       message.getArgument(0)
         .eval(context, context);
     }
@@ -59,7 +59,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
     while (nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getPrimitive())).getCode()))) {
+      ((Block) (receiver.getData())).getCode()))) {
       message.getArgument(0)
         .eval(context, context);
     }
@@ -71,7 +71,7 @@ public class KlonBlock extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .duplicate(String.valueOf(receiver.getPrimitive()));
+      .duplicate(String.valueOf(receiver.getData()));
   }
 
 }

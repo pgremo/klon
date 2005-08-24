@@ -14,16 +14,19 @@ public class KlonString extends KlonObject {
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
+    Message printMessage = new Compiler(receiver).fromString("asString");
     return receiver.getSlot("String")
-      .duplicate(String.valueOf(receiver.toString()) + message.eval(context, 0)
-        .toString());
+      .duplicate(
+        receiver.getPrimitive() + String.valueOf(message.eval(context, 0)
+          .perform(context, printMessage)
+          .getPrimitive()));
   }
 
+  @SuppressWarnings("unused")
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(String.valueOf(receiver.getPrimitive()));
+    return receiver;
   }
 }

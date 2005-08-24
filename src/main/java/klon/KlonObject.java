@@ -9,9 +9,9 @@ import java.util.Map;
 @Prototype(name = "Object", parent = "Klon")
 public class KlonObject {
 
-  protected Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
+  private Prototype prototype = getClass().getAnnotation(Prototype.class);
+  private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   protected Object primitive;
-  protected Prototype prototype;
 
   public KlonObject() {
     this(null, null);
@@ -20,7 +20,6 @@ public class KlonObject {
   public KlonObject(KlonObject parent, Object primitive) {
     slots.put("parent", parent);
     this.primitive = primitive;
-    prototype = getClass().getAnnotation(Prototype.class);
   }
 
   public void configure(KlonObject root) throws KlonException {

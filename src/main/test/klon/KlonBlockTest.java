@@ -15,8 +15,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testCreate() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("setter := block(a,self result := a)");
+    Message message = compiler.fromString("setter := block(a,self result := a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
@@ -34,11 +33,10 @@ public class KlonBlockTest extends TestCase {
     assertTrue(value instanceof KlonString);
     assertEquals("Hello", value.toString());
   }
-  
-  public void testActivatePrototype() throws Exception{
+
+  public void testActivatePrototype() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("Block");
+    Message message = compiler.fromString("Block");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
@@ -52,8 +50,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testInvalid() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("setter := block(\"a\",self result := a)");
+    Message message = compiler.fromString("setter := block(\"a\",self result := a)");
     try {
       message.eval(object, object);
       fail("expected exception");
@@ -64,19 +61,18 @@ public class KlonBlockTest extends TestCase {
 
   public void testInsuficientArguments() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("setter := block(a,b,self result := a + b)");
+    Message message = compiler.fromString("setter := block(a,b,self result := a + b)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
-    assertEquals("block(a, b, self setSlot(\"result\", a +(b)))", value
-        .toString());
+    assertEquals("block(a, b, self setSlot(\"result\", a +(b)))",
+      value.toString());
 
     message = compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("HelloNil", value.toString());
+    assertEquals("Hello", value.toString());
   }
 
   public void testIfTrue() throws Exception {
@@ -111,23 +107,23 @@ public class KlonBlockTest extends TestCase {
 
   public void testWhileTrue() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("a := 0; block(a < 10) whileTrue(a = a + 1)");
+    Message message = compiler.fromString("a := 0; block(a < 10) whileTrue(a = a + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals(object.getSlot("Nil"), value);
-    assertEquals(object.getSlot("Number").duplicate(10.0D), object.getSlot("a"));
+    assertEquals(object.getSlot("Number")
+      .duplicate(10.0D), object.getSlot("a"));
   }
 
   public void testWhileFalse() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
-        .fromString("a := 20; block(a < 10) whileFalse(a = a - 1)");
+    Message message = compiler.fromString("a := 20; block(a < 10) whileFalse(a = a - 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals(object.getSlot("Nil"), value);
-    assertEquals(object.getSlot("Number").duplicate(9.0D), object.getSlot("a"));
+    assertEquals(object.getSlot("Number")
+      .duplicate(9.0D), object.getSlot("a"));
   }
 }

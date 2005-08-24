@@ -10,17 +10,12 @@ public class KlonRoot extends KlonObject {
     this(null, args);
   }
 
-  public KlonRoot() {
-    this(null);
-  }
-
   public KlonRoot(KlonObject parent, Object attached) {
     super(parent, attached);
   }
 
   @Override
   public void configure(KlonObject root) throws KlonException {
-    prototype = getClass().getAnnotation(Prototype.class);
     setSlot("Klon", root);
 
     KlonObject object = new KlonObject();

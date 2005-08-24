@@ -12,13 +12,6 @@ public class Message {
   private Message attached;
   private Message next;
 
-  public void setArguments(Message... args) {
-    arguments.clear();
-    for (Message current : args) {
-      arguments.add(current);
-    }
-  }
-
   public int getArgumentCount() {
     return arguments.size();
   }
@@ -87,7 +80,8 @@ public class Message {
     if (index >= arguments.size()) {
       result = context.getSlot("Nil");
     } else {
-      result = arguments.get(index).eval(context, context);
+      result = arguments.get(index)
+        .eval(context, context);
     }
     return result;
   }
@@ -118,7 +112,9 @@ public class Message {
     }
     if (literal != null) {
       if ("String".equals(literal.getType())) {
-        result.append("\"").append(literal).append("\"");
+        result.append("\"")
+          .append(literal)
+          .append("\"");
       } else {
         result.append(literal);
       }
@@ -135,10 +131,12 @@ public class Message {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ").append(attached);
+      result.append(" ")
+        .append(attached);
     }
     if (next != null) {
-      result.append(";\n").append(next);
+      result.append(";\n")
+        .append(next);
     }
     return result.toString();
   }

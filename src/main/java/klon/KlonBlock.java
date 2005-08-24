@@ -12,11 +12,6 @@ public class KlonBlock extends KlonObject {
   }
 
   @Override
-  public KlonObject clone(Object subject) {
-    return new KlonBlock(this, subject);
-  }
-
-  @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return primitive == null ? this : ((Block) primitive).activate(receiver,
@@ -76,7 +71,7 @@ public class KlonBlock extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(String.valueOf(receiver.getPrimitive()));
+      .duplicate(String.valueOf(receiver.getPrimitive()));
   }
 
 }

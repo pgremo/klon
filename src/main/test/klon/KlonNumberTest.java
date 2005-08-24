@@ -19,7 +19,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("1 + 1");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -29,7 +29,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("5 - 3");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -39,7 +39,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("7 * 3");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(21D), value);
+    assertEquals(object.getSlot("Number").duplicate(21D), value);
   }
 
   /*
@@ -49,7 +49,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("48 / 6");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(8D), value);
+    assertEquals(object.getSlot("Number").duplicate(8D), value);
   }
 
   /*
@@ -59,7 +59,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 ^ 3");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(8D), value);
+    assertEquals(object.getSlot("Number").duplicate(8D), value);
   }
 
   /*
@@ -73,7 +73,7 @@ public class KlonNumberTest extends TestCase {
 
     message = compiler.fromString("2 == 2");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -83,7 +83,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 < 3");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(3D), value);
+    assertEquals(object.getSlot("Number").duplicate(3D), value);
   }
 
   /*
@@ -93,7 +93,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("3 > 2");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -103,11 +103,11 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 <= 2");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
 
     message = compiler.fromString("2 <= 3");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(3D), value);
+    assertEquals(object.getSlot("Number").duplicate(3D), value);
   }
 
   /*
@@ -117,11 +117,11 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 >= 2");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
 
     message = compiler.fromString("3 >= 2");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -131,11 +131,11 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 abs");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
 
     message = compiler.fromString("-2 abs");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
   /*
@@ -145,7 +145,7 @@ public class KlonNumberTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("4 sqrt");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Number").clone(2D), value);
+    assertEquals(object.getSlot("Number").duplicate(2D), value);
   }
 
 }

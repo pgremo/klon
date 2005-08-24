@@ -11,9 +11,4 @@ public class KlonSymbol extends KlonObject {
     super(parent, attached);
   }
 
-  @Override
-  public KlonObject clone(Object subject) {
-    return new KlonSymbol(this, subject);
-  }
-
 }

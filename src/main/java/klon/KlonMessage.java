@@ -11,9 +11,4 @@ public class KlonMessage extends KlonObject {
     super(parent, attached);
   }
 
-  @Override
-  public KlonObject clone(Object subject) {
-    return new KlonMessage(this, subject);
-  }
-
 }

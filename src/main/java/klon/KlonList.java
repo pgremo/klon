@@ -12,11 +12,6 @@ public class KlonList extends KlonObject {
   }
 
   @Override
-  public KlonObject clone(Object subject) {
-    return new KlonList(this, subject);
-  }
-
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -33,7 +28,7 @@ public class KlonList extends KlonObject {
         buffer.append(current.toString());
       }
       result = receiver.getSlot("String")
-        .clone(buffer.toString());
+        .duplicate(buffer.toString());
     }
     return result;
   }

@@ -32,7 +32,7 @@ public class Block {
 
   public KlonObject activate(KlonObject receiver, KlonObject context, Message message)
       throws KlonException {
-    KlonObject scope = receiver.clone();
+    KlonObject scope = receiver.duplicate();
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     int i = 0;
     for (; i < limit; i++) {

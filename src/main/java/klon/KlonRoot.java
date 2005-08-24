@@ -7,7 +7,15 @@ import java.util.Map;
 public class KlonRoot extends KlonObject {
 
   public KlonRoot(String[] args) {
-    this.primitive = args;
+    this(null, args);
+  }
+
+  public KlonRoot() {
+    this(null);
+  }
+
+  public KlonRoot(KlonObject parent, Object attached) {
+    super(parent, attached);
   }
 
   @Override
@@ -57,16 +65,18 @@ public class KlonRoot extends KlonObject {
     message.configure(root);
     setSlot("Message", message);
 
-    KlonObject properties = object.clone();
-    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
-      properties.setSlot(current.getKey().toString(), root
-          .getSlot("String")
-            .clone(current.getValue().toString()));
+    KlonObject properties = object.duplicate();
+    for (Map.Entry<Object, Object> current : System.getProperties()
+      .entrySet()) {
+      properties.setSlot(current.getKey()
+        .toString(), root.getSlot("String")
+        .duplicate(current.getValue()
+          .toString()));
     }
     setSlot("Properties", properties);
 
-    setSlot("Arguments", getSlot("List").clone(
-        Arrays.asList((String[]) primitive)));
+    setSlot("Arguments", getSlot("List").duplicate(
+      Arrays.asList((String[]) primitive)));
 
   }
 

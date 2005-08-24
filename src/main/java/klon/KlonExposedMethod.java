@@ -37,9 +37,4 @@ public class KlonExposedMethod extends KlonObject {
     return result;
   }
 
-  @Override
-  public KlonObject clone(Object subject) {
-    return new KlonExposedMethod(this, subject);
-  }
-
 }

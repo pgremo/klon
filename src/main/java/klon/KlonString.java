@@ -11,16 +11,11 @@ public class KlonString extends KlonObject {
     super(parent, attached);
   }
 
-  @Override
-  public KlonObject clone(Object subject) {
-    return new KlonString(this, subject);
-  }
-
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(String.valueOf(receiver.toString()) + message.eval(context, 0)
+      .duplicate(String.valueOf(receiver.toString()) + message.eval(context, 0)
         .toString());
   }
 
@@ -29,6 +24,6 @@ public class KlonString extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(String.valueOf(receiver.getPrimitive()));
+      .duplicate(String.valueOf(receiver.getPrimitive()));
   }
 }

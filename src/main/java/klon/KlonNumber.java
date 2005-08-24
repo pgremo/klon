@@ -16,13 +16,8 @@ public class KlonNumber extends KlonObject {
     super(null, 0D);
   }
 
-  public KlonNumber(KlonObject parent, Object attached, Prototype prototype) {
+  public KlonNumber(KlonObject parent, Object attached) {
     super(parent, attached);
-  }
-
-  @Override
-  public KlonObject clone(Object subject) {
-    return new KlonNumber(this, subject, prototype);
   }
 
   @Override
@@ -35,7 +30,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           (Double) receiver.getPrimitive() + message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for +");
@@ -46,7 +41,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           (Double) receiver.getPrimitive() - message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for -");
@@ -57,7 +52,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           (Double) receiver.getPrimitive() * message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for *");
@@ -68,7 +63,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           (Double) receiver.getPrimitive() / message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for /");
@@ -79,7 +74,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           (Double) receiver.getPrimitive() % message.evalAsNumber(context, 0));
     }
     throw new KlonException("Illegal Argument for ^");
@@ -90,7 +85,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(
+        .duplicate(
           Math.pow((Double) receiver.getPrimitive(), message.evalAsNumber(
             context, 0)));
     }
@@ -154,7 +149,7 @@ public class KlonNumber extends KlonObject {
       KlonObject context, Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(Math.abs((Double) receiver.getPrimitive()));
+        .duplicate(Math.abs((Double) receiver.getPrimitive()));
     }
     throw new KlonException("Illegal Argument for abs");
   }
@@ -164,7 +159,7 @@ public class KlonNumber extends KlonObject {
       Message message) throws KlonException {
     if ("Number".equals(receiver.getType())) {
       return receiver.getSlot("Number")
-        .clone(Math.sqrt((Double) receiver.getPrimitive()));
+        .duplicate(Math.sqrt((Double) receiver.getPrimitive()));
     }
     throw new KlonException("Illegal Argument for sqrt");
   }
@@ -174,6 +169,6 @@ public class KlonNumber extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(formatter.format(receiver.getPrimitive()));
+      .duplicate(formatter.format(receiver.getPrimitive()));
   }
 }

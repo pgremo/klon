@@ -117,7 +117,7 @@ public class KlonBlockTest extends TestCase {
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals(object.getSlot("Nil"), value);
-    assertEquals(object.getSlot("Number").clone(10.0D), object.getSlot("a"));
+    assertEquals(object.getSlot("Number").duplicate(10.0D), object.getSlot("a"));
   }
 
   public void testWhileFalse() throws Exception {
@@ -128,6 +128,6 @@ public class KlonBlockTest extends TestCase {
     assertNotNull(value);
     assertTrue(value instanceof KlonNil);
     assertEquals(object.getSlot("Nil"), value);
-    assertEquals(object.getSlot("Number").clone(9.0D), object.getSlot("a"));
+    assertEquals(object.getSlot("Number").duplicate(9.0D), object.getSlot("a"));
   }
 }

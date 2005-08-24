@@ -1,5 +1,6 @@
 package klon;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,9 +17,9 @@ public class KlonObject {
     this(null, null);
   }
 
-  public KlonObject(KlonObject parent, Object attached) {
+  public KlonObject(KlonObject parent, Object primitive) {
     slots.put("parent", parent);
-    this.primitive = attached;
+    this.primitive = primitive;
     prototype = getClass().getAnnotation(Prototype.class);
   }
 
@@ -26,12 +27,18 @@ public class KlonObject {
     Configurator.configure(root, this, getClass());
   }
 
-  public KlonObject clone() {
-    return clone(primitive);
+  public KlonObject duplicate() throws KlonException {
+    return duplicate(primitive);
   }
 
-  public KlonObject clone(Object subject) {
-    return new KlonObject(this, subject);
+  public KlonObject duplicate(Object subject) throws KlonException {
+    try {
+      Constructor constructor = getClass().getConstructor(KlonObject.class,
+        Object.class);
+      return (KlonObject) constructor.newInstance(this, subject);
+    } catch (Exception e) {
+      throw new KlonException(e);
+    }
   }
 
   @SuppressWarnings("unused")
@@ -109,7 +116,7 @@ public class KlonObject {
   }
 
   public KlonObject slotNames() throws KlonException {
-    return getSlot("Set").clone(slots.keySet());
+    return getSlot("Set").duplicate(slots.keySet());
   }
 
   public KlonObject perform(KlonObject context, Message message)
@@ -154,7 +161,7 @@ public class KlonObject {
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.clone();
+    return receiver.duplicate();
   }
 
   @SuppressWarnings("unused")
@@ -162,7 +169,7 @@ public class KlonObject {
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(receiver.getType());
+      .duplicate(receiver.getType());
   }
 
   @ExposedAs("send")
@@ -215,7 +222,7 @@ public class KlonObject {
   public static KlonObject foreach(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = context.clone();
+    KlonObject scope = context.duplicate();
     String name = (String) message.getArgument(0)
       .getSelector()
       .getPrimitive();
@@ -225,7 +232,7 @@ public class KlonObject {
     Message code = message.getArgument(2);
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
       scope.setSlot(name, receiver.getSlot("String")
-        .clone(current.getKey()));
+        .duplicate(current.getKey()));
       scope.setSlot(value, current.getValue());
       result = code.eval(scope, scope);
     }
@@ -242,7 +249,7 @@ public class KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .clone(
+      .duplicate(
         receiver.getType() + "@" + Integer.toHexString(receiver.hashCode()));
   }
 
@@ -291,14 +298,14 @@ public class KlonObject {
       parameters[i] = (String) current.getPrimitive();
     }
     return receiver.getSlot("Block")
-      .clone(new Block(parameters, message.getArgument(count)));
+      .duplicate(new Block(parameters, message.getArgument(count)));
   }
 
   @ExposedAs("for")
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = context.clone();
+    KlonObject scope = context.duplicate();
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getPrimitive();
@@ -319,7 +326,7 @@ public class KlonObject {
     int i = start;
     while (!(increment > 0 ? i > end : i < end)) {
       scope.setSlot(counter, receiver.getSlot("Number")
-        .clone(i));
+        .duplicate(i));
       result = code.eval(scope, scope);
       i += increment;
     }

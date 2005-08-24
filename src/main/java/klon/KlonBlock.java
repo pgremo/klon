@@ -25,8 +25,8 @@ public class KlonBlock extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return primitive == null ? getSlot("Nil") : ((Block) primitive).activate(
-        receiver, context, message);
+    return primitive == null ? this : ((Block) primitive).activate(receiver,
+        context, message);
   }
 
   @ExposedAs("ifTrue")

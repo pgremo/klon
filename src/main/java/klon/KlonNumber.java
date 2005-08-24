@@ -13,7 +13,7 @@ public class KlonNumber extends KlonObject {
   }
 
   public KlonNumber() {
-    super();
+    super(null, 0D);
   }
 
   public KlonNumber(KlonObject parent, Object attached) {
@@ -176,5 +176,4 @@ public class KlonNumber extends KlonObject {
     return receiver.getSlot("String").clone(
         formatter.format(receiver.getPrimitive()));
   }
-
 }

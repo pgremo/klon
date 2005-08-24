@@ -83,7 +83,13 @@ public class Message {
   }
 
   public KlonObject eval(KlonObject context, int index) throws KlonException {
-    return arguments.get(index).eval(context, context);
+    KlonObject result;
+    if (index >= arguments.size()) {
+      result = context.getSlot("Nil");
+    } else {
+      result = arguments.get(index).eval(context, context);
+    }
+    return result;
   }
 
   public Double evalAsNumber(KlonObject receiver, int index)

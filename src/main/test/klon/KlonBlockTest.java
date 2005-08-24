@@ -22,11 +22,32 @@ public class KlonBlockTest extends TestCase {
     assertTrue(value instanceof KlonBlock);
     assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
 
+    message = compiler.fromString("asString");
+    value = message.eval(value, value);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonString);
+    assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
+
     message = compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
     assertEquals("Hello", value.toString());
+  }
+  
+  public void testActivatePrototype() throws Exception{
+    Compiler compiler = new Compiler(object);
+    Message message = compiler
+        .fromString("Block");
+    KlonObject value = message.eval(object, object);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonBlock);
+
+    message = compiler.fromString("asString");
+    value = message.eval(value, value);
+    assertNotNull(value);
+    assertTrue(value instanceof KlonString);
+    assertEquals("null", value.toString());
   }
 
   public void testInvalid() throws Exception {

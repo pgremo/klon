@@ -4,7 +4,7 @@ package klon;
 public class KlonString extends KlonObject {
 
   public KlonString() {
-    super();
+    super(null, "");
   }
 
   public KlonString(KlonObject parent, Object attached) {

@@ -114,10 +114,6 @@ public class KlonObject {
     removeSlot(name, new HashSet<KlonObject>());
   }
 
-  public KlonObject slotNames() throws KlonException {
-    return getSlot("Set").duplicate(slots.keySet());
-  }
-
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
     String name = (String) message.getSelector()
@@ -175,7 +171,7 @@ public class KlonObject {
   public static KlonObject send(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject subject = message.eval(context, 0);
-    if (subject instanceof KlonMessage) {
+    if ("Message".equals(subject.getType())) {
       return receiver.perform(context, (Message) subject.getData());
     }
     throw new KlonException("invalid argument for send");
@@ -241,7 +237,8 @@ public class KlonObject {
   @ExposedAs("slotNames")
   public static KlonObject slotNames(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.slotNames();
+    return receiver.getSlot("Set")
+      .duplicate(receiver.slots.keySet());
   }
 
   @ExposedAs("asString")
@@ -249,7 +246,7 @@ public class KlonObject {
       Message message) throws KlonException {
     return receiver.getSlot("String")
       .duplicate(
-        receiver.getType() + "@" + Integer.toHexString(receiver.hashCode()));
+        receiver.getType() + "_0x" + Integer.toHexString(receiver.hashCode()));
   }
 
   @ExposedAs("write")

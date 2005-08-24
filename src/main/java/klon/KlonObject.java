@@ -17,9 +17,9 @@ public class KlonObject {
     this(null, null);
   }
 
-  public KlonObject(KlonObject parent, Object primitive) {
+  public KlonObject(KlonObject parent, Object data) {
     slots.put("parent", parent);
-    this.data = primitive;
+    this.data = data;
   }
 
   public void configure(KlonObject root) throws KlonException {

@@ -43,10 +43,12 @@ public class Shell {
           }
         }
         Message message = compiler.fromString(buffer.toString());
-        KlonObject value = message.eval(root, root);
-        if (!out.hasOutput()) {
-          Message reportMessage = compiler.fromString("inspect");
-          reportMessage.eval(value, value);
+        if (message != null) {
+          KlonObject value = message.eval(root, root);
+          if (!out.hasOutput()) {
+            Message reportMessage = compiler.fromString("inspect");
+            reportMessage.eval(value, value);
+          }
         }
       } catch (Exception e) {
         e.printStackTrace(error);

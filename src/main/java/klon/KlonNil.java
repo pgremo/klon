@@ -9,12 +9,6 @@ public class KlonNil extends KlonObject {
 
   public KlonNil(KlonObject parent, Object attached) {
     super(parent, attached);
-    this.prototype = KlonNil.class.getAnnotation(Prototype.class);
-  }
-
-  @Override
-  public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonNil.class);
   }
 
   @Override
@@ -31,9 +25,11 @@ public class KlonNil extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").clone("");
+    return receiver.getSlot("String")
+      .clone("");
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("and")
   public static KlonObject and(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -62,8 +58,9 @@ public class KlonNil extends KlonObject {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.equals(message.eval(receiver, 0)) ? receiver
-        .getSlot("Klon") : receiver.getSlot("Nil");
+    return receiver.equals(message.eval(receiver, 0))
+        ? receiver.getSlot("Klon")
+        : receiver.getSlot("Nil");
   }
 
 }

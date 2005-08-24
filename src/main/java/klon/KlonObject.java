@@ -19,11 +19,11 @@ public class KlonObject {
   public KlonObject(KlonObject parent, Object attached) {
     slots.put("parent", parent);
     this.primitive = attached;
-    this.prototype = KlonObject.class.getAnnotation(Prototype.class);
+    prototype = getClass().getAnnotation(Prototype.class);
   }
 
   public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonObject.class);
+    Configurator.configure(root, this, getClass());
   }
 
   public KlonObject clone() {
@@ -114,7 +114,8 @@ public class KlonObject {
 
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
-    String name = (String) message.getSelector().getPrimitive();
+    String name = (String) message.getSelector()
+      .getPrimitive();
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = context.getSlot(name);
@@ -160,7 +161,8 @@ public class KlonObject {
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").clone(receiver.getType());
+    return receiver.getSlot("String")
+      .clone(receiver.getType());
   }
 
   @ExposedAs("send")
@@ -214,11 +216,16 @@ public class KlonObject {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = context.clone();
-    String name = (String) message.getArgument(0).getSelector().getPrimitive();
-    String value = (String) message.getArgument(1).getSelector().getPrimitive();
+    String name = (String) message.getArgument(0)
+      .getSelector()
+      .getPrimitive();
+    String value = (String) message.getArgument(1)
+      .getSelector()
+      .getPrimitive();
     Message code = message.getArgument(2);
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
-      scope.setSlot(name, receiver.getSlot("String").clone(current.getKey()));
+      scope.setSlot(name, receiver.getSlot("String")
+        .clone(current.getKey()));
       scope.setSlot(value, current.getValue());
       result = code.eval(scope, scope);
     }
@@ -234,7 +241,8 @@ public class KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").clone(
+    return receiver.getSlot("String")
+      .clone(
         receiver.getType() + "@" + Integer.toHexString(receiver.hashCode()));
   }
 
@@ -262,7 +270,8 @@ public class KlonObject {
       Message message) throws KlonException {
     int result = 0;
     if (message.getArgumentCount() == 1) {
-      result = message.evalAsNumber(context, 0).intValue();
+      result = message.evalAsNumber(context, 0)
+        .intValue();
     }
     System.exit(result);
     return receiver.getSlot("Nil");
@@ -274,14 +283,15 @@ public class KlonObject {
     int count = message.getArgumentCount() - 1;
     String[] parameters = new String[count];
     for (int i = 0; i < count; i++) {
-      KlonObject current = message.getArgument(i).getSelector();
+      KlonObject current = message.getArgument(i)
+        .getSelector();
       if (current == null) {
         throw new KlonException(current + " must be a Symbol");
       }
       parameters[i] = (String) current.getPrimitive();
     }
-    return receiver.getSlot("Block").clone(
-        new Block(parameters, message.getArgument(count)));
+    return receiver.getSlot("Block")
+      .clone(new Block(parameters, message.getArgument(count)));
   }
 
   @ExposedAs("for")
@@ -289,16 +299,18 @@ public class KlonObject {
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = context.clone();
-    String counter = (String) message
-        .getArgument(0)
-          .getSelector()
-          .getPrimitive();
-    int start = message.evalAsNumber(context, 1).intValue();
-    int end = message.evalAsNumber(context, 2).intValue();
+    String counter = (String) message.getArgument(0)
+      .getSelector()
+      .getPrimitive();
+    int start = message.evalAsNumber(context, 1)
+      .intValue();
+    int end = message.evalAsNumber(context, 2)
+      .intValue();
     int increment;
     Message code;
     if (message.getArgumentCount() == 5) {
-      increment = message.evalAsNumber(context, 3).intValue();
+      increment = message.evalAsNumber(context, 3)
+        .intValue();
       code = message.getArgument(4);
     } else {
       increment = end - start < 0 ? -1 : 1;
@@ -306,7 +318,8 @@ public class KlonObject {
     }
     int i = start;
     while (!(increment > 0 ? i > end : i < end)) {
-      scope.setSlot(counter, receiver.getSlot("Number").clone(i));
+      scope.setSlot(counter, receiver.getSlot("Number")
+        .clone(i));
       result = code.eval(scope, scope);
       i += increment;
     }
@@ -331,7 +344,8 @@ public class KlonObject {
       Message message) throws KlonException {
     KlonObject result = message.eval(context, 0);
     if (message.getArgumentCount() > 1) {
-      if (!receiver.getSlot("Nil").equals(result)) {
+      if (!receiver.getSlot("Nil")
+        .equals(result)) {
         result = message.eval(context, 1);
       } else if (message.getArgumentCount() == 3) {
         result = message.eval(context, 2);
@@ -382,8 +396,9 @@ public class KlonObject {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.equals(message.eval(context, 0)) ? receiver : receiver
-        .getSlot("Nil");
+    return receiver.equals(message.eval(context, 0))
+        ? receiver
+        : receiver.getSlot("Nil");
   }
 
   @ExposedAs("parenthesis")
@@ -404,12 +419,24 @@ public class KlonObject {
     return message.eval(context, 0);
   }
 
+  @ExposedAs("inspect")
+  public static KlonObject inspect(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    Message printMessage = new Compiler(receiver).fromString("asString");
+    for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
+      System.out.println(current.getKey() + " := "
+          + printMessage.eval(current.getValue(), context));
+    }
+    return receiver.getSlot("Nil");
+  }
+
   @ExposedAs("?")
   public static KlonObject condition(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
     Message target = message.getArgument(0);
-    if (receiver.getSlot((String) target.getSelector().getPrimitive()) != null) {
+    if (receiver.getSlot((String) target.getSelector()
+      .getPrimitive()) != null) {
       result = receiver.perform(context, target);
     }
     return result;

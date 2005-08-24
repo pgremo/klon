@@ -1,6 +1,5 @@
 package klon;
 
-
 @Prototype(name = "Set", parent = "Object")
 public class KlonSet extends KlonObject {
 
@@ -10,12 +9,6 @@ public class KlonSet extends KlonObject {
 
   public KlonSet(KlonObject parent, Object attached) {
     super(parent, attached);
-    this.prototype = KlonSet.class.getAnnotation(Prototype.class);
-  }
-
-  @Override
-  public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonSet.class);
   }
 
   @Override
@@ -27,14 +20,22 @@ public class KlonSet extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    StringBuilder result = new StringBuilder();
-    for (Object current : (Iterable) receiver.getPrimitive()) {
-      if (result.length() > 0) {
-        result.append(", ");
+    KlonObject result;
+    Object primitive = receiver.getPrimitive();
+    if (primitive == null) {
+      result = KlonObject.asString(receiver, context, message);
+    } else {
+      StringBuilder buffer = new StringBuilder();
+      for (Object current : (Iterable) primitive) {
+        if (buffer.length() > 0) {
+          buffer.append(", ");
+        }
+        buffer.append(current.toString());
       }
-      result.append(current.toString());
+      result = receiver.getSlot("String")
+        .clone(buffer.toString());
     }
-    return receiver.getSlot("String").clone(result.toString());
+    return result;
   }
 
 }

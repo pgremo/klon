@@ -11,7 +11,6 @@ public class KlonExposedMethod extends KlonObject {
 
   public KlonExposedMethod(KlonObject parent, Object attached) {
     super(parent, attached);
-    this.prototype = KlonExposedMethod.class.getAnnotation(Prototype.class);
   }
 
   @Override
@@ -23,21 +22,19 @@ public class KlonExposedMethod extends KlonObject {
     } else {
       try {
         result = (KlonObject) ((Method) primitive).invoke(null, receiver,
-            context, message);
+          context, message);
       } catch (Exception e) {
         Throwable cause = e.getCause();
         if (cause instanceof KlonException) {
           throw (KlonException) cause;
         }
-        throw new KlonException(cause);
+        if (cause != null) {
+          throw new KlonException(cause);
+        }
+        throw new KlonException(e);
       }
     }
     return result;
-  }
-
-  @Override
-  public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonExposedMethod.class);
   }
 
   @Override

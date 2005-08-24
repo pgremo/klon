@@ -3,6 +3,7 @@ package klon;
 import java.util.Arrays;
 import java.util.Map;
 
+@Prototype(name = "Object")
 public class KlonRoot extends KlonObject {
 
   public KlonRoot(String[] args) {
@@ -11,6 +12,7 @@ public class KlonRoot extends KlonObject {
 
   @Override
   public void configure(KlonObject root) throws KlonException {
+    prototype = getClass().getAnnotation(Prototype.class);
     setSlot("Klon", root);
 
     KlonObject object = new KlonObject();

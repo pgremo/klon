@@ -9,12 +9,6 @@ public class KlonBlock extends KlonObject {
 
   public KlonBlock(KlonObject parent, Object attached) {
     super(parent, attached);
-    this.prototype = KlonBlock.class.getAnnotation(Prototype.class);
-  }
-
-  @Override
-  public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonBlock.class);
   }
 
   @Override
@@ -26,16 +20,17 @@ public class KlonBlock extends KlonObject {
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return primitive == null ? this : ((Block) primitive).activate(receiver,
-        context, message);
+      context, message);
   }
 
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
-    if (!nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getPrimitive())).getCode()))) {
-      return message.getArgument(0).eval(context, context);
+    if (!nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getPrimitive())).getCode()))) {
+      return message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }
@@ -44,9 +39,10 @@ public class KlonBlock extends KlonObject {
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
-    if (nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getPrimitive())).getCode()))) {
-      return message.getArgument(0).eval(context, context);
+    if (nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getPrimitive())).getCode()))) {
+      return message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }
@@ -55,9 +51,10 @@ public class KlonBlock extends KlonObject {
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
-    while (!nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getPrimitive())).getCode()))) {
-      message.getArgument(0).eval(context, context);
+    while (!nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getPrimitive())).getCode()))) {
+      message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }
@@ -66,9 +63,10 @@ public class KlonBlock extends KlonObject {
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject nil = receiver.getSlot("Nil");
-    while (nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getPrimitive())).getCode()))) {
-      message.getArgument(0).eval(context, context);
+    while (nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getPrimitive())).getCode()))) {
+      message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }
@@ -77,8 +75,8 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").clone(
-        String.valueOf(receiver.getPrimitive()));
+    return receiver.getSlot("String")
+      .clone(String.valueOf(receiver.getPrimitive()));
   }
 
 }

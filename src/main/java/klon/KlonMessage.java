@@ -9,12 +9,6 @@ public class KlonMessage extends KlonObject {
 
   public KlonMessage(KlonObject parent, Object attached) {
     super(parent, attached);
-    this.prototype = KlonMessage.class.getAnnotation(Prototype.class);
-  }
-
-  @Override
-  public void configure(KlonObject root) throws KlonException {
-    Configurator.configure(root, this, KlonMessage.class);
   }
 
   @Override

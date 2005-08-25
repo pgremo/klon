@@ -16,7 +16,7 @@ public class KlonException extends KlonObject {
   @Override
   public KlonObject duplicate(Object... subject) throws KlonException {
     KlonObject result = super.duplicate(subject);
-    if (subject != null) {
+    if (subject != null && subject.length == 2) {
       KlonObject stringProto = getSlot("String");
       result.setSlot("name", stringProto.duplicate(subject[0]));
       result.setSlot("description", stringProto.duplicate(subject[1]));

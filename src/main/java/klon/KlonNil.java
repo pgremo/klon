@@ -15,11 +15,6 @@ public class KlonNil extends KlonObject {
   }
 
   @Override
-  public String toString() {
-    return "Nil";
-  }
-
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

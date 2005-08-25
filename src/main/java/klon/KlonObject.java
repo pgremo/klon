@@ -155,10 +155,13 @@ public class KlonObject extends Exception {
     return result;
   }
 
+  public String getDescription() {
+    return getType() + "_0x" + Integer.toHexString(hashCode());
+  }
+
   @Override
   public String toString() {
-    return data == null ? getClass().getSimpleName() + "@"
-        + Integer.toHexString(hashCode()) : String.valueOf(data);
+    return getType() + "@" + Integer.toHexString(hashCode());
   }
 
   @SuppressWarnings("unused")
@@ -245,19 +248,11 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  @ExposedAs("slotNames")
-  public static KlonObject slotNames(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
-    return receiver.getSlot("Set")
-      .duplicate(receiver.slots.keySet());
-  }
-
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.getSlot("String")
-      .duplicate(
-        receiver.getType() + "_0x" + Integer.toHexString(receiver.hashCode()));
+      .duplicate(receiver.toString());
   }
 
   @ExposedAs("write")
@@ -450,10 +445,9 @@ public class KlonObject extends Exception {
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    Message printMessage = new Compiler(receiver).fromString("asString");
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
-      System.out.println(current.getKey() + " := "
-          + printMessage.eval(current.getValue(), context));
+      System.out.println(current.getKey() + " := " + current.getValue()
+        .toString());
     }
     return receiver.getSlot("Nil");
   }

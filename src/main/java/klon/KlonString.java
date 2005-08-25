@@ -13,6 +13,11 @@ public class KlonString extends KlonObject {
     super(parent, attached);
   }
 
+  @Override
+  public String toString() {
+    return "\"" + String.valueOf(data) + "\"";
+  }
+
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

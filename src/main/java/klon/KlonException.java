@@ -65,9 +65,15 @@ public class KlonException extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(receiver.getSlot("name")
-        .getData() + ":" + receiver.getSlot("description")
-        .getData());
+    KlonObject result;
+    KlonObject name = receiver.getSlot("name");
+    KlonObject description = receiver.getSlot("description");
+    if (name == null && description == null) {
+      result = KlonObject.asString(receiver, context, message);
+    } else {
+      result = receiver.getSlot("String")
+        .duplicate(receiver.getDescription());
+    }
+    return result;
   }
 }

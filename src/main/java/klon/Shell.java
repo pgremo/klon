@@ -7,7 +7,7 @@ import java.io.Reader;
 
 public class Shell {
 
-  private static final String PROMPT = "klon> ";
+  private static final String PROMPT = "\nklon> ";
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
 
@@ -46,8 +46,17 @@ public class Shell {
         if (message != null) {
           KlonObject value = message.eval(root, root);
           if (!out.hasOutput()) {
-            Message reportMessage = compiler.fromString("inspect");
-            reportMessage.eval(value, value);
+            if ("String".equals(value.getType())
+                || "Number".equals(value.getType())) {
+              Message reportMessage = compiler.fromString("write;writeLine");
+              Message argument = new Message();
+              argument.setLiteral(value);
+              reportMessage.addArgument(argument);
+              reportMessage.eval(value, value);
+            } else {
+              Message reportMessage = compiler.fromString("inspect");
+              reportMessage.eval(value, value);
+            }
           }
         }
       } catch (Exception e) {

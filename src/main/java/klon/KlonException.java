@@ -73,7 +73,7 @@ public class KlonException extends KlonObject {
       result = KlonObject.asString(receiver, context, message);
     } else {
       result = receiver.getSlot("String")
-        .duplicate(receiver.getDescription());
+        .duplicate(receiver.toString());
     }
     return result;
   }

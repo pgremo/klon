@@ -3,7 +3,7 @@ package klon;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 
 @Prototype(name = "Object", parent = "Klon")
@@ -81,7 +81,7 @@ public class KlonObject extends Exception {
   }
 
   public void updateSlot(String name, KlonObject value) throws KlonException {
-    updateSlot(name, value, new HashSet<KlonObject>());
+    updateSlot(name, value, new LinkedList<KlonObject>());
   }
 
   private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
@@ -100,7 +100,7 @@ public class KlonObject extends Exception {
   }
 
   public KlonObject getSlot(String name) throws KlonException {
-    return getSlot(name, new HashSet<KlonObject>());
+    return getSlot(name, new LinkedList<KlonObject>());
   }
 
   private KlonObject removeSlot(String name, Collection<KlonObject> searchPath)
@@ -119,7 +119,7 @@ public class KlonObject extends Exception {
   }
 
   public void removeSlot(String name) throws KlonException {
-    removeSlot(name, new HashSet<KlonObject>());
+    removeSlot(name, new LinkedList<KlonObject>());
   }
 
   public KlonObject perform(KlonObject context, Message message)
@@ -155,13 +155,9 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  public String getDescription() {
-    return getType() + "_0x" + Integer.toHexString(hashCode());
-  }
-
   @Override
   public String toString() {
-    return getType() + "@" + Integer.toHexString(hashCode());
+    return getType() + "_0x" + Integer.toHexString(hashCode());
   }
 
   @SuppressWarnings("unused")
@@ -418,6 +414,13 @@ public class KlonObject extends Exception {
     return !receiver.equals(message.eval(context, 0))
         ? receiver
         : receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("do")
+  public static KlonObject doMessage(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    message.eval(receiver, 0);
+    return receiver;
   }
 
   @ExposedAs("parenthesis")

@@ -47,7 +47,7 @@ public class KlonObjectTest extends TestCase {
     Message message = compiler.fromString("total := \"\"; for(a,1,10,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(" 1 2 3 4 5 6 7 8 9 10", value.toString());
+    assertEquals("\" 1 2 3 4 5 6 7 8 9 10\"", value.toString());
   }
 
   public void testForDecrement() throws Exception {
@@ -55,7 +55,7 @@ public class KlonObjectTest extends TestCase {
     Message message = compiler.fromString("total := \"\"; for(a,10,1,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(" 10 9 8 7 6 5 4 3 2 1", value.toString());
+    assertEquals("\" 10 9 8 7 6 5 4 3 2 1\"", value.toString());
   }
 
   public void testForStep() throws Exception {
@@ -63,7 +63,7 @@ public class KlonObjectTest extends TestCase {
     Message message = compiler.fromString("total := \"\"; for(a,10,1,-2,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(" 10 8 6 4 2", value.toString());
+    assertEquals("\" 10 8 6 4 2\"", value.toString());
   }
 
   public void testForEqual() throws Exception {
@@ -71,7 +71,7 @@ public class KlonObjectTest extends TestCase {
     Message message = compiler.fromString("total := \"\"; for(a,10,10,total = total + \" \" + a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(" 10", value.toString());
+    assertEquals("\" 10\"", value.toString());
   }
 
   public void testAndNonNil() throws Exception {

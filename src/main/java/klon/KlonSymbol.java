@@ -13,4 +13,9 @@ public class KlonSymbol extends KlonObject {
     super(parent, attached);
   }
 
+  @Override
+  public String toString() {
+    return String.valueOf(data);
+  }
+
 }

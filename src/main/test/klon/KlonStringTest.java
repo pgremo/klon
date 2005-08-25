@@ -22,7 +22,7 @@ public class KlonStringTest extends TestCase {
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("Hello World", value.toString());
+    assertEquals("\"Hello World\"", value.toString());
   }
 
   /*
@@ -39,7 +39,7 @@ public class KlonStringTest extends TestCase {
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("Hello", value.toString());
+    assertEquals("\"Hello\"", value.toString());
   }
 
 }

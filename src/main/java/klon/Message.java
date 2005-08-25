@@ -113,13 +113,7 @@ public class Message {
       result.append(selector);
     }
     if (literal != null) {
-      if ("String".equals(literal.getType())) {
-        result.append("\"")
-          .append(literal)
-          .append("\"");
-      } else {
-        result.append(literal);
-      }
+      result.append(literal);
     }
     if (arguments.size() > 0) {
       result.append("(");

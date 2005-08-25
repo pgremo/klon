@@ -19,19 +19,21 @@ public class KlonBlockTest extends TestCase {
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
-    assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
+    assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
+      .toString());
 
     message = compiler.fromString("asString");
     value = message.eval(value, value);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
+    assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
+      .toString());
 
     message = compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("Hello", value.toString());
+    assertEquals("Hello", value.getData());
   }
 
   public void testActivatePrototype() throws Exception {
@@ -45,7 +47,7 @@ public class KlonBlockTest extends TestCase {
     value = message.eval(value, value);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("null", value.toString());
+    assertEquals("null", value.getData());
   }
 
   public void testInvalid() throws Exception {
@@ -66,13 +68,14 @@ public class KlonBlockTest extends TestCase {
     assertNotNull(value);
     assertTrue(value instanceof KlonBlock);
     assertEquals("block(a, b, self setSlot(\"result\", a +(b)))",
-      value.toString());
+      value.getData()
+        .toString());
 
     message = compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertTrue(value instanceof KlonString);
-    assertEquals("Hello", value.toString());
+    assertEquals("Hello", value.getData());
   }
 
   public void testIfTrue() throws Exception {

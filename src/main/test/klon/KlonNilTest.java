@@ -64,11 +64,6 @@ public class KlonNilTest extends TestCase {
     assertEquals(object.getSlot("Object"), value);
   }
 
-  public void testToString() throws KlonException {
-    assertEquals("Nil", object.getSlot("Nil")
-      .toString());
-  }
-
   public void testDuplicate() throws KlonException {
     assertSame(object.getSlot("Nil"), object.getSlot("Nil")
       .duplicate());

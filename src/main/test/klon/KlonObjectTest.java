@@ -38,7 +38,7 @@ public class KlonObjectTest extends TestCase {
       message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("dummy does not exist", e.getMessage());
+      assertEquals("Invalid Slot:dummy does not exist", e.getMessage());
     }
   }
 

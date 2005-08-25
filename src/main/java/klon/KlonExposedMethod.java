@@ -27,12 +27,12 @@ public class KlonExposedMethod extends KlonObject {
         result = (KlonObject) ((Method) data).invoke(null, receiver, context,
           message);
       } catch (Throwable e) {
-        if (e instanceof InvocationTargetException){
-          e = ((InvocationTargetException)e).getTargetException();
-        }
         Throwable cause = e;
-        if (cause.getCause() != null){
-          cause = e.getCause();
+        if (cause instanceof InvocationTargetException) {
+          cause = ((InvocationTargetException) e).getTargetException();
+        }
+        if (cause.getCause() != null) {
+          cause = cause.getCause();
         }
         if (cause instanceof KlonException) {
           throw (KlonException) cause;

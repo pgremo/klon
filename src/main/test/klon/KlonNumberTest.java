@@ -89,7 +89,7 @@ public class KlonNumberTest extends TestCase {
       value = message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("Illegal Argument for <", e.getMessage());
+      assertEquals("Illegal Argument:Illegal Argument for <", e.getMessage());
     }
   }
 
@@ -109,7 +109,7 @@ public class KlonNumberTest extends TestCase {
       value = message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("Illegal Argument for >", e.getMessage());
+      assertEquals("Illegal Argument:Illegal Argument for >", e.getMessage());
     }
   }
 
@@ -134,7 +134,7 @@ public class KlonNumberTest extends TestCase {
       value = message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("Illegal Argument for <=", e.getMessage());
+      assertEquals("Illegal Argument:Illegal Argument for <=", e.getMessage());
     }
   }
 
@@ -159,7 +159,7 @@ public class KlonNumberTest extends TestCase {
       value = message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("Illegal Argument for >=", e.getMessage());
+      assertEquals("Illegal Argument:Illegal Argument for >=", e.getMessage());
     }
   }
 

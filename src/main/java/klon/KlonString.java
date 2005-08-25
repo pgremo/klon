@@ -3,6 +3,8 @@ package klon;
 @Prototype(name = "String", parent = "Object")
 public class KlonString extends KlonObject {
 
+  private static final long serialVersionUID = -1460358337296215238L;
+
   public KlonString() {
     super(null, "");
   }
@@ -16,10 +18,9 @@ public class KlonString extends KlonObject {
       Message message) throws KlonException {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return receiver.getSlot("String")
-      .duplicate(
-        receiver.getData() + String.valueOf(message.eval(context, 0)
-          .perform(context, printMessage)
-          .getData()));
+      .duplicate(receiver.getData() + String.valueOf(message.eval(context, 0)
+        .perform(context, printMessage)
+        .getData()));
   }
 
   @SuppressWarnings("unused")

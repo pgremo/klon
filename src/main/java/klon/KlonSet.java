@@ -3,6 +3,8 @@ package klon;
 @Prototype(name = "Set", parent = "Object")
 public class KlonSet extends KlonObject {
 
+  private static final long serialVersionUID = 9142527726733948367L;
+
   public KlonSet() {
     super();
   }

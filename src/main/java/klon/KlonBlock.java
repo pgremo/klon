@@ -3,6 +3,8 @@ package klon;
 @Prototype(name = "Block", parent = "Object")
 public class KlonBlock extends KlonObject {
 
+  private static final long serialVersionUID = 8013887125117513346L;
+
   public KlonBlock() {
     super();
   }
@@ -14,8 +16,8 @@ public class KlonBlock extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return data == null ? this : ((Block) data).activate(receiver,
-      context, message);
+    return data == null ? this : ((Block) data).activate(receiver, context,
+      message);
   }
 
   @ExposedAs("ifTrue")

@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 @Prototype(name = "ExposedMethod", parent = "Object")
 public class KlonExposedMethod extends KlonObject {
 
+  private static final long serialVersionUID = -6241106920818116280L;
+
   public KlonExposedMethod() {
     super();
   }
@@ -21,17 +23,19 @@ public class KlonExposedMethod extends KlonObject {
       result = getSlot("Nil");
     } else {
       try {
-        result = (KlonObject) ((Method) data).invoke(null, receiver,
-          context, message);
+        result = (KlonObject) ((Method) data).invoke(null, receiver, context,
+          message);
       } catch (Exception e) {
         Throwable cause = e.getCause();
         if (cause instanceof KlonException) {
           throw (KlonException) cause;
         }
         if (cause != null) {
-          throw new KlonException(cause);
+          throw (KlonException) getSlot("Exception").duplicate(cause.getClass()
+            .getSimpleName(), cause.getMessage());
         }
-        throw new KlonException(e);
+        throw (KlonException) getSlot("Exception").duplicate(e.getClass()
+          .getSimpleName(), e.getMessage());
       }
     }
     return result;

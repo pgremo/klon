@@ -6,6 +6,8 @@ import java.util.Map;
 @Prototype(name = "Object")
 public class KlonRoot extends KlonObject {
 
+  private static final long serialVersionUID = -5934417382511490890L;
+
   public KlonRoot(String[] args) {
     this(null, args);
   }
@@ -27,6 +29,10 @@ public class KlonRoot extends KlonObject {
 
     KlonObject exposedMethod = new KlonExposedMethod();
     setSlot("ExposedMethod", exposedMethod);
+
+    KlonObject exception = new KlonException();
+    exception.configure(root);
+    setSlot("Exception", exception);
 
     object.configure(root);
     string.configure(root);

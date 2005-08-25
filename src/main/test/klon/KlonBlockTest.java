@@ -55,7 +55,7 @@ public class KlonBlockTest extends TestCase {
       message.eval(object, object);
       fail("expected exception");
     } catch (KlonException e) {
-      assertEquals("null must be a Symbol", e.getMessage());
+      assertEquals("argument must evaluate to a Symbol", e.getMessage());
     }
   }
 

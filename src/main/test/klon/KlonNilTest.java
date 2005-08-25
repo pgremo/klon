@@ -13,7 +13,7 @@ public class KlonNilTest extends TestCase {
     object.configure(object);
   }
 
-  public void testAsString() throws KlonException {
+  public void testAsString() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil asString");
     KlonObject value = message.eval(object, object);
@@ -21,28 +21,28 @@ public class KlonNilTest extends TestCase {
       .duplicate(""), value);
   }
 
-  public void testAnd() throws KlonException {
+  public void testAnd() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil and Object");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Nil"), value);
   }
 
-  public void testIfNil() throws KlonException {
+  public void testIfNil() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil ifNil(Object)");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Object"), value);
   }
 
-  public void testIsNil() throws KlonException {
+  public void testIsNil() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil isNil");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Klon"), value);
   }
 
-  public void testIsEquals() throws KlonException {
+  public void testIsEquals() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil == Nil");
     KlonObject value = message.eval(object, object);
@@ -53,7 +53,7 @@ public class KlonNilTest extends TestCase {
     assertEquals(object.getSlot("Nil"), value);
   }
 
-  public void testOr() throws KlonException {
+  public void testOr() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil or Nil");
     KlonObject value = message.eval(object, object);

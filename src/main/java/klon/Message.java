@@ -92,7 +92,8 @@ public class Message {
     if ("Number".equals(result.getType())) {
       return (Double) result.getData();
     }
-    throw new KlonException("result must be a number");
+    throw (KlonException) receiver.getSlot("Exception")
+      .duplicate("Illegal Argument", "argument must evaluate to a number");
   }
 
   public String evalAsString(KlonObject receiver, int index)
@@ -101,7 +102,8 @@ public class Message {
     if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
-    throw new KlonException("result must be a string");
+    throw (KlonException) receiver.getSlot("Exception")
+      .duplicate("Illegal Argument", "argument must evaluate to a string");
   }
 
   @Override

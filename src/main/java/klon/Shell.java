@@ -51,7 +51,7 @@ public class Shell {
           }
         }
       } catch (Exception e) {
-        e.printStackTrace(error);
+        error.println(e.getMessage());
         error.flush();
       }
     }

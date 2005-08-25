@@ -190,8 +190,34 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   protected Node exitString(Token node) throws ParseException {
     try {
       String value = node.getImage();
+      value = value.substring(1, value.length() - 1);
+      StringBuilder buffer = new StringBuilder();
+      boolean escaping = false;
+      for (int i = 0; i < value.length(); i++) {
+        char current = value.charAt(i);
+        if ('\\' == current) {
+          if (escaping) {
+            buffer.append(current);
+          } else {
+            escaping = true;
+          }
+        } else {
+          if (escaping) {
+            if ('n' == current) {
+              buffer.append('\n');
+            } else if ('r' == current) {
+              buffer.append('\r');
+            } else if ('\t' == current) {
+              buffer.append('\t');
+            }
+            escaping = false;
+          } else {
+            buffer.append(current);
+          }
+        }
+      }
       node.addValue(root.getSlot("String")
-        .duplicate(value.substring(1, value.length() - 1)));
+        .duplicate(buffer.toString()));
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {

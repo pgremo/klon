@@ -1,5 +1,6 @@
 package klon;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Prototype(name = "ExposedMethod", parent = "Object")
@@ -25,8 +26,14 @@ public class KlonExposedMethod extends KlonObject {
       try {
         result = (KlonObject) ((Method) data).invoke(null, receiver, context,
           message);
-      } catch (Exception e) {
-        Throwable cause = e.getCause();
+      } catch (Throwable e) {
+        if (e instanceof InvocationTargetException){
+          e = ((InvocationTargetException)e).getTargetException();
+        }
+        Throwable cause = e;
+        if (cause.getCause() != null){
+          cause = e.getCause();
+        }
         if (cause instanceof KlonException) {
           throw (KlonException) cause;
         }

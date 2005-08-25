@@ -28,7 +28,8 @@ public class KlonException extends KlonObject {
   public String getMessage() {
     String result = null;
     try {
-      result = (String) getSlot("description").getData();
+      result = (String) getSlot("name").getData() + ":"
+          + (String) getSlot("description").getData();
     } catch (KlonException e) {
       e.printStackTrace();
     }

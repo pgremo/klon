@@ -260,8 +260,9 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     Message printMessage = new Compiler(receiver).fromString("asString");
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      KlonObject target = message.eval(context, i);
-      System.out.print(target.perform(context, printMessage));
+      System.out.print(message.eval(context, i)
+        .perform(context, printMessage)
+        .getData());
     }
     return receiver;
   }
@@ -312,11 +313,11 @@ public class KlonObject extends Exception {
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getData();
-    int start = message.evalAsNumber(context, 1)
+    double start = message.evalAsNumber(context, 1)
       .intValue();
-    int end = message.evalAsNumber(context, 2)
+    double end = message.evalAsNumber(context, 2)
       .intValue();
-    int increment;
+    double increment;
     Message code;
     if (message.getArgumentCount() == 5) {
       increment = message.evalAsNumber(context, 3)
@@ -326,7 +327,7 @@ public class KlonObject extends Exception {
       increment = end - start < 0 ? -1 : 1;
       code = message.getArgument(3);
     }
-    int i = start;
+    double i = start;
     while (!(increment > 0 ? i > end : i < end)) {
       scope.setSlot(counter, receiver.getSlot("Number")
         .duplicate(i));
@@ -407,6 +408,14 @@ public class KlonObject extends Exception {
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return receiver.equals(message.eval(context, 0))
+        ? receiver
+        : receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("!=")
+  public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return !receiver.equals(message.eval(context, 0))
         ? receiver
         : receiver.getSlot("Nil");
   }

@@ -39,7 +39,7 @@ public class KlonParserTest extends TestCase {
   public void testHelloWorld() throws Exception {
     Message message = new Compiler(object).fromString("\"Hello world!\\n\" print");
     assertNotNull(message);
-    assertEquals("\"Hello world!\\n\" print", message.toString());
+    assertEquals("\"Hello world!\n\" print", message.toString());
   }
 
   public void testCloneAssignment() throws Exception {

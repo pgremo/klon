@@ -1,7 +1,10 @@
 bottle := block(i,
-     if(i == 0, return ("no more bottles of beer"))
-     if(i == 1, return ("1 bottle of beer"))
-     return ("" .. i .. " bottles of beer")
+     if(i == 0,
+       "no more bottles of beer",
+       if(i == 1,
+         "1 bottle of beer",
+         "" + i + " bottles of beer")
+       )
 )
 
 for(i, 99, 1,

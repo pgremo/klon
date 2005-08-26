@@ -37,12 +37,8 @@ public class KlonExposedMethod extends KlonObject {
         if (cause instanceof KlonException) {
           throw (KlonException) cause;
         }
-        if (cause != null) {
-          throw (KlonException) getSlot("Exception").duplicate(cause.getClass()
-            .getSimpleName(), cause.getMessage());
-        }
-        throw (KlonException) getSlot("Exception").duplicate(e.getClass()
-          .getSimpleName(), e.getMessage());
+        throw (KlonException) getSlot("Exception").duplicate(cause.getClass()
+          .getSimpleName(), cause.getMessage());
       }
     }
     return result;

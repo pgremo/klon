@@ -86,6 +86,15 @@ public class Message {
     return result;
   }
 
+  public void assertArgumentCount(KlonObject receiver, int count)
+      throws KlonException {
+    if (arguments.size() != count) {
+      throw (KlonException) receiver.getSlot("Exception")
+        .duplicate("Illegal Argument",
+          "message must have " + count + " arguments");
+    }
+  }
+
   public Double evalAsNumber(KlonObject receiver, int index)
       throws KlonException {
     KlonObject result = eval(receiver, index);

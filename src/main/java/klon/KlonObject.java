@@ -457,6 +457,7 @@ public class KlonObject extends Exception {
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
+    System.out.println(receiver.toString());
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
       System.out.println(current.getKey() + " := " + current.getValue()
         .toString());

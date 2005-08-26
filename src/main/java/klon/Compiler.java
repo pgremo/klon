@@ -29,15 +29,13 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     try {
       return (Message) new KlonParser(input, this).parse()
         .getValue(0);
-    } catch (Exception e) {
+    } catch (Throwable e) {
       Throwable cause = e.getCause();
-      if (cause instanceof KlonException) {
-        throw (KlonException) cause;
-      }
       if (cause != null) {
-        throw (KlonException) root.getSlot("Exception")
-          .duplicate(cause.getClass()
-            .getSimpleName(), cause.getMessage());
+        e = cause;
+      }
+      if (e instanceof KlonException) {
+        throw (KlonException) cause;
       }
       throw (KlonException) root.getSlot("Exception")
         .duplicate(e.getClass()

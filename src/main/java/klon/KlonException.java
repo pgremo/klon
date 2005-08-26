@@ -23,6 +23,10 @@ public class KlonException extends KlonObject {
     if (description != null) {
       result.setSlot("description", stringProto.duplicate(description));
     }
+    if (message != null) {
+      result
+          .setSlot("caughtMessage", stringProto.duplicate(message.toString()));
+    }
     return result;
   }
 

@@ -1,5 +1,6 @@
 package klon;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -12,7 +13,7 @@ public class Shell {
   private static final String CLOSE_GROUP = ")}]";
 
   public void process(KlonObject root, Reader in, MonitoredPrintStream out,
-      PrintWriter error) {
+      PrintWriter error) throws KlonException, IOException {
     Compiler compiler = new Compiler(root);
     StringBuilder buffer = new StringBuilder();
     while (true) {
@@ -59,9 +60,9 @@ public class Shell {
             }
           }
         }
-      } catch (Exception e) {
-        error.println(e.getMessage());
-        error.flush();
+      } catch (KlonException e) {
+        Message reportMessage = compiler.fromString("inspect");
+        reportMessage.eval(e, e);
       }
     }
   }

@@ -40,8 +40,8 @@ public class KlonException extends KlonObject {
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    throw (KlonException) receiver.duplicate(message.evalAsString(context, 0),
-      message.evalAsString(context, 1));
+    throw (KlonException) receiver.duplicate(KlonString.evalAsString(context, message, 0),
+      KlonString.evalAsString(context, message, 1));
   }
 
   @ExposedAs("catch")

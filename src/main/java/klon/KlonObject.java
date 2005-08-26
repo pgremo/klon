@@ -189,7 +189,7 @@ public class KlonObject extends Exception {
   @ExposedAs("getSlot")
   public static KlonObject getSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    String name = message.evalAsString(context, 0);
+    String name = KlonString.evalAsString(context, message, 0);
     KlonObject result = receiver.getSlot(name);
     if (result == null) {
       throw (KlonException) receiver.getSlot("Exception")
@@ -201,7 +201,7 @@ public class KlonObject extends Exception {
   @ExposedAs("setSlot")
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    String name = message.evalAsString(context, 0);
+    String name = KlonString.evalAsString(context, message, 0);
     KlonObject value = message.eval(context, 1);
     receiver.setSlot(name, value);
     return value;
@@ -210,7 +210,7 @@ public class KlonObject extends Exception {
   @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    String name = message.evalAsString(context, 0);
+    String name = KlonString.evalAsString(context, message, 0);
     KlonObject value = message.eval(context, 1);
     receiver.updateSlot(name, value);
     return value;
@@ -219,7 +219,7 @@ public class KlonObject extends Exception {
   @ExposedAs("removeSlot")
   public static KlonObject removeSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    receiver.removeSlot(message.evalAsString(context, 0));
+    receiver.removeSlot(KlonString.evalAsString(context, message, 0));
     return receiver;
   }
 
@@ -276,7 +276,7 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     int result = 0;
     if (message.getArgumentCount() == 1) {
-      result = message.evalAsNumber(context, 0)
+      result = KlonNumber.evalAsNumber(context, message, 0)
         .intValue();
     }
     System.exit(result);
@@ -309,14 +309,14 @@ public class KlonObject extends Exception {
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getData();
-    double start = message.evalAsNumber(context, 1)
+    double start = KlonNumber.evalAsNumber(context, message, 1)
       .intValue();
-    double end = message.evalAsNumber(context, 2)
+    double end = KlonNumber.evalAsNumber(context, message, 2)
       .intValue();
     double increment;
     Message code;
     if (message.getArgumentCount() == 5) {
-      increment = message.evalAsNumber(context, 3)
+      increment = KlonNumber.evalAsNumber(context, message, 3)
         .intValue();
       code = message.getArgument(4);
     } else {

@@ -18,6 +18,16 @@ public class KlonString extends KlonObject {
     return "\"" + String.valueOf(data) + "\"";
   }
 
+  public static String evalAsString(KlonObject receiver, Message message, int index)
+      throws KlonException {
+    KlonObject result = message.eval(receiver, index);
+    if ("String".equals(result.getType())) {
+      return (String) result.getData();
+    }
+    throw (KlonException) receiver.getSlot("Exception")
+      .duplicate("Illegal Argument", "argument must evaluate to a string");
+  }
+
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

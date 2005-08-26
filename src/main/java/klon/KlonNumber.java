@@ -26,47 +26,59 @@ public class KlonNumber extends KlonObject {
     return formatter.format(data);
   }
 
+  public static Double evalAsNumber(KlonObject receiver, Message message,
+      int index) throws KlonException {
+    KlonObject result = message.eval(receiver, index);
+    if ("Number".equals(result.getType())) {
+      return (Double) result.getData();
+    }
+    throw (KlonException) receiver.getSlot("Exception").duplicate(
+        "Illegal Argument", "argument must evaluate to a number");
+  }
+
   @ExposedAs("+")
   public static KlonObject add(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate((Double) receiver.getData() + message.evalAsNumber(context, 0));
+    return receiver.getSlot("Number").duplicate(
+        (Double) receiver.getData() + evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("-")
   public static KlonObject subtract(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate((Double) receiver.getData() - message.evalAsNumber(context, 0));
+    return receiver.getSlot("Number").duplicate(
+        (Double) receiver.getData() - evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("*")
   public static KlonObject multiply(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate((Double) receiver.getData() * message.evalAsNumber(context, 0));
+    return receiver.getSlot("Number").duplicate(
+        (Double) receiver.getData() * evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("/")
   public static KlonObject divide(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate((Double) receiver.getData() / message.evalAsNumber(context, 0));
+    return receiver.getSlot("Number").duplicate(
+        (Double) receiver.getData() / evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("%")
   public static KlonObject modulus(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate((Double) receiver.getData() % message.evalAsNumber(context, 0));
+    return receiver.getSlot("Number").duplicate(
+        (Double) receiver.getData() % evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("^")
   public static KlonObject power(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate(
-        Math.pow((Double) receiver.getData(), message.evalAsNumber(context, 0)));
+    return receiver
+        .getSlot("Number")
+          .duplicate(
+              Math.pow((Double) receiver.getData(), evalAsNumber(context,
+                  message, 0)));
   }
 
   @ExposedAs("<")
@@ -78,8 +90,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) < 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "Illegal Argument for <");
+    throw (KlonException) receiver.getSlot("Exception").duplicate(
+        "Illegal Argument", "Illegal Argument for <");
   }
 
   @ExposedAs(">")
@@ -91,8 +103,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) > 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "Illegal Argument for >");
+    throw (KlonException) receiver.getSlot("Exception").duplicate(
+        "Illegal Argument", "Illegal Argument for >");
   }
 
   @ExposedAs("<=")
@@ -104,8 +116,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) <= 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "Illegal Argument for <=");
+    throw (KlonException) receiver.getSlot("Exception").duplicate(
+        "Illegal Argument", "Illegal Argument for <=");
   }
 
   @ExposedAs(">=")
@@ -117,29 +129,29 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) >= 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "Illegal Argument for >=");
+    throw (KlonException) receiver.getSlot("Exception").duplicate(
+        "Illegal Argument", "Illegal Argument for >=");
   }
 
   @ExposedAs("abs")
   public static KlonObject absoluteValue(KlonObject receiver,
       KlonObject context, Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate(Math.abs((Double) receiver.getData()));
+    return receiver.getSlot("Number").duplicate(
+        Math.abs((Double) receiver.getData()));
   }
 
   @ExposedAs("sqrt")
   public static KlonObject squareRoot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate(Math.sqrt((Double) receiver.getData()));
+    return receiver.getSlot("Number").duplicate(
+        Math.sqrt((Double) receiver.getData()));
   }
 
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(formatter.format(receiver.getData()));
+    return receiver.getSlot("String").duplicate(
+        formatter.format(receiver.getData()));
   }
 }

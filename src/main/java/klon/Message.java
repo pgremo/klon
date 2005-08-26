@@ -95,26 +95,6 @@ public class Message {
     }
   }
 
-  public Double evalAsNumber(KlonObject receiver, int index)
-      throws KlonException {
-    KlonObject result = eval(receiver, index);
-    if ("Number".equals(result.getType())) {
-      return (Double) result.getData();
-    }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "argument must evaluate to a number");
-  }
-
-  public String evalAsString(KlonObject receiver, int index)
-      throws KlonException {
-    KlonObject result = eval(receiver, index);
-    if ("String".equals(result.getType())) {
-      return (String) result.getData();
-    }
-    throw (KlonException) receiver.getSlot("Exception")
-      .duplicate("Illegal Argument", "argument must evaluate to a string");
-  }
-
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();

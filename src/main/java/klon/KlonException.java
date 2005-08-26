@@ -13,6 +13,7 @@ public class KlonException extends KlonObject {
     super(parent, attached);
   }
 
+  // TODO: this needs fixed.
   @Override
   public KlonObject duplicate(Object... subject) throws KlonException {
     KlonObject result = super.duplicate(subject);

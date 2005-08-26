@@ -25,7 +25,7 @@ public class KlonExposedMethod extends KlonObject {
     } else {
       try {
         result = (KlonObject) ((Method) data).invoke(null, receiver, context,
-          message);
+            message);
       } catch (Throwable e) {
         Throwable cause = e;
         if (cause instanceof InvocationTargetException) {
@@ -37,8 +37,9 @@ public class KlonExposedMethod extends KlonObject {
         if (cause instanceof KlonException) {
           throw (KlonException) cause;
         }
-        throw (KlonException) getSlot("Exception").duplicate(cause.getClass()
-          .getSimpleName(), cause.getMessage());
+        throw ((KlonException) getSlot("Exception")).newException(cause
+            .getClass()
+              .getSimpleName(), cause.getMessage(), message);
       }
     }
     return result;

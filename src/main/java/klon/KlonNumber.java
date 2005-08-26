@@ -32,8 +32,8 @@ public class KlonNumber extends KlonObject {
     if ("Number".equals(result.getType())) {
       return (Double) result.getData();
     }
-    throw (KlonException) receiver.getSlot("Exception").duplicate(
-        "Illegal Argument", "argument must evaluate to a number");
+    throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "argument must evaluate to a number", message);
   }
 
   @ExposedAs("+")
@@ -90,8 +90,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) < 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception").duplicate(
-        "Illegal Argument", "Illegal Argument for <");
+    throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "Illegal Argument for <", message);
   }
 
   @ExposedAs(">")
@@ -103,8 +103,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) > 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception").duplicate(
-        "Illegal Argument", "Illegal Argument for >");
+    throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "Illegal Argument for >", message);
   }
 
   @ExposedAs("<=")
@@ -116,8 +116,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) <= 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception").duplicate(
-        "Illegal Argument", "Illegal Argument for <=");
+    throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "Illegal Argument for <=", message);
   }
 
   @ExposedAs(">=")
@@ -129,8 +129,8 @@ public class KlonNumber extends KlonObject {
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) >= 0 ? argument : receiver.getSlot("Nil");
     }
-    throw (KlonException) receiver.getSlot("Exception").duplicate(
-        "Illegal Argument", "Illegal Argument for >=");
+    throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "Illegal Argument for >=", message);
   }
 
   @ExposedAs("abs")

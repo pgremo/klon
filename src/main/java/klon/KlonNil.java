@@ -10,7 +10,7 @@ public class KlonNil extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(Object... subject) {
+  public KlonObject duplicate(Object subject) {
     return this;
   }
 

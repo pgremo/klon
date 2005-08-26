@@ -80,8 +80,7 @@ public class Message {
     if (index >= arguments.size()) {
       result = context.getSlot("Nil");
     } else {
-      result = arguments.get(index)
-        .eval(context, context);
+      result = arguments.get(index).eval(context, context);
     }
     return result;
   }
@@ -89,9 +88,9 @@ public class Message {
   public void assertArgumentCount(KlonObject receiver, int count)
       throws KlonException {
     if (arguments.size() != count) {
-      throw (KlonException) receiver.getSlot("Exception")
-        .duplicate("Illegal Argument",
-          "message must have " + count + " arguments");
+      throw ((KlonException) receiver.getSlot("Exception"))
+          .newException("Illegal Argument", "message must have " + count
+              + " arguments", null);
     }
   }
 
@@ -116,12 +115,10 @@ public class Message {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ")
-        .append(attached);
+      result.append(" ").append(attached);
     }
     if (next != null) {
-      result.append(";\n")
-        .append(next);
+      result.append(";\n").append(next);
     }
     return result.toString();
   }

@@ -66,18 +66,20 @@ public class KlonRoot extends KlonObject {
     message.configure(root);
     setSlot("Message", message);
 
+    KlonObject noop = new KlonNoOp();
+    noop.configure(root);
+    setSlot("NoOp", noop);
+
     KlonObject properties = object.duplicate();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), root.getSlot("String")
-        .duplicate(current.getValue()
-          .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), root
+          .getSlot("String")
+            .duplicate(current.getValue().toString()));
     }
     setSlot("Properties", properties);
 
     setSlot("Arguments", getSlot("List").duplicate(
-      Arrays.asList((String[]) data)));
+        Arrays.asList((String[]) data)));
 
   }
 

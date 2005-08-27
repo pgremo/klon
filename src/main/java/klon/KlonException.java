@@ -24,8 +24,7 @@ public class KlonException extends KlonObject {
       result.setSlot("description", stringProto.duplicate(description));
     }
     if (message != null) {
-      result
-          .setSlot("caughtMessage", stringProto.duplicate(message.toString()));
+      result.setSlot("source", stringProto.duplicate(message.toString()));
     }
     return result;
   }
@@ -54,8 +53,9 @@ public class KlonException extends KlonObject {
   public static KlonObject catchException(KlonObject receiver,
       KlonObject context, Message message) throws KlonException {
     int index = 0;
-    KlonObject result = message.eval(context, index++);
-    if (receiver.getType().equals(result.getType())) {
+    KlonObject result = receiver;
+    KlonObject target = message.eval(context, index++);
+    if (receiver.getType().equals(target.getType())) {
       KlonObject scope = context.duplicate();
       if (message.getArgumentCount() == 3) {
         String name = (String) message
@@ -65,7 +65,7 @@ public class KlonException extends KlonObject {
         scope.setSlot(name, receiver);
       }
       message.eval(scope, index);
-      result = new KlonNoOp(null, result);
+      result = receiver.getSlot("NoOp").duplicate(receiver);
     }
     return result;
   }

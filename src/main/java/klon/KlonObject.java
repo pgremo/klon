@@ -20,7 +20,9 @@ public class KlonObject extends Exception {
   }
 
   public KlonObject(KlonObject parent, Object data) {
-    slots.put("parent", parent);
+    if (parent != null) {
+      slots.put("parent", parent);
+    }
     this.data = data;
   }
 
@@ -125,6 +127,9 @@ public class KlonObject extends Exception {
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = context.getSlot(name);
+    }
+    if (slot == null) {
+      slot = getSlot("forward");
     }
     if (slot == null) {
       throw ((KlonException) getSlot("Exception")).newException("Invalid Slot",
@@ -428,7 +433,7 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     KlonObject result;
     try {
-      result = new KlonNoOp(null, message.eval(context, 0));
+      result = receiver.getSlot("NoOp").duplicate(message.eval(context, 0));
     } catch (KlonException e) {
       result = e;
     }

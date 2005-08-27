@@ -1,5 +1,6 @@
 package klon;
 
+@Prototype(name = "NoOp")
 public class KlonNoOp extends KlonObject {
 
   private static final long serialVersionUID = -3849427822460733188L;
@@ -12,11 +13,14 @@ public class KlonNoOp extends KlonObject {
     super(parent, data);
   }
 
-  @SuppressWarnings("unused")
-  @Override
-  public KlonObject perform(KlonObject context, Message message)
-      throws KlonException {
-    return (KlonObject) getData();
+  @ExposedAs("forward")
+  public static KlonObject forward(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject result = (KlonObject) receiver.getData();
+    if (result == null) {
+      result = context.getSlot("Nil");
+    }
+    return result;
   }
 
 }

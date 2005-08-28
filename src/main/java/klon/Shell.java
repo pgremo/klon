@@ -28,10 +28,10 @@ public class Shell {
         while ("\n".indexOf(current) == -1 || depth > 0) {
           current = (char) in.read();
           buffer.append(current);
-          if (OPEN_GROUP.indexOf(current) > -1) {
+          if (OPEN_GROUP.indexOf(current) > -1 && !quotting) {
             depth++;
           }
-          if (CLOSE_GROUP.indexOf(current) > -1) {
+          if (CLOSE_GROUP.indexOf(current) > -1 && !quotting) {
             depth--;
           }
           if ('"' == current) {

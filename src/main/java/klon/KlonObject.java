@@ -3,7 +3,9 @@ package klon;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @Prototype(name = "Object", parent = "Klon")
@@ -12,6 +14,7 @@ public class KlonObject extends Exception {
   private static final long serialVersionUID = 5234708348712278569L;
 
   private Prototype prototype = getClass().getAnnotation(Prototype.class);
+  private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   protected Object data;
 
@@ -21,7 +24,7 @@ public class KlonObject extends Exception {
 
   public KlonObject(KlonObject parent, Object data) {
     if (parent != null) {
-      slots.put("parent", parent);
+      bindings.add(parent);
     }
     this.data = data;
   }
@@ -70,21 +73,27 @@ public class KlonObject extends Exception {
     if (slots.containsKey(name)) {
       result = slots.put(name, value);
     } else {
-      KlonObject parent = slots.get("parent");
-      if (parent == null || searchPath.contains(parent)) {
-        throw ((KlonException) getSlot("Exception")).newException(
-            "Invalid Slot", name + " does not exist", null);
+      Iterator<KlonObject> iterator = bindings.iterator();
+      while (iterator.hasNext() && result == null) {
+        KlonObject current = iterator.next();
+        if (!searchPath.contains(current)) {
+          searchPath.add(current);
+          result = current.updateSlot(name, value, searchPath);
+        }
       }
-      searchPath.add(parent);
-      result = parent.updateSlot(name, value, searchPath);
+    }
+    if (result == null) {
+      throw ((KlonException) getSlot("Exception")).newException("Invalid Slot",
+          name + " does not exist", null);
     }
     return result;
   }
 
   public void updateSlot(String name, KlonObject value) throws KlonException {
-    KlonObject result = updateSlot(name, value, new LinkedList<KlonObject>());
+    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
+    KlonObject result = updateSlot(name, value, searchPath);
     if (result == null) {
-      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      KlonObject self = getSlot("self", searchPath);
       if (self != null) {
         self.updateSlot(name, value);
       }
@@ -98,19 +107,23 @@ public class KlonObject extends Exception {
     if (slots.containsKey(name)) {
       result = slots.get(name);
     } else {
-      KlonObject parent = slots.get("parent");
-      if (parent != null && !searchPath.contains(parent)) {
-        searchPath.add(parent);
-        result = parent.getSlot(name, searchPath);
+      Iterator<KlonObject> iterator = bindings.iterator();
+      while (iterator.hasNext() && result == null) {
+        KlonObject current = iterator.next();
+        if (!searchPath.contains(current)) {
+          searchPath.add(current);
+          result = current.getSlot(name, searchPath);
+        }
       }
     }
     return result;
   }
 
   public KlonObject getSlot(String name) throws KlonException {
-    KlonObject result = getSlot(name, new LinkedList<KlonObject>());
+    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
+    KlonObject result = getSlot(name, searchPath);
     if (result == null) {
-      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      KlonObject self = getSlot("self", searchPath);
       if (self != null) {
         result = self.getSlot(name);
       }
@@ -124,23 +137,35 @@ public class KlonObject extends Exception {
     if (slots.containsKey(name)) {
       result = slots.remove(name);
     } else {
-      KlonObject parent = slots.get("parent");
-      if (parent != null && !searchPath.contains(parent)) {
-        searchPath.add(parent);
-        result = parent.removeSlot(name, searchPath);
+      Iterator<KlonObject> iterator = bindings.iterator();
+      while (iterator.hasNext() && result == null) {
+        KlonObject current = iterator.next();
+        if (!searchPath.contains(current)) {
+          searchPath.add(current);
+          result = current.removeSlot(name, searchPath);
+        }
       }
     }
     return result;
   }
 
   public void removeSlot(String name) throws KlonException {
-    KlonObject result = removeSlot(name, new LinkedList<KlonObject>());
+    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
+    KlonObject result = removeSlot(name, searchPath);
     if (result == null) {
-      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      KlonObject self = getSlot("self", searchPath);
       if (self != null) {
         self.removeSlot(name);
       }
     }
+  }
+
+  public void bind(KlonObject object) {
+    bindings.add(object);
+  }
+
+  public void unbind(KlonObject object) {
+    bindings.remove(object);
   }
 
   public KlonObject perform(KlonObject context, Message message)
@@ -183,6 +208,20 @@ public class KlonObject extends Exception {
     return getType() + "_0x" + Integer.toHexString(hashCode());
   }
 
+  @ExposedAs("bind")
+  public static KlonObject bind(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    receiver.bind(message.eval(context, 0));
+    return receiver;
+  }
+
+  @ExposedAs("unbind")
+  public static KlonObject unbind(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    receiver.unbind(message.eval(context, 0));
+    return receiver;
+  }
+
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -190,7 +229,6 @@ public class KlonObject extends Exception {
     return receiver.duplicate().perform(context, initMessage);
   }
 
-  @SuppressWarnings("unused")
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -465,7 +503,19 @@ public class KlonObject extends Exception {
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    System.out.println(receiver.toString());
+    System.out.print(receiver.toString());
+    if (!receiver.bindings.isEmpty()) {
+      System.out.print(" (");
+      Iterator<KlonObject> iterator = receiver.bindings.iterator();
+      while (iterator.hasNext()) {
+        System.out.print(iterator.next());
+        if (iterator.hasNext()) {
+          System.out.print(", ");
+        }
+      }
+      System.out.print(")");
+    }
+    System.out.println();
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
       System.out.println(current.getKey() + " := "
           + current.getValue().toString());

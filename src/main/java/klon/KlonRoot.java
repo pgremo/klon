@@ -22,7 +22,7 @@ public class KlonRoot extends KlonObject {
 
     KlonObject object = new KlonObject();
     setSlot("Object", object);
-    setSlot("parent", object);
+    bind(object);
 
     KlonObject string = new KlonString();
     setSlot("String", string);
@@ -31,9 +31,9 @@ public class KlonRoot extends KlonObject {
     setSlot("ExposedMethod", exposedMethod);
 
     KlonObject exception = new KlonException();
-    exception.configure(root);
     setSlot("Exception", exception);
 
+    exception.configure(root);
     object.configure(root);
     string.configure(root);
     exposedMethod.configure(root);
@@ -50,10 +50,6 @@ public class KlonRoot extends KlonObject {
     block.configure(root);
     setSlot("Block", block);
 
-    KlonObject symbol = new KlonSymbol();
-    symbol.configure(root);
-    setSlot("Symbol", symbol);
-
     KlonObject set = new KlonSet();
     set.configure(root);
     setSlot("Set", set);
@@ -66,13 +62,21 @@ public class KlonRoot extends KlonObject {
     message.configure(root);
     setSlot("Message", message);
 
+    KlonObject system = new KlonObject();
+    system.bind(object);
+    bind(system);
+
+    KlonObject symbol = new KlonSymbol();
+    symbol.configure(root);
+    system.setSlot("Symbol", symbol);
+    
     KlonObject noop = new KlonNoOp();
     noop.configure(root);
-    setSlot("NoOp", noop);
+    system.setSlot("NoOp", noop);
 
     KlonObject locals = new KlonLocals();
-    noop.configure(root);
-    setSlot("Locals", locals);
+    locals.configure(root);
+    system.setSlot("Locals", locals);
 
     KlonObject properties = object.duplicate();
     for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {

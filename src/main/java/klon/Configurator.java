@@ -18,7 +18,7 @@ public final class Configurator {
     }
     String parent = prototype.parent();
     if (!"".equals(parent)) {
-      target.setSlot("parent", root.getSlot(parent));
+      target.bind(root.getSlot(parent));
     }
     for (Method current : type.getDeclaredMethods()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);

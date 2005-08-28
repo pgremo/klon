@@ -70,6 +70,10 @@ public class KlonRoot extends KlonObject {
     noop.configure(root);
     setSlot("NoOp", noop);
 
+    KlonObject locals = new KlonLocals();
+    noop.configure(root);
+    setSlot("Locals", locals);
+
     KlonObject properties = object.duplicate();
     for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
       properties.setSlot(current.getKey().toString(), root

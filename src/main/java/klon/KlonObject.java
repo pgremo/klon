@@ -64,10 +64,11 @@ public class KlonObject extends Exception {
     slots.put(name, value);
   }
 
-  private void updateSlot(String name, KlonObject value,
+  private KlonObject updateSlot(String name, KlonObject value,
       Collection<KlonObject> searchPath) throws KlonException {
+    KlonObject result = null;
     if (slots.containsKey(name)) {
-      slots.put(name, value);
+      result = slots.put(name, value);
     } else {
       KlonObject parent = slots.get("parent");
       if (parent == null || searchPath.contains(parent)) {
@@ -75,12 +76,20 @@ public class KlonObject extends Exception {
             "Invalid Slot", name + " does not exist", null);
       }
       searchPath.add(parent);
-      parent.updateSlot(name, value, searchPath);
+      result = parent.updateSlot(name, value, searchPath);
     }
+    return result;
   }
 
   public void updateSlot(String name, KlonObject value) throws KlonException {
-    updateSlot(name, value, new LinkedList<KlonObject>());
+    KlonObject result = updateSlot(name, value, new LinkedList<KlonObject>());
+    if (result == null) {
+      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      if (self != null) {
+        self.updateSlot(name, value);
+      }
+    }
+
   }
 
   private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
@@ -99,7 +108,14 @@ public class KlonObject extends Exception {
   }
 
   public KlonObject getSlot(String name) throws KlonException {
-    return getSlot(name, new LinkedList<KlonObject>());
+    KlonObject result = getSlot(name, new LinkedList<KlonObject>());
+    if (result == null) {
+      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      if (self != null) {
+        result = self.getSlot(name);
+      }
+    }
+    return result;
   }
 
   private KlonObject removeSlot(String name, Collection<KlonObject> searchPath)
@@ -118,14 +134,20 @@ public class KlonObject extends Exception {
   }
 
   public void removeSlot(String name) throws KlonException {
-    removeSlot(name, new LinkedList<KlonObject>());
+    KlonObject result = removeSlot(name, new LinkedList<KlonObject>());
+    if (result == null) {
+      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
+      if (self != null) {
+        self.removeSlot(name);
+      }
+    }
   }
 
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
     String name = (String) message.getSelector().getData();
     KlonObject slot = getSlot(name);
-    if (slot == null) {
+    if (slot == null && "Locals".equals(context.getType())) {
       slot = context.getSlot(name);
     }
     if (slot == null) {
@@ -161,11 +183,11 @@ public class KlonObject extends Exception {
     return getType() + "_0x" + Integer.toHexString(hashCode());
   }
 
-  @SuppressWarnings("unused")
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.duplicate();
+    Message initMessage = new Compiler(context).fromString("do(?init)");
+    return receiver.duplicate().perform(context, initMessage);
   }
 
   @SuppressWarnings("unused")

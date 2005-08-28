@@ -200,8 +200,7 @@ public class KlonObject extends Exception {
 
   @Override
   public int hashCode() {
-    return bindings.hashCode() + slots.hashCode()
-        + (data == null ? 0 : data.hashCode());
+    return super.hashCode();
   }
 
   @Override

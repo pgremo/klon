@@ -62,6 +62,10 @@ public class KlonRoot extends KlonObject {
     message.configure(root);
     setSlot("Message", message);
 
+    KlonObject random = new KlonRandom();
+    random.configure(root);
+    setSlot("Random", random);
+
     KlonObject system = new KlonObject();
     system.bind(object);
     bind(system);

@@ -147,6 +147,13 @@ public class KlonNumber extends KlonObject {
         Math.sqrt((Double) receiver.getData()));
   }
 
+  @ExposedAs("integer")
+  public static KlonObject integer(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.getSlot("Number").duplicate(
+        (Math.floor((Double) receiver.getData())));
+  }
+
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

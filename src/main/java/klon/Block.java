@@ -9,8 +9,8 @@ public class Block {
     this.parameters = parameters;
     this.code = code;
   }
-  
-  public Message getCode(){
+
+  public Message getCode() {
     return code;
   }
 
@@ -30,8 +30,8 @@ public class Block {
     return result.toString();
   }
 
-  public KlonObject activate(KlonObject receiver, KlonObject context, Message message)
-      throws KlonException {
+  public KlonObject activate(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
     KlonObject scope = receiver.getSlot("Locals").duplicate();
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     int i = 0;
@@ -45,5 +45,4 @@ public class Block {
     scope.setSlot("self", receiver);
     return code.eval(scope, scope);
   }
-
 }

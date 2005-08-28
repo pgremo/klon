@@ -49,7 +49,7 @@ public class Shell {
           if (!out.hasOutput()) {
             if ("String".equals(value.getType())
                 || "Number".equals(value.getType())) {
-              Message reportMessage = compiler.fromString("write;writeLine");
+              Message reportMessage = compiler.fromString("writeLine");
               Message argument = new Message();
               argument.setLiteral(value);
               reportMessage.addArgument(argument);

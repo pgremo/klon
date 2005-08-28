@@ -12,12 +12,23 @@ public class Message {
   private Message attached;
   private Message next;
 
+  public Message() {
+  }
+
+  public Message(KlonObject literal) {
+    this.literal = literal;
+  }
+
   public int getArgumentCount() {
     return arguments.size();
   }
 
   public void addArgument(Message message) {
     arguments.add(message);
+  }
+
+  public void addArgument(KlonObject argument) {
+    arguments.add(new Message(argument));
   }
 
   public Message getArgument(int index) {
@@ -60,19 +71,18 @@ public class Message {
       throws KlonException {
     KlonObject self = receiver;
     for (Message outer = this; outer != null; outer = outer.getNext()) {
-      receiver = self;
       for (Message inner = outer; inner != null; inner = inner.getAttached()) {
         KlonObject result = inner.getLiteral();
         if (result == null) {
-          result = receiver.perform(context, inner);
+          result = self.perform(context, inner);
         }
-        receiver = result;
+        self = result;
       }
       if (outer.getNext() != null) {
-        receiver = context;
+        self = context;
       }
     }
-    return receiver;
+    return self;
   }
 
   public KlonObject eval(KlonObject context, int index) throws KlonException {

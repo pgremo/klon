@@ -82,23 +82,20 @@ public class KlonObject extends Exception {
         }
       }
     }
-    if (result == null) {
-      throw ((KlonException) getSlot("Exception")).newException("Invalid Slot",
-          name + " does not exist", null);
-    }
     return result;
   }
 
-  public void updateSlot(String name, KlonObject value) throws KlonException {
+  public KlonObject updateSlot(String name, KlonObject value)
+      throws KlonException {
     LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
     KlonObject result = updateSlot(name, value, searchPath);
     if (result == null) {
       KlonObject self = getSlot("self", searchPath);
       if (self != null) {
-        self.updateSlot(name, value);
+        result = self.updateSlot(name, value);
       }
     }
-
+    return result;
   }
 
   private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
@@ -191,16 +188,20 @@ public class KlonObject extends Exception {
     if (this == obj) {
       result = true;
     } else {
-      if (obj instanceof KlonObject) {
-        if (slots.equals(((KlonObject) obj).slots)) {
-          result = true;
-        }
-        if (result && data != null) {
-          result = data.equals(((KlonObject) obj).data);
-        }
-      }
+      KlonObject klonObject = (KlonObject) obj;
+      result = obj instanceof KlonObject
+          && slots.equals(klonObject.slots)
+          && bindings.equals(klonObject.bindings)
+          && ((data == null && klonObject.data == null) || data != null
+              && data.equals(klonObject.data));
     }
     return result;
+  }
+
+  @Override
+  public int hashCode() {
+    return bindings.hashCode() + slots.hashCode()
+        + (data == null ? 0 : data.hashCode());
   }
 
   @Override
@@ -272,7 +273,11 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject value = message.eval(context, 1);
-    receiver.updateSlot(name, value);
+    KlonObject result = receiver.updateSlot(name, value);
+    if (result == null) {
+      throw ((KlonException) receiver.getSlot("Exception")).newException(
+          "Invalid Slot", name + " does not exist", null);
+    }
     return value;
   }
 

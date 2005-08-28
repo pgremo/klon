@@ -2,8 +2,6 @@ package klon;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Reader;
 
 public class Shell {
@@ -11,60 +9,75 @@ public class Shell {
   private static final String PROMPT = "\nklon> ";
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
+  private Compiler compiler;
+  private KlonObject root;
+  private Reader in;
+  private MonitoredPrintStream out;
 
-  public void process(KlonObject root, Reader in, MonitoredPrintStream out,
-      PrintWriter error) throws KlonException, IOException {
-    Compiler compiler = new Compiler(root);
-    StringBuilder buffer = new StringBuilder();
+  public Shell(KlonObject root, Reader in, MonitoredPrintStream out) {
+    compiler = new Compiler(root);
+    this.root = root;
+    this.in = in;
+    this.out = out;
+  }
+
+  public void process() throws KlonException, IOException {
     while (true) {
       out.print(PROMPT);
       out.flush();
-      int depth = 0;
-      char current = (char) 0;
-      buffer.setLength(0);
-      boolean quotting = false;
-      out.setHasOutput(false);
-      try {
-        while ("\n".indexOf(current) == -1 || depth > 0) {
-          current = (char) in.read();
-          buffer.append(current);
-          if (OPEN_GROUP.indexOf(current) > -1 && !quotting) {
-            depth++;
-          }
-          if (CLOSE_GROUP.indexOf(current) > -1 && !quotting) {
-            depth--;
-          }
-          if ('"' == current) {
-            quotting = !quotting;
-            if (quotting) {
-              depth++;
-            } else {
-              depth--;
-            }
-          }
-        }
-        Message message = compiler.fromString(buffer.toString());
-        if (message != null) {
-          KlonObject value = message.eval(root, root);
-          if (!out.hasOutput()) {
-            if ("String".equals(value.getType())
-                || "Number".equals(value.getType())) {
-              Message reportMessage = compiler.fromString("writeLine");
-              Message argument = new Message();
-              argument.setLiteral(value);
-              reportMessage.addArgument(argument);
-              reportMessage.eval(value, value);
-            } else {
-              Message reportMessage = compiler.fromString("inspect");
-              reportMessage.eval(value, value);
-            }
-          }
-        }
-      } catch (KlonException e) {
-        Message reportMessage = compiler.fromString("inspect");
-        reportMessage.eval(e, e);
+      String buffer = readMessage(in);
+      Message message = compiler.fromString(buffer);
+      if (message != null) {
+        evalMessage(message);
       }
     }
+  }
+
+  private void evalMessage(Message message) throws KlonException {
+    out.setHasOutput(false);
+    KlonObject value = null;
+    try {
+      value = message.eval(root, root);
+    } catch (KlonException e) {
+      value = e;
+      out.setHasOutput(false);
+    }
+    if (!out.hasOutput()) {
+      if ("String".equals(value.getType()) || "Number".equals(value.getType())) {
+        Message reportMessage = compiler.fromString("writeLine");
+        reportMessage.addArgument(value);
+        reportMessage.eval(value, value);
+      } else {
+        Message reportMessage = compiler.fromString("inspect");
+        reportMessage.eval(value, value);
+      }
+    }
+  }
+
+  private String readMessage(Reader in) throws IOException {
+    int depth = 0;
+    char current = (char) 0;
+    StringBuilder buffer = new StringBuilder();
+    boolean quotting = false;
+    while ("\n".indexOf(current) == -1 || depth > 0) {
+      current = (char) in.read();
+      buffer.append(current);
+      if (OPEN_GROUP.indexOf(current) > -1 && !quotting) {
+        depth++;
+      }
+      if (CLOSE_GROUP.indexOf(current) > -1 && !quotting) {
+        depth--;
+      }
+      if ('"' == current) {
+        quotting = !quotting;
+        if (quotting) {
+          depth++;
+        } else {
+          depth--;
+        }
+      }
+    }
+    return buffer.toString();
   }
 
   public static void main(String[] args) throws Exception {
@@ -72,8 +85,6 @@ public class Shell {
     root.configure(root);
     MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
     System.setOut(newOut);
-    new Shell().process(root, new InputStreamReader(System.in), newOut,
-      new PrintWriter(new OutputStreamWriter(System.err)));
+    new Shell(root, new InputStreamReader(System.in), newOut).process();
   }
-
 }

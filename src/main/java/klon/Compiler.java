@@ -162,7 +162,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   protected Node exitNumber(Token node) throws ParseException {
     try {
       String image = node.getImage();
-      if (image.startsWith("0x") || image.startsWith(("0X"))) {
+      if (image.startsWith("0x") || image.startsWith("0X")) {
         node.addValue(root.getSlot("Number").duplicate(
             Integer.parseInt(image.substring(2), 16)));
       } else {

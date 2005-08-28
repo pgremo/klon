@@ -24,22 +24,18 @@ public class KlonExposedMethod extends KlonObject {
       result = getSlot("Nil");
     } else {
       try {
-        result = (KlonObject) ((Method) data).invoke(null, receiver, context,
-            message);
+        try {
+          result = (KlonObject) ((Method) data).invoke(null, receiver, context,
+              message);
+        } catch (InvocationTargetException e) {
+          throw e.getTargetException();
+        }
+      } catch (KlonException e) {
+        throw e;
       } catch (Throwable e) {
-        Throwable cause = e;
-        if (cause instanceof InvocationTargetException) {
-          cause = ((InvocationTargetException) e).getTargetException();
-        }
-        if (cause.getCause() != null) {
-          cause = cause.getCause();
-        }
-        if (cause instanceof KlonException) {
-          throw (KlonException) cause;
-        }
-        throw ((KlonException) getSlot("Exception")).newException(cause
+        throw ((KlonException) getSlot("Exception")).newException(e
             .getClass()
-              .getSimpleName(), cause.getMessage(), message);
+              .getSimpleName(), e.getMessage(), message);
       }
     }
     return result;

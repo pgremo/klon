@@ -30,23 +30,23 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    KlonObject nil = receiver.getSlot("Nil");
-    if (!nil.equals(receiver.activate(context, context, ((Block) (receiver
+    KlonObject result = receiver.getSlot("Nil");
+    if (!result.equals(receiver.activate(context, context, ((Block) (receiver
         .getData())).getCode()))) {
-      return message.getArgument(0).eval(context, context);
+      result = message.getArgument(0).eval(context, context);
     }
-    return nil;
+    return result;
   }
 
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    KlonObject nil = receiver.getSlot("Nil");
-    if (nil.equals(receiver.activate(context, context, ((Block) (receiver
+    KlonObject result = receiver.getSlot("Nil");
+    if (result.equals(receiver.activate(context, context, ((Block) (receiver
         .getData())).getCode()))) {
-      return message.getArgument(0).eval(context, context);
+      result = message.getArgument(0).eval(context, context);
     }
-    return nil;
+    return result;
   }
 
   @ExposedAs("whileTrue")

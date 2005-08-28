@@ -59,6 +59,7 @@ public class Shell {
     char current = (char) 0;
     StringBuilder buffer = new StringBuilder();
     boolean quotting = false;
+    int previous = -1;
     while ("\n".indexOf(current) == -1 || depth > 0) {
       current = (char) in.read();
       buffer.append(current);
@@ -68,7 +69,7 @@ public class Shell {
       if (CLOSE_GROUP.indexOf(current) > -1 && !quotting) {
         depth--;
       }
-      if ('"' == current) {
+      if ('\\' != previous && '"' == current) {
         quotting = !quotting;
         if (quotting) {
           depth++;
@@ -76,6 +77,7 @@ public class Shell {
           depth--;
         }
       }
+      previous = current;
     }
     return buffer.toString();
   }

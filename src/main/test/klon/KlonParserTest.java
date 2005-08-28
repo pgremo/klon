@@ -30,6 +30,16 @@ public class KlonParserTest extends TestCase {
     }
   }
 
+  public void testParseString() throws Exception {
+    String[][] expected = new String[][] { { "\"abc\"", "\"abc\"" },
+        { "\"\\\"abc\\\"\"", "\"\"abc\"\"" }, { "\"\\\"\"", "\"\"\"" } };
+    for (String[] current : expected) {
+      Message message = new Compiler(object).fromString(current[0]);
+      assertNotNull(message);
+      assertEquals(current[1], message.toString());
+    }
+  }
+
   public void testSuperOperator() throws Exception {
     Message message = new Compiler(object).fromString("super(do stuff)");
     assertNotNull(message);
@@ -37,7 +47,8 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testHelloWorld() throws Exception {
-    Message message = new Compiler(object).fromString("\"Hello world!\\n\" print");
+    Message message = new Compiler(object)
+        .fromString("\"Hello world!\\n\" print");
     assertNotNull(message);
     assertEquals("\"Hello world!\n\" print", message.toString());
   }

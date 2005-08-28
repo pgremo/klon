@@ -187,24 +187,24 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       for (int i = 0; i < value.length(); i++) {
         char current = value.charAt(i);
         if ('\\' == current) {
-          if (escaping) {
-            buffer.append(current);
-          } else {
+          if (!escaping) {
             escaping = true;
+            current = 0;
           }
         } else {
           if (escaping) {
             if ('n' == current) {
-              buffer.append('\n');
+              current = '\n';
             } else if ('r' == current) {
-              buffer.append('\r');
+              current = '\r';
             } else if ('\t' == current) {
-              buffer.append('\t');
+              current = '\t';
             }
             escaping = false;
-          } else {
-            buffer.append(current);
           }
+        }
+        if (current > 0) {
+          buffer.append(current);
         }
       }
       node.addValue(root.getSlot("String").duplicate(buffer.toString()));

@@ -168,7 +168,7 @@
 		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha1.jar" />
 		<move file="target/unjar/LICENSE.txt" toFile="target/unjar/grammatica-LICENSE.txt" />
 		<move file="target/unjar/README.txt" toFile="target/unjar/grammatica-README.txt" />
-		<move file="LICENSE.txt" toFile="target/unjar/${ant.project.name}-LICENSE.txt" />
+		<copy file="LICENSE.txt" toFile="target/unjar/${ant.project.name}-LICENSE.txt" />
 		
 		<jar destfile="${ant.project.name}.jar">
 			<fileset dir="${classes}" />

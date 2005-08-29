@@ -66,7 +66,7 @@
 		<fail message="Audit failed." if="audit.failed" />
 	</target>
 
-	<target name="compile">
+	<target name="compile" depends="grammar.generate.grammatica">
 		<mkdir dir="${grammar.classes}" />
 		<javac fork="true" destdir="${grammar.classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
 			<classpath refid="classpath" />
@@ -162,5 +162,17 @@
 	</target>
 
 	<target name="emma" depends="emma.compile, junit, emma.report" />
+
+	<target name="jar" depends="compile">
+		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha1.jar" />
+		<jar destfile="klon.jar">
+			<fileset dir="${classes}" />
+			<fileset dir="${grammar.classes}" />
+			<fileset dir="target/unjar" />
+			<manifest>
+				<attribute name="Main-Class" value="klon.Shell" />
+			</manifest>
+		</jar>
+	</target>
 
 </project>

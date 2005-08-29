@@ -66,6 +66,14 @@ public class KlonRoot extends KlonObject {
     random.configure(root);
     setSlot("Random", random);
 
+    KlonObject file = new KlonFile();
+    file.configure(root);
+    setSlot("File", file);
+
+    KlonObject buffer = new KlonBuffer();
+    buffer.configure(root);
+    setSlot("Buffer", buffer);
+
     KlonObject system = new KlonObject();
     system.bind(object);
     bind(system);
@@ -73,7 +81,7 @@ public class KlonRoot extends KlonObject {
     KlonObject symbol = new KlonSymbol();
     symbol.configure(root);
     system.setSlot("Symbol", symbol);
-    
+
     KlonObject noop = new KlonNoOp();
     noop.configure(root);
     system.setSlot("NoOp", noop);
@@ -83,15 +91,17 @@ public class KlonRoot extends KlonObject {
     system.setSlot("Locals", locals);
 
     KlonObject properties = object.duplicate();
-    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
-      properties.setSlot(current.getKey().toString(), root
-          .getSlot("String")
-            .duplicate(current.getValue().toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties()
+      .entrySet()) {
+      properties.setSlot(current.getKey()
+        .toString(), root.getSlot("String")
+        .duplicate(current.getValue()
+          .toString()));
     }
     setSlot("Properties", properties);
 
     setSlot("Arguments", getSlot("List").duplicate(
-        Arrays.asList((String[]) data)));
+      Arrays.asList((String[]) data)));
 
   }
 

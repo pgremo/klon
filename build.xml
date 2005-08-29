@@ -164,13 +164,22 @@
 	<target name="emma" depends="emma.compile, junit, emma.report" />
 
 	<target name="jar" depends="compile">
+		
 		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha1.jar" />
-		<jar destfile="klon.jar">
+		<move file="target/unjar/LICENSE.txt" toFile="target/unjar/grammatica-LICENSE.txt" />
+		<move file="target/unjar/README.txt" toFile="target/unjar/grammatica-README.txt" />
+		<move file="LICENSE.txt" toFile="target/unjar/${ant.project.name}-LICENSE.txt" />
+		
+		<jar destfile="${ant.project.name}.jar">
 			<fileset dir="${classes}" />
 			<fileset dir="${grammar.classes}" />
 			<fileset dir="target/unjar" />
 			<manifest>
 				<attribute name="Main-Class" value="klon.Shell" />
+				<attribute name="Specification-Title" value="${ant.project.name}" />
+				<attribute name="Specification-Version" value="1.0" />
+				<attribute name="Implementation-Title" value="${ant.project.name}" />
+				<attribute name="Implementation-Version" value="1.0.0" />
 			</manifest>
 		</jar>
 	</target>

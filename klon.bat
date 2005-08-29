@@ -1,2 +1,2 @@
 @echo off
-java -jar klon.jar
+java -jar klon.jar %*

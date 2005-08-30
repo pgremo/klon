@@ -1,16 +1,40 @@
 package klon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Prototype(name = "List", parent = "Object")
 public class KlonList extends KlonObject {
 
   private static final long serialVersionUID = -6509654061397424250L;
 
   public KlonList() {
-    super();
+    super(null, new ArrayList());
   }
 
   public KlonList(KlonObject parent, Object attached) {
     super(parent, attached);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public KlonObject duplicate() throws KlonException {
+    return duplicate(new ArrayList((List) getData()));
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("add")
+  public static KlonObject add(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    ((List) receiver.getData()).add(message.eval(context, 0));
+    return receiver;
+  }
+
+  @ExposedAs("size")
+  public static KlonObject size(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.getSlot("Number")
+      .duplicate(((List) receiver.getData()).size());
   }
 
   @Override

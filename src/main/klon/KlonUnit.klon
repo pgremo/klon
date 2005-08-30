@@ -1,0 +1,186 @@
+UnitTest := Object clone
+
+UnitTest AssertionFailedError := Exception clone
+	
+UnitTest TestFailure := Object clone do(
+			init := method(
+	    	self test := Nil
+	    	self exception := Nil
+	    )
+	    description := method(
+	    	"In " + test name + " " + exception backTraceString + "\n\n"
+	    )
+	)
+	
+UnitTest TestResult := Object clone do(
+			init := method(
+	    	self runCount := 0
+	    	self failureCount := 0
+	    	self errorCount := 0
+	    	self testFailures := List clone
+	    	self testErrors := List clone
+	    )
+	    addTestFailure := method(testFailure,
+	    	testFailures add(testFailure)
+	    )
+	    addTestError := method(testError,
+				testErrors add(testError)
+			)
+	    testFailuresDescription := method(
+	        description := ""
+	        testFailures foreach(index, testFailure, description = description + testFailure description)
+	        description
+	    )
+	    testErrorsDescription := method(
+	        description := ""
+	        testErrors foreach(index, testError, description = description + testError description)
+	        description
+	    )
+	    shortSummary := method(
+	    	"" + runCount + " run, " + errorCount + " errors, " + failureCount + " failures"
+	    )
+	    summary := method(
+	    	testErrorsDescription + "\n" + testFailuresDescription + "\n" + shortSummary
+	    )
+	    testStarted := method(
+	    	runCount = runCount + 1
+	    )
+	    testFailed := method(aTest, aException,
+	        testFailure := TestFailure clone
+					testFailure test = aTest
+					testFailure exception = aException
+	        addTestFailure(testFailure)
+	        failureCount = failureCount + 1
+	    )
+	    testBroke := method(aTest, aException,
+	        testError := TestFailure clone
+					testError test = aTest
+					testError exception = aException
+	        addTestError(testError)
+	        errorCount = errorCount + 1
+	    )
+	)
+	
+UnitTest TestCase := Object clone do(
+	    testWithName := method(aName,
+	        test := self clone
+	        test name := aName
+	        test
+	    )
+	    runWithResult := method(result,
+	        result testStarted
+	        try(
+	            ?setUp
+	            doString(name)
+	        ) catch(AssertionFailedError, anAssertionFailedError,
+	            result testFailed(self, anAssertionFailedError)
+	        ) catch(Exception, anException,
+	            result testBroke(self, anException)
+	        )
+	        ?tearDown
+	    )
+	    run := method(
+	        result := TestResult clone
+	        runWithResult(result)
+	        result
+	    )
+	    failWithMessage := method(message,
+	        AssertionFailedError raise("assertion failed", message)
+	    )
+	    failComparison := method(expected, actual, message,
+	        failWithMessage("expected '" + expected asString + "' but was '" + actual asString + "'")
+	    )
+	    fail := method(
+	        failWithMessage("")
+	    )
+	    assertTrue := method(aCondition,
+	        if(aCondition == Nil,
+	            failWithMessage("not true")
+	        )
+	    )
+	    assertFalse := method(aCondition,
+	        if(aCondition,
+	            failWithMessage("not false")
+	        )
+	    )
+	    assertEquals := method(expected, actual,
+	        if(expected != actual,
+	            failComparison(expected, actual)
+	        )
+	    )
+	    assertNotEquals := method(expected, actual,
+	        if(expected == actual,
+	            failWithMessage("equal objects")
+	        )
+	    )
+	    assertEqualsWithinDelta := method(expected, actual, delta,
+	        if(((expected - actual) abs > delta),
+	            failWithMessage("expected " + expected + " but was " + actual + " (allowed delta: " + delta + ")")
+	        )
+	    )
+	    assertSame := method(expected, actual,
+	        if(expected uniqueId != actual uniqueId,
+	            failComparison(expected, actual)
+	        )
+	    )
+	    assertNotSame := method(expected, actual,
+	        if(expected uniqueId == actual uniqueId,
+	            failWithMessage("same object")
+	        )
+	    )
+	    assertNil := method(nilValue,
+	        if(nilValue != Nil,
+	            failWithMessage("not Nil")
+	        )
+	    )
+	    assertNotNil := method(nilValue,
+	        if(nilValue == Nil,
+	            failWithMessage("Nil")
+	        )
+	    )
+	    assertRaisesException := method(
+	        try(
+	            sender doMessage(thisMessage argAt(0))
+	            failWithMessage("Should have raised Exception")
+	        ) catch(AssertionFailedError, failed,
+	            failed pass
+	        ) catch(Exception) pass
+	    )
+	    suite := method(
+	        suite := TestSuite clone
+	        self foreach(slotName, slotValue, if(slotName beginsWith("test"), suite addTest(self testWithName(slotName))))
+	        suite
+	    )
+	    knownBug := method(
+	        write("known bug in ", self name, ": ", thisMessage argAt(0) code, "\n")
+	    )
+	)
+
+UnitTest TestSuite := Object clone do(
+	    init := method(self tests := List clone)
+	    suite := method(self)
+	    addTest := method(test,
+	        self tests add(test)
+	        self
+	    )
+	    addSuite := method(test,
+	        addTest(test suite)
+	    )
+	    addFileAtPath := method(aFileName, aPath,
+	        self doFile(aPath appendPath(aFileName + ".klon"))
+	        if(self hasSlot(aFileName + "Suite"),
+	            addSuite(doMessage(Message fromString(aFileName + "Suite")))
+	        ,
+	            addSuite(doMessage(Message fromString(aFileName)))
+	        )
+	    )
+	    addFile := method(aFileName,
+	        self addFileAtPath(aFileName, launchPath)
+	    )
+	    runWithResult := method(result,
+	        tests foreach(index, test, test runWithResult(result))
+	    )
+	    run := UnitTest TestCase getSlot("run")
+	)
+
+Klon bind(UnitTest)

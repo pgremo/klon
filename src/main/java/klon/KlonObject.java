@@ -249,9 +249,12 @@ public class KlonObject extends Exception {
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    Message initMessage = new Compiler(context).fromString("do(?init)");
-    return receiver.duplicate()
-      .perform(context, initMessage);
+    KlonObject result = receiver.duplicate();
+    KlonObject slot = result.getSlot("init");
+    if (slot != null) {
+      slot.activate(result, context, message);
+    }
+    return result;
   }
 
   @ExposedAs("type")
@@ -391,6 +394,24 @@ public class KlonObject extends Exception {
       .duplicate(new Block(parameters, message.getArgument(count)));
   }
 
+  @ExposedAs("method")
+  public static KlonObject method(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    int count = message.getArgumentCount() - 1;
+    String[] parameters = new String[count];
+    for (int i = 0; i < count; i++) {
+      KlonObject current = message.getArgument(i)
+        .getSelector();
+      if (current == null) {
+        throw ((KlonException) receiver.getSlot("Exception")).newException(
+          "Invalid Argument", "argument must evaluate to a Symbol", message);
+      }
+      parameters[i] = (String) current.getData();
+    }
+    return receiver.getSlot("Block")
+      .duplicate(new Block(parameters, message.getArgument(count)));
+  }
+
   @ExposedAs("for")
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -507,9 +528,18 @@ public class KlonObject extends Exception {
   }
 
   @ExposedAs("do")
-  public static KlonObject doMessage(KlonObject receiver, KlonObject context,
+  public static KlonObject doArgument(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     message.eval(receiver, 0);
+    return receiver;
+  }
+
+  @ExposedAs("doString")
+  public static KlonObject doString(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    Message target = new Compiler(receiver).fromString(KlonString.evalAsString(
+      context, message, 0));
+    target.eval(receiver, context);
     return receiver;
   }
 

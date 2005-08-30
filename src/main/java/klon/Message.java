@@ -72,11 +72,11 @@ public class Message {
     KlonObject self = receiver;
     for (Message outer = this; outer != null; outer = outer.getNext()) {
       for (Message inner = outer; inner != null; inner = inner.getAttached()) {
-        KlonObject result = inner.getLiteral();
-        if (result == null) {
-          result = self.perform(context, inner);
+        KlonObject value = inner.getLiteral();
+        if (value == null) {
+          value = self.perform(context, inner);
         }
-        self = result;
+        self = value;
       }
       if (outer.getNext() != null) {
         self = context;
@@ -90,7 +90,8 @@ public class Message {
     if (index >= arguments.size()) {
       result = context.getSlot("Nil");
     } else {
-      result = arguments.get(index).eval(context, context);
+      result = arguments.get(index)
+        .eval(context, context);
     }
     return result;
   }
@@ -98,9 +99,8 @@ public class Message {
   public void assertArgumentCount(KlonObject receiver, int count)
       throws KlonException {
     if (arguments.size() != count) {
-      throw ((KlonException) receiver.getSlot("Exception"))
-          .newException("Illegal Argument", "message must have " + count
-              + " arguments", null);
+      throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Illegal Argument", "message must have " + count + " arguments", null);
     }
   }
 
@@ -125,10 +125,12 @@ public class Message {
       result.append(")");
     }
     if (attached != null) {
-      result.append(" ").append(attached);
+      result.append(" ")
+        .append(attached);
     }
     if (next != null) {
-      result.append(";\n").append(next);
+      result.append(";\n")
+        .append(next);
     }
     return result.toString();
   }

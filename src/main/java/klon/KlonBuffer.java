@@ -4,17 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 @Prototype(name = "Buffer", parent = "Object")
 public class KlonBuffer extends KlonObject {
 
-  private static Charset charset = Charset.forName("ISO-8859-15");
-  private static CharsetDecoder decoder = charset.newDecoder();
   private static final long serialVersionUID = -3007245357989336566L;
 
   public KlonBuffer() {
@@ -53,15 +47,7 @@ public class KlonBuffer extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    CharBuffer buffer;
-    try {
-      buffer = decoder.decode(((ByteBuffer) receiver.getData()));
-    } catch (CharacterCodingException e) {
-      throw ((KlonException) receiver.getSlot("Exception")).newException(
-        e.getClass()
-          .getSimpleName(), e.getMessage(), null);
-    }
-    return ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
+    return ((KlonString) receiver.getSlot("String")).newString((ByteBuffer) receiver.getData());
   }
 
 }

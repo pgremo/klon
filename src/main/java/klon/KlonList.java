@@ -38,10 +38,44 @@ public class KlonList extends KlonObject {
     return receiver;
   }
 
+  @SuppressWarnings("unchecked")
+  @ExposedAs("insertAt")
+  public static KlonObject insertAt(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    ((List) receiver.getData()).add(
+      KlonNumber.evalAsNumber(context, message, 0)
+        .intValue(), message.eval(context, 1));
+    return receiver;
+  }
+
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber((double) ((List) receiver.getData()).size());
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("foreach")
+  public static KlonObject foreach(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    KlonObject result = receiver.getSlot("Nil");
+    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).duplicate();
+    scope.setSlot("self", receiver);
+    String index = (String) message.getArgument(0)
+      .getSelector()
+      .getData();
+    String value = (String) message.getArgument(1)
+      .getSelector()
+      .getData();
+    Message code = message.getArgument(2);
+    KlonNumber numberProto = (KlonNumber) receiver.getSlot("Number");
+    List<KlonObject> list = (List<KlonObject>) receiver.getData();
+    for (int i = 0; i < list.size(); i++) {
+      scope.setSlot(index, numberProto.newNumber((double) i));
+      scope.setSlot(value, list.get(i));
+      result = code.eval(scope, scope);
+    }
+    return result;
   }
 
   @Override

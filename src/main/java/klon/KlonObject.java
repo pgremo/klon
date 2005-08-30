@@ -1,6 +1,8 @@
 package klon;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,7 +64,7 @@ public class KlonObject extends Exception {
     slots.put(name, value);
   }
 
-  public KlonObject updateSlot(String name, KlonObject value)
+  private KlonObject updateSlot(String name, KlonObject value)
       throws KlonException {
     KlonObject result = getSlot(name);
     if (result != null) {
@@ -101,7 +103,7 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  public void removeSlot(String name) {
+  private void removeSlot(String name) {
     slots.remove(name);
   }
 
@@ -283,6 +285,17 @@ public class KlonObject extends Exception {
       result = code.eval(scope, scope);
     }
     return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("list")
+  public static KlonObject list(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    List list = new ArrayList();
+    for (int i = 0; i < message.getArgumentCount(); i++) {
+      list.add(message.eval(context, i));
+    }
+    return ((KlonList) receiver.getSlot("List")).newList(list);
   }
 
   @ExposedAs("asString")
@@ -486,6 +499,17 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     Message target = new Compiler(receiver).fromString(KlonString.evalAsString(
       context, message, 0));
+    target.eval(receiver, context);
+    return receiver;
+  }
+
+  @ExposedAs("doFile")
+  public static KlonObject doFile(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    String name = KlonString.evalAsString(context, message, 0);
+    File file = new File(name);
+    KlonString string = ((KlonString) receiver.getSlot("String")).newString(file);
+    Message target = new Compiler(receiver).fromString((String) string.getData());
     target.eval(receiver, context);
     return receiver;
   }

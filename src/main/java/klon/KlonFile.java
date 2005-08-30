@@ -39,7 +39,7 @@ public class KlonFile extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return ((KlonString) receiver.getSlot("String")).newString(String.valueOf(receiver.getData()));
+    return ((KlonString) receiver.getSlot("String")).newString((File) receiver.getData());
   }
 
 }

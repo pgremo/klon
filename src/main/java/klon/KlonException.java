@@ -45,8 +45,8 @@ public class KlonException extends KlonObject {
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     throw ((KlonException) receiver).newException(KlonString.evalAsString(
-        context, message, 0), KlonString.evalAsString(context, message, 1),
-        message);
+      context, message, 0), KlonString.evalAsString(context, message, 1),
+      message);
   }
 
   @ExposedAs("catch")
@@ -55,17 +55,17 @@ public class KlonException extends KlonObject {
     int index = 0;
     KlonObject result = receiver;
     KlonObject target = message.eval(context, index++);
-    if (receiver.getType().equals(target.getType())) {
+    if (receiver.isBound(target)) {
       KlonObject scope = context.duplicate();
       if (message.getArgumentCount() == 3) {
-        String name = (String) message
-            .getArgument(index++)
-              .getSelector()
-              .getData();
+        String name = (String) message.getArgument(index++)
+          .getSelector()
+          .getData();
         scope.setSlot(name, receiver);
       }
       message.eval(scope, index);
-      result = receiver.getSlot("NoOp").duplicate(receiver);
+      result = receiver.getSlot("NoOp")
+        .duplicate(receiver);
     }
     return result;
   }
@@ -79,7 +79,8 @@ public class KlonException extends KlonObject {
     if (name == null && description == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      result = receiver.getSlot("String").duplicate(receiver.toString());
+      result = receiver.getSlot("String")
+        .duplicate(receiver.toString());
     }
     return result;
   }

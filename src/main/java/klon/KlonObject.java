@@ -159,12 +159,21 @@ public class KlonObject extends Exception {
   public void bind(KlonObject object) {
     boolean found = false;
     Iterator<KlonObject> iterator = bindings.iterator();
-    while(iterator.hasNext() && !found){
+    while (iterator.hasNext() && !found) {
       found = iterator.next() == object;
     }
     if (!found) {
       bindings.add(object);
     }
+  }
+
+  public boolean isBound(KlonObject object) {
+    boolean found = false;
+    Iterator<KlonObject> iterator = bindings.iterator();
+    while (iterator.hasNext() && !found) {
+      found = iterator.next() == object;
+    }
+    return found;
   }
 
   public void unbind(KlonObject object) {
@@ -227,6 +236,14 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     receiver.unbind(message.eval(context, 0));
     return receiver;
+  }
+
+  @ExposedAs("isBound")
+  public static KlonObject isBound(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    return receiver.isBound(message.eval(context, 0))
+        ? receiver
+        : receiver.getSlot("Nil");
   }
 
   @ExposedAs("clone")

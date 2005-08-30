@@ -24,7 +24,7 @@ public class KlonRoot extends KlonObject {
     setSlot("Object", object);
     bind(object);
 
-    KlonObject string = new KlonString();
+    KlonString string = new KlonString();
     setSlot("String", string);
 
     KlonObject exposedMethod = new KlonExposedMethod();
@@ -94,9 +94,8 @@ public class KlonRoot extends KlonObject {
     for (Map.Entry<Object, Object> current : System.getProperties()
       .entrySet()) {
       properties.setSlot(current.getKey()
-        .toString(),
-        ((KlonString) root.getSlot("String")).newString(current.getValue()
-          .toString()));
+        .toString(), string.newString(current.getValue()
+        .toString()));
     }
     setSlot("Properties", properties);
 

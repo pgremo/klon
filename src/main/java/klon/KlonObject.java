@@ -62,33 +62,11 @@ public class KlonObject extends Exception {
     slots.put(name, value);
   }
 
-  private KlonObject updateSlot(String name, KlonObject value,
-      Collection<KlonObject> searchPath) throws KlonException {
-    KlonObject result = null;
-    if (slots.containsKey(name)) {
-      result = slots.put(name, value);
-    } else {
-      Iterator<KlonObject> iterator = bindings.iterator();
-      while (iterator.hasNext() && result == null) {
-        KlonObject current = iterator.next();
-        if (!searchPath.contains(current)) {
-          searchPath.add(current);
-          result = current.updateSlot(name, value, searchPath);
-        }
-      }
-    }
-    return result;
-  }
-
   public KlonObject updateSlot(String name, KlonObject value)
       throws KlonException {
-    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
-    KlonObject result = updateSlot(name, value, searchPath);
-    if (result == null) {
-      KlonObject self = getSlot("self", searchPath);
-      if (self != null) {
-        result = self.updateSlot(name, value);
-      }
+    KlonObject result = getSlot(name);
+    if (result != null) {
+      setSlot(name, value);
     }
     return result;
   }
@@ -123,33 +101,8 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  private KlonObject removeSlot(String name, Collection<KlonObject> searchPath)
-      throws KlonException {
-    KlonObject result = null;
-    if (slots.containsKey(name)) {
-      result = slots.remove(name);
-    } else {
-      Iterator<KlonObject> iterator = bindings.iterator();
-      while (iterator.hasNext() && result == null) {
-        KlonObject current = iterator.next();
-        if (!searchPath.contains(current)) {
-          searchPath.add(current);
-          result = current.removeSlot(name, searchPath);
-        }
-      }
-    }
-    return result;
-  }
-
-  public void removeSlot(String name) throws KlonException {
-    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
-    KlonObject result = removeSlot(name, searchPath);
-    if (result == null) {
-      KlonObject self = getSlot("self", searchPath);
-      if (self != null) {
-        self.removeSlot(name);
-      }
-    }
+  public void removeSlot(String name) {
+    slots.remove(name);
   }
 
   public void bind(KlonObject object) {

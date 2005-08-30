@@ -3,20 +3,18 @@ UnitTest := Object clone
 UnitTest AssertionFailedError := Exception clone
 	
 UnitTest TestFailure := Object clone do(
-			init := method(
-	    	self test := Nil
-	    	self exception := Nil
-	    )
+	    test := Nil
+	    exception := Nil
 	    description := method(
 	    	"In " + test name + " " + exception backTraceString + "\n\n"
 	    )
 	)
 	
 UnitTest TestResult := Object clone do(
+	    runCount := 0
+	    failureCount := 0
+	    errorCount := 0
 			init := method(
-	    	self runCount := 0
-	    	self failureCount := 0
-	    	self errorCount := 0
 	    	self testFailures := List clone
 	    	self testErrors := List clone
 	    )
@@ -157,8 +155,12 @@ UnitTest TestCase := Object clone do(
 	)
 
 UnitTest TestSuite := Object clone do(
-	    init := method(self tests := List clone)
-	    suite := method(self)
+	    init := method(
+	    	self tests := List clone
+	    )
+	    suite := method(
+	    	self
+	    )
 	    addTest := method(test,
 	        self tests add(test)
 	        self

@@ -16,6 +16,12 @@ public class KlonExposedMethod extends KlonObject {
     super(parent, attached);
   }
 
+  public KlonObject newExposedMethod(Object subject) throws KlonException {
+    KlonObject result = duplicate();
+    result.data = subject;
+    return result;
+  }
+
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

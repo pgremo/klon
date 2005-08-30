@@ -17,7 +17,9 @@ public class KlonFile extends KlonObject {
 
   @Override
   public KlonObject duplicate() throws KlonException {
-    return super.duplicate(new File("/"));
+    KlonObject result = super.duplicate();
+    result.data = new File("/");
+    return result;
   }
 
   @ExposedAs("setPath")
@@ -37,8 +39,7 @@ public class KlonFile extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(String.valueOf(receiver.getData()));
+    return ((KlonString) receiver.getSlot("String")).newString(String.valueOf(receiver.getData()));
   }
 
 }

@@ -29,8 +29,7 @@ public class KlonSet extends KlonObject {
         }
         buffer.append(current.toString());
       }
-      result = receiver.getSlot("String")
-        .duplicate(buffer.toString());
+      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
     }
     return result;
   }

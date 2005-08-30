@@ -53,11 +53,11 @@ public final class Configurator {
         if (!KlonException.class.equals(current.getExceptionTypes()[0])) {
           throw exceptionProto.newException("Invalid Argument", identity
               + " second parameter must be a " + KlonException.class + ".",
-              null);
+            null);
         }
-        target.setSlot(exposedAs.value(), root
-            .getSlot("ExposedMethod")
-              .duplicate(current));
+        target.setSlot(
+          exposedAs.value(),
+          ((KlonExposedMethod) root.getSlot("ExposedMethod")).newExposedMethod(current));
       }
     }
   }

@@ -17,8 +17,7 @@ public class KlonNilTest extends TestCase {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil asString");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("String")
-      .duplicate(""), value);
+    assertEquals(((KlonString) object.getSlot("String")).newString(""), value);
   }
 
   public void testAnd() throws Exception {

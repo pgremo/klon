@@ -10,7 +10,7 @@ public class KlonNil extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(Object subject) {
+  public KlonObject duplicate() {
     return this;
   }
 
@@ -18,8 +18,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate("");
+    return ((KlonString) receiver.getSlot("String")).newString("");
   }
 
   @SuppressWarnings("unused")

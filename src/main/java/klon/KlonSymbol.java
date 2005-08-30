@@ -13,6 +13,12 @@ public class KlonSymbol extends KlonObject {
     super(parent, attached);
   }
 
+  public KlonSymbol newSymbol(String value) throws KlonException {
+    KlonSymbol result = (KlonSymbol) duplicate();
+    result.data = value;
+    return result;
+  }
+
   @Override
   public String toString() {
     return String.valueOf(data);

@@ -34,14 +34,10 @@ public class KlonObject extends Exception {
   }
 
   public KlonObject duplicate() throws KlonException {
-    return duplicate(data);
-  }
-
-  public KlonObject duplicate(Object subject) throws KlonException {
     try {
       Constructor constructor = getClass().getConstructor(KlonObject.class,
         Object.class);
-      return (KlonObject) constructor.newInstance(this, subject);
+      return (KlonObject) constructor.newInstance(this, data);
     } catch (Exception e) {
       throw ((KlonException) getSlot("Exception")).newException(e.getClass()
         .getSimpleName(), e.getMessage(), null);
@@ -260,8 +256,7 @@ public class KlonObject extends Exception {
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(receiver.getType());
+    return ((KlonString) receiver.getSlot("String")).newString(receiver.getType());
   }
 
   @ExposedAs("send")
@@ -329,8 +324,8 @@ public class KlonObject extends Exception {
       .getData();
     Message code = message.getArgument(2);
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
-      scope.setSlot(name, receiver.getSlot("String")
-        .duplicate(current.getKey()));
+      scope.setSlot(name,
+        ((KlonString) receiver.getSlot("String")).newString(current.getKey()));
       scope.setSlot(value, current.getValue());
       result = code.eval(scope, scope);
     }
@@ -340,8 +335,7 @@ public class KlonObject extends Exception {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String")
-      .duplicate(receiver.toString());
+    return ((KlonString) receiver.getSlot("String")).newString(receiver.toString());
   }
 
   @ExposedAs("write")
@@ -390,8 +384,8 @@ public class KlonObject extends Exception {
       }
       parameters[i] = (String) current.getData();
     }
-    return receiver.getSlot("Block")
-      .duplicate(new Block(parameters, message.getArgument(count)));
+    return ((KlonBlock) receiver.getSlot("Block")).newBlock(new Block(
+      parameters, message.getArgument(count)));
   }
 
   @ExposedAs("method")
@@ -408,8 +402,8 @@ public class KlonObject extends Exception {
       }
       parameters[i] = (String) current.getData();
     }
-    return receiver.getSlot("Block")
-      .duplicate(new Block(parameters, message.getArgument(count)));
+    return ((KlonBlock) receiver.getSlot("Block")).newBlock(new Block(
+      parameters, message.getArgument(count)));
   }
 
   @ExposedAs("for")
@@ -436,8 +430,8 @@ public class KlonObject extends Exception {
     }
     double i = start;
     while (!(increment > 0 ? i > end : i < end)) {
-      scope.setSlot(counter, receiver.getSlot("Number")
-        .duplicate(i));
+      scope.setSlot(counter,
+        ((KlonNumber) receiver.getSlot("Number")).newNumber(i));
       result = code.eval(scope, scope);
       i += increment;
     }
@@ -567,8 +561,8 @@ public class KlonObject extends Exception {
       Message message) throws KlonException {
     KlonObject result;
     try {
-      result = receiver.getSlot("NoOp")
-        .duplicate(message.eval(context, 0));
+      result = ((KlonNoOp) receiver.getSlot("NoOp")).newNoOp(message.eval(
+        context, 0));
     } catch (KlonException e) {
       result = e;
     }

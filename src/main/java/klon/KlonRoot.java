@@ -94,14 +94,14 @@ public class KlonRoot extends KlonObject {
     for (Map.Entry<Object, Object> current : System.getProperties()
       .entrySet()) {
       properties.setSlot(current.getKey()
-        .toString(), root.getSlot("String")
-        .duplicate(current.getValue()
+        .toString(),
+        ((KlonString) root.getSlot("String")).newString(current.getValue()
           .toString()));
     }
     setSlot("Properties", properties);
 
-    setSlot("Arguments", getSlot("List").duplicate(
-      Arrays.asList((String[]) data)));
+    setSlot("Arguments",
+      ((KlonList) getSlot("List")).newList(Arrays.asList((String[]) data)));
 
   }
 

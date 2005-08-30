@@ -21,6 +21,12 @@ public class KlonNumber extends KlonObject {
     super(parent, attached);
   }
 
+  public KlonNumber newNumber(Double value) throws KlonException {
+    KlonNumber result = (KlonNumber) duplicate();
+    result.data = value;
+    return result;
+  }
+
   @Override
   public String toString() {
     return formatter.format(data);
@@ -33,52 +39,53 @@ public class KlonNumber extends KlonObject {
       return (Double) result.getData();
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "argument must evaluate to a number", message);
+      "Illegal Argument", "argument must evaluate to a number", message);
   }
 
   @ExposedAs("+")
   public static KlonObject add(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Double) receiver.getData() + evalAsNumber(context, message, 0));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber((Double) receiver.getData()
+        + evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("-")
   public static KlonObject subtract(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Double) receiver.getData() - evalAsNumber(context, message, 0));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber((Double) receiver.getData()
+        - evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("*")
   public static KlonObject multiply(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Double) receiver.getData() * evalAsNumber(context, message, 0));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(
+
+    (Double) receiver.getData() * evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("/")
   public static KlonObject divide(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Double) receiver.getData() / evalAsNumber(context, message, 0));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(
+
+    (Double) receiver.getData() / evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("%")
   public static KlonObject modulus(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Double) receiver.getData() % evalAsNumber(context, message, 0));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(
+
+    (Double) receiver.getData() % evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("^")
   public static KlonObject power(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver
-        .getSlot("Number")
-          .duplicate(
-              Math.pow((Double) receiver.getData(), evalAsNumber(context,
-                  message, 0)));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(
+
+    Math.pow((Double) receiver.getData(), evalAsNumber(context, message, 0)));
   }
 
   @ExposedAs("<")
@@ -91,7 +98,7 @@ public class KlonNumber extends KlonObject {
       return o1.compareTo(o2) < 0 ? argument : receiver.getSlot("Nil");
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "Illegal Argument for <", message);
+      "Illegal Argument", "Illegal Argument for <", message);
   }
 
   @ExposedAs(">")
@@ -104,7 +111,7 @@ public class KlonNumber extends KlonObject {
       return o1.compareTo(o2) > 0 ? argument : receiver.getSlot("Nil");
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "Illegal Argument for >", message);
+      "Illegal Argument", "Illegal Argument for >", message);
   }
 
   @ExposedAs("<=")
@@ -117,7 +124,7 @@ public class KlonNumber extends KlonObject {
       return o1.compareTo(o2) <= 0 ? argument : receiver.getSlot("Nil");
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "Illegal Argument for <=", message);
+      "Illegal Argument", "Illegal Argument for <=", message);
   }
 
   @ExposedAs(">=")
@@ -130,35 +137,31 @@ public class KlonNumber extends KlonObject {
       return o1.compareTo(o2) >= 0 ? argument : receiver.getSlot("Nil");
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "Illegal Argument for >=", message);
+      "Illegal Argument", "Illegal Argument for >=", message);
   }
 
   @ExposedAs("abs")
   public static KlonObject absoluteValue(KlonObject receiver,
       KlonObject context, Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        Math.abs((Double) receiver.getData()));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(Math.abs((Double) receiver.getData()));
   }
 
   @ExposedAs("sqrt")
   public static KlonObject squareRoot(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        Math.sqrt((Double) receiver.getData()));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(Math.sqrt((Double) receiver.getData()));
   }
 
   @ExposedAs("integer")
   public static KlonObject integer(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        (Math.floor((Double) receiver.getData())));
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber((Math.floor((Double) receiver.getData())));
   }
 
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("String").duplicate(
-        formatter.format(receiver.getData()));
+    return ((KlonString) receiver.getSlot("String")).newString(formatter.format(receiver.getData()));
   }
 }

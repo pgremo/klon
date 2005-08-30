@@ -19,7 +19,15 @@ public class KlonList extends KlonObject {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject duplicate() throws KlonException {
-    return duplicate(new ArrayList((List) getData()));
+    KlonObject result = super.duplicate();
+    result.data = new ArrayList((List) getData());
+    return result;
+  }
+
+  public KlonList newList(List value) throws KlonException {
+    KlonList result = (KlonList) duplicate();
+    result.data = value;
+    return result;
   }
 
   @SuppressWarnings("unchecked")
@@ -33,8 +41,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number")
-      .duplicate(((List) receiver.getData()).size());
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber((double) ((List) receiver.getData()).size());
   }
 
   @Override
@@ -53,8 +60,7 @@ public class KlonList extends KlonObject {
         }
         buffer.append(current.toString());
       }
-      result = receiver.getSlot("String")
-        .duplicate(buffer.toString());
+      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
     }
     return result;
   }

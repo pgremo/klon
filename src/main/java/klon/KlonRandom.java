@@ -17,22 +17,24 @@ public class KlonRandom extends KlonObject {
 
   @Override
   public KlonObject duplicate() throws KlonException {
-    return super.duplicate(new MersenneTwister());
+    KlonObject result = super.duplicate();
+    result.data = new MersenneTwister();
+    return result;
   }
 
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
-        message, 0).longValue());
+      message, 0)
+      .longValue());
     return receiver;
   }
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    return receiver.getSlot("Number").duplicate(
-        ((Random) receiver.getData()).nextDouble());
+    return ((KlonNumber) receiver.getSlot("Number")).newNumber(((Random) receiver.getData()).nextDouble());
   }
 
 }

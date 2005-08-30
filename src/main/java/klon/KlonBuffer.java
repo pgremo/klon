@@ -45,7 +45,9 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    return (KlonBuffer) duplicate(buffer);
+    KlonBuffer result = (KlonBuffer) duplicate();
+    result.data = buffer;
+    return result;
   }
 
   @ExposedAs("asString")
@@ -59,8 +61,7 @@ public class KlonBuffer extends KlonObject {
         e.getClass()
           .getSimpleName(), e.getMessage(), null);
     }
-    return receiver.getSlot("String")
-      .duplicate(buffer.toString());
+    return ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
   }
 
 }

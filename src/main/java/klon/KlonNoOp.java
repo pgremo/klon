@@ -13,6 +13,12 @@ public class KlonNoOp extends KlonObject {
     super(parent, data);
   }
 
+  public KlonNoOp newNoOp(Object value) throws KlonException {
+    KlonNoOp result = (KlonNoOp) duplicate();
+    result.data = value;
+    return result;
+  }
+
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

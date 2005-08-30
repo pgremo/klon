@@ -13,6 +13,12 @@ public class KlonString extends KlonObject {
     super(parent, attached);
   }
 
+  public KlonString newString(String value) throws KlonException {
+    KlonString result = (KlonString) duplicate();
+    result.data = value;
+    return result;
+  }
+
   @Override
   public String toString() {
     return "\"" + String.valueOf(data) + "\"";
@@ -25,17 +31,17 @@ public class KlonString extends KlonObject {
       return (String) result.getData();
     }
     throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "argument must evaluate to a string", message);
+      "Illegal Argument", "argument must evaluate to a string", message);
   }
 
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     Message printMessage = new Compiler(receiver).fromString("asString");
-    return receiver.getSlot("String").duplicate(
-        receiver.getData()
-            + String.valueOf(message.eval(context, 0).perform(context,
-                printMessage).getData()));
+    return ((KlonString) receiver.getSlot("String")).newString(receiver.getData()
+        + String.valueOf(message.eval(context, 0)
+          .perform(context, printMessage)
+          .getData()));
   }
 
   @SuppressWarnings("unused")

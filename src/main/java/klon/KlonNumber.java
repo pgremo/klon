@@ -1,17 +1,16 @@
 package klon;
 
-import java.text.Format;
 import java.text.NumberFormat;
 
 @Prototype(name = "Number", parent = "Object")
 public class KlonNumber extends KlonObject {
 
   private static final long serialVersionUID = -4103647195957467063L;
-  private static Format format = NumberFormat.getInstance();
+  private static NumberFormat format = NumberFormat.getInstance();
   static {
-    ((NumberFormat) format).setGroupingUsed(false);
-    ((NumberFormat) format).setMinimumFractionDigits(0);
-    ((NumberFormat) format).setMaximumFractionDigits(Integer.MAX_VALUE);
+    format.setGroupingUsed(false);
+    format.setMinimumFractionDigits(0);
+    format.setMaximumFractionDigits(Integer.MAX_VALUE);
   }
 
   public KlonNumber() {

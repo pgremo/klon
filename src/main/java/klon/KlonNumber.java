@@ -1,16 +1,17 @@
 package klon;
 
+import java.text.Format;
 import java.text.NumberFormat;
 
 @Prototype(name = "Number", parent = "Object")
 public class KlonNumber extends KlonObject {
 
   private static final long serialVersionUID = -4103647195957467063L;
-  private static NumberFormat formatter = NumberFormat.getInstance();
+  private static Format format = NumberFormat.getInstance();
   static {
-    formatter.setGroupingUsed(false);
-    formatter.setMinimumFractionDigits(0);
-    formatter.setMaximumFractionDigits(Integer.MAX_VALUE);
+    ((NumberFormat) format).setGroupingUsed(false);
+    ((NumberFormat) format).setMinimumFractionDigits(0);
+    ((NumberFormat) format).setMaximumFractionDigits(Integer.MAX_VALUE);
   }
 
   public KlonNumber() {
@@ -24,9 +25,8 @@ public class KlonNumber extends KlonObject {
     return result;
   }
 
-  @Override
-  public String toString() {
-    return formatter.format(getData());
+  public static String format(KlonObject value) {
+    return format.format(value.getData());
   }
 
   public static Double evalAsNumber(KlonObject receiver, Message message,
@@ -159,6 +159,6 @@ public class KlonNumber extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString(formatter.format(receiver.getData()));
+    return ((KlonString) receiver.getSlot("String")).newString(format.format(receiver.getData()));
   }
 }

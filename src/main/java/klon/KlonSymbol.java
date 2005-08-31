@@ -16,9 +16,9 @@ public class KlonSymbol extends KlonObject {
     return result;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(getData());
+  public static String format(KlonObject value) {
+    return value.getData()
+      .toString();
   }
 
 }

@@ -12,13 +12,6 @@ public class KlonRandom extends KlonObject {
     setData(new MersenneTwister());
   }
 
-  @Override
-  public KlonObject duplicate() throws KlonObject {
-    KlonObject result = super.duplicate();
-    result.setData(new MersenneTwister());
-    return result;
-  }
-
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

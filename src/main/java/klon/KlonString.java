@@ -63,9 +63,9 @@ public class KlonString extends KlonObject {
     return newString(buffer.toString());
   }
 
-  @Override
-  public String toString() {
-    return "\"" + String.valueOf(getData()) + "\"";
+  public static String format(KlonObject value) {
+    return "\"" + value.getData()
+      .toString() + "\"";
   }
 
   public static String evalAsString(KlonObject receiver, Message message,

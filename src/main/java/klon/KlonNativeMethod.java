@@ -16,7 +16,6 @@ public class KlonNativeMethod extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @Activator
   public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = slot;

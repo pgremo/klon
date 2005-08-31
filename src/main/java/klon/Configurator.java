@@ -1,5 +1,6 @@
 package klon;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public final class Configurator {
@@ -20,11 +21,27 @@ public final class Configurator {
     if (!"".equals(parent)) {
       target.bind(root.getSlot(parent));
     }
-    for (Method current : type.getDeclaredMethods()) {
-      Activator activator = current.getAnnotation(Activator.class);
-      if (activator != null){
-        target.setActivator(current);
+    for (Field current : type.getDeclaredFields()) {
+      ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
+      if (exposedAs != null) {
+        Object value = null;
+        try {
+          value = current.get(null);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        if (value instanceof Number) {
+          target.setSlot(
+            exposedAs.value(),
+            ((KlonNumber) root.getSlot("Number")).newNumber(((Number) value).doubleValue()));
+        } else if (value instanceof String) {
+          target.setSlot(exposedAs.value(),
+            ((KlonString) root.getSlot("String")).newString((String) value));
+        }
       }
+    }
+
+    for (Method current : type.getDeclaredMethods()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         String identity = "'" + current.getName() + "' in "
@@ -64,8 +81,32 @@ public final class Configurator {
           ((KlonNativeMethod) root.getSlot("NativeMethod")).newNativeMethod(current));
       }
     }
-    if (target.getActivator() == null){
-        target.setActivator(root.getSlot("Object").getActivator());
+
+    Method activator = null;
+    try {
+      activator = type.getDeclaredMethod("activate", new Class[]{
+          KlonObject.class,
+          KlonObject.class,
+          KlonObject.class,
+          Message.class});
+    } catch (NoSuchMethodException e) {
+      if (activator == null) {
+        activator = root.getSlot("Object")
+          .getActivator();
+      }
     }
+    target.setActivator(activator);
+
+    Method formatter = null;
+    try {
+      formatter = type.getDeclaredMethod("format",
+        new Class[]{KlonObject.class});
+    } catch (NoSuchMethodException e) {
+      if (formatter == null) {
+        formatter = root.getSlot("Object")
+          .getFormatter();
+      }
+    }
+    target.setFormatter(formatter);
   }
 }

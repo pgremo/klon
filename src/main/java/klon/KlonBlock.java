@@ -11,7 +11,6 @@ public class KlonBlock extends KlonObject {
     return result;
   }
 
-  @Activator
   public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     Object value = slot.getData();

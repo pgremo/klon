@@ -19,25 +19,6 @@ public class KlonException extends KlonObject {
     return result;
   }
 
-  @Override
-  public String getMessage() {
-    StringBuilder result = new StringBuilder();
-    try {
-      KlonObject name = getSlot("name");
-      KlonObject description = getSlot("description");
-      if (name != null) {
-        result.append(name.getData());
-        if (description != null) {
-          result.append(":")
-            .append(description.getData());
-        }
-      }
-    } catch (KlonObject e) {
-      e.printStackTrace();
-    }
-    return result.toString();
-  }
-
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

@@ -12,13 +12,6 @@ public class KlonFile extends KlonObject {
     setData(new File("/"));
   }
 
-  @Override
-  public KlonObject duplicate() throws KlonObject {
-    KlonObject result = super.duplicate();
-    result.setData(new File("/"));
-    return result;
-  }
-
   @ExposedAs("setPath")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

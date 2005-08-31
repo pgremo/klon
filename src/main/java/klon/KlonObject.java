@@ -20,6 +20,7 @@ public class KlonObject extends Exception {
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Method activator;
+  private Method formatter;
   private Object data;
 
   public void configure(KlonObject root) throws KlonObject {
@@ -32,6 +33,7 @@ public class KlonObject extends Exception {
       result.bind(this);
       result.setData(getData());
       result.setActivator(getActivator());
+      result.setFormatter(getFormatter());
       return result;
     } catch (Exception e) {
       throw ((KlonException) getSlot("Exception")).newException(e.getClass()
@@ -75,6 +77,14 @@ public class KlonObject extends Exception {
 
   public Method getActivator() {
     return activator;
+  }
+
+  public void setFormatter(Method formatter) {
+    this.formatter = formatter;
+  }
+
+  public Method getFormatter() {
+    return formatter;
   }
 
   public void setSlot(String name, KlonObject value) {
@@ -193,11 +203,38 @@ public class KlonObject extends Exception {
 
   @Override
   public String toString() {
-    return getType() + "_0x" + Integer.toHexString(hashCode());
+    String result = null;
+    try {
+      result = (String) formatter.invoke(null, this);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
+  public static String format(KlonObject object) {
+    return object.getType() + "_0x" + Integer.toHexString(object.hashCode());
+  }
+
+  public String getMessage() {
+    StringBuilder result = new StringBuilder();
+    try {
+      KlonObject name = getSlot("name");
+      KlonObject description = getSlot("description");
+      if (name != null) {
+        result.append(name.getData());
+        if (description != null) {
+          result.append(":")
+            .append(description.getData());
+        }
+      }
+    } catch (KlonObject e) {
+      e.printStackTrace();
+    }
+    return result.toString();
   }
 
   @SuppressWarnings("unused")
-  @Activator
   public static KlonObject activate(KlonObject slot, KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     return slot;

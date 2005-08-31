@@ -57,7 +57,7 @@ public final class Configurator {
         }
         target.setSlot(
           exposedAs.value(),
-          ((KlonExposedMethod) root.getSlot("ExposedMethod")).newExposedMethod(current));
+          ((KlonNativeMethod) root.getSlot("NativeMethod")).newNativeMethod(current));
       }
     }
   }

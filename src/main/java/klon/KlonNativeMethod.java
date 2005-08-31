@@ -3,20 +3,20 @@ package klon;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@Prototype(name = "ExposedMethod", parent = "Object")
-public class KlonExposedMethod extends KlonObject {
+@Prototype(name = "NativeMethod", parent = "Object")
+public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -6241106920818116280L;
 
-  public KlonExposedMethod() {
+  public KlonNativeMethod() {
     super();
   }
 
-  public KlonExposedMethod(KlonObject parent, Object attached) {
+  public KlonNativeMethod(KlonObject parent, Object attached) {
     super(parent, attached);
   }
 
-  public KlonObject newExposedMethod(Object subject) throws KlonException {
+  public KlonObject newNativeMethod(Object subject) throws KlonException {
     KlonObject result = duplicate();
     result.data = subject;
     return result;
@@ -25,23 +25,20 @@ public class KlonExposedMethod extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    KlonObject result = null;
-    if (data == null) {
-      result = getSlot("Nil");
-    } else {
+    KlonObject result = this;
+    if (data != null) {
       try {
         try {
           result = (KlonObject) ((Method) data).invoke(null, receiver, context,
-              message);
+            message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }
       } catch (KlonException e) {
         throw e;
       } catch (Throwable e) {
-        throw ((KlonException) getSlot("Exception")).newException(e
-            .getClass()
-              .getSimpleName(), e.getMessage(), message);
+        throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+          .getSimpleName(), e.getMessage(), message);
       }
     }
     return result;

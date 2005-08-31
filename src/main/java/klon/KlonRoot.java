@@ -27,8 +27,8 @@ public class KlonRoot extends KlonObject {
     KlonString string = new KlonString();
     setSlot("String", string);
 
-    KlonObject exposedMethod = new KlonExposedMethod();
-    setSlot("ExposedMethod", exposedMethod);
+    KlonObject nativeMethod = new KlonNativeMethod();
+    setSlot("NativeMethod", nativeMethod);
 
     KlonObject exception = new KlonException();
     setSlot("Exception", exception);
@@ -36,7 +36,7 @@ public class KlonRoot extends KlonObject {
     exception.configure(root);
     object.configure(root);
     string.configure(root);
-    exposedMethod.configure(root);
+    nativeMethod.configure(root);
 
     KlonObject nil = new KlonNil();
     nil.configure(root);

@@ -16,7 +16,7 @@ public class KlonObject extends Exception {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  private Prototype prototype = getClass().getAnnotation(Prototype.class);
+  private String type;
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Method activator;
@@ -32,6 +32,7 @@ public class KlonObject extends Exception {
       KlonObject result = getClass().newInstance();
       result.bind(this);
       result.setData(getData());
+      result.setType(getType());
       result.setActivator(getActivator());
       result.setFormatter(getFormatter());
       return result;
@@ -67,8 +68,12 @@ public class KlonObject extends Exception {
     return data;
   }
 
+  public void setType(String type) {
+    this.type = type;
+  }
+
   public String getType() {
-    return prototype.name();
+    return type;
   }
 
   public void setActivator(Method activator) {

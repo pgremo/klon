@@ -17,6 +17,7 @@ public final class Configurator {
       throw exceptionProto.newException("Invalid Argument", type
           + " has not Prototype annotation.", null);
     }
+    target.setType(prototype.name());
     String parent = prototype.parent();
     if (!"".equals(parent)) {
       target.bind(root.getSlot(parent));

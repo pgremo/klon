@@ -487,6 +487,27 @@ public class KlonObject extends Exception {
         : receiver.getSlot("Nil");
   }
 
+  @ExposedAs("super")
+  public static KlonObject superSlot(KlonObject receiver, KlonObject context,
+      Message message) throws KlonException {
+    Message target = message.getArgument(0);
+    String name = (String) target.getSelector()
+      .getData();
+    KlonObject parent = null;
+    Iterator<KlonObject> iterator = receiver.bindings.iterator();
+    while (iterator.hasNext() && parent == null) {
+      KlonObject current = iterator.next();
+      if (current.getSlot(name) != null) {
+        parent = current;
+      }
+    }
+    if (parent == null) {
+      throw ((KlonException) receiver.getSlot("Exception")).newException(
+        "Invalid Slot", name + " does not exist", message);
+    }
+    return parent.perform(context, target);
+  }
+
   @ExposedAs("do")
   public static KlonObject doArgument(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {

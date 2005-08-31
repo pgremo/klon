@@ -7,7 +7,7 @@ AUTHOR = "Patrick Gremo"
 %tokens%
 
 NUMBER              = <<((-?[0-9]+)|(-?[0-9]*\.[0-9]+))(e-?[0-9]+)?|0[xX][0-9a-fA-F]+>>
-OPERATOR            = <<[:='~!@$%\^&*\-+\\<>|?/.]+|(and|or)>>
+OPERATOR            = <<[:='~!@$%\^&*\-+\\<>|?/.]+|(and|or|super)>>
 IDENTIFIER          = <<[a-zA-Z][a-zA-Z0-9_.]*>>
 STRING              = <<("([^"]|(\\"))*")>>
 TERMINATOR          = <<[\r\n;]>>

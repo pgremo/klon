@@ -5,14 +5,6 @@ public class KlonException extends KlonObject {
 
   private static final long serialVersionUID = 8553657071125334749L;
 
-  public KlonException() {
-    super();
-  }
-
-  public KlonException(KlonObject parent, Object attached) {
-    super(parent, attached);
-  }
-
   public KlonException newException(String name, String description,
       Message message) throws KlonObject {
     KlonException result = (KlonException) duplicate();

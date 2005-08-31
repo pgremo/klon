@@ -9,14 +9,6 @@ public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -6241106920818116280L;
 
-  public KlonNativeMethod() {
-    super();
-  }
-
-  public KlonNativeMethod(KlonObject parent, Object attached) {
-    super(parent, attached);
-  }
-
   public KlonObject newNativeMethod(Object subject) throws KlonObject {
     KlonObject result = duplicate();
     result.setData(subject);
@@ -32,8 +24,8 @@ public class KlonNativeMethod extends KlonObject {
     if (value != null) {
       try {
         try {
-          result = (KlonObject) ((Method) value).invoke(null, receiver, context,
-            message);
+          result = (KlonObject) ((Method) value).invoke(null, receiver,
+            context, message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }

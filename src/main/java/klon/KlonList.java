@@ -9,11 +9,8 @@ public class KlonList extends KlonObject {
   private static final long serialVersionUID = -6509654061397424250L;
 
   public KlonList() {
-    super(null, new ArrayList<KlonObject>());
-  }
-
-  public KlonList(KlonObject parent, Object attached) {
-    super(parent, attached);
+    super();
+    setData(new ArrayList<KlonObject>());
   }
 
   @SuppressWarnings("unchecked")

@@ -19,11 +19,8 @@ public class KlonString extends KlonObject {
   private static final long serialVersionUID = -1460358337296215238L;
 
   public KlonString() {
-    super(null, "");
-  }
-
-  public KlonString(KlonObject parent, Object attached) {
-    super(parent, attached);
+    super();
+    setData("");
   }
 
   public KlonString newString(String value) throws KlonObject {

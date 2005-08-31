@@ -14,11 +14,8 @@ public class KlonNumber extends KlonObject {
   }
 
   public KlonNumber() {
-    super(null, 0D);
-  }
-
-  public KlonNumber(KlonObject parent, Object attached) {
-    super(parent, attached);
+    super();
+    setData(0D);
   }
 
   public KlonNumber newNumber(Double value) throws KlonObject {

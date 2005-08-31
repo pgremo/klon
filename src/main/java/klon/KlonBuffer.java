@@ -12,11 +12,8 @@ public class KlonBuffer extends KlonObject {
   private static final long serialVersionUID = -3007245357989336566L;
 
   public KlonBuffer() {
-    super(null, ByteBuffer.allocate(0));
-  }
-
-  public KlonBuffer(KlonObject parent, Object data) {
-    super(parent, data);
+    super();
+    setData(ByteBuffer.allocate(0));
   }
 
   public KlonBuffer newBuffer(File file) throws KlonObject {

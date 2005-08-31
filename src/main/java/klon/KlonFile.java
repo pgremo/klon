@@ -8,11 +8,8 @@ public class KlonFile extends KlonObject {
   private static final long serialVersionUID = 6550367839880573300L;
 
   public KlonFile() {
-    super(null, new File("/"));
-  }
-
-  public KlonFile(KlonObject parent, Object data) {
-    super(parent, data);
+    super();
+    setData(new File("/"));
   }
 
   @Override

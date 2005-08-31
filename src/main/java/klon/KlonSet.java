@@ -5,14 +5,6 @@ public class KlonSet extends KlonObject {
 
   private static final long serialVersionUID = 9142527726733948367L;
 
-  public KlonSet() {
-    super();
-  }
-
-  public KlonSet(KlonObject parent, Object attached) {
-    super(parent, attached);
-  }
-
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

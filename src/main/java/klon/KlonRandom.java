@@ -8,11 +8,8 @@ public class KlonRandom extends KlonObject {
   private static final long serialVersionUID = 9178710141040319542L;
 
   public KlonRandom() {
-    super(null, new MersenneTwister());
-  }
-
-  public KlonRandom(KlonObject parent, Object data) {
-    super(parent, data);
+    super();
+    setData(new MersenneTwister());
   }
 
   @Override

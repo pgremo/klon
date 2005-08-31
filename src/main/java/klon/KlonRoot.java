@@ -10,11 +10,7 @@ public class KlonRoot extends KlonObject {
   private static final long serialVersionUID = -5934417382511490890L;
 
   public KlonRoot(String[] args) {
-    this(null, args);
-  }
-
-  public KlonRoot(KlonObject parent, Object attached) {
-    super(parent, attached);
+    setData(args);
   }
 
   @Override

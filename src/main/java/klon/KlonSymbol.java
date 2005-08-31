@@ -6,11 +6,8 @@ public class KlonSymbol extends KlonObject {
   private static final long serialVersionUID = 3052106897048736269L;
 
   public KlonSymbol() {
-    super(null, "");
-  }
-
-  public KlonSymbol(KlonObject parent, Object attached) {
-    super(parent, attached);
+    super();
+    setData("");
   }
 
   public KlonSymbol newSymbol(String value) throws KlonObject {

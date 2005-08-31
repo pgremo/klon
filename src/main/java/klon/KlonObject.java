@@ -1,7 +1,6 @@
 package klon;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,26 +19,16 @@ public class KlonObject extends Exception {
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Object data;
 
-  public KlonObject() {
-    this(null, null);
-  }
-
-  public KlonObject(KlonObject parent, Object data) {
-    if (parent != null) {
-      bindings.add(parent);
-    }
-    this.data = data;
-  }
-
   public void configure(KlonObject root) throws KlonObject {
     Configurator.configure(root, this, getClass());
   }
 
   public KlonObject duplicate() throws KlonObject {
     try {
-      Constructor constructor = getClass().getConstructor(KlonObject.class,
-        Object.class);
-      return (KlonObject) constructor.newInstance(this, data);
+      KlonObject result = (KlonObject) getClass().newInstance();
+      result.bind(this);
+      result.setData(getData());
+      return result;
     } catch (Exception e) {
       throw ((KlonException) getSlot("Exception")).newException(e.getClass()
         .getSimpleName(), e.getMessage(), null);

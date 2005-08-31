@@ -9,10 +9,6 @@ public class KlonBlock extends KlonObject {
     super();
   }
 
-  public KlonBlock(KlonObject parent, Object attached) {
-    super(parent, attached);
-  }
-
   public KlonBlock newBlock(Block value) throws KlonObject {
     KlonBlock result = (KlonBlock) duplicate();
     result.setData(value);

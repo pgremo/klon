@@ -5,10 +5,6 @@ public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = 5760629549494821771L;
 
-  public KlonNil() {
-    super();
-  }
-
   @Override
   public KlonObject duplicate() {
     return this;

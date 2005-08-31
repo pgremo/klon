@@ -5,21 +5,17 @@ public class KlonBlock extends KlonObject {
 
   private static final long serialVersionUID = 8013887125117513346L;
 
-  public KlonBlock() {
-    super();
-  }
-
   public KlonBlock newBlock(Block value) throws KlonObject {
     KlonBlock result = (KlonBlock) duplicate();
     result.setData(value);
     return result;
   }
 
-  @Override
-  public KlonObject activate(KlonObject receiver, KlonObject context,
+  @Activator
+  public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    Object value = getData();
-    return value == null ? this : ((Block) value).activate(receiver, context,
+    Object value = slot.getData();
+    return value == null ? slot : ((Block) value).activate(receiver, context,
       message);
   }
 

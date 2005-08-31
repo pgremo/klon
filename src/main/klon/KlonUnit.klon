@@ -26,12 +26,12 @@ UnitTest TestResult := Object clone do(
 			)
 	    testFailuresDescription := method(
 	        description := ""
-	        testFailures foreach(index, testFailure, description = description + testFailure description)
+	        testFailures forEach(index, testFailure, description = description + (testFailure description))
 	        description
 	    )
 	    testErrorsDescription := method(
 	        description := ""
-	        testErrors foreach(index, testError, description = description + testError description)
+	        testErrors forEach(index, testError, description = description + (testError description))
 	        description
 	    )
 	    shortSummary := method(
@@ -146,7 +146,7 @@ UnitTest TestCase := Object clone do(
 	    )
 	    suite := method(
 	        suite := TestSuite clone
-	        self foreach(slotName, slotValue, if(slotName beginsWith("test"), suite addTest(self testWithName(slotName))))
+	        self forEach(slotName, slotValue, if(slotName beginsWith("test"), suite addTest(self testWithName(slotName))))
 	        suite
 	    )
 	    knownBug := method(
@@ -180,7 +180,7 @@ UnitTest TestSuite := Object clone do(
 	        self addFileAtPath(aFileName, launchPath)
 	    )
 	    runWithResult := method(result,
-	        tests foreach(index, test, test runWithResult(result))
+	        tests forEach(index, test, test runWithResult(result))
 	    )
 	    run := UnitTest TestCase getSlot("run")
 	)

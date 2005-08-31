@@ -56,7 +56,7 @@ public class KlonList extends KlonObject {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
+    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(context);
     String index = (String) message.getArgument(0)
       .getSelector()
       .getData();

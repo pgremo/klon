@@ -30,10 +30,11 @@ public class KlonRoot extends KlonObject {
     KlonObject exception = new KlonException();
     setSlot("Exception", exception);
 
-    exception.configure(root);
-    object.configure(root);
-    string.configure(root);
     nativeMethod.configure(root);
+    object.configure(root);
+    exception.configure(root);
+    string.configure(root);
+    Configurator.configure(root, this, getClass());
 
     KlonObject nil = new KlonNil();
     nil.configure(root);

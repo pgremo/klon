@@ -21,14 +21,21 @@ public class KlonException extends KlonObject {
 
   @Override
   public String getMessage() {
-    String result = null;
+    StringBuilder result = new StringBuilder();
     try {
-      result = (String) getSlot("name").getData() + ":"
-          + (String) getSlot("description").getData();
+      KlonObject name = getSlot("name");
+      KlonObject description = getSlot("description");
+      if (name != null) {
+        result.append(name.getData());
+        if (description != null) {
+          result.append(":")
+            .append(description.getData());
+        }
+      }
     } catch (KlonObject e) {
       e.printStackTrace();
     }
-    return result;
+    return result.toString();
   }
 
   @ExposedAs("raise")

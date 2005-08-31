@@ -1,6 +1,8 @@
 package klon;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ public class KlonObject extends Exception {
   private Prototype prototype = getClass().getAnnotation(Prototype.class);
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
+  private Method activator;
   private Object data;
 
   public void configure(KlonObject root) throws KlonObject {
@@ -28,6 +31,7 @@ public class KlonObject extends Exception {
       KlonObject result = getClass().newInstance();
       result.bind(this);
       result.setData(getData());
+      result.setActivator(getActivator());
       return result;
     } catch (Exception e) {
       throw ((KlonException) getSlot("Exception")).newException(e.getClass()
@@ -38,7 +42,19 @@ public class KlonObject extends Exception {
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return this;
+    try {
+      try {
+        return (KlonObject) activator.invoke(null, this, receiver, context,
+          message);
+      } catch (InvocationTargetException e) {
+        throw e.getTargetException();
+      }
+    } catch (KlonObject e) {
+      throw e;
+    } catch (Throwable e) {
+      throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+        .getSimpleName(), e.getMessage(), null);
+    }
   }
 
   public void setData(Object value) {
@@ -51,6 +67,14 @@ public class KlonObject extends Exception {
 
   public String getType() {
     return prototype.name();
+  }
+
+  public void setActivator(Method activator) {
+    this.activator = activator;
+  }
+
+  public Method getActivator() {
+    return activator;
   }
 
   public void setSlot(String name, KlonObject value) {
@@ -172,6 +196,13 @@ public class KlonObject extends Exception {
     return getType() + "_0x" + Integer.toHexString(hashCode());
   }
 
+  @SuppressWarnings("unused")
+  @Activator
+  public static KlonObject activate(KlonObject slot, KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
+    return slot;
+  }
+
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -267,7 +298,7 @@ public class KlonObject extends Exception {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = ((KlonLocals) context.getSlot("Locals")).newLocals(receiver);
+    KlonObject scope = ((KlonLocals) context.getSlot("Locals")).newLocals(context);
     String name = (String) message.getArgument(0)
       .getSelector()
       .getData();

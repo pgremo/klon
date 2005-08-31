@@ -21,6 +21,10 @@ public final class Configurator {
       target.bind(root.getSlot(parent));
     }
     for (Method current : type.getDeclaredMethods()) {
+      Activator activator = current.getAnnotation(Activator.class);
+      if (activator != null){
+        target.setActivator(current);
+      }
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         String identity = "'" + current.getName() + "' in "
@@ -59,6 +63,9 @@ public final class Configurator {
           exposedAs.value(),
           ((KlonNativeMethod) root.getSlot("NativeMethod")).newNativeMethod(current));
       }
+    }
+    if (target.getActivator() == null){
+        target.setActivator(root.getSlot("Object").getActivator());
     }
   }
 }

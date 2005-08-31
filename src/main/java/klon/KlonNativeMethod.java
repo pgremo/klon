@@ -16,11 +16,11 @@ public class KlonNativeMethod extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @Override
-  public KlonObject activate(KlonObject receiver, KlonObject context,
+  @Activator
+  public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = this;
-    Object value = getData();
+    KlonObject result = slot;
+    Object value = slot.getData();
     if (value != null) {
       try {
         try {
@@ -31,10 +31,10 @@ public class KlonNativeMethod extends KlonObject {
         }
       } catch (KlonException e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
-          .getData()).add(((KlonString) getSlot("String")).newString(message.toString()));
+          .getData()).add(((KlonString) slot.getSlot("String")).newString(message.toString()));
         throw e;
       } catch (Throwable e) {
-        throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+        throw ((KlonException) slot.getSlot("Exception")).newException(e.getClass()
           .getSimpleName(), e.getMessage(), message);
       }
     }

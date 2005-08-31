@@ -26,13 +26,13 @@ public class KlonString extends KlonObject {
     super(parent, attached);
   }
 
-  public KlonString newString(String value) throws KlonException {
+  public KlonString newString(String value) throws KlonObject {
     KlonString result = (KlonString) duplicate();
     result.data = value;
     return result;
   }
 
-  public KlonString newString(File file) throws KlonException {
+  public KlonString newString(File file) throws KlonObject {
     ByteBuffer byteBuffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -55,7 +55,7 @@ public class KlonString extends KlonObject {
     return newString(byteBuffer);
   }
 
-  public KlonString newString(ByteBuffer byteBuffer) throws KlonException {
+  public KlonString newString(ByteBuffer byteBuffer) throws KlonObject {
     CharBuffer buffer;
     try {
       buffer = decoder.decode(byteBuffer);
@@ -72,7 +72,7 @@ public class KlonString extends KlonObject {
   }
 
   public static String evalAsString(KlonObject receiver, Message message,
-      int index) throws KlonException {
+      int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
     if ("String".equals(result.getType())) {
       return (String) result.getData();
@@ -83,7 +83,7 @@ public class KlonString extends KlonObject {
 
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return ((KlonString) receiver.getSlot("String")).newString(receiver.getData()
         + String.valueOf(message.eval(context, 0)
@@ -95,7 +95,7 @@ public class KlonString extends KlonObject {
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return receiver;
   }
 }

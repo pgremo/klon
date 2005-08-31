@@ -21,7 +21,7 @@ public class Shell {
     this.out = out;
   }
 
-  public void process() throws KlonException, IOException {
+  public void process() throws KlonObject, IOException {
     while (true) {
       out.print(PROMPT);
       out.flush();
@@ -33,7 +33,7 @@ public class Shell {
     }
   }
 
-  private void evalMessage(Message message) throws KlonException {
+  private void evalMessage(Message message) throws KlonObject {
     out.setHasOutput(false);
     KlonObject value = null;
     try {

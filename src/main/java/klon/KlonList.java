@@ -18,13 +18,13 @@ public class KlonList extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject duplicate() throws KlonException {
+  public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
     result.data = new ArrayList<KlonObject>((List<KlonObject>) getData());
     return result;
   }
 
-  public KlonList newList(List<KlonObject> value) throws KlonException {
+  public KlonList newList(List<KlonObject> value) throws KlonObject {
     KlonList result = (KlonList) duplicate();
     result.data = value;
     return result;
@@ -33,7 +33,7 @@ public class KlonList extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("add")
   public static KlonObject add(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     ((List) receiver.getData()).add(message.eval(context, 0));
     return receiver;
   }
@@ -41,7 +41,7 @@ public class KlonList extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("insertAt")
   public static KlonObject insertAt(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     ((List) receiver.getData()).add(
       KlonNumber.evalAsNumber(context, message, 0)
         .intValue(), message.eval(context, 1));
@@ -50,14 +50,14 @@ public class KlonList extends KlonObject {
 
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber((double) ((List) receiver.getData()).size());
   }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
     KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
     String index = (String) message.getArgument(0)
@@ -80,7 +80,7 @@ public class KlonList extends KlonObject {
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result;
     Object primitive = receiver.getData();
     if (primitive == null) {

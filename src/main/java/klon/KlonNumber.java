@@ -21,7 +21,7 @@ public class KlonNumber extends KlonObject {
     super(parent, attached);
   }
 
-  public KlonNumber newNumber(Double value) throws KlonException {
+  public KlonNumber newNumber(Double value) throws KlonObject {
     KlonNumber result = (KlonNumber) duplicate();
     result.data = value;
     return result;
@@ -33,7 +33,7 @@ public class KlonNumber extends KlonObject {
   }
 
   public static Double evalAsNumber(KlonObject receiver, Message message,
-      int index) throws KlonException {
+      int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
     if ("Number".equals(result.getType())) {
       return (Double) result.getData();
@@ -44,21 +44,21 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("+")
   public static KlonObject add(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber((Double) receiver.getData()
         + evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("-")
   public static KlonObject subtract(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber((Double) receiver.getData()
         - evalAsNumber(context, message, 0));
   }
 
   @ExposedAs("*")
   public static KlonObject multiply(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(
 
     (Double) receiver.getData() * evalAsNumber(context, message, 0));
@@ -66,7 +66,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("/")
   public static KlonObject divide(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(
 
     (Double) receiver.getData() / evalAsNumber(context, message, 0));
@@ -74,7 +74,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("%")
   public static KlonObject modulus(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(
 
     (Double) receiver.getData() % evalAsNumber(context, message, 0));
@@ -82,7 +82,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("^")
   public static KlonObject power(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(
 
     Math.pow((Double) receiver.getData(), evalAsNumber(context, message, 0)));
@@ -90,7 +90,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("<")
   public static KlonObject lessThan(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
     if ("Number".equals(argument.getType())) {
       Double o1 = (Double) receiver.getData();
@@ -103,7 +103,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs(">")
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
     if ("Number".equals(argument.getType())) {
       Double o1 = (Double) receiver.getData();
@@ -116,7 +116,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("<=")
   public static KlonObject lessThanEquals(KlonObject receiver,
-      KlonObject context, Message message) throws KlonException {
+      KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
     if ("Number".equals(argument.getType())) {
       Double o1 = (Double) receiver.getData();
@@ -129,7 +129,7 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs(">=")
   public static KlonObject greaterThanEquals(KlonObject receiver,
-      KlonObject context, Message message) throws KlonException {
+      KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
     if ("Number".equals(argument.getType())) {
       Double o1 = (Double) receiver.getData();
@@ -142,26 +142,26 @@ public class KlonNumber extends KlonObject {
 
   @ExposedAs("abs")
   public static KlonObject absoluteValue(KlonObject receiver,
-      KlonObject context, Message message) throws KlonException {
+      KlonObject context, Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(Math.abs((Double) receiver.getData()));
   }
 
   @ExposedAs("sqrt")
   public static KlonObject squareRoot(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(Math.sqrt((Double) receiver.getData()));
   }
 
   @ExposedAs("integer")
   public static KlonObject integer(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber((Math.floor((Double) receiver.getData())));
   }
 
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonString) receiver.getSlot("String")).newString(formatter.format(receiver.getData()));
   }
 }

@@ -21,11 +21,11 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     this.root = root;
   }
 
-  public Message fromString(String value) throws KlonException {
+  public Message fromString(String value) throws KlonObject {
     return fromReader(new StringReader(value));
   }
 
-  public Message fromReader(Reader input) throws KlonException {
+  public Message fromReader(Reader input) throws KlonObject {
     try {
       return (Message) new KlonParser(input, this).parse()
         .getValue(0);
@@ -34,8 +34,8 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       if (cause != null) {
         e = cause;
       }
-      if (e instanceof KlonException) {
-        throw (KlonException) cause;
+      if (e instanceof KlonObject) {
+        throw (KlonObject)cause;
       }
       throw ((KlonException) root.getSlot("Exception")).newException(
         e.getClass()

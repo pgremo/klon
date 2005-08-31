@@ -19,7 +19,7 @@ public class KlonBuffer extends KlonObject {
     super(parent, data);
   }
 
-  public KlonBuffer newBuffer(File file) throws KlonException {
+  public KlonBuffer newBuffer(File file) throws KlonObject {
     ByteBuffer buffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -46,7 +46,7 @@ public class KlonBuffer extends KlonObject {
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonString) receiver.getSlot("String")).newString((ByteBuffer) receiver.getData());
   }
 

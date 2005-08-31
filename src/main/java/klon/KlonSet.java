@@ -16,7 +16,7 @@ public class KlonSet extends KlonObject {
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result;
     Object primitive = receiver.getData();
     if (primitive == null) {

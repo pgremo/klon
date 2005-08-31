@@ -16,7 +16,7 @@ public class KlonFile extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate() throws KlonException {
+  public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
     result.data = new File("/");
     return result;
@@ -24,21 +24,21 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("setPath")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     receiver.data = new File(KlonString.evalAsString(context, message, 0));
     return receiver;
   }
 
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonBuffer) receiver.getSlot("Buffer")).newBuffer((File) receiver.getData());
   }
 
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonString) receiver.getSlot("String")).newString((File) receiver.getData());
   }
 

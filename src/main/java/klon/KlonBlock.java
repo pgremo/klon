@@ -13,7 +13,7 @@ public class KlonBlock extends KlonObject {
     super(parent, attached);
   }
 
-  public KlonBlock newBlock(Block value) throws KlonException {
+  public KlonBlock newBlock(Block value) throws KlonObject {
     KlonBlock result = (KlonBlock) duplicate();
     result.data = value;
     return result;
@@ -21,21 +21,21 @@ public class KlonBlock extends KlonObject {
 
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return data == null ? this : ((Block) data).activate(receiver, context,
       message);
   }
 
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonString) receiver.getSlot("String")).newString(((Block) receiver.getData()).getCode()
       .toString());
   }
 
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
     if (!result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
@@ -47,7 +47,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
     if (result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
@@ -59,7 +59,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("whileTrue")
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
     while (!nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
@@ -71,7 +71,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("whileFalse")
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
     while (nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
@@ -84,7 +84,7 @@ public class KlonBlock extends KlonObject {
   @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonString) receiver.getSlot("String")).newString(String.valueOf(receiver.getData()));
   }
 

@@ -13,7 +13,7 @@ public class KlonLocals extends KlonObject {
     super(parent, data);
   }
 
-  public KlonLocals newLocals(KlonObject self) throws KlonException {
+  public KlonLocals newLocals(KlonObject self) throws KlonObject {
     KlonLocals result = (KlonLocals) duplicate();
     result.setSlot("self", self);
     return result;

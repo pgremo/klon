@@ -68,7 +68,7 @@ public class Message {
   }
 
   public KlonObject eval(KlonObject receiver, KlonObject context)
-      throws KlonException {
+      throws KlonObject {
     KlonObject self = receiver;
     for (Message outer = this; outer != null; outer = outer.getNext()) {
       for (Message inner = outer; inner != null; inner = inner.getAttached()) {
@@ -85,7 +85,7 @@ public class Message {
     return self;
   }
 
-  public KlonObject eval(KlonObject context, int index) throws KlonException {
+  public KlonObject eval(KlonObject context, int index) throws KlonObject {
     KlonObject result;
     if (index >= arguments.size()) {
       result = context.getSlot("Nil");
@@ -97,7 +97,7 @@ public class Message {
   }
 
   public void assertArgumentCount(KlonObject receiver, int count)
-      throws KlonException {
+      throws KlonObject {
     if (arguments.size() != count) {
       throw ((KlonException) receiver.getSlot("Exception")).newException(
         "Illegal Argument", "message must have " + count + " arguments", null);

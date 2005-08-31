@@ -16,7 +16,7 @@ public class KlonRandom extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate() throws KlonException {
+  public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
     result.data = new MersenneTwister();
     return result;
@@ -24,7 +24,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
       message, 0)
       .longValue());
@@ -33,7 +33,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     return ((KlonNumber) receiver.getSlot("Number")).newNumber(((Random) receiver.getData()).nextDouble());
   }
 

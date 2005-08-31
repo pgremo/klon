@@ -35,7 +35,7 @@ public class Block {
 
   @SuppressWarnings("unchecked")
   public KlonObject activate(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     int i = 0;

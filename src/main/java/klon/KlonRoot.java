@@ -18,7 +18,7 @@ public class KlonRoot extends KlonObject {
   }
 
   @Override
-  public void configure(KlonObject root) throws KlonException {
+  public void configure(KlonObject root) throws KlonObject {
     setSlot("Klon", root);
 
     KlonObject object = new KlonObject();

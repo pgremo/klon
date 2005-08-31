@@ -17,7 +17,7 @@ public class KlonNativeMethod extends KlonObject {
     super(parent, attached);
   }
 
-  public KlonObject newNativeMethod(Object subject) throws KlonException {
+  public KlonObject newNativeMethod(Object subject) throws KlonObject {
     KlonObject result = duplicate();
     result.data = subject;
     return result;
@@ -26,7 +26,7 @@ public class KlonNativeMethod extends KlonObject {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result = this;
     if (data != null) {
       try {

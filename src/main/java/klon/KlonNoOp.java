@@ -13,7 +13,7 @@ public class KlonNoOp extends KlonObject {
     super(parent, data);
   }
 
-  public KlonNoOp newNoOp(Object value) throws KlonException {
+  public KlonNoOp newNoOp(Object value) throws KlonObject {
     KlonNoOp result = (KlonNoOp) duplicate();
     result.data = value;
     return result;
@@ -21,7 +21,7 @@ public class KlonNoOp extends KlonObject {
 
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result = (KlonObject) receiver.getData();
     if (result == null) {
       result = context.getSlot("Nil");

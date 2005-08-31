@@ -13,7 +13,7 @@ public class KlonSymbol extends KlonObject {
     super(parent, attached);
   }
 
-  public KlonSymbol newSymbol(String value) throws KlonException {
+  public KlonSymbol newSymbol(String value) throws KlonObject {
     KlonSymbol result = (KlonSymbol) duplicate();
     result.data = value;
     return result;

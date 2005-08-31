@@ -14,7 +14,7 @@ public class KlonException extends KlonObject {
   }
 
   public KlonException newException(String name, String description,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonException result = (KlonException) duplicate();
     KlonString stringProto = (KlonString) getSlot("String");
     if (name != null) {
@@ -33,7 +33,7 @@ public class KlonException extends KlonObject {
     try {
       result = (String) getSlot("name").getData() + ":"
           + (String) getSlot("description").getData();
-    } catch (KlonException e) {
+    } catch (KlonObject e) {
       e.printStackTrace();
     }
     return result;
@@ -41,7 +41,7 @@ public class KlonException extends KlonObject {
 
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     throw ((KlonException) receiver).newException(KlonString.evalAsString(
       context, message, 0), KlonString.evalAsString(context, message, 1),
       message);
@@ -49,7 +49,7 @@ public class KlonException extends KlonObject {
 
   @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
-      KlonObject context, Message message) throws KlonException {
+      KlonObject context, Message message) throws KlonObject {
     int index = 0;
     KlonObject result = receiver;
     KlonObject target = message.eval(context, index++);
@@ -70,7 +70,7 @@ public class KlonException extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonException {
+      Message message) throws KlonObject {
     KlonObject result;
     KlonObject name = receiver.getSlot("name");
     KlonObject description = receiver.getSlot("description");

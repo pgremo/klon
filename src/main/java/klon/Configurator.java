@@ -9,7 +9,7 @@ public final class Configurator {
   }
 
   public static void configure(KlonObject root, KlonObject target,
-      Class<? extends Object> type) throws KlonException {
+      Class<? extends Object> type) throws KlonObject {
     Prototype prototype = type.getAnnotation(Prototype.class);
     KlonException exceptionProto = (KlonException) root.getSlot("Exception");
     if (prototype == null) {
@@ -50,7 +50,7 @@ public final class Configurator {
           throw exceptionProto.newException("Invalid Argument", identity
               + " must throw only 1 exception.", null);
         }
-        if (!KlonException.class.equals(current.getExceptionTypes()[0])) {
+        if (!KlonObject.class.equals(current.getExceptionTypes()[0])) {
           throw exceptionProto.newException("Invalid Argument", identity
               + " second parameter must be a " + KlonException.class + ".",
             null);

@@ -43,7 +43,8 @@ public class Shell {
       out.setHasOutput(false);
     }
     if (!out.hasOutput()) {
-      if ("String".equals(value.getType()) || "Number".equals(value.getType())) {
+      if ("String".equals(value.getType()) || "Number".equals(value.getType())
+          || "Exception".equals(value.getType())) {
         Message reportMessage = compiler.fromString("writeLine");
         reportMessage.addArgument(value);
         reportMessage.eval(value, value);

@@ -131,6 +131,7 @@ public class KlonObject extends Exception {
     bindings.remove(object);
   }
 
+  @SuppressWarnings("unchecked")
   public KlonObject perform(KlonObject context, Message message)
       throws KlonException {
     String name = (String) message.getSelector()
@@ -143,8 +144,11 @@ public class KlonObject extends Exception {
       slot = getSlot("forward");
     }
     if (slot == null) {
-      throw ((KlonException) getSlot("Exception")).newException("Invalid Slot",
-        name + " does not exist", message);
+      KlonException e = ((KlonException) getSlot("Exception")).newException(
+        "Invalid Slot", name + " does not exist", message);
+      ((List<KlonObject>) e.getSlot("stackTrace")
+        .getData()).add(((KlonString) getSlot("String")).newString(message.toString()));
+      throw e;
     }
     return slot.activate(this, context, message);
   }
@@ -505,7 +509,7 @@ public class KlonObject extends Exception {
       throw ((KlonException) receiver.getSlot("Exception")).newException(
         "Invalid Slot", name + " does not exist", message);
     }
-    return parent.perform(context, target);
+    return target.eval(receiver, context);
   }
 
   @ExposedAs("do")

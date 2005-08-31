@@ -23,9 +23,7 @@ public class KlonException extends KlonObject {
     if (description != null) {
       result.setSlot("description", stringProto.newString(description));
     }
-    if (message != null) {
-      result.setSlot("source", stringProto.newString(message.toString()));
-    }
+    result.setSlot("stackTrace", ((KlonList) getSlot("List")).duplicate());
     return result;
   }
 
@@ -69,6 +67,7 @@ public class KlonException extends KlonObject {
     return result;
   }
 
+  @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -78,7 +77,23 @@ public class KlonException extends KlonObject {
     if (name == null && description == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      result = ((KlonString) receiver.getSlot("String")).newString(receiver.toString());
+      KlonList stackTrace = (KlonList) receiver.getSlot("stackTrace");
+      StringBuilder buffer = new StringBuilder();
+      buffer.append(receiver.getType())
+        .append(" ")
+        .append(name.getData()
+          .toString())
+        .append(":")
+        .append(description.getData()
+          .toString())
+        .append("\n");
+      for (KlonObject current : (Iterable<KlonObject>) stackTrace.getData()) {
+        buffer.append(" at ")
+          .append(current.getData()
+            .toString())
+          .append("\n");
+      }
+      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
     }
     return result;
   }

@@ -2,6 +2,7 @@ package klon;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 @Prototype(name = "NativeMethod", parent = "Object")
 public class KlonNativeMethod extends KlonObject {
@@ -22,6 +23,7 @@ public class KlonNativeMethod extends KlonObject {
     return result;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
@@ -35,6 +37,8 @@ public class KlonNativeMethod extends KlonObject {
           throw e.getTargetException();
         }
       } catch (KlonException e) {
+        ((List<KlonObject>) e.getSlot("stackTrace")
+          .getData()).add(((KlonString) getSlot("String")).newString(message.toString()));
         throw e;
       } catch (Throwable e) {
         throw ((KlonException) getSlot("Exception")).newException(e.getClass()

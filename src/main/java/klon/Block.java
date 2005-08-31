@@ -1,5 +1,7 @@
 package klon;
 
+import java.util.List;
+
 public class Block {
 
   private String[] parameters;
@@ -31,6 +33,7 @@ public class Block {
     return result.toString();
   }
 
+  @SuppressWarnings("unchecked")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
@@ -43,6 +46,14 @@ public class Block {
     for (; i < parameters.length; i++) {
       scope.setSlot(parameters[i], nil);
     }
-    return code.eval(scope, scope);
+    KlonObject result = nil;
+    try {
+      result = code.eval(scope, scope);
+    } catch (KlonException e) {
+      ((List<KlonObject>) e.getSlot("stackTrace")
+        .getData()).add(((KlonString) receiver.getSlot("String")).newString(message.toString()));
+      throw e;
+    }
+    return result;
   }
 }

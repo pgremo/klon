@@ -90,9 +90,14 @@ public final class Configurator {
           KlonObject.class,
           Message.class});
     } catch (NoSuchMethodException e) {
-      if (activator == null) {
-        activator = root.getSlot("Object")
-          .getActivator();
+      try {
+        activator = KlonObject.class.getDeclaredMethod("activate", new Class[]{
+            KlonObject.class,
+            KlonObject.class,
+            KlonObject.class,
+            Message.class});
+      } catch (Exception e1) {
+        e1.printStackTrace();
       }
     }
     target.setActivator(activator);
@@ -102,9 +107,11 @@ public final class Configurator {
       formatter = type.getDeclaredMethod("format",
         new Class[]{KlonObject.class});
     } catch (NoSuchMethodException e) {
-      if (formatter == null) {
-        formatter = root.getSlot("Object")
-          .getFormatter();
+      try {
+        formatter = KlonObject.class.getDeclaredMethod("format",
+          new Class[]{KlonObject.class});
+      } catch (Exception e1) {
+        e1.printStackTrace();
       }
     }
     target.setFormatter(formatter);

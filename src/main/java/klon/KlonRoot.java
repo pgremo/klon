@@ -72,7 +72,7 @@ public class KlonRoot extends KlonObject {
     buffer.configure(root);
     setSlot("Buffer", buffer);
 
-    KlonObject system = new KlonObject();
+    KlonObject system = object.duplicate();
     system.bind(object);
     bind(system);
 

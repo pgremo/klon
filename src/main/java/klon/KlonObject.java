@@ -25,7 +25,7 @@ public class KlonObject extends Exception {
 
   public KlonObject duplicate() throws KlonObject {
     try {
-      KlonObject result = (KlonObject) getClass().newInstance();
+      KlonObject result = getClass().newInstance();
       result.bind(this);
       result.setData(getData());
       return result;

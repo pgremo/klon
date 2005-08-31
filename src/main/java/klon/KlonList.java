@@ -24,7 +24,7 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  public KlonList newList(List value) throws KlonException {
+  public KlonList newList(List<KlonObject> value) throws KlonException {
     KlonList result = (KlonList) duplicate();
     result.data = value;
     return result;

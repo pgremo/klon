@@ -1,6 +1,7 @@
 package klon;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Prototype(name = "Object")
@@ -54,7 +55,7 @@ public class KlonRoot extends KlonObject {
     set.configure(root);
     setSlot("Set", set);
 
-    KlonObject list = new KlonList();
+    KlonList list = new KlonList();
     list.configure(root);
     setSlot("List", list);
 
@@ -99,8 +100,12 @@ public class KlonRoot extends KlonObject {
     }
     setSlot("Properties", properties);
 
-    setSlot("Arguments",
-      ((KlonList) getSlot("List")).newList(Arrays.asList((String[]) data)));
+    String[] args = (String[]) data;
+    List<KlonObject> arguments = new ArrayList<KlonObject>(args.length);
+    for (String current : args) {
+      arguments.add(string.newString(current));
+    }
+    setSlot("Arguments", list.newList(arguments));
 
   }
 

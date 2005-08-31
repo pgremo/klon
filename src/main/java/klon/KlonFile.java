@@ -18,14 +18,14 @@ public class KlonFile extends KlonObject {
   @Override
   public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
-    result.data = new File("/");
+    result.setData(new File("/"));
     return result;
   }
 
   @ExposedAs("setPath")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    receiver.data = new File(KlonString.evalAsString(context, message, 0));
+    receiver.setData(new File(KlonString.evalAsString(context, message, 0)));
     return receiver;
   }
 

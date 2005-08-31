@@ -19,7 +19,7 @@ public class KlonNativeMethod extends KlonObject {
 
   public KlonObject newNativeMethod(Object subject) throws KlonObject {
     KlonObject result = duplicate();
-    result.data = subject;
+    result.setData(subject);
     return result;
   }
 
@@ -28,10 +28,11 @@ public class KlonNativeMethod extends KlonObject {
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = this;
-    if (data != null) {
+    Object value = getData();
+    if (value != null) {
       try {
         try {
-          result = (KlonObject) ((Method) data).invoke(null, receiver, context,
+          result = (KlonObject) ((Method) value).invoke(null, receiver, context,
             message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();

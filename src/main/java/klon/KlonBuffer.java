@@ -40,7 +40,7 @@ public class KlonBuffer extends KlonObject {
     }
     buffer.position(0);
     KlonBuffer result = (KlonBuffer) duplicate();
-    result.data = buffer;
+    result.setData(buffer);
     return result;
   }
 

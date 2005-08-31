@@ -20,13 +20,13 @@ public class KlonList extends KlonObject {
   @Override
   public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
-    result.data = new ArrayList<KlonObject>((List<KlonObject>) getData());
+    result.setData(new ArrayList<KlonObject>((List<KlonObject>) getData()));
     return result;
   }
 
   public KlonList newList(List<KlonObject> value) throws KlonObject {
     KlonList result = (KlonList) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 

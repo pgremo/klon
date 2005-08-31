@@ -28,7 +28,7 @@ public class KlonString extends KlonObject {
 
   public KlonString newString(String value) throws KlonObject {
     KlonString result = (KlonString) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 
@@ -68,7 +68,7 @@ public class KlonString extends KlonObject {
 
   @Override
   public String toString() {
-    return "\"" + String.valueOf(data) + "\"";
+    return "\"" + String.valueOf(getData()) + "\"";
   }
 
   public static String evalAsString(KlonObject receiver, Message message,

@@ -18,7 +18,7 @@ public class KlonRandom extends KlonObject {
   @Override
   public KlonObject duplicate() throws KlonObject {
     KlonObject result = super.duplicate();
-    result.data = new MersenneTwister();
+    result.setData(new MersenneTwister());
     return result;
   }
 

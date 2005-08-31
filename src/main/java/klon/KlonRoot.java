@@ -100,7 +100,7 @@ public class KlonRoot extends KlonObject {
     }
     setSlot("Properties", properties);
 
-    String[] args = (String[]) data;
+    String[] args = (String[]) getData();
     List<KlonObject> arguments = new ArrayList<KlonObject>(args.length);
     for (String current : args) {
       arguments.add(string.newString(current));

@@ -15,14 +15,15 @@ public class KlonBlock extends KlonObject {
 
   public KlonBlock newBlock(Block value) throws KlonObject {
     KlonBlock result = (KlonBlock) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return data == null ? this : ((Block) data).activate(receiver, context,
+    Object value = getData();
+    return value == null ? this : ((Block) value).activate(receiver, context,
       message);
   }
 

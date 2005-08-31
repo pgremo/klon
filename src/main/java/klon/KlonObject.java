@@ -18,7 +18,7 @@ public class KlonObject extends Exception {
   private Prototype prototype = getClass().getAnnotation(Prototype.class);
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
-  protected Object data;
+  private Object data;
 
   public KlonObject() {
     this(null, null);
@@ -50,6 +50,10 @@ public class KlonObject extends Exception {
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return this;
+  }
+
+  public void setData(Object value) {
+    this.data = value;
   }
 
   public Object getData() {

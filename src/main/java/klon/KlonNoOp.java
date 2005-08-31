@@ -15,7 +15,7 @@ public class KlonNoOp extends KlonObject {
 
   public KlonNoOp newNoOp(Object value) throws KlonObject {
     KlonNoOp result = (KlonNoOp) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 

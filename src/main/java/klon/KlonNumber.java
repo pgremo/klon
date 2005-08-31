@@ -23,13 +23,13 @@ public class KlonNumber extends KlonObject {
 
   public KlonNumber newNumber(Double value) throws KlonObject {
     KlonNumber result = (KlonNumber) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 
   @Override
   public String toString() {
-    return formatter.format(data);
+    return formatter.format(getData());
   }
 
   public static Double evalAsNumber(KlonObject receiver, Message message,

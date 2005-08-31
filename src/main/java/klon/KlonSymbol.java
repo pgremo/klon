@@ -15,13 +15,13 @@ public class KlonSymbol extends KlonObject {
 
   public KlonSymbol newSymbol(String value) throws KlonObject {
     KlonSymbol result = (KlonSymbol) duplicate();
-    result.data = value;
+    result.setData(value);
     return result;
   }
 
   @Override
   public String toString() {
-    return String.valueOf(data);
+    return String.valueOf(getData());
   }
 
 }

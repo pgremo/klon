@@ -9,7 +9,7 @@ public class KlonList extends KlonObject {
   private static final long serialVersionUID = -6509654061397424250L;
 
   public KlonList() {
-    super(null, new ArrayList());
+    super(null, new ArrayList<KlonObject>());
   }
 
   public KlonList(KlonObject parent, Object attached) {
@@ -20,7 +20,7 @@ public class KlonList extends KlonObject {
   @Override
   public KlonObject duplicate() throws KlonException {
     KlonObject result = super.duplicate();
-    result.data = new ArrayList((List) getData());
+    result.data = new ArrayList<KlonObject>((List<KlonObject>) getData());
     return result;
   }
 
@@ -55,12 +55,11 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("foreach")
-  public static KlonObject foreach(KlonObject receiver, KlonObject context,
+  @ExposedAs("forEach")
+  public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).duplicate();
-    scope.setSlot("self", receiver);
+    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
     String index = (String) message.getArgument(0)
       .getSelector()
       .getData();

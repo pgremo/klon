@@ -266,11 +266,11 @@ public class KlonObject extends Exception {
     return receiver;
   }
 
-  @ExposedAs("foreach")
-  public static KlonObject foreach(KlonObject receiver, KlonObject context,
+  @ExposedAs("forEach")
+  public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = context.duplicate();
+    KlonObject scope = ((KlonLocals) context.getSlot("Locals")).newLocals(receiver);
     String name = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -376,7 +376,7 @@ public class KlonObject extends Exception {
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = context.duplicate();
+    KlonObject scope = ((KlonLocals) context.getSlot("Locals")).newLocals(receiver);
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getData();

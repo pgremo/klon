@@ -26,13 +26,14 @@ public class Block {
     if (parameters.length > 0) {
       result.append(", ");
     }
-    result.append(code).append(")");
+    result.append(code)
+      .append(")");
     return result.toString();
   }
 
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonException {
-    KlonObject scope = receiver.getSlot("Locals").duplicate();
+    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     int i = 0;
     for (; i < limit; i++) {
@@ -42,7 +43,6 @@ public class Block {
     for (; i < parameters.length; i++) {
       scope.setSlot(parameters[i], nil);
     }
-    scope.setSlot("self", receiver);
     return code.eval(scope, scope);
   }
 }

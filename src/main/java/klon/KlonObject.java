@@ -20,6 +20,7 @@ public class KlonObject extends Exception {
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Method activator;
+  private Method duplicator;
   private Method formatter;
   private Object data;
 
@@ -30,14 +31,14 @@ public class KlonObject extends Exception {
 
   public KlonObject duplicate() throws KlonObject {
     try {
-      KlonObject result = getClass().newInstance();
-      result.bind(this);
-      result.setData(getData());
-      result.setType(getType());
-      result.setActivator(getActivator());
-      result.setFormatter(getFormatter());
-      return result;
-    } catch (Exception e) {
+      try {
+        return (KlonObject) duplicator.invoke(null, this);
+      } catch (InvocationTargetException e) {
+        throw e.getTargetException();
+      }
+    } catch (KlonObject e) {
+      throw e;
+    } catch (Throwable e) {
       throw ((KlonException) getSlot("Exception")).newException(e.getClass()
         .getSimpleName(), e.getMessage(), null);
     }
@@ -75,6 +76,14 @@ public class KlonObject extends Exception {
 
   public String getType() {
     return type;
+  }
+
+  public void setDuplicator(Method duplicator) {
+    this.duplicator = duplicator;
+  }
+
+  public Method getDuplicator() {
+    return duplicator;
   }
 
   public void setActivator(Method activator) {
@@ -218,10 +227,6 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  public static String format(KlonObject object) {
-    return object.getType() + "_0x" + Integer.toHexString(object.hashCode());
-  }
-
   public String getMessage() {
     StringBuilder result = new StringBuilder();
     try {
@@ -238,6 +243,28 @@ public class KlonObject extends Exception {
       e.printStackTrace();
     }
     return result.toString();
+  }
+
+  public static KlonObject duplicate(KlonObject value) throws KlonObject {
+    try {
+      KlonObject result = value.getClass()
+        .newInstance();
+      result.bind(value);
+      result.setData(value.getData());
+      result.setType(value.getType());
+      result.setActivator(value.getActivator());
+      result.setFormatter(value.getFormatter());
+      result.setDuplicator(value.getDuplicator());
+      return result;
+    } catch (Exception e) {
+      throw ((KlonException) value.getSlot("Exception")).newException(
+        e.getClass()
+          .getSimpleName(), e.getMessage(), null);
+    }
+  }
+
+  public static String format(KlonObject object) {
+    return object.getType() + "_0x" + Integer.toHexString(object.hashCode());
   }
 
   @SuppressWarnings("unused")

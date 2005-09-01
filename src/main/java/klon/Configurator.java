@@ -116,5 +116,19 @@ public final class Configurator {
       }
     }
     target.setFormatter(formatter);
-  }
+
+    Method duplicator = null;
+    try {
+      duplicator = type.getDeclaredMethod("duplicate",
+        new Class[]{KlonObject.class});
+    } catch (NoSuchMethodException e) {
+      try {
+        duplicator = KlonObject.class.getDeclaredMethod("duplicate",
+          new Class[]{KlonObject.class});
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    }
+    target.setDuplicator(duplicator);
+}
 }

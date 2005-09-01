@@ -2,6 +2,7 @@
 
 	<property name="src" value="src/main/java" />
 	<property name="classes" value="target/classes" />
+	<property name="resource" value="src/main/resource" />
 	<property name="grammar" value="src/main/grammatica" />
 	<property name="grammar.classes" value="target/grammar-classes" />
 	<property name="test" value="src/main/test" />
@@ -66,7 +67,7 @@
 		<fail message="Audit failed." if="audit.failed" />
 	</target>
 
-	<target name="compile" depends="grammar.generate.grammatica">
+	<target name="compile" depends="grammar.generate.grammatica,checkstyle.report,version.get">
 		<mkdir dir="${grammar.classes}" />
 		<javac fork="true" destdir="${grammar.classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
 			<classpath refid="classpath" />
@@ -77,11 +78,9 @@
 			<classpath refid="classpath" />
 			<src path="${src}" />
 		</javac>
-		<!--		
-				<copy todir="${classes}">
-					<fileset dir="${resource}" includes="**/*.*" />
-				</copy>
-		-->
+		<copy todir="${classes}">
+			<fileset dir="${resource}" includes="**/*.*" />
+		</copy>
 	</target>
 
 	<target name="junit.compile" depends="compile">
@@ -163,13 +162,50 @@
 
 	<target name="emma" depends="emma.compile, junit, emma.report" />
 
+	<mkdir dir="${resource}/${ant.project.name}" />
+
+	<available property="version.exists" file="${resource}/${ant.project.name}/version.properties" />
+
+	<target name="version.create" unless="${version.exists}">
+		<propertyfile file="${resource}/${ant.project.name}/version.properties">
+			<entry key="version" default="0.0" />
+			<entry key="build" default="0" />
+		</propertyfile>
+	</target>
+
+	<target name="version.update">
+		<propertyfile file="${resource}/${ant.project.name}/version.properties">
+			<entry key="version" default="0.0" />
+			<entry key="build" default="0" type="int" operation="+" />
+		</propertyfile>
+<!--		
+		<echo file="commit.txt">update to build.</echo>
+		<cvs output="result.txt">
+			<commandline>
+				<argument value="commit" />
+				<argument value="-m" />
+				<argument value="commit.txt" />
+				<argument value="${resource}/${ant.project.name}/version.properties" />
+			</commandline>
+		</cvs>
+		<delete failonerror="false" file="commit.txt" />
+		<loadfile property="result" srcFile="result.txt" />
+		<echo>${result}</echo>
+		<delete failonerror="false" file="result.txt" />
+-->		
+	</target>
+
+	<target name="version.get" depends="version.create">
+		<property file="${resource}/${ant.project.name}/version.properties" />
+	</target>
+
 	<target name="jar" depends="compile">
-		
+
 		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha1.jar" />
 		<move file="target/unjar/LICENSE.txt" toFile="target/unjar/grammatica-LICENSE.txt" />
 		<move file="target/unjar/README.txt" toFile="target/unjar/grammatica-README.txt" />
 		<copy file="LICENSE.txt" toFile="target/unjar/${ant.project.name}-LICENSE.txt" />
-		
+
 		<jar destfile="${ant.project.name}.jar">
 			<fileset dir="${classes}" />
 			<fileset dir="${grammar.classes}" />
@@ -183,5 +219,7 @@
 			</manifest>
 		</jar>
 	</target>
+	
+	<target name="build" depends="version.update, jar"/>
 
 </project>

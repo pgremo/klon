@@ -10,7 +10,7 @@ public final class KlonList {
 
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(new ArrayList<KlonObject>());
     Configurator.setActivator(result, KlonList.class);

@@ -7,7 +7,7 @@ public final class KlonLocals {
 
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonLocals.class);
     Configurator.setDuplicator(result, KlonLocals.class);

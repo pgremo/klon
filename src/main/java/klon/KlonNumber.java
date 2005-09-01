@@ -24,7 +24,7 @@ public final class KlonNumber {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(0D);
     Configurator.setActivator(result, KlonNumber.class);
@@ -266,7 +266,7 @@ public final class KlonNumber {
       evalAsNumber(context, message, 0)));
   }
 
-  @ExposedAs("&")
+  @ExposedAs({"&", "and"})
   public static KlonObject and(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
@@ -274,7 +274,7 @@ public final class KlonNumber {
         context, message, 0).intValue()));
   }
 
-  @ExposedAs("|")
+  @ExposedAs({"|", "or"})
   public static KlonObject or(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
@@ -282,7 +282,7 @@ public final class KlonNumber {
         context, message, 0).intValue()));
   }
 
-  @ExposedAs("^")
+  @ExposedAs({"^", "xor"})
   public static KlonObject xor(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,

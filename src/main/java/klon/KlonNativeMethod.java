@@ -19,7 +19,7 @@ public final class KlonNativeMethod {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonNativeMethod.class);
     Configurator.setDuplicator(result, KlonNativeMethod.class);

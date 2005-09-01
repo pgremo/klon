@@ -64,7 +64,7 @@ public final class KlonString {
     return newString(root, buffer.toString());
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData("");
     Configurator.setActivator(result, KlonString.class);

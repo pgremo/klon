@@ -40,7 +40,7 @@ public final class KlonBuffer {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(ByteBuffer.allocate(0));
     Configurator.setActivator(result, KlonBuffer.class);

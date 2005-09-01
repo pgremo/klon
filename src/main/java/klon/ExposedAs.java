@@ -7,6 +7,6 @@ import java.lang.annotation.Retention;
 @Retention(RUNTIME)
 public @interface ExposedAs {
 
-  String value();
+  String[] value();
 
 }

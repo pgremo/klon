@@ -22,7 +22,7 @@ public final class KlonException {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonException.class);
     Configurator.setDuplicator(result, KlonException.class);

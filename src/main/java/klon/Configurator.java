@@ -49,8 +49,9 @@ public final class Configurator {
         }
         validateParameters(root, current, identity);
         validateExceptions(root, current, identity);
-        target.setSlot(exposedAs.value(), KlonNativeMethod.newNativeMethod(
-          root, current));
+        for (String name : exposedAs.value()) {
+          target.setSlot(name, KlonNativeMethod.newNativeMethod(root, current));
+        }
       }
     }
   }
@@ -91,12 +92,16 @@ public final class Configurator {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         Object value = current.get(null);
+        KlonObject object = null;
         if (value instanceof Number) {
-          target.setSlot(exposedAs.value(), KlonNumber.newNumber(root,
-            ((Number) value).doubleValue()));
+          object = KlonNumber.newNumber(root, ((Number) value).doubleValue());
         } else if (value instanceof String) {
-          target.setSlot(exposedAs.value(), KlonString.newString(root,
-            (String) value));
+          object = KlonString.newString(root, (String) value);
+        }
+        if (value != null) {
+          for (String name : exposedAs.value()) {
+            target.setSlot(name, object);
+          }
         }
       }
     }

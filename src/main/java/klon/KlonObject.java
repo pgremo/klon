@@ -236,7 +236,7 @@ public class KlonObject extends Exception {
     return result.toString();
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonObject.class);
     Configurator.setDuplicator(result, KlonObject.class);

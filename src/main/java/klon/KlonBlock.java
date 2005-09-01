@@ -15,7 +15,7 @@ public final class KlonBlock {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonBlock.class);
     Configurator.setDuplicator(result, KlonBlock.class);

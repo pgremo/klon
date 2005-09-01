@@ -7,7 +7,7 @@ public final class KlonNil {
 
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonNil.class);
     Configurator.setDuplicator(result, KlonNil.class);

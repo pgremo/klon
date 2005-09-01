@@ -15,7 +15,7 @@ public final class KlonNoOp {
     return result;
   }
 
-  public static KlonObject protoType() {
+  public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonNoOp.class);
     Configurator.setDuplicator(result, KlonNoOp.class);

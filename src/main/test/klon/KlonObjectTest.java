@@ -9,7 +9,7 @@ public class KlonObjectTest extends TestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    object = KlonRoot.protoType(new String[0]);
+    object = KlonRoot.prototype(new String[0]);
   }
 
   public void testSlotOperations() throws Exception {

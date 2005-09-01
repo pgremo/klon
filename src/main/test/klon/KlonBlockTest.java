@@ -10,7 +10,7 @@ public class KlonBlockTest extends TestCase {
   protected void setUp() throws Exception {
     super.setUp();
     object = new KlonRoot(new String[0]);
-    object.configure(object);
+    object.configure(object, KlonRoot.class);
   }
 
   public void testCreate() throws Exception {

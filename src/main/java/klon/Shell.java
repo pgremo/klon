@@ -85,7 +85,7 @@ public class Shell {
 
   public static void main(String[] args) throws Exception {
     KlonObject root = new KlonRoot(args);
-    root.configure(root);
+    root.configure(root, KlonRoot.class);
     MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
     System.setOut(newOut);
     new Shell(root, new InputStreamReader(System.in), newOut).process();

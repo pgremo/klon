@@ -10,12 +10,9 @@ public class KlonStringTest extends TestCase {
   protected void setUp() throws Exception {
     super.setUp();
     object = new KlonRoot(new String[0]);
-    object.configure(object);
+    object.configure(object, KlonRoot.class);
   }
 
-  /*
-   * Test method for 'klon.KlonString.add(KlonObject, Message)'
-   */
   public void testAdd() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("\"Hello\" + \" \" + \"World\"");
@@ -25,9 +22,6 @@ public class KlonStringTest extends TestCase {
     assertEquals("\"Hello World\"", value.toString());
   }
 
-  /*
-   * Test method for 'klon.KlonNumber.isEqual(KlonObject, Message)'
-   */
   public void testIsEqual() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("\"Hello\" == \"World\"");

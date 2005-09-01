@@ -3,7 +3,11 @@ package klon;
 import java.util.Random;
 
 @Prototype(name = "Random", parent = "Object")
-public class KlonRandom {
+public final class KlonRandom {
+
+  private KlonRandom() {
+
+  }
 
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();

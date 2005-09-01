@@ -5,7 +5,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Prototype(name = "NativeMethod", parent = "Object")
-public class KlonNativeMethod {
+public final class KlonNativeMethod {
+
+  private KlonNativeMethod() {
+
+  }
 
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {

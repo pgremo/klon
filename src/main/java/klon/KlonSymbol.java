@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "Symbol", parent = "Object")
-public class KlonSymbol {
+public final class KlonSymbol {
+
+  private KlonSymbol() {
+
+  }
 
   public static KlonObject newSymbol(KlonObject root, String value)
       throws KlonObject {

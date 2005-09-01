@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Prototype(name = "List", parent = "Object")
-public class KlonList {
+public final class KlonList {
+
+  private KlonList() {
+
+  }
 
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();

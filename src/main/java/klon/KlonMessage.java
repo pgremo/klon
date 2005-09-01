@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "Message", parent = "Object")
-public class KlonMessage {
+public final class KlonMessage {
+
+  private KlonMessage() {
+
+  }
 
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();

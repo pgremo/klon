@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class KlonRoot {
+public final class KlonRoot {
+
+  private KlonRoot() {
+
+  }
 
   public static KlonObject protoType(String[] args) throws KlonObject {
 

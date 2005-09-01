@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "Block", parent = "Object")
-public class KlonBlock {
+public final class KlonBlock {
+
+  private KlonBlock() {
+
+  }
 
   public static KlonObject newBlock(KlonObject root, Block value)
       throws KlonObject {

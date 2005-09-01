@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "NoOp")
-public class KlonNoOp {
+public final class KlonNoOp {
+
+  private KlonNoOp() {
+
+  }
 
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {

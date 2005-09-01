@@ -7,7 +7,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 @Prototype(name = "Buffer", parent = "Object")
-public class KlonBuffer {
+public final class KlonBuffer {
+
+  private KlonBuffer() {
+
+  }
 
   public static KlonObject newBuffer(KlonObject root, File file)
       throws KlonObject {

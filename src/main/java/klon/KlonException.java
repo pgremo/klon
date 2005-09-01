@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "Exception", parent = "Object")
-public class KlonException {
+public final class KlonException {
+
+  private KlonException() {
+
+  }
 
   public static KlonObject newException(KlonObject root, String name,
       String description, Message message) throws KlonObject {

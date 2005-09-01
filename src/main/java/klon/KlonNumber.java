@@ -3,13 +3,17 @@ package klon;
 import java.text.NumberFormat;
 
 @Prototype(name = "Number", parent = "Object")
-public class KlonNumber {
+public final class KlonNumber {
 
   private static NumberFormat format = NumberFormat.getInstance();
   static {
     format.setGroupingUsed(false);
     format.setMinimumFractionDigits(0);
     format.setMaximumFractionDigits(Integer.MAX_VALUE);
+  }
+
+  private KlonNumber() {
+
   }
 
   public static KlonObject newNumber(KlonObject root, Double value)
@@ -290,7 +294,7 @@ public class KlonNumber {
   public static KlonObject compliment(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
-      (double) (~(((Double) receiver.getData()).intValue())));
+      (double) ~((Double) receiver.getData()).intValue());
   }
 
   @ExposedAs("<<")
@@ -313,7 +317,7 @@ public class KlonNumber {
   public static KlonObject integer(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
-      (Math.floor((Double) receiver.getData())));
+      Math.floor((Double) receiver.getData()));
   }
 
   @ExposedAs("asCharacter")

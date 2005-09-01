@@ -11,10 +11,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 @Prototype(name = "String", parent = "Object")
-public class KlonString {
+public final class KlonString {
 
   private static Charset charset = Charset.forName("ISO-8859-15");
   private static CharsetDecoder decoder = charset.newDecoder();
+
+  private KlonString() {
+
+  }
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {

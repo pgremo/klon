@@ -1,7 +1,11 @@
 package klon;
 
 @Prototype(name = "Set", parent = "Object")
-public class KlonSet {
+public final class KlonSet {
+
+  private KlonSet() {
+
+  }
 
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();

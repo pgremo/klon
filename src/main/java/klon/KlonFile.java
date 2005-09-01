@@ -3,7 +3,11 @@ package klon;
 import java.io.File;
 
 @Prototype(name = "File", parent = "Object")
-public class KlonFile {
+public final class KlonFile {
+
+  private KlonFile() {
+
+  }
 
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();

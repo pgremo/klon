@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Prototype(name = "Object")
 public class KlonRoot {
 
   public static KlonObject protoType(String[] args) throws KlonObject {
@@ -28,7 +27,6 @@ public class KlonRoot {
     nativeMethod.configure(root, KlonNativeMethod.class);
     object.configure(root, KlonObject.class);
     exception.configure(root, KlonException.class);
-    Configurator.configure(root, root, KlonRoot.class);
 
     KlonObject nil = KlonNil.protoType();
     root.setSlot("Nil", nil);

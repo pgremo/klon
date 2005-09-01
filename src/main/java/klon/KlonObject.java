@@ -25,7 +25,7 @@ public class KlonObject extends Exception {
 
   public void configure(KlonObject root, Class<? extends Object> type)
       throws KlonObject {
-    Configurator.configure(root, this, type);
+    Configurator.setSlots(root, this, type);
   }
 
   public KlonObject duplicate() throws KlonObject {

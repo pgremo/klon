@@ -9,7 +9,7 @@ public final class Configurator {
 
   }
 
-  public static void configure(KlonObject root, KlonObject target,
+  public static void setSlots(KlonObject root, KlonObject target,
       Class<? extends Object> type) throws KlonObject {
 
     Prototype prototype = type.getAnnotation(Prototype.class);
@@ -17,11 +17,13 @@ public final class Configurator {
       throw KlonException.newException(root, "Invalid Argument", type
           + " has not Prototype annotation.", null);
     }
-    target.setSlot("type", KlonString.newString(root, prototype.name()));
+
     String parent = prototype.parent();
     if (!"".equals(parent)) {
       target.bind(root.getSlot(parent));
     }
+
+    target.setSlot("type", KlonString.newString(root, prototype.name()));
 
     for (Field current : type.getDeclaredFields()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);

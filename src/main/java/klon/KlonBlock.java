@@ -14,7 +14,11 @@ public class KlonBlock {
   }
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonBlock.class);
+    Configurator.setDuplicator(result, KlonBlock.class);
+    Configurator.setFormatter(result, KlonBlock.class);
+    return result;
   }
 
   public static KlonObject activate(KlonObject slot, KlonObject receiver,

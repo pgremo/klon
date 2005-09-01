@@ -6,7 +6,11 @@ public class KlonSet {
   private static final long serialVersionUID = 9142527726733948367L;
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonSet.class);
+    Configurator.setDuplicator(result, KlonSet.class);
+    Configurator.setFormatter(result, KlonSet.class);
+    return result;
   }
 
   @ExposedAs("asString")

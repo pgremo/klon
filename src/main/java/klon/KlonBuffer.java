@@ -41,6 +41,9 @@ public class KlonBuffer {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(ByteBuffer.allocate(0));
+    Configurator.setActivator(result, KlonBuffer.class);
+    Configurator.setDuplicator(result, KlonBuffer.class);
+    Configurator.setFormatter(result, KlonBuffer.class);
     return result;
   }
 

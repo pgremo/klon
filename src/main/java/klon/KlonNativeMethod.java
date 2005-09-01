@@ -18,7 +18,11 @@ public class KlonNativeMethod {
   }
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonNativeMethod.class);
+    Configurator.setDuplicator(result, KlonNativeMethod.class);
+    Configurator.setFormatter(result, KlonNativeMethod.class);
+    return result;
   }
 
   @SuppressWarnings("unchecked")

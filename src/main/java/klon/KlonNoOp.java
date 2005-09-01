@@ -14,7 +14,11 @@ public class KlonNoOp {
   }
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonNoOp.class);
+    Configurator.setDuplicator(result, KlonNoOp.class);
+    Configurator.setFormatter(result, KlonNoOp.class);
+    return result;
   }
 
   @ExposedAs("forward")

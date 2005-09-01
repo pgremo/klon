@@ -16,7 +16,6 @@ public class KlonObject extends Exception {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  private String type;
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Method activator;
@@ -68,14 +67,6 @@ public class KlonObject extends Exception {
 
   public Object getData() {
     return data;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getType() {
-    return type;
   }
 
   public void setDuplicator(Method duplicator) {
@@ -179,7 +170,7 @@ public class KlonObject extends Exception {
     String name = (String) message.getSelector()
       .getData();
     KlonObject slot = getSlot(name);
-    if (slot == null && "Locals".equals(context.getType())) {
+    if (slot == null && "Locals".equals(context.getSlot("type"))) {
       slot = context.getSlot(name);
     }
     if (slot == null) {
@@ -246,7 +237,11 @@ public class KlonObject extends Exception {
   }
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonObject.class);
+    Configurator.setDuplicator(result, KlonObject.class);
+    Configurator.setFormatter(result, KlonObject.class);
+    return result;
   }
 
   public static KlonObject duplicate(KlonObject value) throws KlonObject {
@@ -254,7 +249,6 @@ public class KlonObject extends Exception {
       KlonObject result = new KlonObject();
       result.bind(value);
       result.setData(value.getData());
-      result.setType(value.getType());
       result.setActivator(value.getActivator());
       result.setFormatter(value.getFormatter());
       result.setDuplicator(value.getDuplicator());
@@ -265,8 +259,9 @@ public class KlonObject extends Exception {
     }
   }
 
-  public static String format(KlonObject object) {
-    return object.getType() + "_0x" + Integer.toHexString(object.hashCode());
+  public static String format(KlonObject object) throws KlonObject {
+    return object.getSlot("type")
+      .getData() + "_0x" + Integer.toHexString(object.hashCode());
   }
 
   @SuppressWarnings("unused")
@@ -308,17 +303,11 @@ public class KlonObject extends Exception {
     return result;
   }
 
-  @ExposedAs("type")
-  public static KlonObject type(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
-    return KlonString.newString(receiver, receiver.getType());
-  }
-
   @ExposedAs("send")
   public static KlonObject send(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject subject = message.eval(context, 0);
-    if ("Message".equals(subject.getType())) {
+    if ("Message".equals(subject.getSlot("type"))) {
       return receiver.perform(context, (Message) subject.getData());
     }
     throw KlonException.newException(receiver, "Invalid Argument",

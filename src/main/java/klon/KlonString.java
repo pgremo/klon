@@ -65,6 +65,9 @@ public class KlonString {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData("");
+    Configurator.setActivator(result, KlonString.class);
+    Configurator.setDuplicator(result, KlonString.class);
+    Configurator.setFormatter(result, KlonString.class);
     return result;
   }
 
@@ -76,7 +79,8 @@ public class KlonString {
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getType())) {
+    if ("String".equals(result.getSlot("type")
+      .getData())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",

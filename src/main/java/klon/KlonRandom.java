@@ -10,6 +10,9 @@ public class KlonRandom {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new MersenneTwister());
+    Configurator.setActivator(result, KlonRandom.class);
+    Configurator.setDuplicator(result, KlonRandom.class);
+    Configurator.setFormatter(result, KlonRandom.class);
     return result;
   }
 

@@ -1,5 +1,6 @@
 package klon;
 
+
 @Prototype(name = "Exception", parent = "Object")
 public class KlonException {
 
@@ -21,7 +22,11 @@ public class KlonException {
   }
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonException.class);
+    Configurator.setDuplicator(result, KlonException.class);
+    Configurator.setFormatter(result, KlonException.class);
+    return result;
   }
 
   @ExposedAs("raise")
@@ -63,7 +68,7 @@ public class KlonException {
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
-      buffer.append(receiver.getType())
+      buffer.append(receiver.getSlot("type"))
         .append(" ")
         .append(name.getData()
           .toString())

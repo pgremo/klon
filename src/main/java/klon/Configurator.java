@@ -11,16 +11,18 @@ public final class Configurator {
 
   public static void configure(KlonObject root, KlonObject target,
       Class<? extends Object> type) throws KlonObject {
+
     Prototype prototype = type.getAnnotation(Prototype.class);
     if (prototype == null) {
       throw KlonException.newException(root, "Invalid Argument", type
           + " has not Prototype annotation.", null);
     }
-    target.setType(prototype.name());
+    target.setSlot("type", KlonString.newString(root, prototype.name()));
     String parent = prototype.parent();
     if (!"".equals(parent)) {
       target.bind(root.getSlot(parent));
     }
+
     for (Field current : type.getDeclaredFields()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
@@ -79,7 +81,44 @@ public final class Configurator {
           root, current));
       }
     }
+  }
 
+  public static void setDuplicator(KlonObject target,
+      Class<? extends Object> type) {
+    Method duplicator = null;
+    try {
+      duplicator = type.getDeclaredMethod("duplicate",
+        new Class[]{KlonObject.class});
+    } catch (NoSuchMethodException e) {
+      try {
+        duplicator = KlonObject.class.getDeclaredMethod("duplicate",
+          new Class[]{KlonObject.class});
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    }
+    target.setDuplicator(duplicator);
+  }
+
+  public static void setFormatter(KlonObject target,
+      Class<? extends Object> type) {
+    Method formatter = null;
+    try {
+      formatter = type.getDeclaredMethod("format",
+        new Class[]{KlonObject.class});
+    } catch (NoSuchMethodException e) {
+      try {
+        formatter = KlonObject.class.getDeclaredMethod("format",
+          new Class[]{KlonObject.class});
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    }
+    target.setFormatter(formatter);
+  }
+
+  public static void setActivator(KlonObject target,
+      Class<? extends Object> type) {
     Method activator = null;
     try {
       activator = type.getDeclaredMethod("activate", new Class[]{
@@ -99,33 +138,5 @@ public final class Configurator {
       }
     }
     target.setActivator(activator);
-
-    Method formatter = null;
-    try {
-      formatter = type.getDeclaredMethod("format",
-        new Class[]{KlonObject.class});
-    } catch (NoSuchMethodException e) {
-      try {
-        formatter = KlonObject.class.getDeclaredMethod("format",
-          new Class[]{KlonObject.class});
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-    }
-    target.setFormatter(formatter);
-
-    Method duplicator = null;
-    try {
-      duplicator = type.getDeclaredMethod("duplicate",
-        new Class[]{KlonObject.class});
-    } catch (NoSuchMethodException e) {
-      try {
-        duplicator = KlonObject.class.getDeclaredMethod("duplicate",
-          new Class[]{KlonObject.class});
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-    }
-    target.setDuplicator(duplicator);
   }
 }

@@ -6,7 +6,11 @@ public class KlonNil {
   private static final long serialVersionUID = 5760629549494821771L;
 
   public static KlonObject protoType() {
-    return new KlonObject();
+    KlonObject result = new KlonObject();
+    Configurator.setActivator(result, KlonNil.class);
+    Configurator.setDuplicator(result, KlonNil.class);
+    Configurator.setFormatter(result, KlonNil.class);
+    return result;
   }
 
   public static KlonObject duplicate(KlonObject value) {

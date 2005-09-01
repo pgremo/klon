@@ -8,10 +8,10 @@ import java.util.Map;
 public class KlonRoot {
 
   public static KlonObject protoType(String[] args) throws KlonObject {
-    KlonObject root = new KlonObject();
-    root.setSlot("Klon", root);
 
     KlonObject object = KlonObject.protoType();
+    KlonObject root = object.duplicate();
+    root.setSlot("Klon", root);
     root.setSlot("Object", object);
     root.bind(object);
 
@@ -24,63 +24,63 @@ public class KlonRoot {
     KlonObject exception = KlonException.protoType();
     root.setSlot("Exception", exception);
 
+    string.configure(root, KlonString.class);
     nativeMethod.configure(root, KlonNativeMethod.class);
     object.configure(root, KlonObject.class);
     exception.configure(root, KlonException.class);
-    string.configure(root, KlonString.class);
     Configurator.configure(root, root, KlonRoot.class);
 
     KlonObject nil = KlonNil.protoType();
-    nil.configure(root, KlonNil.class);
     root.setSlot("Nil", nil);
+    nil.configure(root, KlonNil.class);
 
     KlonObject number = KlonNumber.protoType();
-    number.configure(root, KlonNumber.class);
     root.setSlot("Number", number);
+    number.configure(root, KlonNumber.class);
 
     KlonObject block = KlonBlock.protoType();
-    block.configure(root, KlonBlock.class);
     root.setSlot("Block", block);
+    block.configure(root, KlonBlock.class);
 
     KlonObject set = KlonSet.protoType();
-    set.configure(root, KlonSet.class);
     root.setSlot("Set", set);
+    set.configure(root, KlonSet.class);
 
     KlonObject list = KlonList.protoType();
-    list.configure(root, KlonList.class);
     root.setSlot("List", list);
+    list.configure(root, KlonList.class);
 
     KlonObject message = KlonMessage.protoType();
-    message.configure(root, KlonMessage.class);
     root.setSlot("Message", message);
+    message.configure(root, KlonMessage.class);
 
     KlonObject random = KlonRandom.protoType();
-    random.configure(root, KlonRandom.class);
     root.setSlot("Random", random);
+    random.configure(root, KlonRandom.class);
 
     KlonObject file = KlonFile.protoType();
-    file.configure(root, KlonFile.class);
     root.setSlot("File", file);
+    file.configure(root, KlonFile.class);
 
     KlonObject buffer = KlonBuffer.protoType();
-    buffer.configure(root, KlonBuffer.class);
     root.setSlot("Buffer", buffer);
+    buffer.configure(root, KlonBuffer.class);
 
     KlonObject system = object.duplicate();
-    system.bind(object);
     root.bind(system);
+    system.bind(object);
 
     KlonObject symbol = KlonSymbol.protoType();
-    symbol.configure(root, KlonSymbol.class);
     system.setSlot("Symbol", symbol);
+    symbol.configure(root, KlonSymbol.class);
 
     KlonObject noop = KlonNoOp.protoType();
-    noop.configure(root, KlonNoOp.class);
     system.setSlot("NoOp", noop);
+    noop.configure(root, KlonNoOp.class);
 
     KlonObject locals = KlonLocals.protoType();
-    locals.configure(root, KlonLocals.class);
     system.setSlot("Locals", locals);
+    locals.configure(root, KlonLocals.class);
 
     KlonObject properties = object.duplicate();
     for (Map.Entry<Object, Object> current : System.getProperties()

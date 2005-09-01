@@ -56,17 +56,24 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void childStandardMessage(Production node, Node child) {
+  protected void childStandardMessage(Production node, Node child)
+      throws ParseException {
     Message message = (Message) node.getValue(0);
     if (message == null) {
       message = new Message();
       node.addValue(message);
       node.addValue(child.getValue(1));
       KlonObject subject = (KlonObject) child.getValue(0);
-      if ("Symbol".equals(subject.getType())) {
-        message.setSelector(subject);
-      } else {
-        message.setLiteral(subject);
+      try {
+        if ("Symbol".equals(subject.getSlot("type")
+          .getData())) {
+          message.setSelector(subject);
+        } else {
+          message.setLiteral(subject);
+        }
+      } catch (KlonObject e) {
+        throw new ParseException(child.getId(), e.getMessage(),
+          child.getStartLine(), child.getStartColumn());
       }
     }
 

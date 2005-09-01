@@ -24,6 +24,9 @@ public class KlonNumber {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(0D);
+    Configurator.setActivator(result, KlonNumber.class);
+    Configurator.setDuplicator(result, KlonNumber.class);
+    Configurator.setFormatter(result, KlonNumber.class);
     return result;
   }
 
@@ -34,12 +37,16 @@ public class KlonNumber {
   public static Double evalAsNumber(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Number".equals(result.getType())) {
+    if ("Number".equals(result.getSlot("type")
+      .getData())) {
       return (Double) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
       "argument must evaluate to a number", message);
   }
+
+  @ExposedAs("PI")
+  public static final Double PI = Math.PI;
 
   @ExposedAs("+")
   public static KlonObject add(KlonObject receiver, KlonObject context,
@@ -87,7 +94,8 @@ public class KlonNumber {
   public static KlonObject lessThan(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getType())) {
+    if ("Number".equals(argument.getSlot("type")
+      .getData())) {
       Double o1 = (Double) receiver.getData();
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) < 0 ? argument : receiver.getSlot("Nil");
@@ -100,7 +108,8 @@ public class KlonNumber {
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getType())) {
+    if ("Number".equals(argument.getSlot("type")
+      .getData())) {
       Double o1 = (Double) receiver.getData();
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) > 0 ? argument : receiver.getSlot("Nil");
@@ -113,7 +122,8 @@ public class KlonNumber {
   public static KlonObject lessThanEquals(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getType())) {
+    if ("Number".equals(argument.getSlot("type")
+      .getData())) {
       Double o1 = (Double) receiver.getData();
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) <= 0 ? argument : receiver.getSlot("Nil");
@@ -126,7 +136,8 @@ public class KlonNumber {
   public static KlonObject greaterThanEquals(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getType())) {
+    if ("Number".equals(argument.getSlot("type")
+      .getData())) {
       Double o1 = (Double) receiver.getData();
       Double o2 = (Double) argument.getData();
       return o1.compareTo(o2) >= 0 ? argument : receiver.getSlot("Nil");

@@ -11,6 +11,9 @@ public class KlonList {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new ArrayList<KlonObject>());
+    Configurator.setActivator(result, KlonList.class);
+    Configurator.setDuplicator(result, KlonList.class);
+    Configurator.setFormatter(result, KlonList.class);
     return result;
   }
 

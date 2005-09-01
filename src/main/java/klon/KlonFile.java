@@ -10,6 +10,9 @@ public class KlonFile {
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new File("/"));
+    Configurator.setActivator(result, KlonFile.class);
+    Configurator.setDuplicator(result, KlonFile.class);
+    Configurator.setFormatter(result, KlonFile.class);
     return result;
   }
 

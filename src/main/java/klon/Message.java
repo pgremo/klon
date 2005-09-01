@@ -113,6 +113,19 @@ public class Message {
     if (literal != null) {
       result.append(literal);
     }
+    argumentsToString(result);
+    if (attached != null) {
+      result.append(" ")
+        .append(attached);
+    }
+    if (next != null) {
+      result.append(";\n")
+        .append(next);
+    }
+    return result.toString();
+  }
+
+  private void argumentsToString(StringBuilder result) {
     if (arguments.size() > 0) {
       result.append("(");
       Iterator<Message> iterator = arguments.iterator();
@@ -124,15 +137,6 @@ public class Message {
       }
       result.append(")");
     }
-    if (attached != null) {
-      result.append(" ")
-        .append(attached);
-    }
-    if (next != null) {
-      result.append(";\n")
-        .append(next);
-    }
-    return result.toString();
   }
 
 }

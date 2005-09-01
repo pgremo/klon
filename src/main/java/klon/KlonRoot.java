@@ -10,7 +10,7 @@ public final class KlonRoot {
 
   }
 
-  public static KlonObject protoType(String[] args) throws KlonObject {
+  public static KlonObject protoType(String[] args) throws Exception {
 
     KlonObject object = KlonObject.protoType();
     KlonObject root = object.duplicate();

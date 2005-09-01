@@ -24,7 +24,7 @@ public class KlonObject extends Exception {
   private Object data;
 
   public void configure(KlonObject root, Class<? extends Object> type)
-      throws KlonObject {
+      throws Exception {
     Configurator.setSlots(root, this, type);
   }
 

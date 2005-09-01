@@ -3,12 +3,17 @@ package klon;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 
 public class Shell {
 
   private static final String PROMPT = "\nklon> ";
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
+  private static final String[] PRINTABLES = new String[]{
+      "Exception",
+      "Number",
+      "String"};
   private Compiler compiler;
   private KlonObject root;
   private Reader in;
@@ -45,8 +50,7 @@ public class Shell {
     if (!out.hasOutput()) {
       Object type = value.getSlot("type")
         .getData();
-      if ("String".equals(type) || "Number".equals(type)
-          || "Exception".equals(type)) {
+      if (Arrays.binarySearch(PRINTABLES, type) > -1) {
         Message reportMessage = compiler.fromString("writeLine");
         reportMessage.addArgument(value);
         reportMessage.eval(value, value);
@@ -58,11 +62,11 @@ public class Shell {
   }
 
   private String readMessage(Reader in) throws IOException {
-    int depth = 0;
-    char current = (char) 0;
     StringBuilder buffer = new StringBuilder();
+    int depth = 0;
     boolean quotting = false;
-    int previous = -1;
+    char previous = 0;
+    char current = 0;
     while ("\n".indexOf(current) == -1 || depth > 0) {
       current = (char) in.read();
       buffer.append(current);

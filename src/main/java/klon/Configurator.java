@@ -130,5 +130,5 @@ public final class Configurator {
       }
     }
     target.setDuplicator(duplicator);
-}
+  }
 }

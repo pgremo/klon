@@ -29,9 +29,8 @@ public class KlonBlock {
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver,
-      ((Block) receiver.getData()).getCode()
-        .toString());
+    return KlonMessage.newMessage(receiver,
+      ((Block) receiver.getData()).getCode());
   }
 
   @ExposedAs("ifTrue")

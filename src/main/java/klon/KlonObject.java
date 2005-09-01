@@ -307,8 +307,9 @@ public class KlonObject extends Exception {
   public static KlonObject send(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject subject = message.eval(context, 0);
-    if ("Message".equals(subject.getSlot("type"))) {
-      return receiver.perform(context, (Message) subject.getData());
+    if ("Message".equals(subject.getSlot("type")
+      .getData())) {
+      return ((Message) subject.getData()).eval(receiver, context);
     }
     throw KlonException.newException(receiver, "Invalid Argument",
       "argument must evaluate to a Message", message);

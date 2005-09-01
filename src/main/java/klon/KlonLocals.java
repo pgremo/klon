@@ -16,6 +16,7 @@ public class KlonLocals {
     KlonObject result = root.getSlot("Locals")
       .duplicate();
     result.setSlot("self", self);
+    result.setData(self.getData());
     return result;
   }
 

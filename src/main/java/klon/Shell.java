@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.Properties;
 
 public class Shell {
 
@@ -28,15 +27,17 @@ public class Shell {
   }
 
   public void process() throws KlonObject, IOException {
-    Properties version = new Properties();
-    version.load(getClass().getResourceAsStream("/klon/version.properties"));
-    out.println("klon version:" + version.getProperty("version") + ", build:"
-        + version.getProperty("build"));
+    KlonObject version = root.getSlot("Properties")
+      .getSlot("klon.version");
+    KlonObject build = root.getSlot("Properties")
+      .getSlot("klon.build");
+    out.println("klon version:" + version.getData() + ", build:"
+        + build.getData());
     out.flush();
     while (true) {
       String prompt = PROMPT;
       KlonObject promptSlot = root.getSlot("Properties")
-        .getSlot("shell.prompt");
+        .getSlot("klon.shell.prompt");
       if (promptSlot != null) {
         prompt = promptSlot.getData()
           .toString();

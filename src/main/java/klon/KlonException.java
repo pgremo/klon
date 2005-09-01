@@ -69,7 +69,8 @@ public final class KlonException {
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
-      buffer.append(receiver.getSlot("type"))
+      buffer.append(receiver.getSlot("type")
+        .getData())
         .append(" ")
         .append(name.getData()
           .toString())

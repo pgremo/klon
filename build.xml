@@ -213,9 +213,9 @@
 			<manifest>
 				<attribute name="Main-Class" value="klon.Shell" />
 				<attribute name="Specification-Title" value="${ant.project.name}" />
-				<attribute name="Specification-Version" value="1.0" />
+				<attribute name="Specification-Version" value="${version}" />
 				<attribute name="Implementation-Title" value="${ant.project.name}" />
-				<attribute name="Implementation-Version" value="1.0.0" />
+				<attribute name="Implementation-Version" value="${version}.${build}" />
 			</manifest>
 		</jar>
 	</target>

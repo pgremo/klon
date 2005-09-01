@@ -327,6 +327,13 @@ public class KlonObject extends Exception {
     return result;
   }
 
+  @ExposedAs("hasSlot")
+  public static KlonObject hasSlot(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    String name = KlonString.evalAsString(context, message, 0);
+    return receiver.getSlot(name) == null ? receiver.getSlot("Nil") : receiver;
+  }
+
   @ExposedAs("setSlot")
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

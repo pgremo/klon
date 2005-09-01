@@ -3,6 +3,7 @@ package klon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public final class KlonRoot {
 
@@ -88,6 +89,15 @@ public final class KlonRoot {
     for (Map.Entry<Object, Object> current : System.getProperties()
       .entrySet()) {
       properties.setSlot(current.getKey()
+        .toString(), KlonString.newString(root, current.getValue()
+        .toString()));
+    }
+    Properties version = new Properties();
+    version.load(KlonRoot.class.getResourceAsStream("/klon/version.properties"));
+    System.getProperties()
+      .putAll(version);
+    for (Map.Entry<Object, Object> current : version.entrySet()) {
+      properties.setSlot("klon." + current.getKey()
         .toString(), KlonString.newString(root, current.getValue()
         .toString()));
     }

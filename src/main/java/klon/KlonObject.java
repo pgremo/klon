@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Prototype(name = "Object", parent = "Klon")
 public class KlonObject extends Exception {
@@ -677,7 +678,9 @@ public class KlonObject extends Exception {
       System.out.print(")");
     }
     System.out.println();
-    for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
+    TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
+      receiver.slots);
+    for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
       System.out.println(current.getKey() + " := " + current.getValue()
         .toString());
     }

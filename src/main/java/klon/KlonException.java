@@ -5,9 +5,9 @@ public class KlonException extends KlonObject {
 
   private static final long serialVersionUID = 8553657071125334749L;
 
-  public KlonException newException(String name, String description,
+  public KlonObject newException(String name, String description,
       Message message) throws KlonObject {
-    KlonException result = (KlonException) duplicate();
+    KlonObject result = duplicate();
     KlonString stringProto = (KlonString) getSlot("String");
     if (name != null) {
       result.setSlot("name", stringProto.newString(name));

@@ -10,8 +10,8 @@ public class KlonSymbol extends KlonObject {
     setData("");
   }
 
-  public KlonSymbol newSymbol(String value) throws KlonObject {
-    KlonSymbol result = (KlonSymbol) duplicate();
+  public KlonObject newSymbol(String value) throws KlonObject {
+    KlonObject result = duplicate();
     result.setData(value);
     return result;
   }

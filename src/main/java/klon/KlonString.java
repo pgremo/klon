@@ -23,13 +23,13 @@ public class KlonString extends KlonObject {
     setData("");
   }
 
-  public KlonString newString(String value) throws KlonObject {
-    KlonString result = (KlonString) duplicate();
+  public KlonObject newString(String value) throws KlonObject {
+    KlonObject result = duplicate();
     result.setData(value);
     return result;
   }
 
-  public KlonString newString(File file) throws KlonObject {
+  public KlonObject newString(File file) throws KlonObject {
     ByteBuffer byteBuffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -52,7 +52,7 @@ public class KlonString extends KlonObject {
     return newString(byteBuffer);
   }
 
-  public KlonString newString(ByteBuffer byteBuffer) throws KlonObject {
+  public KlonObject newString(ByteBuffer byteBuffer) throws KlonObject {
     CharBuffer buffer;
     try {
       buffer = decoder.decode(byteBuffer);

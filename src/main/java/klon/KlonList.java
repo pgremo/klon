@@ -15,9 +15,9 @@ public class KlonList extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject duplicate() throws KlonObject {
-    KlonObject result = super.duplicate();
-    result.setData(new ArrayList<KlonObject>((List<KlonObject>) getData()));
+  public static KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = KlonObject.duplicate(value);
+    result.setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;
   }
 

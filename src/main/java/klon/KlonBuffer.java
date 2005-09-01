@@ -16,7 +16,7 @@ public class KlonBuffer extends KlonObject {
     setData(ByteBuffer.allocate(0));
   }
 
-  public KlonBuffer newBuffer(File file) throws KlonObject {
+  public KlonObject newBuffer(File file) throws KlonObject {
     ByteBuffer buffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -36,7 +36,7 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    KlonBuffer result = (KlonBuffer) duplicate();
+    KlonObject result = duplicate();
     result.setData(buffer);
     return result;
   }

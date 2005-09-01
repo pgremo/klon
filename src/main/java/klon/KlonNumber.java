@@ -18,8 +18,8 @@ public class KlonNumber extends KlonObject {
     setData(0D);
   }
 
-  public KlonNumber newNumber(Double value) throws KlonObject {
-    KlonNumber result = (KlonNumber) duplicate();
+  public KlonObject newNumber(Double value) throws KlonObject {
+    KlonObject result = duplicate();
     result.setData(value);
     return result;
   }

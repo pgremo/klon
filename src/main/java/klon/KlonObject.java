@@ -627,7 +627,7 @@ public class KlonObject extends Exception {
       Message message) throws KlonObject {
     String name = KlonString.evalAsString(context, message, 0);
     File file = new File(name);
-    KlonString string = ((KlonString) receiver.getSlot("String")).newString(file);
+    KlonObject string = ((KlonString) receiver.getSlot("String")).newString(file);
     Message target = new Compiler(receiver).fromString((String) string.getData());
     target.eval(receiver, context);
     return receiver;

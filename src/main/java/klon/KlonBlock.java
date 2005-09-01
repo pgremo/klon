@@ -5,8 +5,8 @@ public class KlonBlock extends KlonObject {
 
   private static final long serialVersionUID = 8013887125117513346L;
 
-  public KlonBlock newBlock(Block value) throws KlonObject {
-    KlonBlock result = (KlonBlock) duplicate();
+  public KlonObject newBlock(Block value) throws KlonObject {
+    KlonObject result = duplicate();
     result.setData(value);
     return result;
   }

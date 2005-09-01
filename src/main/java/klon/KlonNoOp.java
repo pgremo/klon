@@ -5,8 +5,8 @@ public class KlonNoOp extends KlonObject {
 
   private static final long serialVersionUID = -3849427822460733188L;
 
-  public KlonNoOp newNoOp(Object value) throws KlonObject {
-    KlonNoOp result = (KlonNoOp) duplicate();
+  public KlonObject newNoOp(Object value) throws KlonObject {
+    KlonObject result = duplicate();
     result.setData(value);
     return result;
   }

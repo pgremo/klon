@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Shell {
 
-  private static final String PROMPT = "\nklon> ";
+  private static final String PROMPT = "klon> ";
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
   private static final String[] PRINTABLES = new String[]{
@@ -28,7 +28,15 @@ public class Shell {
 
   public void process() throws KlonObject, IOException {
     while (true) {
-      out.print(PROMPT);
+      String prompt = PROMPT;
+      KlonObject promptSlot = root.getSlot("Properties")
+        .getSlot("shell.prompt");
+      if (promptSlot != null) {
+        prompt = promptSlot.getData()
+          .toString();
+      }
+      out.print('\n');
+      out.print(prompt);
       out.flush();
       String buffer = readMessage(in);
       Message message = compiler.fromString(buffer);

@@ -15,20 +15,20 @@ public class KlonRoot extends KlonObject {
 
   @Override
   public void configure(KlonObject root) throws KlonObject {
-    setSlot("Klon", root);
+    root.setSlot("Klon", root);
 
     KlonObject object = new KlonObject();
-    setSlot("Object", object);
-    bind(object);
+    root.setSlot("Object", object);
+    root.bind(object);
 
     KlonString string = new KlonString();
-    setSlot("String", string);
+    root.setSlot("String", string);
 
     KlonObject nativeMethod = new KlonNativeMethod();
-    setSlot("NativeMethod", nativeMethod);
+    root.setSlot("NativeMethod", nativeMethod);
 
     KlonObject exception = new KlonException();
-    setSlot("Exception", exception);
+    root.setSlot("Exception", exception);
 
     nativeMethod.configure(root);
     object.configure(root);
@@ -38,43 +38,43 @@ public class KlonRoot extends KlonObject {
 
     KlonObject nil = new KlonNil();
     nil.configure(root);
-    setSlot("Nil", nil);
+    root.setSlot("Nil", nil);
 
     KlonObject number = new KlonNumber();
     number.configure(root);
-    setSlot("Number", number);
+    root.setSlot("Number", number);
 
     KlonObject block = new KlonBlock();
     block.configure(root);
-    setSlot("Block", block);
+    root.setSlot("Block", block);
 
     KlonObject set = new KlonSet();
     set.configure(root);
-    setSlot("Set", set);
+    root.setSlot("Set", set);
 
     KlonList list = new KlonList();
     list.configure(root);
-    setSlot("List", list);
+    root.setSlot("List", list);
 
     KlonObject message = new KlonMessage();
     message.configure(root);
-    setSlot("Message", message);
+    root.setSlot("Message", message);
 
     KlonObject random = new KlonRandom();
     random.configure(root);
-    setSlot("Random", random);
+    root.setSlot("Random", random);
 
     KlonObject file = new KlonFile();
     file.configure(root);
-    setSlot("File", file);
+    root.setSlot("File", file);
 
     KlonObject buffer = new KlonBuffer();
     buffer.configure(root);
-    setSlot("Buffer", buffer);
+    root.setSlot("Buffer", buffer);
 
     KlonObject system = object.duplicate();
     system.bind(object);
-    bind(system);
+    root.bind(system);
 
     KlonObject symbol = new KlonSymbol();
     symbol.configure(root);
@@ -95,14 +95,14 @@ public class KlonRoot extends KlonObject {
         .toString(), string.newString(current.getValue()
         .toString()));
     }
-    setSlot("Properties", properties);
+    root.setSlot("Properties", properties);
 
     String[] args = (String[]) getData();
     List<KlonObject> arguments = new ArrayList<KlonObject>(args.length);
     for (String current : args) {
       arguments.add(string.newString(current));
     }
-    setSlot("Arguments", list.newList(arguments));
+    root.setSlot("Arguments", list.newList(arguments));
 
   }
 

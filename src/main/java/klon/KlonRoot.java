@@ -7,11 +7,21 @@ import java.util.Properties;
 
 public final class KlonRoot {
 
+  private static KlonObject ROOT;
+
   private KlonRoot() {
 
   }
 
-  public static KlonObject prototype(String[] args) throws Exception {
+  public static KlonObject getROOT() {
+    return ROOT;
+  }
+
+  public static void setROOT(KlonObject root) {
+    ROOT = root;
+  }
+
+  public static void setup(String[] args) throws Exception {
 
     KlonObject object = KlonObject.prototype();
     KlonObject root = object.duplicate();
@@ -69,6 +79,10 @@ public final class KlonRoot {
     root.setSlot("Buffer", buffer);
     buffer.configure(root, KlonBuffer.class);
 
+    KlonObject store = KlonStore.prototype();
+    root.setSlot("Store", store);
+    store.configure(root, KlonStore.class);
+
     KlonObject system = object.duplicate();
     root.bind(system);
     system.bind(object);
@@ -109,7 +123,7 @@ public final class KlonRoot {
     }
     root.setSlot("Arguments", KlonList.newList(root, arguments));
 
-    return root;
+    ROOT = root;
 
   }
 

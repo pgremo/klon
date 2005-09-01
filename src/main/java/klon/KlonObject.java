@@ -1,6 +1,9 @@
 package klon;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -235,6 +238,81 @@ public class KlonObject extends Exception {
       e.printStackTrace();
     }
     return result.toString();
+  }
+
+  private void writeObject(ObjectOutputStream stream) throws IOException {
+    stream.writeObject(bindings);
+    stream.writeObject(slots);
+
+    stream.writeObject(activator.getDeclaringClass()
+      .getName());
+    stream.writeObject(activator.getName());
+    Class[] types = activator.getParameterTypes();
+    stream.writeInt(types.length);
+    for (Class type : types) {
+      stream.writeObject(type.getName());
+    }
+
+    stream.writeObject(duplicator.getDeclaringClass()
+      .getName());
+    stream.writeObject(duplicator.getName());
+    types = duplicator.getParameterTypes();
+    stream.writeInt(types.length);
+    for (Class type : types) {
+      stream.writeObject(type.getName());
+    }
+
+    stream.writeObject(formatter.getDeclaringClass()
+      .getName());
+    stream.writeObject(formatter.getName());
+    types = formatter.getParameterTypes();
+    stream.writeInt(types.length);
+    for (Class type : types) {
+      stream.writeObject(type.getName());
+    }
+
+    stream.writeObject(data);
+  }
+
+  @SuppressWarnings("unchecked")
+  private void readObject(ObjectInputStream stream) throws IOException {
+    try {
+      bindings = (List<KlonObject>) stream.readObject();
+      slots = (Map<String, KlonObject>) stream.readObject();
+
+      Class decl = Class.forName((String) stream.readObject());
+      String metName = (String) stream.readObject();
+      int ln = stream.readInt();
+      Class[] sig = new Class[ln];
+      for (int i = 0; i < ln; i++) {
+        sig[i] = Class.forName((String) stream.readObject());
+      }
+      activator = decl.getMethod(metName, sig);
+
+      decl = Class.forName((String) stream.readObject());
+      metName = (String) stream.readObject();
+      ln = stream.readInt();
+      sig = new Class[ln];
+      for (int i = 0; i < ln; i++) {
+        sig[i] = Class.forName((String) stream.readObject());
+      }
+      duplicator = decl.getMethod(metName, sig);
+
+      decl = Class.forName((String) stream.readObject());
+      metName = (String) stream.readObject();
+      ln = stream.readInt();
+      sig = new Class[ln];
+      for (int i = 0; i < ln; i++) {
+        sig[i] = Class.forName((String) stream.readObject());
+      }
+      formatter = decl.getMethod(metName, sig);
+
+      data = stream.readObject();
+    } catch (NoSuchMethodException error) {
+      java.lang.System.out.println("NATIVE SYSTEM ERROR IN READING METHOD(nosuchmethod:PrimMethAttribute)");
+    } catch (ClassNotFoundException error) {
+      java.lang.System.out.println("NATIVE SYSTEM ERROR IN READING METHOD(nosuchclass:PrimMethAttribute)");
+    }
   }
 
   public static KlonObject prototype() {

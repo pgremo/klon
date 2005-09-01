@@ -36,13 +36,13 @@ public final class KlonBuffer {
     buffer.position(0);
     KlonObject result = root.getSlot("Buffer")
       .duplicate();
-    result.setData(buffer);
+    result.setData(new Buffer(buffer));
     return result;
   }
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(ByteBuffer.allocate(0));
+    result.setData(new Buffer(ByteBuffer.allocate(0)));
     Configurator.setActivator(result, KlonBuffer.class);
     Configurator.setDuplicator(result, KlonBuffer.class);
     Configurator.setFormatter(result, KlonBuffer.class);
@@ -52,7 +52,8 @@ public final class KlonBuffer {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver, (ByteBuffer) receiver.getData());
+    return KlonString.newString(receiver,
+      ((Buffer) receiver.getData()).getBuffer());
   }
 
 }

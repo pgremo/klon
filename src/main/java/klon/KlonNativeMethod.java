@@ -15,7 +15,7 @@ public final class KlonNativeMethod {
       throws KlonObject {
     KlonObject result = root.getSlot("NativeMethod")
       .duplicate();
-    result.setData(subject);
+    result.setData(new NativeMethod(subject));
     return result;
   }
 
@@ -35,8 +35,7 @@ public final class KlonNativeMethod {
     if (value != null) {
       try {
         try {
-          result = (KlonObject) ((Method) value).invoke(null, receiver,
-            context, message);
+          result = ((NativeMethod) value).invoke(receiver, context, message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }

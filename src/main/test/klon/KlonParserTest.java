@@ -13,7 +13,8 @@ public class KlonParserTest extends TestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    object = KlonRoot.prototype(new String[0]);
+    KlonRoot.setup(new String[0]);
+    object = KlonRoot.getROOT();
   }
 
   public void testParseNumber() throws Exception {

@@ -14,19 +14,16 @@ public class Shell {
       "Exception",
       "Number",
       "String"};
-  private Compiler compiler;
-  private KlonObject root;
   private Reader in;
   private MonitoredPrintStream out;
 
-  public Shell(KlonObject root, Reader in, MonitoredPrintStream out) {
-    compiler = new Compiler(root);
-    this.root = root;
+  public Shell(Reader in, MonitoredPrintStream out) {
     this.in = in;
     this.out = out;
   }
 
   public void process() throws KlonObject, IOException {
+    KlonObject root = KlonRoot.getROOT();
     KlonObject version = root.getSlot("Properties")
       .getSlot("klon.version");
     KlonObject build = root.getSlot("Properties")
@@ -46,7 +43,7 @@ public class Shell {
       out.print(prompt);
       out.flush();
       String buffer = readMessage(in);
-      Message message = compiler.fromString(buffer);
+      Message message = new Compiler(KlonRoot.getROOT()).fromString(buffer);
       if (message != null) {
         evalMessage(message);
       }
@@ -57,6 +54,7 @@ public class Shell {
     out.setHasOutput(false);
     KlonObject value = null;
     try {
+      KlonObject root = KlonRoot.getROOT();
       value = message.eval(root, root);
     } catch (KlonObject e) {
       value = e;
@@ -66,11 +64,11 @@ public class Shell {
       Object type = value.getSlot("type")
         .getData();
       if (Arrays.binarySearch(PRINTABLES, type) > -1) {
-        Message reportMessage = compiler.fromString("writeLine");
+        Message reportMessage = new Compiler(KlonRoot.getROOT()).fromString("writeLine");
         reportMessage.addArgument(value);
         reportMessage.eval(value, value);
       } else {
-        Message reportMessage = compiler.fromString("inspect");
+        Message reportMessage = new Compiler(KlonRoot.getROOT()).fromString("inspect");
         reportMessage.eval(value, value);
       }
     }
@@ -105,9 +103,9 @@ public class Shell {
   }
 
   public static void main(String[] args) throws Exception {
-    KlonObject root = KlonRoot.prototype(args);
+    KlonRoot.setup(args);
     MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
     System.setOut(newOut);
-    new Shell(root, new InputStreamReader(System.in), newOut).process();
+    new Shell(new InputStreamReader(System.in), newOut).process();
   }
 }

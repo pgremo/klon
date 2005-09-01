@@ -4,25 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Prototype(name = "List", parent = "Object")
-public class KlonList extends KlonObject {
+public class KlonList {
 
   private static final long serialVersionUID = -6509654061397424250L;
 
-  public KlonList() {
-    super();
-    setData(new ArrayList<KlonObject>());
+  public static KlonObject protoType() {
+    KlonObject result = new KlonObject();
+    result.setData(new ArrayList<KlonObject>());
+    return result;
   }
 
   @SuppressWarnings("unchecked")
-  @Override
   public static KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = KlonObject.duplicate(value);
     result.setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;
   }
 
-  public KlonList newList(List<KlonObject> value) throws KlonObject {
-    KlonList result = (KlonList) duplicate();
+  public static KlonObject newList(KlonObject root, List<KlonObject> value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("List")
+      .duplicate();
     result.setData(value);
     return result;
   }
@@ -48,7 +50,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonNumber) receiver.getSlot("Number")).newNumber((double) ((List) receiver.getData()).size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((List) receiver.getData()).size());
   }
 
   @SuppressWarnings("unchecked")
@@ -56,7 +59,7 @@ public class KlonList extends KlonObject {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(context);
+    KlonObject scope = KlonLocals.newLocals(receiver, context);
     String index = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -64,17 +67,15 @@ public class KlonList extends KlonObject {
       .getSelector()
       .getData();
     Message code = message.getArgument(2);
-    KlonNumber numberProto = (KlonNumber) receiver.getSlot("Number");
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; i < list.size(); i++) {
-      scope.setSlot(index, numberProto.newNumber((double) i));
+      scope.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
       scope.setSlot(value, list.get(i));
       result = code.eval(scope, scope);
     }
     return result;
   }
 
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -90,7 +91,7 @@ public class KlonList extends KlonObject {
         }
         buffer.append(current.toString());
       }
-      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
+      result = KlonString.newString(receiver, buffer.toString());
     }
     return result;
   }

@@ -1,20 +1,22 @@
 package klon;
 
 @Prototype(name = "Nil", parent = "Object")
-public class KlonNil extends KlonObject {
+public class KlonNil {
 
   private static final long serialVersionUID = 5760629549494821771L;
 
-  @Override
+  public static KlonObject protoType() {
+    return new KlonObject();
+  }
+
   public static KlonObject duplicate(KlonObject value) {
     return value;
   }
 
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString("");
+    return KlonString.newString(receiver, "");
   }
 
   @SuppressWarnings("unused")

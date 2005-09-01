@@ -12,9 +12,8 @@ public final class Configurator {
   public static void configure(KlonObject root, KlonObject target,
       Class<? extends Object> type) throws KlonObject {
     Prototype prototype = type.getAnnotation(Prototype.class);
-    KlonException exceptionProto = (KlonException) root.getSlot("Exception");
     if (prototype == null) {
-      throw exceptionProto.newException("Invalid Argument", type
+      throw KlonException.newException(root, "Invalid Argument", type
           + " has not Prototype annotation.", null);
     }
     target.setType(prototype.name());
@@ -32,12 +31,11 @@ public final class Configurator {
           e.printStackTrace();
         }
         if (value instanceof Number) {
-          target.setSlot(
-            exposedAs.value(),
-            ((KlonNumber) root.getSlot("Number")).newNumber(((Number) value).doubleValue()));
+          target.setSlot(exposedAs.value(), KlonNumber.newNumber(root,
+            ((Number) value).doubleValue()));
         } else if (value instanceof String) {
-          target.setSlot(exposedAs.value(),
-            ((KlonString) root.getSlot("String")).newString((String) value));
+          target.setSlot(exposedAs.value(), KlonString.newString(root,
+            (String) value));
         }
       }
     }
@@ -49,37 +47,36 @@ public final class Configurator {
             + current.getDeclaringClass() + " exposed as '" + exposedAs.value()
             + "'";
         if (!KlonObject.class.equals(current.getReturnType())) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " must have a return type of " + KlonObject.class + ".", null);
         }
         if (current.getParameterTypes().length != 3) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " must have 3 parameters.", null);
         }
         if (!KlonObject.class.equals(current.getParameterTypes()[0])) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " first parameter must be a " + KlonObject.class + ".", null);
         }
         if (!KlonObject.class.equals(current.getParameterTypes()[1])) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " second parameter must be a " + KlonObject.class + ".", null);
         }
         if (!Message.class.equals(current.getParameterTypes()[2])) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " second parameter must be a " + Message.class + ".", null);
         }
         if (current.getExceptionTypes().length != 1) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " must throw only 1 exception.", null);
         }
         if (!KlonObject.class.equals(current.getExceptionTypes()[0])) {
-          throw exceptionProto.newException("Invalid Argument", identity
+          throw KlonException.newException(root, "Invalid Argument", identity
               + " second parameter must be a " + KlonException.class + ".",
             null);
         }
-        target.setSlot(
-          exposedAs.value(),
-          ((KlonNativeMethod) root.getSlot("NativeMethod")).newNativeMethod(current));
+        target.setSlot(exposedAs.value(), KlonNativeMethod.newNativeMethod(
+          root, current));
       }
     }
 

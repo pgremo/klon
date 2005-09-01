@@ -38,7 +38,7 @@ public class Shell {
     KlonObject value = null;
     try {
       value = message.eval(root, root);
-    } catch (KlonException e) {
+    } catch (KlonObject e) {
       value = e;
       out.setHasOutput(false);
     }
@@ -84,8 +84,7 @@ public class Shell {
   }
 
   public static void main(String[] args) throws Exception {
-    KlonObject root = new KlonRoot(args);
-    root.configure(root, KlonRoot.class);
+    KlonObject root = KlonRoot.protoType(args);
     MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
     System.setOut(newOut);
     new Shell(root, new InputStreamReader(System.in), newOut).process();

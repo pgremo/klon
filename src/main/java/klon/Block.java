@@ -36,7 +36,7 @@ public class Block {
   @SuppressWarnings("unchecked")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject scope = ((KlonLocals) receiver.getSlot("Locals")).newLocals(receiver);
+    KlonObject scope = KlonLocals.newLocals(receiver, receiver);
     int limit = Math.min(message.getArgumentCount(), parameters.length);
     int i = 0;
     for (; i < limit; i++) {
@@ -49,9 +49,9 @@ public class Block {
     KlonObject result = nil;
     try {
       result = code.eval(scope, scope);
-    } catch (KlonException e) {
+    } catch (KlonObject e) {
       ((List<KlonObject>) e.getSlot("stackTrace")
-        .getData()).add(((KlonString) receiver.getSlot("String")).newString(message.toString()));
+        .getData()).add(KlonString.newString(receiver, message.toString()));
       throw e;
     }
     return result;

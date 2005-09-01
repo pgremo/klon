@@ -11,25 +11,23 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 @Prototype(name = "String", parent = "Object")
-public class KlonString extends KlonObject {
+public class KlonString {
 
   private static Charset charset = Charset.forName("ISO-8859-15");
   private static CharsetDecoder decoder = charset.newDecoder();
 
   private static final long serialVersionUID = -1460358337296215238L;
 
-  public KlonString() {
-    super();
-    setData("");
-  }
-
-  public KlonObject newString(String value) throws KlonObject {
-    KlonObject result = duplicate();
+  public static KlonObject newString(KlonObject root, String value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("String")
+      .duplicate();
     result.setData(value);
     return result;
   }
 
-  public KlonObject newString(File file) throws KlonObject {
+  public static KlonObject newString(KlonObject root, File file)
+      throws KlonObject {
     ByteBuffer byteBuffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -38,7 +36,7 @@ public class KlonString extends KlonObject {
       while (channel.read(byteBuffer) > 0) {
       }
     } catch (Exception e) {
-      throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+      throw KlonException.newException(root, e.getClass()
         .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
@@ -49,18 +47,25 @@ public class KlonString extends KlonObject {
       }
     }
     byteBuffer.position(0);
-    return newString(byteBuffer);
+    return newString(root, byteBuffer);
   }
 
-  public KlonObject newString(ByteBuffer byteBuffer) throws KlonObject {
+  public static KlonObject newString(KlonObject root, ByteBuffer byteBuffer)
+      throws KlonObject {
     CharBuffer buffer;
     try {
       buffer = decoder.decode(byteBuffer);
     } catch (CharacterCodingException e) {
-      throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+      throw KlonException.newException(root, e.getClass()
         .getSimpleName(), e.getMessage(), null);
     }
-    return newString(buffer.toString());
+    return newString(root, buffer.toString());
+  }
+
+  public static KlonObject protoType() {
+    KlonObject result = new KlonObject();
+    result.setData("");
+    return result;
   }
 
   public static String format(KlonObject value) {
@@ -74,22 +79,21 @@ public class KlonString extends KlonObject {
     if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
-    throw ((KlonException) receiver.getSlot("Exception")).newException(
-      "Illegal Argument", "argument must evaluate to a string", message);
+    throw KlonException.newException(receiver, "Illegal Argument",
+      "argument must evaluate to a string", message);
   }
 
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
-    return ((KlonString) receiver.getSlot("String")).newString(receiver.getData()
+    return KlonString.newString(receiver, receiver.getData()
         + String.valueOf(message.eval(context, 0)
           .perform(context, printMessage)
           .getData()));
   }
 
   @SuppressWarnings("unused")
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

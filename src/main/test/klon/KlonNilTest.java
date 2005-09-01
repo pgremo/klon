@@ -9,15 +9,14 @@ public class KlonNilTest extends TestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    object = new KlonRoot(new String[0]);
-    object.configure(object, KlonRoot.class);
+    object = KlonRoot.protoType(new String[0]);
   }
 
   public void testAsString() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("Nil asString");
     KlonObject value = message.eval(object, object);
-    assertEquals(((KlonString) object.getSlot("String")).newString(""), value);
+    assertEquals(KlonString.newString(object, ""), value);
   }
 
   public void testAnd() throws Exception {

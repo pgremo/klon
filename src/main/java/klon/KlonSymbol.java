@@ -1,18 +1,21 @@
 package klon;
 
 @Prototype(name = "Symbol", parent = "Object")
-public class KlonSymbol extends KlonObject {
+public class KlonSymbol {
 
   private static final long serialVersionUID = 3052106897048736269L;
 
-  public KlonSymbol() {
-    super();
-    setData("");
+  public static KlonObject newSymbol(KlonObject root, String value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("Symbol")
+      .duplicate();
+    result.setData(value);
+    return result;
   }
 
-  public KlonObject newSymbol(String value) throws KlonObject {
-    KlonObject result = duplicate();
-    result.setData(value);
+  public static KlonObject protoType() {
+    KlonObject result = new KlonObject();
+    result.setData("");
     return result;
   }
 

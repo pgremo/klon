@@ -1,18 +1,24 @@
 package klon;
 
 @Prototype(name = "Block", parent = "Object")
-public class KlonBlock extends KlonObject {
+public class KlonBlock {
 
   private static final long serialVersionUID = 8013887125117513346L;
 
-  public KlonObject newBlock(Block value) throws KlonObject {
-    KlonObject result = duplicate();
+  public static KlonObject newBlock(KlonObject root, Block value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("Block")
+      .duplicate();
     result.setData(value);
     return result;
   }
 
-  public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+  public static KlonObject protoType() {
+    return new KlonObject();
+  }
+
+  public static KlonObject activate(KlonObject slot, KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
     Object value = slot.getData();
     return value == null ? slot : ((Block) value).activate(receiver, context,
       message);
@@ -21,8 +27,9 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString(((Block) receiver.getData()).getCode()
-      .toString());
+    return KlonString.newString(receiver,
+      ((Block) receiver.getData()).getCode()
+        .toString());
   }
 
   @ExposedAs("ifTrue")
@@ -73,11 +80,10 @@ public class KlonBlock extends KlonObject {
     return nil;
   }
 
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString(String.valueOf(receiver.getData()));
+    return KlonString.newString(receiver, String.valueOf(receiver.getData()));
   }
 
 }

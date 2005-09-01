@@ -1,30 +1,34 @@
 package klon;
 
 @Prototype(name = "Exception", parent = "Object")
-public class KlonException extends KlonObject {
+public class KlonException {
 
   private static final long serialVersionUID = 8553657071125334749L;
 
-  public KlonObject newException(String name, String description,
-      Message message) throws KlonObject {
-    KlonObject result = duplicate();
-    KlonString stringProto = (KlonString) getSlot("String");
+  public static KlonObject newException(KlonObject root, String name,
+      String description, Message message) throws KlonObject {
+    KlonObject result = root.getSlot("Exception")
+      .duplicate();
     if (name != null) {
-      result.setSlot("name", stringProto.newString(name));
+      result.setSlot("name", KlonString.newString(root, name));
     }
     if (description != null) {
-      result.setSlot("description", stringProto.newString(description));
+      result.setSlot("description", KlonString.newString(root, description));
     }
-    result.setSlot("stackTrace", ((KlonList) getSlot("List")).duplicate());
+    result.setSlot("stackTrace", root.getSlot("List")
+      .duplicate());
     return result;
+  }
+
+  public static KlonObject protoType() {
+    return new KlonObject();
   }
 
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    throw ((KlonException) receiver).newException(KlonString.evalAsString(
-      context, message, 0), KlonString.evalAsString(context, message, 1),
-      message);
+    throw KlonException.newException(receiver, KlonString.evalAsString(context,
+      message, 0), KlonString.evalAsString(context, message, 1), message);
   }
 
   @ExposedAs("catch")
@@ -42,7 +46,7 @@ public class KlonException extends KlonObject {
         scope.setSlot(name, receiver);
       }
       message.eval(scope, index);
-      result = ((KlonNoOp) receiver.getSlot("NoOp")).newNoOp(receiver);
+      result = KlonNoOp.newNoOp(receiver, receiver);
     }
     return result;
   }
@@ -57,7 +61,7 @@ public class KlonException extends KlonObject {
     if (name == null && description == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      KlonList stackTrace = (KlonList) receiver.getSlot("stackTrace");
+      KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
       buffer.append(receiver.getType())
         .append(" ")
@@ -73,7 +77,7 @@ public class KlonException extends KlonObject {
             .toString())
           .append("\n");
       }
-      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
+      result = KlonString.newString(receiver, buffer.toString());
     }
     return result;
   }

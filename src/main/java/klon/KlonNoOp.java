@@ -1,14 +1,20 @@
 package klon;
 
 @Prototype(name = "NoOp")
-public class KlonNoOp extends KlonObject {
+public class KlonNoOp {
 
   private static final long serialVersionUID = -3849427822460733188L;
 
-  public KlonObject newNoOp(Object value) throws KlonObject {
-    KlonObject result = duplicate();
+  public static KlonObject newNoOp(KlonObject root, Object value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("NoOp")
+      .duplicate();
     result.setData(value);
     return result;
+  }
+
+  public static KlonObject protoType() {
+    return new KlonObject();
   }
 
   @ExposedAs("forward")

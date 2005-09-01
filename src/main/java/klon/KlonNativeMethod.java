@@ -5,19 +5,25 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 @Prototype(name = "NativeMethod", parent = "Object")
-public class KlonNativeMethod extends KlonObject {
+public class KlonNativeMethod {
 
   private static final long serialVersionUID = -6241106920818116280L;
 
-  public KlonObject newNativeMethod(Object subject) throws KlonObject {
-    KlonObject result = duplicate();
+  public static KlonObject newNativeMethod(KlonObject root, Method subject)
+      throws KlonObject {
+    KlonObject result = root.getSlot("NativeMethod")
+      .duplicate();
     result.setData(subject);
     return result;
   }
 
+  public static KlonObject protoType() {
+    return new KlonObject();
+  }
+
   @SuppressWarnings("unchecked")
-  public static KlonObject activate(KlonObject slot, KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+  public static KlonObject activate(KlonObject slot, KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
     KlonObject result = slot;
     Object value = slot.getData();
     if (value != null) {
@@ -28,12 +34,12 @@ public class KlonNativeMethod extends KlonObject {
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }
-      } catch (KlonException e) {
+      } catch (KlonObject e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
-          .getData()).add(((KlonString) slot.getSlot("String")).newString(message.toString()));
+          .getData()).add(KlonString.newString(receiver, message.toString()));
         throw e;
       } catch (Throwable e) {
-        throw ((KlonException) slot.getSlot("Exception")).newException(e.getClass()
+        throw KlonException.newException(receiver, e.getClass()
           .getSimpleName(), e.getMessage(), message);
       }
     }

@@ -7,16 +7,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 @Prototype(name = "Buffer", parent = "Object")
-public class KlonBuffer extends KlonObject {
+public class KlonBuffer {
 
   private static final long serialVersionUID = -3007245357989336566L;
 
-  public KlonBuffer() {
-    super();
-    setData(ByteBuffer.allocate(0));
-  }
-
-  public KlonObject newBuffer(File file) throws KlonObject {
+  public static KlonObject newBuffer(KlonObject root, File file)
+      throws KlonObject {
     ByteBuffer buffer = ByteBuffer.allocate((int) file.length());
     FileInputStream in = null;
     try {
@@ -25,7 +21,7 @@ public class KlonBuffer extends KlonObject {
       while (channel.read(buffer) > 0) {
       }
     } catch (Exception e) {
-      throw ((KlonException) getSlot("Exception")).newException(e.getClass()
+      throw KlonException.newException(root, e.getClass()
         .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
@@ -36,15 +32,22 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    KlonObject result = duplicate();
+    KlonObject result = root.getSlot("Buffer")
+      .duplicate();
     result.setData(buffer);
+    return result;
+  }
+
+  public static KlonObject protoType() {
+    KlonObject result = new KlonObject();
+    result.setData(ByteBuffer.allocate(0));
     return result;
   }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString((ByteBuffer) receiver.getData());
+    return KlonString.newString(receiver, (ByteBuffer) receiver.getData());
   }
 
 }

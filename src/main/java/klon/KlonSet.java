@@ -1,11 +1,14 @@
 package klon;
 
 @Prototype(name = "Set", parent = "Object")
-public class KlonSet extends KlonObject {
+public class KlonSet {
 
   private static final long serialVersionUID = 9142527726733948367L;
 
-  @Override
+  public static KlonObject protoType() {
+    return new KlonObject();
+  }
+
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -21,7 +24,7 @@ public class KlonSet extends KlonObject {
         }
         buffer.append(current.toString());
       }
-      result = ((KlonString) receiver.getSlot("String")).newString(buffer.toString());
+      result = KlonString.newString(receiver, buffer.toString());
     }
     return result;
   }

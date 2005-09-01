@@ -9,8 +9,7 @@ public class KlonStringTest extends TestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    object = new KlonRoot(new String[0]);
-    object.configure(object, KlonRoot.class);
+    object = KlonRoot.protoType(new String[0]);
   }
 
   public void testAdd() throws Exception {
@@ -18,7 +17,6 @@ public class KlonStringTest extends TestCase {
     Message message = compiler.fromString("\"Hello\" + \" \" + \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertTrue(value instanceof KlonString);
     assertEquals("\"Hello World\"", value.toString());
   }
 
@@ -32,7 +30,6 @@ public class KlonStringTest extends TestCase {
     message = compiler.fromString("\"Hello\" == \"Hello\"");
     value = message.eval(object, object);
     assertNotNull(value);
-    assertTrue(value instanceof KlonString);
     assertEquals("\"Hello\"", value.toString());
   }
 

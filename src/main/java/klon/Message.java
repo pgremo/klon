@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Message {
 
-  private KlonSymbol selector;
+  private KlonObject selector;
   private KlonObject literal;
   private List<Message> arguments = new ArrayList<Message>();
   private Message attached;
@@ -59,11 +59,11 @@ public class Message {
     this.next = next;
   }
 
-  public KlonSymbol getSelector() {
+  public KlonObject getSelector() {
     return selector;
   }
 
-  public void setSelector(KlonSymbol selector) {
+  public void setSelector(KlonObject selector) {
     this.selector = selector;
   }
 
@@ -99,8 +99,8 @@ public class Message {
   public void assertArgumentCount(KlonObject receiver, int count)
       throws KlonObject {
     if (arguments.size() != count) {
-      throw ((KlonException) receiver.getSlot("Exception")).newException(
-        "Illegal Argument", "message must have " + count + " arguments", null);
+      throw KlonException.newException(receiver, "Illegal Argument",
+        "message must have " + count + " arguments", null);
     }
   }
 

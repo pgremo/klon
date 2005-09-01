@@ -3,13 +3,14 @@ package klon;
 import java.io.File;
 
 @Prototype(name = "File", parent = "Object")
-public class KlonFile extends KlonObject {
+public class KlonFile {
 
   private static final long serialVersionUID = 6550367839880573300L;
 
-  public KlonFile() {
-    super();
-    setData(new File("/"));
+  public static KlonObject protoType() {
+    KlonObject result = new KlonObject();
+    result.setData(new File("/"));
+    return result;
   }
 
   @ExposedAs("setPath")
@@ -22,14 +23,13 @@ public class KlonFile extends KlonObject {
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonBuffer) receiver.getSlot("Buffer")).newBuffer((File) receiver.getData());
+    return KlonBuffer.newBuffer(receiver, (File) receiver.getData());
   }
 
-  @Override
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return ((KlonString) receiver.getSlot("String")).newString((File) receiver.getData());
+    return KlonString.newString(receiver, (File) receiver.getData());
   }
 
 }

@@ -3,8 +3,6 @@ package klon;
 @Prototype(name = "Set", parent = "Object")
 public class KlonSet {
 
-  private static final long serialVersionUID = 9142527726733948367L;
-
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     Configurator.setActivator(result, KlonSet.class);

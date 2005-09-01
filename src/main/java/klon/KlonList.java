@@ -6,8 +6,6 @@ import java.util.List;
 @Prototype(name = "List", parent = "Object")
 public class KlonList {
 
-  private static final long serialVersionUID = -6509654061397424250L;
-
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new ArrayList<KlonObject>());

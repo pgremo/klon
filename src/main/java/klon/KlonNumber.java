@@ -5,7 +5,6 @@ import java.text.NumberFormat;
 @Prototype(name = "Number", parent = "Object")
 public class KlonNumber {
 
-  private static final long serialVersionUID = -4103647195957467063L;
   private static NumberFormat format = NumberFormat.getInstance();
   static {
     format.setGroupingUsed(false);

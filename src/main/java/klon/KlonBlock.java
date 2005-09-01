@@ -3,8 +3,6 @@ package klon;
 @Prototype(name = "Block", parent = "Object")
 public class KlonBlock {
 
-  private static final long serialVersionUID = 8013887125117513346L;
-
   public static KlonObject newBlock(KlonObject root, Block value)
       throws KlonObject {
     KlonObject result = root.getSlot("Block")

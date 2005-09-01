@@ -5,8 +5,6 @@ import java.io.File;
 @Prototype(name = "File", parent = "Object")
 public class KlonFile {
 
-  private static final long serialVersionUID = 6550367839880573300L;
-
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new File("/"));

@@ -3,8 +3,6 @@ package klon;
 @Prototype(name = "Symbol", parent = "Object")
 public class KlonSymbol {
 
-  private static final long serialVersionUID = 3052106897048736269L;
-
   public static KlonObject newSymbol(KlonObject root, String value)
       throws KlonObject {
     KlonObject result = root.getSlot("Symbol")

@@ -3,8 +3,6 @@ package klon;
 @Prototype(name = "NoOp")
 public class KlonNoOp {
 
-  private static final long serialVersionUID = -3849427822460733188L;
-
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {
     KlonObject result = root.getSlot("NoOp")

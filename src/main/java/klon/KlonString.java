@@ -16,8 +16,6 @@ public class KlonString {
   private static Charset charset = Charset.forName("ISO-8859-15");
   private static CharsetDecoder decoder = charset.newDecoder();
 
-  private static final long serialVersionUID = -1460358337296215238L;
-
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
     KlonObject result = root.getSlot("String")

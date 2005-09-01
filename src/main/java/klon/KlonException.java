@@ -1,10 +1,7 @@
 package klon;
 
-
 @Prototype(name = "Exception", parent = "Object")
 public class KlonException {
-
-  private static final long serialVersionUID = 8553657071125334749L;
 
   public static KlonObject newException(KlonObject root, String name,
       String description, Message message) throws KlonObject {

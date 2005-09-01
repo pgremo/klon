@@ -7,8 +7,6 @@ import java.util.List;
 @Prototype(name = "NativeMethod", parent = "Object")
 public class KlonNativeMethod {
 
-  private static final long serialVersionUID = -6241106920818116280L;
-
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {
     KlonObject result = root.getSlot("NativeMethod")

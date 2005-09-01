@@ -9,8 +9,6 @@ import java.nio.channels.FileChannel;
 @Prototype(name = "Buffer", parent = "Object")
 public class KlonBuffer {
 
-  private static final long serialVersionUID = -3007245357989336566L;
-
   public static KlonObject newBuffer(KlonObject root, File file)
       throws KlonObject {
     ByteBuffer buffer = ByteBuffer.allocate((int) file.length());

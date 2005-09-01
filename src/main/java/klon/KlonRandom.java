@@ -5,8 +5,6 @@ import java.util.Random;
 @Prototype(name = "Random", parent = "Object")
 public class KlonRandom {
 
-  private static final long serialVersionUID = 9178710141040319542L;
-
   public static KlonObject protoType() {
     KlonObject result = new KlonObject();
     result.setData(new MersenneTwister());

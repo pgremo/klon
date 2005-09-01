@@ -49,7 +49,7 @@ public class KlonNumberTest extends TestCase {
 
   public void testPower() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("2 ^ 3");
+    Message message = compiler.fromString("2 power(3)");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 8D), value);
   }

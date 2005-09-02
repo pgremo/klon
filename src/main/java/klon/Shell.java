@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 public class Shell {
 
-  private static final String PROMPT = "klon> ";
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
   private static final String[] PRINTABLES = new String[]{
@@ -23,17 +22,17 @@ public class Shell {
   }
 
   public void process() throws KlonObject, IOException {
-    KlonObject root = KlonRoot.getROOT();
-    KlonObject version = root.getSlot("Properties")
-      .getSlot("klon.version");
-    KlonObject build = root.getSlot("Properties")
-      .getSlot("klon.build");
+    KlonObject properties = KlonRoot.getROOT()
+      .getSlot("Properties");
+    KlonObject version = properties.getSlot("klon.version");
+    KlonObject build = properties.getSlot("klon.build");
     out.println("klon version:" + version.getData() + ", build:"
         + build.getData());
     out.flush();
     while (true) {
-      String prompt = PROMPT;
-      KlonObject promptSlot = root.getSlot("Properties")
+      String prompt = "";
+      KlonObject promptSlot = KlonRoot.getROOT()
+        .getSlot("Properties")
         .getSlot("klon.shell.prompt");
       if (promptSlot != null) {
         prompt = promptSlot.getData()

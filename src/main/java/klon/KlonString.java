@@ -99,6 +99,13 @@ public final class KlonString {
           .getData()));
   }
 
+  @ExposedAs("beginsWith")
+  public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
+      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+  }
+
   @SuppressWarnings("unused")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

@@ -25,18 +25,23 @@ public final class KlonRoot {
 
     KlonObject object = KlonObject.prototype();
     KlonObject root = object.duplicate();
-    root.setSlot("Klon", root);
-    root.setSlot("Object", object);
+    KlonObject prototypes = object.duplicate();
+    KlonObject system = object.duplicate();
+    system.setSlot("Klon", root);
+    root.setSlot("Prototypes", prototypes);
+    prototypes.setSlot("Object", object);
     root.bind(object);
+    root.bind(prototypes);
+    root.bind(system);
 
     KlonObject string = KlonString.prototype();
-    root.setSlot("String", string);
+    prototypes.setSlot("String", string);
 
     KlonObject nativeMethod = KlonNativeMethod.prototype();
-    root.setSlot("NativeMethod", nativeMethod);
+    prototypes.setSlot("NativeMethod", nativeMethod);
 
     KlonObject exception = KlonException.prototype();
-    root.setSlot("Exception", exception);
+    prototypes.setSlot("Exception", exception);
 
     string.configure(root, KlonString.class);
     nativeMethod.configure(root, KlonNativeMethod.class);
@@ -44,48 +49,44 @@ public final class KlonRoot {
     exception.configure(root, KlonException.class);
 
     KlonObject nil = KlonNil.prototype();
-    root.setSlot("Nil", nil);
+    prototypes.setSlot("Nil", nil);
     nil.configure(root, KlonNil.class);
 
     KlonObject number = KlonNumber.prototype();
-    root.setSlot("Number", number);
+    prototypes.setSlot("Number", number);
     number.configure(root, KlonNumber.class);
 
     KlonObject block = KlonBlock.prototype();
-    root.setSlot("Block", block);
+    prototypes.setSlot("Block", block);
     block.configure(root, KlonBlock.class);
 
     KlonObject list = KlonList.prototype();
-    root.setSlot("List", list);
+    prototypes.setSlot("List", list);
     list.configure(root, KlonList.class);
 
     KlonObject message = KlonMessage.prototype();
-    root.setSlot("Message", message);
+    prototypes.setSlot("Message", message);
     message.configure(root, KlonMessage.class);
 
     KlonObject random = KlonRandom.prototype();
-    root.setSlot("Random", random);
+    prototypes.setSlot("Random", random);
     random.configure(root, KlonRandom.class);
 
     KlonObject file = KlonFile.prototype();
-    root.setSlot("File", file);
+    prototypes.setSlot("File", file);
     file.configure(root, KlonFile.class);
 
     KlonObject buffer = KlonBuffer.prototype();
-    root.setSlot("Buffer", buffer);
+    prototypes.setSlot("Buffer", buffer);
     buffer.configure(root, KlonBuffer.class);
 
     KlonObject store = KlonStore.prototype();
-    root.setSlot("Store", store);
+    prototypes.setSlot("Store", store);
     store.configure(root, KlonStore.class);
 
     KlonObject compiler = KlonCompiler.prototype();
-    root.setSlot("Compiler", compiler);
+    prototypes.setSlot("Compiler", compiler);
     compiler.configure(root, KlonCompiler.class);
-
-    KlonObject system = object.duplicate();
-    root.bind(system);
-    system.bind(object);
 
     KlonObject symbol = KlonSymbol.prototype();
     system.setSlot("Symbol", symbol);
@@ -108,6 +109,14 @@ public final class KlonRoot {
     }
     Properties version = new Properties();
     version.load(KlonRoot.class.getResourceAsStream("/klon/version.properties"));
+    System.getProperties()
+      .putAll(version);
+    for (Map.Entry<Object, Object> current : version.entrySet()) {
+      properties.setSlot("klon." + current.getKey()
+        .toString(), KlonString.newString(root, current.getValue()
+        .toString()));
+    }
+    version.load(KlonRoot.class.getResourceAsStream("/klon/klon.properties"));
     System.getProperties()
       .putAll(version);
     for (Map.Entry<Object, Object> current : version.entrySet()) {

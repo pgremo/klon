@@ -1,0 +1,241 @@
+
+TestCaseTest := TestCase clone do(
+    WasRun := TestCase clone do(
+        setUp := method(
+            self log := "setUp "
+        )
+        tearDown := method(
+            self log = log .. "tearDown "
+        )
+        testMethod := method(
+            log = log .. "testMethod "
+        )
+        testBrokenMethod := method(
+            log = log .. "testBrokenMethod "
+            Exception raise("", "")
+        )
+        testFailureMethod := method(
+            log = log .. "testFailureMethod "
+            fail
+        )
+    )
+    testTemplateMethod := method(
+        test := WasRun testWithName("testMethod")
+        result := test run
+        assertTrue("setUp testMethod tearDown " == test log)
+    )
+    testTemplateMethodBroken := method(
+        test := WasRun testWithName("testBrokenMethod")
+        result := test run
+        assertTrue("setUp testBrokenMethod tearDown " == test log)
+    )
+    testResult := method(
+        test := WasRun testWithName("testMethod")
+        result := test run
+        assertTrue("1 run, 0 errors, 0 failures" == result shortSummary)
+    )
+    testFailedResult := method(
+        test := WasRun testWithName("testFailureMethod")
+        result := test run
+        assertTrue("1 run, 0 errors, 1 failures" == result shortSummary)
+    )
+    testErrorResult := method(
+        test := WasRun testWithName("testBrokenMethod")
+        result := test run
+        assertTrue("1 run, 1 errors, 0 failures" == result shortSummary)
+    )
+    testFailedResultFormatting := method(
+        result := TestResult clone
+        result testStarted
+        result testFailed(Nil, Nil)
+        assertTrue("1 run, 0 errors, 1 failures" == result shortSummary)
+    )
+    testSuite := method(
+        suite := TestSuite clone
+        suite addTest(WasRun testWithName("testMethod")) 
+        suite addTest(WasRun testWithName("testBrokenMethod")) 
+        result := suite run
+        assertTrue("2 run, 1 errors, 0 failures" == result shortSummary)
+    )
+    testDefaultSuite := method(
+        suite := WasRun suite
+        result := suite run
+        assertTrue("3 run, 1 errors, 1 failures" == result shortSummary)
+    )
+    testSetUpError := method(
+        test := WasRun testWithName("testMethod")
+        test setUp := method(resend; Exception raise("", ""))
+        result := test run
+        assertTrue("1 run, 1 errors, 0 failures" == result shortSummary)
+    )
+    testFailure := method(
+        test := WasRun testWithName("testBrokenMethod")
+        result := test run
+        assertTrue(result testFailures count == 0)
+        assertTrue(result testErrors count == 1)
+        testFailure := result testErrors at(0)
+        assertTrue(testFailure test == test)
+    )
+    testAssertEquals := method(
+        assertEquals("abc", "abc")
+        assertEquals(33, 33)
+        assertEquals(self, self)
+        try(
+            assertEquals(33, 34)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertEquals(Nil, 34)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertEquals(33, Nil)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertNotEquals := method(
+        assertNotEquals(33, 34)
+        assertNotEquals(Nil, 34)
+        assertNotEquals(33, Nil)
+        try(
+            assertNotEquals("abc", "abc")
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertNotEquals(33, 33)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertNotEquals(self, self)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertEqualsWithinDelta := method(
+        assertEqualsWithinDelta(5, 6, 2)
+        assertEqualsWithinDelta(6, 5, 2)
+        assertEqualsWithinDelta(0.006, 0.005, 0.001)
+        try(
+            assertEqualsWithinDelta(6, 5, 0.9)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertSame := method(
+        object1 := Object clone
+        object2 := Object clone
+        assertSame(object1, object1)
+        try(
+            assertSame(object1, object2)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertSame(Nil, object2)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+        try(
+            assertSame(object1, Nil)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertNotSame := method(
+        object1 := Object clone
+        object2 := Object clone
+        assertNotSame(object1, object2)
+        assertNotSame(Nil, object2)
+        assertNotSame(object1, Nil)
+        try(
+            assertNotSame(object1, object1)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertNil := method(
+        assertNil(Nil)
+        try(
+            assertNil(33)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertNotNil := method(
+        assertNotNil("abc")
+        try(
+            assertNotNil(Nil)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+    testAssertRaisesException := method(
+        assertRaisesException(Exception raise("simulated Exception", ""))
+        try(
+            assertRaisesException(Nop)
+            Exception raise("Shouldn't pass", "")
+        ) catch(AssertionFailedError) pass
+    )
+)
+
+TestSuiteTest := TestCase clone do(
+    testSuite := method(
+        assertSame(TestSuite, TestSuite suite)
+    )
+    testAddTest := method(
+        MockTest := TestCase clone do(
+            newSlot("hasBeenRun", Nil)
+            runWithResult = method(result, self setHasBeenRun(1))
+        )
+        test1 := MockTest clone
+        test2 := MockTest clone
+        test3 := MockTest clone
+        suite := TestSuite clone addTest(test1) addTest(test2)
+        suite run
+        assertTrue(test1 hasBeenRun)
+        assertTrue(test2 hasBeenRun)
+        assertFalse(test3 hasBeenRun)
+    )
+    testAddSuite := method(
+        MockTest := TestCase clone do(
+            newSlot("suiteHasBeenUsed", Nil)
+            suite := method(
+                setSuiteHasBeenUsed(1)
+                TestSuite clone
+            )
+        )
+        suite := TestSuite clone addSuite(MockTest)
+        assertTrue(MockTest suiteHasBeenUsed)
+    )
+    mockDoFile := method(aFileName,
+        self MockTest := TestCase clone do(
+            newSlot("suiteHasBeenUsed", Nil)
+            suite := method(
+                setSuiteHasBeenUsed(1)
+                TestSuite clone
+            )
+        )
+        setFileName(aFileName)
+    )
+    testAddFile := method(
+        suite := TestSuite clone
+        suite newSlot("fileName", Nil)
+        suite doFile := self getSlot("mockDoFile")
+        suite addFile("MockTest")
+        assertTrue(suite MockTest suiteHasBeenUsed)
+        assertEquals(launchPath appendPath("MockTest.io"), suite fileName)
+    )
+    testAddFileAtPath := method(
+        suite := TestSuite clone
+        suite newSlot("fileName", Nil)
+        suite doFile := self getSlot("mockDoFile")
+        suite addFileAtPath("MockTest", "example/path")
+        assertTrue(suite MockTest suiteHasBeenUsed)
+        assertEquals("example/path" appendPath("MockTest.io"), suite fileName)
+    )
+)
+
+ObjectTest := TestCase clone do(
+    testAsString := method(
+        assertTrue(Object clone asString beginsWith("Object ("))
+        assertTrue(Nil asString beginsWith("Nil ("))
+    )
+)
+
+UnitTestTestSuite := TestSuite clone
+UnitTestTestSuite addSuite(TestCaseTest)
+UnitTestTestSuite addSuite(TestSuiteTest)
+UnitTestTestSuite addSuite(ObjectTest)
+

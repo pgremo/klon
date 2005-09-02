@@ -667,7 +667,7 @@ public class KlonObject extends Exception implements Cloneable {
     return receiver;
   }
 
-  @ExposedAs("parenthesis")
+  @ExposedAs("")
   public static KlonObject parenthesis(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return message.eval(context, 0);

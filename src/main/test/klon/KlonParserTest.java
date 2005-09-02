@@ -95,7 +95,7 @@ public class KlonParserTest extends TestCase {
   public void testGroupingBegin() throws Exception {
     Message message = new Compiler(object).fromString("(1 + 2) * 3");
     assertNotNull(message);
-    assertEquals("parenthesis(1 +(2)) *(3)", message.toString());
+    assertEquals("(1 +(2)) *(3)", message.toString());
   }
 
   public void testFactorial() throws Exception {

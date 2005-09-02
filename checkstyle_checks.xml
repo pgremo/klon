@@ -22,7 +22,6 @@
 		</module>
 		<module name="SimplifyBooleanReturn"/>
 		<module name="StringLiteralEquality"/>
-		<module name="SuperClone"/>
 		<module name="SuperFinalize"/>
 		<module name="UnnecessaryParentheses"/>
 		

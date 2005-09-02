@@ -19,7 +19,6 @@ public final class KlonStore {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData("");
     Configurator.setActivator(result, KlonStore.class);
     Configurator.setDuplicator(result, KlonStore.class);
     Configurator.setFormatter(result, KlonStore.class);

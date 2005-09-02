@@ -79,6 +79,10 @@ public final class KlonRoot {
     root.setSlot("Store", store);
     store.configure(root, KlonStore.class);
 
+    KlonObject compiler = KlonCompiler.prototype();
+    root.setSlot("Compiler", compiler);
+    compiler.configure(root, KlonCompiler.class);
+
     KlonObject system = object.duplicate();
     root.bind(system);
     system.bind(object);

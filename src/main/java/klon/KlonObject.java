@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Prototype(name = "Object", parent = "Klon")
-public class KlonObject extends Exception {
+public class KlonObject extends Exception implements Cloneable {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
@@ -48,8 +48,7 @@ public class KlonObject extends Exception {
       Message message) throws KlonObject {
     try {
       try {
-        return (KlonObject) activator.invoke(this, receiver, context,
-          message);
+        return (KlonObject) activator.invoke(this, receiver, context, message);
       } catch (InvocationTargetException e) {
         throw e.getTargetException();
       }
@@ -186,6 +185,19 @@ public class KlonObject extends Exception {
     return slot.activate(this, context, message);
   }
 
+  // ================
+  // java.lang.Object
+  // ================
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    try {
+      return duplicate();
+    } catch (KlonObject e) {
+      throw new CloneNotSupportedException(e.getMessage());
+    }
+  }
+
   @Override
   public boolean equals(Object obj) {
     boolean result = false;
@@ -218,6 +230,10 @@ public class KlonObject extends Exception {
     return result;
   }
 
+  // ================
+  // java.lang.Exception
+  // ================
+
   public String getMessage() {
     StringBuilder result = new StringBuilder();
     try {
@@ -235,6 +251,10 @@ public class KlonObject extends Exception {
     }
     return result.toString();
   }
+
+  // ================
+  // Klon prototype methods
+  // ================
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
@@ -269,6 +289,10 @@ public class KlonObject extends Exception {
       KlonObject context, Message message) throws KlonObject {
     return slot;
   }
+
+  // ================
+  // Klon Exposed Methods
+  // ================
 
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,
@@ -306,13 +330,28 @@ public class KlonObject extends Exception {
   @ExposedAs("send")
   public static KlonObject send(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
+    Message target;
     KlonObject subject = message.eval(context, 0);
-    if ("Message".equals(subject.getSlot("type")
-      .getData())) {
-      return ((Message) subject.getData()).eval(receiver, context);
+    KlonObject type = subject.getSlot("type");
+    if ("Message".equals(type.getData())) {
+      if (message.getArgumentCount() > 1) {
+        throw KlonException.newException(receiver, "Invalid Argument",
+          "argument must evaluate to a Message", message);
+      }
+      target = (Message) subject.getData();
+    } else {
+      if (!"String".equals(type.getData())) {
+        throw KlonException.newException(receiver, "Invalid Argument",
+          "argument must evaluate to a String", message);
+      }
+      target = new Message();
+      target.setSelector(KlonSymbol.newSymbol(receiver,
+        (String) subject.getData()));
+      for (int i = 1; i < message.getArgumentCount(); i++) {
+        target.addArgument(message.getArgument(i));
+      }
     }
-    throw KlonException.newException(receiver, "Invalid Argument",
-      "argument must evaluate to a Message", message);
+    return target.eval(receiver, context);
   }
 
   @ExposedAs("getSlot")

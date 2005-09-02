@@ -102,10 +102,15 @@ public class Shell {
     return buffer.toString();
   }
 
-  public static void main(String[] args) throws Exception {
-    KlonRoot.setup(args);
-    MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
-    System.setOut(newOut);
-    new Shell(new InputStreamReader(System.in), newOut).process();
+  public static void main(String[] args) {
+    try {
+      KlonRoot.setup(args);
+      MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
+      System.setOut(newOut);
+      new Shell(new InputStreamReader(System.in), newOut).process();
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+      e.printStackTrace(System.err);
+    }
   }
 }

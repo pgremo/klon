@@ -246,7 +246,7 @@ public class KlonObject extends Exception implements Cloneable {
             .append(description.getData());
         }
       }
-    } catch (KlonObject e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return result.toString();

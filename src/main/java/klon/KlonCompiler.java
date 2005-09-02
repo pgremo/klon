@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Compiler", parent = "Object")
+//@Prototype(name = "Compiler", parent = "Object")
 public final class KlonCompiler {
 
   private KlonCompiler() {

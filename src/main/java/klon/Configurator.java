@@ -20,8 +20,9 @@ public final class Configurator {
 
     Prototype prototype = type.getAnnotation(Prototype.class);
     if (prototype == null) {
-      throw KlonException.newException(root, "Invalid Argument", type
-          + " has not Prototype annotation.", null);
+      throw KlonException.newException(root, "Invalid Argument", type.getName()
+          + " must have a " + Prototype.class.getSimpleName() + " annotation.",
+        null);
     }
 
     String parent = prototype.parent();

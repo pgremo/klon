@@ -55,10 +55,6 @@ public final class KlonRoot {
     root.setSlot("Block", block);
     block.configure(root, KlonBlock.class);
 
-    KlonObject set = KlonSet.prototype();
-    root.setSlot("Set", set);
-    set.configure(root, KlonSet.class);
-
     KlonObject list = KlonList.prototype();
     root.setSlot("List", list);
     list.configure(root, KlonList.class);

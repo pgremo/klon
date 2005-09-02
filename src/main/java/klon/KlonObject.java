@@ -367,7 +367,6 @@ public class KlonObject extends Exception {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = KlonLocals.newLocals(receiver, context);
     String name = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -376,9 +375,9 @@ public class KlonObject extends Exception {
       .getData();
     Message code = message.getArgument(2);
     for (Map.Entry<String, KlonObject> current : receiver.slots.entrySet()) {
-      scope.setSlot(name, KlonString.newString(receiver, current.getKey()));
-      scope.setSlot(value, current.getValue());
-      result = code.eval(scope, scope);
+      context.setSlot(name, KlonString.newString(receiver, current.getKey()));
+      context.setSlot(value, current.getValue());
+      result = code.eval(context, context);
     }
     return result;
   }
@@ -472,7 +471,6 @@ public class KlonObject extends Exception {
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = KlonLocals.newLocals(receiver, receiver);
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -492,8 +490,8 @@ public class KlonObject extends Exception {
     }
     double i = start;
     while (!(increment > 0 ? i > end : i < end)) {
-      scope.setSlot(counter, KlonNumber.newNumber(receiver, i));
-      result = code.eval(scope, scope);
+      context.setSlot(counter, KlonNumber.newNumber(receiver, i));
+      result = code.eval(context, context);
       i += increment;
     }
     return result;

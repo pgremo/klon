@@ -64,7 +64,6 @@ public final class KlonList {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    KlonObject scope = KlonLocals.newLocals(receiver, context);
     String index = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -74,9 +73,9 @@ public final class KlonList {
     Message code = message.getArgument(2);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; i < list.size(); i++) {
-      scope.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
-      scope.setSlot(value, list.get(i));
-      result = code.eval(scope, scope);
+      context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      context.setSlot(value, list.get(i));
+      result = code.eval(context, context);
     }
     return result;
   }

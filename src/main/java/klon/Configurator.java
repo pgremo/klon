@@ -121,7 +121,7 @@ public final class Configurator {
         e1.printStackTrace();
       }
     }
-    target.setDuplicator(duplicator);
+    target.setDuplicator(new NativeMethod(duplicator));
   }
 
   public static void setFormatter(KlonObject target,
@@ -138,7 +138,7 @@ public final class Configurator {
         e1.printStackTrace();
       }
     }
-    target.setFormatter(formatter);
+    target.setFormatter(new NativeMethod(formatter));
   }
 
   public static void setActivator(KlonObject target,
@@ -161,6 +161,6 @@ public final class Configurator {
         e1.printStackTrace();
       }
     }
-    target.setActivator(activator);
+    target.setActivator(new NativeMethod(activator));
   }
 }

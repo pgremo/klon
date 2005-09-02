@@ -1,11 +1,13 @@
 package klon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Message {
+public class Message implements Serializable {
 
+  private static final long serialVersionUID = 735141555296332120L;
   private KlonObject selector;
   private KlonObject literal;
   private List<Message> arguments = new ArrayList<Message>();

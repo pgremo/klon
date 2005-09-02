@@ -1,11 +1,7 @@
 package klon;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,9 +18,9 @@ public class KlonObject extends Exception {
 
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
-  private Method activator;
-  private Method duplicator;
-  private Method formatter;
+  private NativeMethod activator;
+  private NativeMethod duplicator;
+  private NativeMethod formatter;
   private Object data;
 
   public void configure(KlonObject root, Class<? extends Object> type)
@@ -35,7 +31,7 @@ public class KlonObject extends Exception {
   public KlonObject duplicate() throws KlonObject {
     try {
       try {
-        return (KlonObject) duplicator.invoke(null, this);
+        return (KlonObject) duplicator.invoke(this);
       } catch (InvocationTargetException e) {
         throw e.getTargetException();
       }
@@ -52,7 +48,7 @@ public class KlonObject extends Exception {
       Message message) throws KlonObject {
     try {
       try {
-        return (KlonObject) activator.invoke(null, this, receiver, context,
+        return (KlonObject) activator.invoke(this, receiver, context,
           message);
       } catch (InvocationTargetException e) {
         throw e.getTargetException();
@@ -73,27 +69,27 @@ public class KlonObject extends Exception {
     return data;
   }
 
-  public void setDuplicator(Method duplicator) {
+  public void setDuplicator(NativeMethod duplicator) {
     this.duplicator = duplicator;
   }
 
-  public Method getDuplicator() {
+  public NativeMethod getDuplicator() {
     return duplicator;
   }
 
-  public void setActivator(Method activator) {
+  public void setActivator(NativeMethod activator) {
     this.activator = activator;
   }
 
-  public Method getActivator() {
+  public NativeMethod getActivator() {
     return activator;
   }
 
-  public void setFormatter(Method formatter) {
+  public void setFormatter(NativeMethod formatter) {
     this.formatter = formatter;
   }
 
-  public Method getFormatter() {
+  public NativeMethod getFormatter() {
     return formatter;
   }
 
@@ -215,7 +211,7 @@ public class KlonObject extends Exception {
   public String toString() {
     String result = null;
     try {
-      result = (String) formatter.invoke(null, this);
+      result = (String) formatter.invoke(this);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -238,81 +234,6 @@ public class KlonObject extends Exception {
       e.printStackTrace();
     }
     return result.toString();
-  }
-
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.writeObject(bindings);
-    stream.writeObject(slots);
-
-    stream.writeObject(activator.getDeclaringClass()
-      .getName());
-    stream.writeObject(activator.getName());
-    Class[] types = activator.getParameterTypes();
-    stream.writeInt(types.length);
-    for (Class type : types) {
-      stream.writeObject(type.getName());
-    }
-
-    stream.writeObject(duplicator.getDeclaringClass()
-      .getName());
-    stream.writeObject(duplicator.getName());
-    types = duplicator.getParameterTypes();
-    stream.writeInt(types.length);
-    for (Class type : types) {
-      stream.writeObject(type.getName());
-    }
-
-    stream.writeObject(formatter.getDeclaringClass()
-      .getName());
-    stream.writeObject(formatter.getName());
-    types = formatter.getParameterTypes();
-    stream.writeInt(types.length);
-    for (Class type : types) {
-      stream.writeObject(type.getName());
-    }
-
-    stream.writeObject(data);
-  }
-
-  @SuppressWarnings("unchecked")
-  private void readObject(ObjectInputStream stream) throws IOException {
-    try {
-      bindings = (List<KlonObject>) stream.readObject();
-      slots = (Map<String, KlonObject>) stream.readObject();
-
-      Class decl = Class.forName((String) stream.readObject());
-      String metName = (String) stream.readObject();
-      int ln = stream.readInt();
-      Class[] sig = new Class[ln];
-      for (int i = 0; i < ln; i++) {
-        sig[i] = Class.forName((String) stream.readObject());
-      }
-      activator = decl.getMethod(metName, sig);
-
-      decl = Class.forName((String) stream.readObject());
-      metName = (String) stream.readObject();
-      ln = stream.readInt();
-      sig = new Class[ln];
-      for (int i = 0; i < ln; i++) {
-        sig[i] = Class.forName((String) stream.readObject());
-      }
-      duplicator = decl.getMethod(metName, sig);
-
-      decl = Class.forName((String) stream.readObject());
-      metName = (String) stream.readObject();
-      ln = stream.readInt();
-      sig = new Class[ln];
-      for (int i = 0; i < ln; i++) {
-        sig[i] = Class.forName((String) stream.readObject());
-      }
-      formatter = decl.getMethod(metName, sig);
-
-      data = stream.readObject();
-    } catch (NoSuchMethodException error) {
-      java.lang.System.out.println("NATIVE SYSTEM ERROR IN READING METHOD(nosuchmethod:PrimMethAttribute)");
-    } catch (ClassNotFoundException error) {
-      java.lang.System.out.println("NATIVE SYSTEM ERROR IN READING METHOD(nosuchclass:PrimMethAttribute)");
-    }
   }
 
   public static KlonObject prototype() {

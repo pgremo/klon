@@ -1,9 +1,11 @@
 package klon;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Block {
+public class Block implements Serializable {
 
+  private static final long serialVersionUID = 8908253496842815003L;
   private String[] parameters;
   private Message code;
 

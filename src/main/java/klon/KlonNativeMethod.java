@@ -35,7 +35,7 @@ public final class KlonNativeMethod {
     if (value != null) {
       try {
         try {
-          result = ((NativeMethod) value).invoke(receiver, context, message);
+          result = (KlonObject)((NativeMethod) value).invoke(receiver, context, message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }

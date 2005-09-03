@@ -26,26 +26,25 @@ public class NativeMethod implements Serializable {
     return method.toString();
   }
 
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.writeObject(method.getDeclaringClass()
-      .getName());
-    stream.writeObject(method.getName());
-    Class[] types = method.getParameterTypes();
-    stream.writeInt(types.length);
-    for (Class type : types) {
-      stream.writeObject(type.getName());
+  private void writeObject(ObjectOutputStream out) throws IOException {
+    out.writeObject(method.getDeclaringClass().getName());
+    out.writeObject(method.getName());
+    Class[] parameters = method.getParameterTypes();
+    out.writeInt(parameters.length);
+    for (Class type : parameters) {
+      out.writeObject(type.getName());
     }
   }
 
-  private void readObject(ObjectInputStream stream) throws IOException,
+  private void readObject(ObjectInputStream in) throws IOException,
       ClassNotFoundException, SecurityException, NoSuchMethodException {
-    Class decl = Class.forName((String) stream.readObject());
-    String metName = (String) stream.readObject();
-    int ln = stream.readInt();
-    Class[] sig = new Class[ln];
-    for (int i = 0; i < ln; i++) {
-      sig[i] = Class.forName((String) stream.readObject());
+    Class type = Class.forName((String) in.readObject());
+    String name = (String) in.readObject();
+    int size = in.readInt();
+    Class[] parameters = new Class[size];
+    for (int i = 0; i < size; i++) {
+      parameters[i] = Class.forName((String) in.readObject());
     }
-    method = decl.getMethod(metName, sig);
+    method = type.getMethod(name, parameters);
   }
 }

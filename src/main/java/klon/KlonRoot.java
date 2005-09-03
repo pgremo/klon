@@ -100,29 +100,21 @@ public final class KlonRoot {
     system.setSlot("Locals", locals);
     locals.configure(root, KlonLocals.class);
 
+    Properties klonProperties = new Properties();
+    klonProperties.load(KlonRoot.class
+        .getResourceAsStream("/klon/version.properties"));
+    klonProperties.load(KlonRoot.class
+        .getResourceAsStream("/klon/klon.properties"));
+    for (Map.Entry<Object, Object> current : klonProperties.entrySet()) {
+      String name = "klon." + current.getKey().toString();
+      if (System.getProperties().get(name) == null) {
+        System.getProperties().put(name, current.getValue().toString());
+      }
+    }
     KlonObject properties = object.duplicate();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
-    }
-    Properties version = new Properties();
-    version.load(KlonRoot.class.getResourceAsStream("/klon/version.properties"));
-    System.getProperties()
-      .putAll(version);
-    for (Map.Entry<Object, Object> current : version.entrySet()) {
-      properties.setSlot("klon." + current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
-    }
-    version.load(KlonRoot.class.getResourceAsStream("/klon/klon.properties"));
-    System.getProperties()
-      .putAll(version);
-    for (Map.Entry<Object, Object> current : version.entrySet()) {
-      properties.setSlot("klon." + current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), KlonString.newString(
+          root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 

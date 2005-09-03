@@ -5,11 +5,36 @@ import java.lang.reflect.Method;
 
 public final class Configurator {
 
-  private static final Class[] VALID_PARAMETERS = new Class[]{
-      KlonObject.class,
-      KlonObject.class,
-      Message.class};
-  private static final Class[] VALID_EXCEPTIONS = new Class[]{KlonObject.class};
+  private static final Class[] VALID_PARAMETERS = new Class[] {
+      KlonObject.class, KlonObject.class, Message.class };
+  private static final Class[] VALID_EXCEPTIONS = new Class[] { KlonObject.class };
+  private static NativeMethod DEFAULT_ACTIVATOR;
+  private static NativeMethod DEFAULT_FORMATTER;
+  private static NativeMethod DEFAULT_DUPLICATOR;
+
+  static {
+    try {
+      DEFAULT_ACTIVATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
+          "activate", new Class[] { KlonObject.class, KlonObject.class,
+              KlonObject.class, Message.class }));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      DEFAULT_FORMATTER = new NativeMethod(KlonObject.class.getDeclaredMethod(
+          "format", new Class[] { KlonObject.class }));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      DEFAULT_DUPLICATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
+          "duplicate", new Class[] { KlonObject.class }));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   private Configurator() {
 
@@ -22,7 +47,7 @@ public final class Configurator {
     if (prototype == null) {
       throw KlonException.newException(root, "Invalid Argument", type.getName()
           + " must have a " + Prototype.class.getSimpleName() + " annotation.",
-        null);
+          null);
     }
 
     String parent = prototype.parent();
@@ -50,8 +75,10 @@ public final class Configurator {
         }
         validateParameters(root, current, identity);
         validateExceptions(root, current, identity);
+        KlonObject nativeMethod = KlonNativeMethod.newNativeMethod(root,
+            current);
         for (String name : exposedAs.value()) {
-          target.setSlot(name, KlonNativeMethod.newNativeMethod(root, current));
+          target.setSlot(name, nativeMethod);
         }
       }
     }
@@ -67,7 +94,7 @@ public final class Configurator {
       if (!VALID_EXCEPTIONS[i].equals(current.getExceptionTypes()[i])) {
         throw KlonException.newException(root, "Invalid Argument", identity
             + " exception " + i + " must be a " + VALID_EXCEPTIONS[i] + ".",
-          null);
+            null);
       }
     }
   }
@@ -82,7 +109,7 @@ public final class Configurator {
       if (!VALID_PARAMETERS[i].equals(current.getParameterTypes()[i])) {
         throw KlonException.newException(root, "Invalid Argument", identity
             + " parameter " + i + " must be a " + VALID_PARAMETERS[i] + ".",
-          null);
+            null);
       }
     }
   }
@@ -110,58 +137,38 @@ public final class Configurator {
 
   public static void setDuplicator(KlonObject target,
       Class<? extends Object> type) {
-    Method duplicator = null;
+    NativeMethod duplicator = null;
     try {
-      duplicator = type.getDeclaredMethod("duplicate",
-        new Class[]{KlonObject.class});
+      duplicator = new NativeMethod(type.getDeclaredMethod("duplicate",
+          new Class[] { KlonObject.class }));
     } catch (NoSuchMethodException e) {
-      try {
-        duplicator = KlonObject.class.getDeclaredMethod("duplicate",
-          new Class[]{KlonObject.class});
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
+      duplicator = DEFAULT_DUPLICATOR;
     }
-    target.setDuplicator(new NativeMethod(duplicator));
+    target.setDuplicator(duplicator);
   }
 
   public static void setFormatter(KlonObject target,
       Class<? extends Object> type) {
-    Method formatter = null;
+    NativeMethod formatter = null;
     try {
-      formatter = type.getDeclaredMethod("format",
-        new Class[]{KlonObject.class});
+      formatter = new NativeMethod(type.getDeclaredMethod("format",
+          new Class[] { KlonObject.class }));
     } catch (NoSuchMethodException e) {
-      try {
-        formatter = KlonObject.class.getDeclaredMethod("format",
-          new Class[]{KlonObject.class});
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
+      formatter = DEFAULT_FORMATTER;
     }
-    target.setFormatter(new NativeMethod(formatter));
+    target.setFormatter(formatter);
   }
 
   public static void setActivator(KlonObject target,
       Class<? extends Object> type) {
-    Method activator = null;
+    NativeMethod activator = null;
     try {
-      activator = type.getDeclaredMethod("activate", new Class[]{
-          KlonObject.class,
-          KlonObject.class,
-          KlonObject.class,
-          Message.class});
+      activator = new NativeMethod(type.getDeclaredMethod("activate",
+          new Class[] { KlonObject.class, KlonObject.class, KlonObject.class,
+              Message.class }));
     } catch (NoSuchMethodException e) {
-      try {
-        activator = KlonObject.class.getDeclaredMethod("activate", new Class[]{
-            KlonObject.class,
-            KlonObject.class,
-            KlonObject.class,
-            Message.class});
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
+      activator = DEFAULT_ACTIVATOR;
     }
-    target.setActivator(new NativeMethod(activator));
+    target.setActivator(activator);
   }
 }

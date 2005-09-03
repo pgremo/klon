@@ -395,7 +395,9 @@ public class KlonObject extends Exception implements Cloneable {
   @ExposedAs("removeSlot")
   public static KlonObject removeSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    receiver.removeSlot(KlonString.evalAsString(context, message, 0));
+    for (int i = 0; i < message.getArgumentCount(); i++) {
+      receiver.removeSlot(KlonString.evalAsString(context, message, i));
+    }
     return receiver;
   }
 
@@ -549,6 +551,12 @@ public class KlonObject extends Exception implements Cloneable {
     return result;
   }
 
+  @ExposedAs("then")
+  public static KlonObject then(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonNoOp.newNoOp(receiver, message.eval(context, 0));
+  }
+
   @ExposedAs( { "and", "&&" })
   public static KlonObject and(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -557,8 +565,8 @@ public class KlonObject extends Exception implements Cloneable {
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs( { "or", "||" })
-  public static KlonObject or(KlonObject receiver, KlonObject context,
+  @ExposedAs( { "or", "||", "else", "elseIf" })
+  public static KlonObject noop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver;
   }

@@ -26,10 +26,16 @@ public final class KlonNil {
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs( { "and", "&&" })
-  public static KlonObject and(KlonObject receiver, KlonObject context,
+  @ExposedAs( { "and", "&&", "then" })
+  public static KlonObject noop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver;
+  }
+
+  @ExposedAs( { "elseIf" })
+  public static KlonObject elseIf(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonObject.ifBranch(receiver, context, message);
   }
 
   @ExposedAs( { "or", "||" })
@@ -39,8 +45,8 @@ public final class KlonNil {
     return receiver.getSlot("Nil").equals(other) ? receiver : other;
   }
 
-  @ExposedAs( { "ifNil", "ifFalse" })
-  public static KlonObject ifNil(KlonObject receiver, KlonObject context,
+  @ExposedAs( { "ifNil", "ifFalse", "else" })
+  public static KlonObject eval(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return message.eval(context, 0);
   }

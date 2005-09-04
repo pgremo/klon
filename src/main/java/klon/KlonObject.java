@@ -518,7 +518,7 @@ public class KlonObject extends Exception implements Cloneable {
     double i = start;
     while (!(increment > 0 ? i > end : i < end)) {
       context.setSlot(counter, KlonNumber.newNumber(receiver, i));
-      result = code.eval(context, context);
+      result = code.eval(receiver, context);
       i += increment;
     }
     return result;

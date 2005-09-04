@@ -54,6 +54,20 @@ public final class KlonList {
     return receiver;
   }
 
+  @SuppressWarnings("unchecked")
+  @ExposedAs("pop")
+  public static KlonObject pop(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    KlonObject result;
+    List<KlonObject> data = (List<KlonObject>) receiver.getData();
+    if (data.isEmpty()) {
+      result = receiver.getSlot("Nil");
+    } else {
+      result = data.remove(0);
+    }
+    return result;
+  }
+
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -112,6 +126,7 @@ public final class KlonList {
     return result;
   }
 
+  @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -120,12 +135,13 @@ public final class KlonList {
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
+      Message stringMessage = new Compiler(receiver).fromString("asString");
       StringBuilder buffer = new StringBuilder();
-      for (Object current : (Iterable) primitive) {
+      for (KlonObject current : (Iterable<KlonObject>) primitive) {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
-        buffer.append(current.toString());
+        buffer.append(stringMessage.eval(current, context).getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

@@ -1,0 +1,25 @@
+Rank := List clone do(
+	for(a,2,10,add(a asString))
+	add("Jack") add("Queen") add("King") add("Ace")
+)
+
+Suit := list("Clubs", "Diamonds", "Hearts", "Spades")
+
+Card := Object clone do(
+	init := method(a, b,
+		self suit := a;
+		self rank := b
+	)
+	asString = method(rank + " of " + suit)
+)
+
+Deck := List clone do(
+	init := method(
+			Suit forEach(i, v,
+				Rank forEach(i2, v2,
+					add(Card clone(v, v2))
+				)
+			)
+		)
+	draw := method(pop)
+)

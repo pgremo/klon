@@ -12,6 +12,7 @@ public final class KlonNil {
     Configurator.setActivator(result, KlonNil.class);
     Configurator.setDuplicator(result, KlonNil.class);
     Configurator.setFormatter(result, KlonNil.class);
+    Configurator.setComparator(result, KlonNil.class);
     return result;
   }
 

@@ -21,6 +21,7 @@ public final class KlonSymbol {
     Configurator.setActivator(result, KlonSymbol.class);
     Configurator.setDuplicator(result, KlonSymbol.class);
     Configurator.setFormatter(result, KlonSymbol.class);
+    Configurator.setComparator(result, KlonSymbol.class);
     return result;
   }
 

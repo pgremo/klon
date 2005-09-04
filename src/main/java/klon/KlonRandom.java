@@ -15,6 +15,7 @@ public final class KlonRandom {
     Configurator.setActivator(result, KlonRandom.class);
     Configurator.setDuplicator(result, KlonRandom.class);
     Configurator.setFormatter(result, KlonRandom.class);
+    Configurator.setComparator(result, KlonRandom.class);
     return result;
   }
 

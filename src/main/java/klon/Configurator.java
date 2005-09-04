@@ -11,6 +11,7 @@ public final class Configurator {
   private static NativeMethod DEFAULT_ACTIVATOR;
   private static NativeMethod DEFAULT_FORMATTER;
   private static NativeMethod DEFAULT_DUPLICATOR;
+  private static NativeMethod DEFAULT_COMPARATOR;
 
   static {
     try {
@@ -31,6 +32,13 @@ public final class Configurator {
     try {
       DEFAULT_DUPLICATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
           "duplicate", new Class[] { KlonObject.class }));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      DEFAULT_COMPARATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
+          "compare", new Class[] { KlonObject.class, KlonObject.class }));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -170,5 +178,17 @@ public final class Configurator {
       activator = DEFAULT_ACTIVATOR;
     }
     target.setActivator(activator);
+  }
+
+  public static void setComparator(KlonObject target,
+      Class<? extends Object> type) {
+    NativeMethod comparator = null;
+    try {
+      comparator = new NativeMethod(type.getDeclaredMethod("compare",
+          new Class[] { KlonObject.class, KlonObject.class }));
+    } catch (NoSuchMethodException e) {
+      comparator = DEFAULT_COMPARATOR;
+    }
+    target.setComparator(comparator);
   }
 }

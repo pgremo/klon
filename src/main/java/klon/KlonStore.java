@@ -22,26 +22,24 @@ public final class KlonStore {
     Configurator.setActivator(result, KlonStore.class);
     Configurator.setDuplicator(result, KlonStore.class);
     Configurator.setFormatter(result, KlonStore.class);
+    Configurator.setComparator(result, KlonStore.class);
     return result;
   }
 
   @ExposedAs("store")
   public static KlonObject store(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject root = KlonRoot.getROOT();
-    KlonObject pathSlot = receiver.getSlot("path");
-    if (pathSlot == null) {
-      throw KlonException.newException(receiver, "Illegal Argument",
-        "path is required", message);
-    }
+    validate(receiver, message);
     ObjectOutputStream out = null;
     try {
-      out = new ObjectOutputStream(new FileOutputStream(
-        (String) pathSlot.getData()));
-      out.writeObject(root);
+      out = new ObjectOutputStream(new FileOutputStream((String) receiver
+          .getSlot("path")
+            .getData()));
+      out.writeObject(KlonRoot.getROOT());
+      return receiver;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass()
-        .getSimpleName(), e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
     } finally {
       if (out != null) {
         try {
@@ -50,27 +48,22 @@ public final class KlonStore {
         }
       }
     }
-    return receiver;
   }
 
   @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject pathSlot = receiver.getSlot("path");
-    if (pathSlot == null) {
-      throw KlonException.newException(receiver, "Illegal Argument",
-        "path is required", message);
-    }
+    validate(receiver, message);
     ObjectInputStream in = null;
-    KlonObject root = null;
     try {
-      in = new ObjectInputStream(new FileInputStream(
-        (String) pathSlot.getData()));
-      root = (KlonObject) in.readObject();
+      in = new ObjectInputStream(new FileInputStream((String) receiver.getSlot(
+          "path").getData()));
+      KlonObject root = (KlonObject) in.readObject();
       KlonRoot.setROOT(root);
+      return root;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass()
-        .getSimpleName(), e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
     } finally {
       if (in != null) {
         try {
@@ -79,6 +72,14 @@ public final class KlonStore {
         }
       }
     }
-    return root;
+  }
+
+  private static void validate(KlonObject receiver, Message message)
+      throws KlonObject {
+    KlonObject pathSlot = receiver.getSlot("path");
+    if (pathSlot == null) {
+      throw KlonException.newException(receiver, "Illegal Argument",
+          "path is required", message);
+    }
   }
 }

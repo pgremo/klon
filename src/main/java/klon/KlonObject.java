@@ -18,6 +18,7 @@ public class KlonObject extends Exception implements Cloneable {
 
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
+  private NativeMethod comparator;
   private NativeMethod activator;
   private NativeMethod duplicator;
   private NativeMethod formatter;
@@ -26,6 +27,21 @@ public class KlonObject extends Exception implements Cloneable {
   public void configure(KlonObject root, Class<? extends Object> type)
       throws Exception {
     Configurator.setSlots(root, this, type);
+  }
+
+  public int compare(KlonObject other) throws KlonObject {
+    try {
+      try {
+        return (Integer) comparator.invoke(this, other);
+      } catch (InvocationTargetException e) {
+        throw e.getTargetException();
+      }
+    } catch (KlonObject e) {
+      throw e;
+    } catch (Throwable e) {
+      throw KlonException.newException(this, e.getClass().getSimpleName(), e
+          .getMessage(), null);
+    }
   }
 
   public KlonObject duplicate() throws KlonObject {
@@ -66,6 +82,14 @@ public class KlonObject extends Exception implements Cloneable {
 
   public Object getData() {
     return data;
+  }
+
+  public NativeMethod getComparator() {
+    return comparator;
+  }
+
+  public void setComparator(NativeMethod comparator) {
+    this.comparator = comparator;
   }
 
   public void setDuplicator(NativeMethod duplicator) {
@@ -199,16 +223,11 @@ public class KlonObject extends Exception implements Cloneable {
 
   @Override
   public boolean equals(Object obj) {
-    boolean result = false;
-    if (this == obj) {
-      result = true;
-    } else {
-      KlonObject klonObject = (KlonObject) obj;
-      result = obj instanceof KlonObject
-          && slots.equals(klonObject.slots)
-          && bindings.equals(klonObject.bindings)
-          && ((data == null && klonObject.data == null) || data != null
-              && data.equals(klonObject.data));
+    boolean result;
+    try {
+      result = obj instanceof KlonObject && compare((KlonObject) obj) == 0;
+    } catch (KlonObject e) {
+      result = false;
     }
     return result;
   }
@@ -259,6 +278,7 @@ public class KlonObject extends Exception implements Cloneable {
     Configurator.setActivator(result, KlonObject.class);
     Configurator.setDuplicator(result, KlonObject.class);
     Configurator.setFormatter(result, KlonObject.class);
+    Configurator.setComparator(result, KlonObject.class);
     return result;
   }
 
@@ -270,11 +290,17 @@ public class KlonObject extends Exception implements Cloneable {
       result.setActivator(value.getActivator());
       result.setFormatter(value.getFormatter());
       result.setDuplicator(value.getDuplicator());
+      result.setComparator(value.getComparator());
       return result;
     } catch (Exception e) {
       throw KlonException.newException(value, e.getClass().getSimpleName(), e
           .getMessage(), null);
     }
+  }
+
+  @SuppressWarnings("unused")
+  public static int compare(KlonObject o1, KlonObject o2) throws KlonObject {
+    return o1.hashCode() - o2.hashCode();
   }
 
   public static String format(KlonObject object) throws KlonObject {

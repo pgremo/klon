@@ -20,6 +20,7 @@ public final class KlonBlock {
     Configurator.setActivator(result, KlonBlock.class);
     Configurator.setDuplicator(result, KlonBlock.class);
     Configurator.setFormatter(result, KlonBlock.class);
+    Configurator.setComparator(result, KlonBlock.class);
     return result;
   }
 

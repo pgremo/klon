@@ -41,7 +41,7 @@
 	</taskdef>
 
 	<target name="clean">
-		<delete dir="target" />
+		<delete dir="target" failonerror="false" />
 	</target>
 
 	<target name="grammar.generate.grammatica">
@@ -178,7 +178,7 @@
 			<entry key="version" default="0.0" />
 			<entry key="build" default="0" type="int" operation="+" />
 		</propertyfile>
-<!--		
+		<!--		
 		<echo file="commit.txt">update to build.</echo>
 		<cvs output="result.txt">
 			<commandline>
@@ -192,7 +192,7 @@
 		<loadfile property="result" srcFile="result.txt" />
 		<echo>${result}</echo>
 		<delete failonerror="false" file="result.txt" />
--->		
+-->
 	</target>
 
 	<target name="version.get" depends="version.create">
@@ -219,7 +219,7 @@
 			</manifest>
 		</jar>
 	</target>
-	
-	<target name="build" depends="version.update, jar"/>
+
+	<target name="build" depends="version.update, jar" />
 
 </project>

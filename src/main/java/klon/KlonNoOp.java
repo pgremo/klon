@@ -20,6 +20,7 @@ public final class KlonNoOp {
     Configurator.setActivator(result, KlonNoOp.class);
     Configurator.setDuplicator(result, KlonNoOp.class);
     Configurator.setFormatter(result, KlonNoOp.class);
+    Configurator.setComparator(result, KlonNoOp.class);
     return result;
   }
 

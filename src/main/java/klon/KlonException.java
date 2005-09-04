@@ -27,6 +27,7 @@ public final class KlonException {
     Configurator.setActivator(result, KlonException.class);
     Configurator.setDuplicator(result, KlonException.class);
     Configurator.setFormatter(result, KlonException.class);
+    Configurator.setComparator(result, KlonException.class);
     return result;
   }
 

@@ -46,6 +46,7 @@ public final class KlonBuffer {
     Configurator.setActivator(result, KlonBuffer.class);
     Configurator.setDuplicator(result, KlonBuffer.class);
     Configurator.setFormatter(result, KlonBuffer.class);
+    Configurator.setComparator(result, KlonBuffer.class);
     return result;
   }
 

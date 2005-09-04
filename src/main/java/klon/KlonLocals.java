@@ -12,6 +12,7 @@ public final class KlonLocals {
     Configurator.setActivator(result, KlonLocals.class);
     Configurator.setDuplicator(result, KlonLocals.class);
     Configurator.setFormatter(result, KlonLocals.class);
+    Configurator.setComparator(result, KlonLocals.class);
     return result;
   }
 

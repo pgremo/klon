@@ -22,8 +22,7 @@ public final class KlonString {
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
-    KlonObject result = root.getSlot("String")
-      .duplicate();
+    KlonObject result = root.getSlot("String").duplicate();
     result.setData(value);
     return result;
   }
@@ -38,8 +37,8 @@ public final class KlonString {
       while (channel.read(byteBuffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
+      throw KlonException.newException(root, e.getClass().getSimpleName(), e
+          .getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -58,8 +57,8 @@ public final class KlonString {
     try {
       buffer = decoder.decode(byteBuffer);
     } catch (CharacterCodingException e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
+      throw KlonException.newException(root, e.getClass().getSimpleName(), e
+          .getMessage(), null);
     }
     return newString(root, buffer.toString());
   }
@@ -70,23 +69,35 @@ public final class KlonString {
     Configurator.setActivator(result, KlonString.class);
     Configurator.setDuplicator(result, KlonString.class);
     Configurator.setFormatter(result, KlonString.class);
+    Configurator.setComparator(result, KlonString.class);
+    return result;
+  }
+
+  @SuppressWarnings("unused")
+  public static int compare(KlonObject receiver, KlonObject other)
+      throws KlonObject {
+    int result;
+    if ("String".equals(other.getSlot("type").getData())) {
+      result = ((String) receiver.getData()).compareTo(((String) other
+          .getData()));
+    } else {
+      result = receiver.hashCode() - other.hashCode();
+    }
     return result;
   }
 
   public static String format(KlonObject value) {
-    return "\"" + value.getData()
-      .toString() + "\"";
+    return "\"" + value.getData().toString() + "\"";
   }
 
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getSlot("type")
-      .getData())) {
+    if ("String".equals(result.getSlot("type").getData())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
-      "argument must evaluate to a string", message);
+        "argument must evaluate to a string", message);
   }
 
   @ExposedAs("+")
@@ -94,16 +105,17 @@ public final class KlonString {
       Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return KlonString.newString(receiver, receiver.getData()
-        + String.valueOf(message.eval(context, 0)
-          .perform(context, printMessage)
-          .getData()));
+        + String.valueOf(message
+            .eval(context, 0)
+              .perform(context, printMessage)
+              .getData()));
   }
 
   @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
-      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+        context, message, 0)) ? receiver : receiver.getSlot("Nil");
   }
 
   @SuppressWarnings("unused")

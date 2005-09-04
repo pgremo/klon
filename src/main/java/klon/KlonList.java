@@ -18,6 +18,7 @@ public final class KlonList {
     Configurator.setActivator(result, KlonList.class);
     Configurator.setDuplicator(result, KlonList.class);
     Configurator.setFormatter(result, KlonList.class);
+    Configurator.setComparator(result, KlonList.class);
     return result;
   }
 
@@ -33,6 +34,23 @@ public final class KlonList {
       throws KlonObject {
     KlonObject result = root.getSlot("List").duplicate();
     result.setData(value);
+    return result;
+  }
+
+  @SuppressWarnings( { "unused", "unchecked" })
+  public static int compare(KlonObject receiver, KlonObject other)
+      throws KlonObject {
+    int result;
+    if ("List".equals(other.getSlot("type").getData())) {
+      List<KlonObject> l1 = (List<KlonObject>) receiver.getData();
+      List<KlonObject> l2 = (List<KlonObject>) other.getData();
+      result = l1.size() - l2.size();
+      for (int i = 0; result == 0 && i < l1.size(); i++) {
+        result = l1.get(i).compare(l2.get(i));
+      }
+    } else {
+      result = receiver.hashCode() - other.hashCode();
+    }
     return result;
   }
 

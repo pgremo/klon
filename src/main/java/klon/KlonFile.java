@@ -15,6 +15,7 @@ public final class KlonFile {
     Configurator.setActivator(result, KlonFile.class);
     Configurator.setDuplicator(result, KlonFile.class);
     Configurator.setFormatter(result, KlonFile.class);
+    Configurator.setComparator(result, KlonFile.class);
     return result;
   }
 

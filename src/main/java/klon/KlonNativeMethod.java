@@ -24,6 +24,7 @@ public final class KlonNativeMethod {
     Configurator.setActivator(result, KlonNativeMethod.class);
     Configurator.setDuplicator(result, KlonNativeMethod.class);
     Configurator.setFormatter(result, KlonNativeMethod.class);
+    Configurator.setComparator(result, KlonNativeMethod.class);
     return result;
   }
 

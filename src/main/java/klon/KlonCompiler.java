@@ -16,6 +16,7 @@ public final class KlonCompiler {
     Configurator.setActivator(result, KlonCompiler.class);
     Configurator.setDuplicator(result, KlonCompiler.class);
     Configurator.setFormatter(result, KlonCompiler.class);
+    Configurator.setComparator(result, KlonCompiler.class);
     return result;
   }
 

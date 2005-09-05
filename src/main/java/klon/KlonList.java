@@ -27,7 +27,7 @@ public class KlonList extends Identity {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = KlonObject.duplicate(value);
+    KlonObject result = super.duplicate(value);
     result
         .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;

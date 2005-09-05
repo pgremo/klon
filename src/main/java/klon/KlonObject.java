@@ -68,24 +68,6 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     return result;
   }
 
-  private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
-      throws KlonObject {
-    KlonObject result = null;
-    if (slots.containsKey(name)) {
-      result = slots.get(name);
-    } else {
-      Iterator<KlonObject> iterator = bindings.iterator();
-      while (iterator.hasNext() && result == null) {
-        KlonObject current = iterator.next();
-        if (!contains(searchPath, current)) {
-          searchPath.add(current);
-          result = current.getSlot(name, searchPath);
-        }
-      }
-    }
-    return result;
-  }
-
   private boolean contains(Collection<KlonObject> collection, KlonObject object) {
     boolean found = false;
     int target = System.identityHashCode(object);
@@ -94,6 +76,24 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
       found = target == System.identityHashCode(iterator.next());
     }
     return found;
+  }
+
+  private KlonObject getSlot(String name, Collection<KlonObject> searchPath)
+      throws KlonObject {
+    KlonObject result = null;
+    if (slots.containsKey(name)) {
+      result = slots.get(name);
+    } else {
+      Iterator<KlonObject> iterator = bindings.iterator();
+      while (result == null && iterator.hasNext()) {
+        KlonObject current = iterator.next();
+        if (!contains(searchPath, current)) {
+          searchPath.add(current);
+          result = current.getSlot(name, searchPath);
+        }
+      }
+    }
+    return result;
   }
 
   public KlonObject getSlot(String name) throws KlonObject {
@@ -112,12 +112,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   }
 
   public void bind(KlonObject object) {
-    boolean found = false;
-    Iterator<KlonObject> iterator = bindings.iterator();
-    while (iterator.hasNext() && !found) {
-      found = iterator.next() == object;
-    }
-    if (!found) {
+    if (!isBound(object)) {
       bindings.add(object);
     }
   }
@@ -125,7 +120,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   public boolean isBound(KlonObject object) {
     boolean found = false;
     Iterator<KlonObject> iterator = bindings.iterator();
-    while (iterator.hasNext() && !found) {
+    while (!found && iterator.hasNext()) {
       found = iterator.next() == object;
     }
     return found;

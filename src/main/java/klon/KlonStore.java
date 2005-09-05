@@ -7,23 +7,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 @Prototype(name = "Store", parent = "Object")
-public final class KlonStore {
+public class KlonStore extends Identity {
 
-  private KlonStore() {
-
-  }
-
-  public static KlonObject duplicate(KlonObject value) {
-    return value;
-  }
+  private static final long serialVersionUID = -4140594553364102878L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonStore.class);
-    Configurator.setDuplicator(result, KlonStore.class);
-    Configurator.setFormatter(result, KlonStore.class);
-    Configurator.setComparator(result, KlonStore.class);
+    result.setIdentity(new KlonStore());
     return result;
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) {
+    return value;
   }
 
   @ExposedAs("store")

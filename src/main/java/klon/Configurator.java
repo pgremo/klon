@@ -8,41 +8,6 @@ public final class Configurator {
   private static final Class[] VALID_PARAMETERS = new Class[] {
       KlonObject.class, KlonObject.class, Message.class };
   private static final Class[] VALID_EXCEPTIONS = new Class[] { KlonObject.class };
-  private static NativeMethod DEFAULT_ACTIVATOR;
-  private static NativeMethod DEFAULT_FORMATTER;
-  private static NativeMethod DEFAULT_DUPLICATOR;
-  private static NativeMethod DEFAULT_COMPARATOR;
-
-  static {
-    try {
-      DEFAULT_ACTIVATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
-          "activate", new Class[] { KlonObject.class, KlonObject.class,
-              KlonObject.class, Message.class }));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    try {
-      DEFAULT_FORMATTER = new NativeMethod(KlonObject.class.getDeclaredMethod(
-          "format", new Class[] { KlonObject.class }));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    try {
-      DEFAULT_DUPLICATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
-          "duplicate", new Class[] { KlonObject.class }));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    try {
-      DEFAULT_COMPARATOR = new NativeMethod(KlonObject.class.getDeclaredMethod(
-          "compare", new Class[] { KlonObject.class, KlonObject.class }));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
   private Configurator() {
 
@@ -143,52 +108,4 @@ public final class Configurator {
     }
   }
 
-  public static void setDuplicator(KlonObject target,
-      Class<? extends Object> type) {
-    NativeMethod duplicator = null;
-    try {
-      duplicator = new NativeMethod(type.getDeclaredMethod("duplicate",
-          new Class[] { KlonObject.class }));
-    } catch (NoSuchMethodException e) {
-      duplicator = DEFAULT_DUPLICATOR;
-    }
-    target.setDuplicator(duplicator);
-  }
-
-  public static void setFormatter(KlonObject target,
-      Class<? extends Object> type) {
-    NativeMethod formatter = null;
-    try {
-      formatter = new NativeMethod(type.getDeclaredMethod("format",
-          new Class[] { KlonObject.class }));
-    } catch (NoSuchMethodException e) {
-      formatter = DEFAULT_FORMATTER;
-    }
-    target.setFormatter(formatter);
-  }
-
-  public static void setActivator(KlonObject target,
-      Class<? extends Object> type) {
-    NativeMethod activator = null;
-    try {
-      activator = new NativeMethod(type.getDeclaredMethod("activate",
-          new Class[] { KlonObject.class, KlonObject.class, KlonObject.class,
-              Message.class }));
-    } catch (NoSuchMethodException e) {
-      activator = DEFAULT_ACTIVATOR;
-    }
-    target.setActivator(activator);
-  }
-
-  public static void setComparator(KlonObject target,
-      Class<? extends Object> type) {
-    NativeMethod comparator = null;
-    try {
-      comparator = new NativeMethod(type.getDeclaredMethod("compare",
-          new Class[] { KlonObject.class, KlonObject.class }));
-    } catch (NoSuchMethodException e) {
-      comparator = DEFAULT_COMPARATOR;
-    }
-    target.setComparator(comparator);
-  }
 }

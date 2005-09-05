@@ -1,26 +1,20 @@
 package klon;
 
 @Prototype(name = "NoOp")
-public final class KlonNoOp {
+public class KlonNoOp extends Identity {
 
-  private KlonNoOp() {
-
-  }
+  private static final long serialVersionUID = -2300471734654563252L;
 
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {
-    KlonObject result = root.getSlot("NoOp")
-      .duplicate();
+    KlonObject result = root.getSlot("NoOp").duplicate();
     result.setData(value);
     return result;
   }
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonNoOp.class);
-    Configurator.setDuplicator(result, KlonNoOp.class);
-    Configurator.setFormatter(result, KlonNoOp.class);
-    Configurator.setComparator(result, KlonNoOp.class);
+    result.setIdentity(new KlonNoOp());
     return result;
   }
 

@@ -1,25 +1,19 @@
 package klon;
 
 @Prototype(name = "Locals", parent = "Object")
-public final class KlonLocals {
+public class KlonLocals extends Identity {
 
-  private KlonLocals() {
-
-  }
+  private static final long serialVersionUID = 1963856865914651978L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonLocals.class);
-    Configurator.setDuplicator(result, KlonLocals.class);
-    Configurator.setFormatter(result, KlonLocals.class);
-    Configurator.setComparator(result, KlonLocals.class);
+    result.setIdentity(new KlonLocals());
     return result;
   }
 
   public static KlonObject newLocals(KlonObject root, KlonObject self)
       throws KlonObject {
-    KlonObject result = root.getSlot("Locals")
-      .duplicate();
+    KlonObject result = root.getSlot("Locals").duplicate();
     result.setSlot("self", self);
     result.setData(self.getData());
     return result;

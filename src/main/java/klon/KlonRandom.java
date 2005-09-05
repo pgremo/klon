@@ -3,19 +3,14 @@ package klon;
 import java.util.Random;
 
 @Prototype(name = "Random", parent = "Object")
-public final class KlonRandom {
+public class KlonRandom extends Identity {
 
-  private KlonRandom() {
-
-  }
+  private static final long serialVersionUID = -7916992470486962761L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(new MersenneTwister());
-    Configurator.setActivator(result, KlonRandom.class);
-    Configurator.setDuplicator(result, KlonRandom.class);
-    Configurator.setFormatter(result, KlonRandom.class);
-    Configurator.setComparator(result, KlonRandom.class);
+    result.setIdentity(new KlonRandom());
     return result;
   }
 

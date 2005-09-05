@@ -11,14 +11,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 @Prototype(name = "String", parent = "Object")
-public final class KlonString {
+public class KlonString extends Identity {
 
+  private static final long serialVersionUID = -7547715800603443713L;
   private static Charset charset = Charset.forName("ISO-8859-15");
   private static CharsetDecoder decoder = charset.newDecoder();
-
-  private KlonString() {
-
-  }
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
@@ -66,16 +63,13 @@ public final class KlonString {
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData("");
-    Configurator.setActivator(result, KlonString.class);
-    Configurator.setDuplicator(result, KlonString.class);
-    Configurator.setFormatter(result, KlonString.class);
-    Configurator.setComparator(result, KlonString.class);
+    result.setIdentity(new KlonString());
     return result;
   }
 
   @SuppressWarnings("unused")
-  public static int compare(KlonObject receiver, KlonObject other)
-      throws KlonObject {
+  @Override
+  public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
     int result;
     if ("String".equals(other.getSlot("type").getData())) {
       result = ((String) receiver.getData())
@@ -86,7 +80,8 @@ public final class KlonString {
     return result;
   }
 
-  public static String format(KlonObject value) {
+  @Override
+  public String format(KlonObject value) {
     return "\"" + value.getData().toString() + "\"";
   }
 

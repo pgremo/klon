@@ -3,19 +3,14 @@ package klon;
 import java.io.File;
 
 @Prototype(name = "File", parent = "Object")
-public final class KlonFile {
+public class KlonFile extends Identity {
 
-  private KlonFile() {
-
-  }
+  private static final long serialVersionUID = 3159106516324355579L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(new File("/"));
-    Configurator.setActivator(result, KlonFile.class);
-    Configurator.setDuplicator(result, KlonFile.class);
-    Configurator.setFormatter(result, KlonFile.class);
-    Configurator.setComparator(result, KlonFile.class);
+    result.setIdentity(new KlonFile());
     return result;
   }
 

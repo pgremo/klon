@@ -1,22 +1,18 @@
 package klon;
 
 @Prototype(name = "Compiler", parent = "Object")
-public final class KlonCompiler {
+public class KlonCompiler extends Identity {
 
-  private KlonCompiler() {
+  private static final long serialVersionUID = 359686882876703383L;
 
-  }
-
-  public static KlonObject duplicate(KlonObject value) {
+  @Override
+  public KlonObject duplicate(KlonObject value) {
     return value;
   }
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonCompiler.class);
-    Configurator.setDuplicator(result, KlonCompiler.class);
-    Configurator.setFormatter(result, KlonCompiler.class);
-    Configurator.setComparator(result, KlonCompiler.class);
+    result.setIdentity(new KlonCompiler());
     return result;
   }
 

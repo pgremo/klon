@@ -1,25 +1,19 @@
 package klon;
 
 @Prototype(name = "Message", parent = "Object")
-public final class KlonMessage {
+public class KlonMessage extends Identity {
 
-  private KlonMessage() {
-
-  }
+  private static final long serialVersionUID = 7244365877217781727L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonMessage.class);
-    Configurator.setDuplicator(result, KlonMessage.class);
-    Configurator.setFormatter(result, KlonMessage.class);
-    Configurator.setComparator(result, KlonMessage.class);
+    result.setIdentity(new KlonMessage());
     return result;
   }
 
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message")
-      .duplicate();
+    KlonObject result = root.getSlot("Message").duplicate();
     result.setData(message);
     return result;
   }

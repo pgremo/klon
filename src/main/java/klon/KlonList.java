@@ -6,27 +6,14 @@ import java.util.List;
 import java.util.Random;
 
 @Prototype(name = "List", parent = "Object")
-public final class KlonList {
+public class KlonList extends Identity {
 
-  private KlonList() {
-
-  }
+  private static final long serialVersionUID = -4331613935922113899L;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(new ArrayList<KlonObject>());
-    Configurator.setActivator(result, KlonList.class);
-    Configurator.setDuplicator(result, KlonList.class);
-    Configurator.setFormatter(result, KlonList.class);
-    Configurator.setComparator(result, KlonList.class);
-    return result;
-  }
-
-  @SuppressWarnings("unchecked")
-  public static KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = KlonObject.duplicate(value);
-    result
-        .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
+    result.setIdentity(new KlonList());
     return result;
   }
 
@@ -37,9 +24,18 @@ public final class KlonList {
     return result;
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = KlonObject.duplicate(value);
+    result
+        .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
+    return result;
+  }
+
   @SuppressWarnings( { "unused", "unchecked" })
-  public static int compare(KlonObject receiver, KlonObject other)
-      throws KlonObject {
+  @Override
+  public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
     int result;
     if ("List".equals(other.getSlot("type").getData())) {
       List<KlonObject> l1 = (List<KlonObject>) receiver.getData();

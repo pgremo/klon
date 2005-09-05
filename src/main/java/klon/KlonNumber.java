@@ -3,17 +3,15 @@ package klon;
 import java.text.NumberFormat;
 
 @Prototype(name = "Number", parent = "Object")
-public final class KlonNumber {
+public class KlonNumber extends Identity {
+
+  private static final long serialVersionUID = -3735761349600472088L;
 
   private static NumberFormat format = NumberFormat.getInstance();
   static {
     format.setGroupingUsed(false);
     format.setMinimumFractionDigits(0);
     format.setMaximumFractionDigits(Integer.MAX_VALUE);
-  }
-
-  private KlonNumber() {
-
   }
 
   public static KlonObject newNumber(KlonObject root, Double value)
@@ -26,16 +24,13 @@ public final class KlonNumber {
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(0D);
-    Configurator.setActivator(result, KlonNumber.class);
-    Configurator.setDuplicator(result, KlonNumber.class);
-    Configurator.setFormatter(result, KlonNumber.class);
-    Configurator.setComparator(result, KlonNumber.class);
+    result.setIdentity(new KlonNumber());
     return result;
   }
 
   @SuppressWarnings("unused")
-  public static int compare(KlonObject receiver, KlonObject other)
-      throws KlonObject {
+  @Override
+  public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
     int result;
     if ("Number".equals(other.getSlot("type").getData())) {
       result = ((Double) receiver.getData())
@@ -46,7 +41,8 @@ public final class KlonNumber {
     return result;
   }
 
-  public static String format(KlonObject value) {
+  @Override
+  public String format(KlonObject value) {
     return format.format(value.getData());
   }
 

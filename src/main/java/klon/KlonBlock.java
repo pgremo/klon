@@ -1,51 +1,45 @@
 package klon;
 
 @Prototype(name = "Block", parent = "Object")
-public final class KlonBlock {
+public class KlonBlock extends Identity {
 
-  private KlonBlock() {
-
-  }
+  private static final long serialVersionUID = -5339972783724473883L;
 
   public static KlonObject newBlock(KlonObject root, Block value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Block")
-      .duplicate();
+    KlonObject result = root.getSlot("Block").duplicate();
     result.setData(value);
     return result;
   }
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    Configurator.setActivator(result, KlonBlock.class);
-    Configurator.setDuplicator(result, KlonBlock.class);
-    Configurator.setFormatter(result, KlonBlock.class);
-    Configurator.setComparator(result, KlonBlock.class);
+    result.setIdentity(new KlonBlock());
     return result;
   }
 
-  public static KlonObject activate(KlonObject slot, KlonObject receiver,
+  @Override
+  public KlonObject activate(KlonObject slot, KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     Object value = slot.getData();
     return value == null ? slot : ((Block) value).activate(receiver, context,
-      message);
+        message);
   }
 
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonMessage.newMessage(receiver,
-      ((Block) receiver.getData()).getCode());
+    return KlonMessage.newMessage(receiver, ((Block) receiver.getData())
+        .getCode());
   }
 
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    if (!result.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
-      result = message.getArgument(0)
-        .eval(context, context);
+    if (!result.equals(receiver.activate(context, context, ((Block) (receiver
+        .getData())).getCode()))) {
+      result = message.getArgument(0).eval(context, context);
     }
     return result;
   }
@@ -54,10 +48,9 @@ public final class KlonBlock {
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    if (result.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
-      result = message.getArgument(0)
-        .eval(context, context);
+    if (result.equals(receiver.activate(context, context, ((Block) (receiver
+        .getData())).getCode()))) {
+      result = message.getArgument(0).eval(context, context);
     }
     return result;
   }
@@ -66,10 +59,9 @@ public final class KlonBlock {
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
-    while (!nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
-      message.getArgument(0)
-        .eval(context, context);
+    while (!nil.equals(receiver.activate(context, context, ((Block) (receiver
+        .getData())).getCode()))) {
+      message.getArgument(0).eval(context, context);
     }
     return nil;
   }
@@ -78,10 +70,9 @@ public final class KlonBlock {
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
-    while (nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
-      message.getArgument(0)
-        .eval(context, context);
+    while (nil.equals(receiver.activate(context, context, ((Block) (receiver
+        .getData())).getCode()))) {
+      message.getArgument(0).eval(context, context);
     }
     return nil;
   }

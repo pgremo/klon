@@ -45,7 +45,7 @@ public final class KlonRoot {
 
     string.configure(root, KlonString.class);
     nativeMethod.configure(root, KlonNativeMethod.class);
-    object.configure(root, KlonObject.class);
+    object.configure(root, Identity.class);
     exception.configure(root, KlonException.class);
 
     KlonObject nil = KlonNil.prototype();

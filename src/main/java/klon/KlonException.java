@@ -60,7 +60,7 @@ public class KlonException extends Identity {
     KlonObject name = receiver.getSlot("name");
     KlonObject description = receiver.getSlot("description");
     if (name == null && description == null) {
-      result = KlonObject.asString(receiver, context, message);
+      result = Identity.asString(receiver, context, message);
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();

@@ -155,7 +155,7 @@ public class KlonList extends Identity {
     KlonObject result;
     Object primitive = receiver.getData();
     if (primitive == null) {
-      result = KlonObject.asString(receiver, context, message);
+      result = Identity.asString(receiver, context, message);
     } else {
       Message stringMessage = new Compiler(receiver).fromString("asString");
       StringBuilder buffer = new StringBuilder();

@@ -32,7 +32,7 @@ public class KlonNil extends Identity {
   @ExposedAs( { "elseIf" })
   public static KlonObject elseIf(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonObject.ifBranch(receiver, context, message);
+    return Identity.ifBranch(receiver, context, message);
   }
 
   @ExposedAs( { "or", "||" })

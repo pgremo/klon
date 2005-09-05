@@ -1,5 +1,7 @@
 %header%
 
+// some comment
+
 GRAMMARTYPE = "LL"
 
 AUTHOR = "Patrick Gremo"

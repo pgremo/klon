@@ -94,6 +94,14 @@ public final class KlonList {
   }
 
   @SuppressWarnings("unused")
+  @ExposedAs("reverse")
+  public static KlonObject reverse(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    Collections.reverse((List) receiver.getData());
+    return receiver;
+  }
+
+  @SuppressWarnings("unused")
   @ExposedAs("shuffle")
   public static KlonObject shuffle(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

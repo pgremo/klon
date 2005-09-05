@@ -138,7 +138,7 @@ public class KlonObject extends Exception implements Cloneable {
       Iterator<KlonObject> iterator = bindings.iterator();
       while (iterator.hasNext() && result == null) {
         KlonObject current = iterator.next();
-        if (!searchPath.contains(current)) {
+        if (!contains(searchPath, current)) {
           searchPath.add(current);
           result = current.getSlot(name, searchPath);
         }
@@ -147,11 +147,20 @@ public class KlonObject extends Exception implements Cloneable {
     return result;
   }
 
+  private boolean contains(Collection<KlonObject> collection, KlonObject object) {
+    boolean found = false;
+    int target = System.identityHashCode(object);
+    Iterator<KlonObject> iterator = collection.iterator();
+    while (!found && iterator.hasNext()) {
+      found = target == System.identityHashCode(iterator.next());
+    }
+    return found;
+  }
+
   public KlonObject getSlot(String name) throws KlonObject {
-    LinkedList<KlonObject> searchPath = new LinkedList<KlonObject>();
-    KlonObject result = getSlot(name, searchPath);
+    KlonObject result = getSlot(name, new LinkedList<KlonObject>());
     if (result == null) {
-      KlonObject self = getSlot("self", searchPath);
+      KlonObject self = getSlot("self", new LinkedList<KlonObject>());
       if (self != null) {
         result = self.getSlot(name);
       }
@@ -459,6 +468,13 @@ public class KlonObject extends Exception implements Cloneable {
     return KlonString.newString(receiver, receiver.toString());
   }
 
+  @ExposedAs("uniqueId")
+  public static KlonObject uniqueId(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonNumber.newNumber(receiver, (double) System
+        .identityHashCode(receiver));
+  }
+
   @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -476,7 +492,7 @@ public class KlonObject extends Exception implements Cloneable {
   public static KlonObject writeLine(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     write(receiver, context, message);
-    System.out.println();
+    System.out.print("\n");
     return receiver;
   }
 
@@ -711,12 +727,12 @@ public class KlonObject extends Exception implements Cloneable {
       }
       System.out.print(")");
     }
-    System.out.println();
+    System.out.print("\n");
     TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
         receiver.slots);
     for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
-      System.out.println(current.getKey() + " := "
-          + current.getValue().toString());
+      System.out.print(current.getKey() + " := "
+          + current.getValue().toString() + "\n");
     }
     return receiver.getSlot("Nil");
   }

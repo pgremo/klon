@@ -38,8 +38,8 @@ public final class KlonNumber {
       throws KlonObject {
     int result;
     if ("Number".equals(other.getSlot("type").getData())) {
-      result = ((Double) receiver.getData()).compareTo(((Double) other
-          .getData()));
+      result = ((Double) receiver.getData())
+          .compareTo((Double) other.getData());
     } else {
       result = receiver.hashCode() - other.hashCode();
     }

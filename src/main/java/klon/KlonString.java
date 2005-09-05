@@ -78,8 +78,8 @@ public final class KlonString {
       throws KlonObject {
     int result;
     if ("String".equals(other.getSlot("type").getData())) {
-      result = ((String) receiver.getData()).compareTo(((String) other
-          .getData()));
+      result = ((String) receiver.getData())
+          .compareTo((String) other.getData());
     } else {
       result = receiver.hashCode() - other.hashCode();
     }

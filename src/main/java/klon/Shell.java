@@ -104,7 +104,7 @@ public class Shell {
       System.setOut(newOut);
       new Shell(new InputStreamReader(System.in), newOut).process();
     } catch (Exception e) {
-      System.err.println(e.getMessage());
+      System.err.print(e.getMessage() + "\n");
       e.printStackTrace(System.err);
     }
   }

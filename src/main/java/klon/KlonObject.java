@@ -156,7 +156,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
 
   public int compareTo(Object o) {
     try {
-      return identity.compare(this, ((KlonObject) o));
+      return identity.compare(this, (KlonObject) o);
     } catch (KlonObject e) {
       throw new RuntimeException(e);
     }

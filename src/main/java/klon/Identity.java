@@ -13,6 +13,16 @@ public class Identity implements Serializable {
 
   private static final long serialVersionUID = -8518903977702842129L;
 
+  private boolean activatable;
+
+  public boolean isActivatable() {
+    return activatable;
+  }
+
+  public void setActivatable(boolean activatable) {
+    this.activatable = activatable;
+  }
+
   @SuppressWarnings("unused")
   public KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = new KlonObject();
@@ -35,7 +45,14 @@ public class Identity implements Serializable {
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject slot, KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
-    return slot;
+    KlonObject result = slot;
+    if (activatable) {
+      KlonObject activate = slot.getSlot("activate");
+      if (activate != null) {
+        result = activate.activate(slot, receiver, message);
+      }
+    }
+    return result;
   }
 
   @ExposedAs("bind")
@@ -68,6 +85,15 @@ public class Identity implements Serializable {
       slot.activate(result, context, message);
     }
     return result;
+  }
+
+  @ExposedAs("setIsActivatable")
+  public static KlonObject setIsActivatable(KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
+    KlonObject value = message.eval(context, 0);
+    receiver.getIdentity().setActivatable(
+        !receiver.getSlot("Nil").equals(value));
+    return receiver;
   }
 
   @ExposedAs("send")

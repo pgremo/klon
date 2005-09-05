@@ -23,7 +23,7 @@ public class Shell {
     KlonObject properties = KlonRoot.getROOT().getSlot("Properties");
     KlonObject version = properties.getSlot("klon.version");
     KlonObject build = properties.getSlot("klon.build");
-    out.println("klon version:" + version.getData() + ", build:"
+    out.println("klon " + version.getData() + "."
         + build.getData());
     out.flush();
     while (true) {

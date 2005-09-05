@@ -21,10 +21,6 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     Configurator.setSlots(root, this, type);
   }
 
-  public int compare(KlonObject other) throws KlonObject {
-    return identity.compare(this, other);
-  }
-
   public KlonObject duplicate() throws KlonObject {
     return identity.duplicate(this);
   }
@@ -160,7 +156,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
 
   public int compareTo(Object o) {
     try {
-      return compare((KlonObject) o);
+      return identity.compare(this, ((KlonObject) o));
     } catch (KlonObject e) {
       throw new RuntimeException(e);
     }
@@ -171,11 +167,11 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   // ================
 
   @Override
-  public Object clone() throws CloneNotSupportedException {
+  public Object clone() {
     try {
       return duplicate();
     } catch (KlonObject e) {
-      throw new CloneNotSupportedException(e.getMessage());
+      throw new RuntimeException(e);
     }
   }
 
@@ -183,7 +179,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   public boolean equals(Object obj) {
     boolean result;
     try {
-      result = obj instanceof KlonObject && compare((KlonObject) obj) == 0;
+      result = obj instanceof KlonObject
+          && identity.compare(this, (KlonObject) obj) == 0;
     } catch (KlonObject e) {
       result = false;
     }

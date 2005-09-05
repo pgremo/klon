@@ -42,7 +42,7 @@ public class KlonList extends Identity {
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();
       for (int i = 0; result == 0 && i < l1.size(); i++) {
-        result = l1.get(i).compare(l2.get(i));
+        result = l1.get(i).compareTo(l2.get(i));
       }
     } else {
       result = receiver.hashCode() - other.hashCode();

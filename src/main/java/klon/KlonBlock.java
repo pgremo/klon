@@ -1,5 +1,7 @@
 package klon;
 
+import java.util.List;
+
 @Prototype(name = "Block", parent = "Object")
 public class KlonBlock extends Identity {
 
@@ -18,12 +20,37 @@ public class KlonBlock extends Identity {
     return result;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
-    Object value = slot.getData();
-    return value == null ? slot : ((Block) value).activate(receiver, context,
-        message);
+    Block value = (Block) slot.getData();
+    KlonObject result;
+    if (value == null) {
+      result = slot;
+    } else {
+      KlonObject scope = KlonLocals.newLocals(receiver, receiver);
+      String[] parameters = value.getParameters();
+      int limit = Math.min(message.getArgumentCount(), parameters.length);
+      int i = 0;
+      for (; i < limit; i++) {
+        scope.setSlot(parameters[i], message.eval(context, i));
+      }
+      KlonObject nil = receiver.getSlot("Nil");
+      for (; i < parameters.length; i++) {
+        scope.setSlot(parameters[i], nil);
+      }
+      result = nil;
+      try {
+        result = value.getCode().eval(scope, scope);
+      } catch (KlonObject e) {
+        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
+            .newString(receiver, message.toString()));
+        throw e;
+      }
+
+    }
+    return result;
   }
 
   @ExposedAs("code")

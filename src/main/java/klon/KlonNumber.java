@@ -108,58 +108,6 @@ public final class KlonNumber {
         evalAsNumber(context, message, 0)));
   }
 
-  @ExposedAs("<")
-  public static KlonObject lessThan(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getSlot("type").getData())) {
-      Double o1 = (Double) receiver.getData();
-      Double o2 = (Double) argument.getData();
-      return o1.compareTo(o2) < 0 ? argument : receiver.getSlot("Nil");
-    }
-    throw KlonException.newException(receiver, "Illegal Argument",
-        "Illegal Argument for <", message);
-  }
-
-  @ExposedAs(">")
-  public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getSlot("type").getData())) {
-      Double o1 = (Double) receiver.getData();
-      Double o2 = (Double) argument.getData();
-      return o1.compareTo(o2) > 0 ? argument : receiver.getSlot("Nil");
-    }
-    throw KlonException.newException(receiver, "Illegal Argument",
-        "Illegal Argument for >", message);
-  }
-
-  @ExposedAs("<=")
-  public static KlonObject lessThanEquals(KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getSlot("type").getData())) {
-      Double o1 = (Double) receiver.getData();
-      Double o2 = (Double) argument.getData();
-      return o1.compareTo(o2) <= 0 ? argument : receiver.getSlot("Nil");
-    }
-    throw KlonException.newException(receiver, "Illegal Argument",
-        "Illegal Argument for <=", message);
-  }
-
-  @ExposedAs(">=")
-  public static KlonObject greaterThanEquals(KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
-    if ("Number".equals(argument.getSlot("type").getData())) {
-      Double o1 = (Double) receiver.getData();
-      Double o2 = (Double) argument.getData();
-      return o1.compareTo(o2) >= 0 ? argument : receiver.getSlot("Nil");
-    }
-    throw KlonException.newException(receiver, "Illegal Argument",
-        "Illegal Argument for >=", message);
-  }
-
   @ExposedAs("abs")
   public static KlonObject absoluteValue(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {

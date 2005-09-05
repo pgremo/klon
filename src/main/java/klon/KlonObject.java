@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Prototype(name = "Object", parent = "Klon")
-public class KlonObject extends Exception implements Cloneable {
+public class KlonObject extends Exception implements Cloneable, Comparable {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
@@ -215,6 +215,18 @@ public class KlonObject extends Exception implements Cloneable {
       throw e;
     }
     return slot.activate(this, context, message);
+  }
+
+  // ================
+  // java.lang.Comparable
+  // ================
+
+  public int compareTo(Object o) {
+    try {
+      return compare((KlonObject) o);
+    } catch (KlonObject e) {
+      throw new RuntimeException(e);
+    }
   }
 
   // ================
@@ -643,6 +655,38 @@ public class KlonObject extends Exception implements Cloneable {
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return !receiver.equals(message.eval(context, 0)) ? receiver : receiver
+        .getSlot("Nil");
+  }
+
+  @ExposedAs("<")
+  public static KlonObject lessThan(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    KlonObject argument = message.eval(context, 0);
+    return receiver.compareTo(argument) < 0 ? argument : receiver
+        .getSlot("Nil");
+  }
+
+  @ExposedAs(">")
+  public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    KlonObject argument = message.eval(context, 0);
+    return receiver.compareTo(argument) > 0 ? argument : receiver
+        .getSlot("Nil");
+  }
+
+  @ExposedAs("<=")
+  public static KlonObject lessThanEquals(KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
+    KlonObject argument = message.eval(context, 0);
+    return receiver.compareTo(argument) <= 0 ? argument : receiver
+        .getSlot("Nil");
+  }
+
+  @ExposedAs(">=")
+  public static KlonObject greaterThanEquals(KlonObject receiver,
+      KlonObject context, Message message) throws KlonObject {
+    KlonObject argument = message.eval(context, 0);
+    return receiver.compareTo(argument) >= 0 ? argument : receiver
         .getSlot("Nil");
   }
 

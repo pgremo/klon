@@ -234,35 +234,6 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     return result;
   }
 
-  public static KlonObject duplicate(KlonObject value) throws KlonObject {
-    try {
-      KlonObject result = new KlonObject();
-      result.bind(value);
-      result.setData(value.getData());
-      result.setIdentity(value.getIdentity());
-      return result;
-    } catch (Exception e) {
-      throw KlonException.newException(value, e.getClass().getSimpleName(), e
-          .getMessage(), null);
-    }
-  }
-
-  @SuppressWarnings("unused")
-  public static int compare(KlonObject o1, KlonObject o2) throws KlonObject {
-    return o1.hashCode() - o2.hashCode();
-  }
-
-  public static String format(KlonObject object) throws KlonObject {
-    return object.getSlot("type").getData() + "_0x"
-        + Integer.toHexString(object.hashCode());
-  }
-
-  @SuppressWarnings("unused")
-  public static KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
-    return slot;
-  }
-
   // ================
   // Klon Exposed Methods
   // ================

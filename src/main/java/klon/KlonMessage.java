@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Message", parent = "Object")
+@Prototype(name = "Message", bindings = "Object")
 public class KlonMessage extends Identity {
 
   private static final long serialVersionUID = 7244365877217781727L;

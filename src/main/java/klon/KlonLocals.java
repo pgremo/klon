@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Locals", parent = "Object")
+@Prototype(name = "Locals", bindings = "Object")
 public class KlonLocals extends Identity {
 
   private static final long serialVersionUID = 1963856865914651978L;

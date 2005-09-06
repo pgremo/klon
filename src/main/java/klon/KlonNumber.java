@@ -2,7 +2,7 @@ package klon;
 
 import java.text.NumberFormat;
 
-@Prototype(name = "Number", parent = "Object")
+@Prototype(name = "Number", bindings = "Object")
 public class KlonNumber extends Identity {
 
   private static final long serialVersionUID = -3735761349600472088L;

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-@Prototype(name = "Store", parent = "Object")
+@Prototype(name = "Store", bindings = "Object")
 public class KlonStore extends Identity {
 
   private static final long serialVersionUID = -4140594553364102878L;

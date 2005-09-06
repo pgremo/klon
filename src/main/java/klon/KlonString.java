@@ -10,7 +10,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-@Prototype(name = "String", parent = "Object")
+@Prototype(name = "String", bindings = "Object")
 public class KlonString extends Identity {
 
   private static final long serialVersionUID = -7547715800603443713L;

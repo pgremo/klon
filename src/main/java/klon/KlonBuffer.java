@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-@Prototype(name = "Buffer", parent = "Object")
+@Prototype(name = "Buffer", bindings = "Object")
 public class KlonBuffer extends Identity {
 
   private static final long serialVersionUID = -5905250334048375486L;

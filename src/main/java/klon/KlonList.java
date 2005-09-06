@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@Prototype(name = "List", parent = "Object")
+@Prototype(name = "List", bindings = "Object")
 public class KlonList extends Identity {
 
   private static final long serialVersionUID = -4331613935922113899L;

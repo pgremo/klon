@@ -2,7 +2,7 @@ package klon;
 
 import java.io.File;
 
-@Prototype(name = "File", parent = "Object")
+@Prototype(name = "File", bindings = "Object")
 public class KlonFile extends Identity {
 
   private static final long serialVersionUID = 3159106516324355579L;

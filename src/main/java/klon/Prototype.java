@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 public @interface Prototype {
   String name();
 
-  String parent() default "";
+  String[] bindings() default "";
 }

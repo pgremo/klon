@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Exception", parent = "Object")
+@Prototype(name = "Exception", bindings = "Object")
 public class KlonException extends Identity {
 
   private static final long serialVersionUID = -6012596192533993069L;

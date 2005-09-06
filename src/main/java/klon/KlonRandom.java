@@ -2,7 +2,7 @@ package klon;
 
 import java.util.Random;
 
-@Prototype(name = "Random", parent = "Object")
+@Prototype(name = "Random", bindings = "Object")
 public class KlonRandom extends Identity {
 
   private static final long serialVersionUID = -7916992470486962761L;

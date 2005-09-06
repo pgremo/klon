@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-@Prototype(name = "NativeMethod", parent = "Object")
+@Prototype(name = "NativeMethod", bindings = "Object")
 public class KlonNativeMethod extends Identity {
 
   private static final long serialVersionUID = -5301150120413808899L;

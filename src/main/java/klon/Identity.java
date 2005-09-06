@@ -114,7 +114,7 @@ public class Identity implements Serializable {
             "argument must evaluate to a String", message);
       }
       target = new Message();
-      target.setSelector(KlonSymbol.newSymbol(receiver, (String) subject
+      target.setSelector(KlonString.newString(receiver, (String) subject
           .getData()));
       for (int i = 1; i < message.getArgumentCount(); i++) {
         target.addArgument(message.getArgument(i));

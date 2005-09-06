@@ -88,10 +88,6 @@ public final class KlonRoot {
     prototypes.setSlot("Compiler", compiler);
     compiler.configure(root, KlonCompiler.class);
 
-    KlonObject symbol = KlonSymbol.prototype();
-    system.setSlot("Symbol", symbol);
-    symbol.configure(root, KlonSymbol.class);
-
     KlonObject noop = KlonNoOp.prototype();
     system.setSlot("NoOp", noop);
     noop.configure(root, KlonNoOp.class);

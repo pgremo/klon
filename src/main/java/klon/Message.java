@@ -110,7 +110,7 @@ public class Message implements Serializable {
   public String toString() {
     StringBuilder result = new StringBuilder();
     if (selector != null) {
-      result.append(selector);
+      result.append(selector.getData());
     }
     if (literal != null) {
       result.append(literal);

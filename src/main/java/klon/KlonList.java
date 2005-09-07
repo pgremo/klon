@@ -19,7 +19,8 @@ public class KlonList extends Identity {
 
   public static KlonObject newList(KlonObject root, List<KlonObject> value)
       throws KlonObject {
-    KlonObject result = root.getSlot("List").duplicate();
+    KlonObject result = root.getSlot("List")
+      .duplicate();
     result.setData(value);
     return result;
   }
@@ -28,21 +29,22 @@ public class KlonList extends Identity {
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = super.duplicate(value);
-    result
-        .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
+    result.setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;
   }
 
-  @SuppressWarnings( { "unused", "unchecked" })
+  @SuppressWarnings({"unused", "unchecked"})
   @Override
   public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
     int result;
-    if ("List".equals(other.getSlot("type").getData())) {
+    if ("List".equals(other.getSlot("type")
+      .getData())) {
       List<KlonObject> l1 = (List<KlonObject>) receiver.getData();
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();
       for (int i = 0; result == 0 && i < l1.size(); i++) {
-        result = l1.get(i).compareTo(l2.get(i));
+        result = l1.get(i)
+          .compareTo(l2.get(i));
       }
     } else {
       result = receiver.hashCode() - other.hashCode();
@@ -62,9 +64,9 @@ public class KlonList extends Identity {
   @ExposedAs("insertAt")
   public static KlonObject insertAt(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    ((List) receiver.getData()).add(KlonNumber
-        .evalAsNumber(context, message, 0)
-          .intValue(), message.eval(context, 1));
+    ((List) receiver.getData()).add(
+      KlonNumber.evalAsNumber(context, message, 0)
+        .intValue(), message.eval(context, 1));
     return receiver;
   }
 
@@ -85,8 +87,8 @@ public class KlonList extends Identity {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((List) receiver.getData())
-        .size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((List) receiver.getData()).size());
   }
 
   @SuppressWarnings("unused")
@@ -103,7 +105,8 @@ public class KlonList extends Identity {
       Message message) throws KlonObject {
     Random random;
     if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random").getData();
+      random = (Random) receiver.getSlot("Random")
+        .getData();
     } else {
       random = KlonRandom.evalAsRandom(receiver, message, 0);
     }
@@ -117,7 +120,8 @@ public class KlonList extends Identity {
       Message message) throws KlonObject {
     Random random;
     if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random").getData();
+      random = (Random) receiver.getSlot("Random")
+        .getData();
     } else {
       random = KlonRandom.evalAsRandom(receiver, message, 0);
     }
@@ -135,17 +139,87 @@ public class KlonList extends Identity {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
-    String index = (String) message.getArgument(0).getSelector().getData();
-    String value = (String) message.getArgument(1).getSelector().getData();
-    Message code = message.getArgument(2);
+    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject result = nil;
+    int arg = 0;
+    String index = null;
+    if (message.getArgumentCount() == 3) {
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
+    }
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
+    Message code = message.getArgument(arg);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; i < list.size(); i++) {
-      context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      if (index != null) {
+        context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      }
       context.setSlot(value, list.get(i));
       result = code.eval(context, context);
     }
     return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("detect")
+  public static KlonObject detect(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject result = nil;
+    int arg = 0;
+    String index = null;
+    if (message.getArgumentCount() == 3) {
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
+    }
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
+    Message code = message.getArgument(arg);
+    List<KlonObject> list = (List<KlonObject>) receiver.getData();
+    for (int i = 0; nil.equals(result) && i < list.size(); i++) {
+      if (index != null) {
+        context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      }
+      context.setSlot(value, list.get(i));
+      result = code.eval(context, context);
+    }
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("collect")
+  public static KlonObject collect(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    KlonObject nil = receiver.getSlot("Nil");
+    List<KlonObject> list = (List<KlonObject>) receiver.getData();
+    List<KlonObject> result = new ArrayList<KlonObject>(list.size());
+    int arg = 0;
+    String index = null;
+    if (message.getArgumentCount() == 3) {
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
+    }
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
+    Message code = message.getArgument(arg);
+    for (int i = 0; i < list.size(); i++) {
+      if (index != null) {
+        context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      }
+      KlonObject current = list.get(i);
+      context.setSlot(value, current);
+      if (!nil.equals(code.eval(context, context))) {
+        result.add(current);
+      }
+    }
+    return KlonList.newList(receiver, result);
   }
 
   @SuppressWarnings("unchecked")
@@ -163,7 +237,8 @@ public class KlonList extends Identity {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
-        buffer.append(stringMessage.eval(current, context).getData());
+        buffer.append(stringMessage.eval(current, context)
+          .getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

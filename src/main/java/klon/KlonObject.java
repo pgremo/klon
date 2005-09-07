@@ -116,13 +116,22 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     }
   }
 
-  public boolean isBound(KlonObject object) {
+  private boolean isBound(KlonObject object, Collection<KlonObject> searchPath) {
     boolean found = false;
     Iterator<KlonObject> iterator = bindings.iterator();
     while (!found && iterator.hasNext()) {
-      found = iterator.next() == object;
+      KlonObject current = iterator.next();
+      found = object == current;
+      if (!found && !contains(searchPath, current)) {
+        searchPath.add(current);
+        found = current.isBound(object, searchPath);
+      }
     }
     return found;
+  }
+
+  public boolean isBound(KlonObject object) {
+    return isBound(object, new LinkedList<KlonObject>());
   }
 
   public void unbind(KlonObject object) {
@@ -132,7 +141,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   @SuppressWarnings("unchecked")
   public KlonObject perform(KlonObject context, Message message)
       throws KlonObject {
-    String name = (String) message.getSelector().getData();
+    String name = (String) message.getSelector()
+      .getData();
     KlonObject slot = getSlot(name);
     if (slot == null && "Locals".equals(context.getSlot("type"))) {
       slot = context.getSlot(name);
@@ -143,8 +153,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     if (slot == null) {
       KlonObject e = KlonException.newException(this, "Invalid Slot", name
           + " does not exist", message);
-      ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
-          .newString(context, message.toString()));
+      ((List<KlonObject>) e.getSlot("stackTrace")
+        .getData()).add(KlonString.newString(context, message.toString()));
       throw e;
     }
     return slot.activate(this, context, message);
@@ -215,7 +225,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
       if (name != null) {
         result.append(name.getData());
         if (description != null) {
-          result.append(":").append(description.getData());
+          result.append(":")
+            .append(description.getData());
         }
       }
     } catch (Exception e) {

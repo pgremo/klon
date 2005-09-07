@@ -64,6 +64,10 @@ public final class KlonRoot {
     prototypes.setSlot("List", list);
     list.configure(root, KlonList.class);
 
+    KlonObject map = KlonMap.prototype();
+    prototypes.setSlot("Map", map);
+    map.configure(root, KlonMap.class);
+
     KlonObject message = KlonMessage.prototype();
     prototypes.setSlot("Message", message);
     message.configure(root, KlonMessage.class);

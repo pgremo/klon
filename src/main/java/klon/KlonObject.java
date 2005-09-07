@@ -199,7 +199,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
 
   @Override
   public int hashCode() {
-    return super.hashCode();
+    return data == null ? super.hashCode() : data.hashCode();
   }
 
   @Override

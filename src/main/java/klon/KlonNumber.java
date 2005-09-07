@@ -1,5 +1,6 @@
 package klon;
 
+import java.nio.ByteBuffer;
 import java.text.NumberFormat;
 
 @Prototype(name = "Number", bindings = "Object")
@@ -274,6 +275,14 @@ public class KlonNumber extends Identity {
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver, Math.floor((Double) receiver
         .getData()));
+  }
+
+  @ExposedAs("asBuffer")
+  public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ByteBuffer buffer = ByteBuffer.allocate(20);
+    buffer.putDouble(((Double) receiver.getData()).intValue());
+    return KlonBuffer.newBuffer(receiver, new Buffer(buffer.array()));
   }
 
   @ExposedAs("asCharacter")

@@ -19,7 +19,8 @@ public class KlonString extends Identity {
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
-    KlonObject result = root.getSlot("String").duplicate();
+    KlonObject result = root.getSlot("String")
+      .duplicate();
     result.setData(value);
     return result;
   }
@@ -34,8 +35,8 @@ public class KlonString extends Identity {
       while (channel.read(byteBuffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -45,17 +46,17 @@ public class KlonString extends Identity {
       }
     }
     byteBuffer.position(0);
-    return newString(root, byteBuffer);
+    return newString(root, new Buffer(byteBuffer.array()));
   }
 
-  public static KlonObject newString(KlonObject root, ByteBuffer byteBuffer)
+  public static KlonObject newString(KlonObject root, Buffer byteBuffer)
       throws KlonObject {
     CharBuffer buffer;
     try {
-      buffer = decoder.decode(byteBuffer);
+      buffer = decoder.decode(ByteBuffer.wrap(byteBuffer.array()));
     } catch (CharacterCodingException e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     }
     return newString(root, buffer.toString());
   }
@@ -71,9 +72,9 @@ public class KlonString extends Identity {
   @Override
   public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
     int result;
-    if ("String".equals(other.getSlot("type").getData())) {
-      result = ((String) receiver.getData())
-          .compareTo((String) other.getData());
+    if ("String".equals(other.getSlot("type")
+      .getData())) {
+      result = ((String) receiver.getData()).compareTo((String) other.getData());
     } else {
       result = receiver.hashCode() - other.hashCode();
     }
@@ -82,17 +83,19 @@ public class KlonString extends Identity {
 
   @Override
   public String format(KlonObject value) {
-    return "\"" + value.getData().toString() + "\"";
+    return "\"" + value.getData()
+      .toString() + "\"";
   }
 
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getSlot("type").getData())) {
+    if ("String".equals(result.getSlot("type")
+      .getData())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
-        "argument must evaluate to a string", message);
+      "argument must evaluate to a string", message);
   }
 
   @ExposedAs("+")
@@ -100,17 +103,23 @@ public class KlonString extends Identity {
       Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return KlonString.newString(receiver, receiver.getData()
-        + String.valueOf(message
-            .eval(context, 0)
-              .perform(context, printMessage)
-              .getData()));
+        + String.valueOf(message.eval(context, 0)
+          .perform(context, printMessage)
+          .getData()));
   }
 
   @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
-        context, message, 0)) ? receiver : receiver.getSlot("Nil");
+      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("asBuffer")
+  public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonBuffer.newBuffer(receiver, new Buffer(
+      ((String) receiver.getData()).getBytes()));
   }
 
   @SuppressWarnings("unused")

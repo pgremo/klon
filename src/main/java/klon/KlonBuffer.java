@@ -21,8 +21,8 @@ public class KlonBuffer extends Identity {
       while (channel.read(buffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -32,14 +32,23 @@ public class KlonBuffer extends Identity {
       }
     }
     buffer.position(0);
-    KlonObject result = root.getSlot("Buffer").duplicate();
-    result.setData(new Buffer(buffer));
+    KlonObject result = root.getSlot("Buffer")
+      .duplicate();
+    result.setData(new Buffer(buffer.array()));
+    return result;
+  }
+
+  public static KlonObject newBuffer(KlonObject root, Buffer value)
+      throws KlonObject {
+    KlonObject result = root.getSlot("Buffer")
+      .duplicate();
+    result.setData(value);
     return result;
   }
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(new Buffer(ByteBuffer.allocate(0)));
+    result.setData(new Buffer());
     result.setIdentity(new KlonBuffer());
     return result;
   }
@@ -47,8 +56,7 @@ public class KlonBuffer extends Identity {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver, ((Buffer) receiver.getData())
-        .getBuffer());
+    return KlonString.newString(receiver, (Buffer) receiver.getData());
   }
 
 }

@@ -1,35 +1,41 @@
 package klon;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.ByteBuffer;
 
 public class Buffer implements Serializable {
 
   private static final long serialVersionUID = -579645227925145018L;
 
-  private ByteBuffer buffer;
+  private byte[] data;
+  private int count;
 
-  public Buffer(ByteBuffer buffer) {
-    this.buffer = buffer;
+  public Buffer() {
+    this(0);
   }
 
-  public ByteBuffer getBuffer() {
-    return buffer;
+  public Buffer(int count) {
+    this.count = count;
+    this.data = new byte[count];
   }
 
-  public void setBuffer(ByteBuffer buffer) {
-    this.buffer = buffer;
+  public Buffer(byte[] data) {
+    this.data = data;
+    this.count = data.length;
   }
 
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.writeObject(buffer.array());
+  public void add(byte value) {
+    int newCount = count + 1;
+    if (newCount > data.length) {
+      byte newData[] = new byte[Math.max(data.length << 1, newCount)];
+      System.arraycopy(data, 0, newData, 0, count);
+      data = newData;
+    }
+    data[count] = value;
+    count = newCount;
   }
 
-  private void readObject(ObjectInputStream stream) throws IOException,
-      ClassNotFoundException {
-    buffer = ByteBuffer.wrap((byte[]) stream.readObject());
+  public byte[] array() {
+    return data;
   }
+
 }

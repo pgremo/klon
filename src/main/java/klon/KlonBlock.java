@@ -9,7 +9,8 @@ public class KlonBlock extends Identity {
 
   public static KlonObject newBlock(KlonObject root, Block value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Block").duplicate();
+    KlonObject result = root.getSlot("Block")
+      .duplicate();
     result.setData(value);
     return result;
   }
@@ -30,22 +31,25 @@ public class KlonBlock extends Identity {
       result = slot;
     } else {
       KlonObject scope = KlonLocals.newLocals(receiver, receiver);
-      String[] parameters = value.getParameters();
-      int limit = Math.min(message.getArgumentCount(), parameters.length);
+      List<KlonObject> parameters = value.getParameters();
+      int limit = Math.min(message.getArgumentCount(), parameters.size());
       int i = 0;
       for (; i < limit; i++) {
-        scope.setSlot(parameters[i], message.eval(context, i));
+        scope.setSlot((String) parameters.get(i)
+          .getData(), message.eval(context, i));
       }
       KlonObject nil = receiver.getSlot("Nil");
-      for (; i < parameters.length; i++) {
-        scope.setSlot(parameters[i], nil);
+      for (; i < parameters.size(); i++) {
+        scope.setSlot((String) parameters.get(i)
+          .getData(), nil);
       }
       result = nil;
       try {
-        result = value.getCode().eval(scope, scope);
+        result = value.getCode()
+          .eval(scope, scope);
       } catch (KlonObject e) {
-        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
-            .newString(receiver, message.toString()));
+        ((List<KlonObject>) e.getSlot("stackTrace")
+          .getData()).add(KlonString.newString(receiver, message.toString()));
         throw e;
       }
 
@@ -53,20 +57,28 @@ public class KlonBlock extends Identity {
     return result;
   }
 
+  @ExposedAs("parameters")
+  public static KlonObject parameters(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonList.newList(receiver,
+      ((Block) receiver.getData()).getParameters());
+  }
+
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonMessage.newMessage(receiver, ((Block) receiver.getData())
-        .getCode());
+    return KlonMessage.newMessage(receiver,
+      ((Block) receiver.getData()).getCode());
   }
 
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    if (!result.equals(receiver.activate(context, context, ((Block) (receiver
-        .getData())).getCode()))) {
-      result = message.getArgument(0).eval(context, context);
+    if (!result.equals(receiver.activate(context, context,
+      ((Block) (receiver.getData())).getCode()))) {
+      result = message.getArgument(0)
+        .eval(context, context);
     }
     return result;
   }
@@ -75,9 +87,10 @@ public class KlonBlock extends Identity {
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    if (result.equals(receiver.activate(context, context, ((Block) (receiver
-        .getData())).getCode()))) {
-      result = message.getArgument(0).eval(context, context);
+    if (result.equals(receiver.activate(context, context,
+      ((Block) (receiver.getData())).getCode()))) {
+      result = message.getArgument(0)
+        .eval(context, context);
     }
     return result;
   }
@@ -86,9 +99,10 @@ public class KlonBlock extends Identity {
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
-    while (!nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getData())).getCode()))) {
-      message.getArgument(0).eval(context, context);
+    while (!nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getData())).getCode()))) {
+      message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }
@@ -97,9 +111,10 @@ public class KlonBlock extends Identity {
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
-    while (nil.equals(receiver.activate(context, context, ((Block) (receiver
-        .getData())).getCode()))) {
-      message.getArgument(0).eval(context, context);
+    while (nil.equals(receiver.activate(context, context,
+      ((Block) (receiver.getData())).getCode()))) {
+      message.getArgument(0)
+        .eval(context, context);
     }
     return nil;
   }

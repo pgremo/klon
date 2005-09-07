@@ -61,12 +61,30 @@ public class KlonList extends Identity {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("insertAt")
-  public static KlonObject insertAt(KlonObject receiver, KlonObject context,
+  @ExposedAs("remove")
+  public static KlonObject remove(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ((List) receiver.getData()).remove(message.eval(context, 0));
+    return receiver;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("atInsert")
+  public static KlonObject atInsert(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     ((List) receiver.getData()).add(
       KlonNumber.evalAsNumber(context, message, 0)
         .intValue(), message.eval(context, 1));
+    return receiver;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("atRemove")
+  public static KlonObject atRemove(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ((List) receiver.getData()).remove(KlonNumber.evalAsNumber(context,
+      message, 0)
+      .intValue());
     return receiver;
   }
 
@@ -82,6 +100,14 @@ public class KlonList extends Identity {
       result = data.remove(0);
     }
     return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("push")
+  public static KlonObject push(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ((List) receiver.getData()).add(0, message.eval(context, 0));
+    return receiver;
   }
 
   @ExposedAs("size")

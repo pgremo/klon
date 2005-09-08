@@ -1,9 +1,10 @@
 package klon;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Block implements Serializable {
+public class Block implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 8908253496842815003L;
   private List<KlonObject> parameters;
@@ -29,13 +30,21 @@ public class Block implements Serializable {
       if (i > 0) {
         result.append(", ");
       }
-      result.append(parameters.get(i).getData());
+      result.append(parameters.get(i)
+        .getData());
     }
     if (parameters.size() > 0) {
       result.append(", ");
     }
-    result.append(code).append(")");
+    result.append(code)
+      .append(")");
     return result.toString();
+  }
+
+  @Override
+  public Object clone() {
+    return new Block(new ArrayList<KlonObject>(parameters),
+      (Message) code.clone());
   }
 
 }

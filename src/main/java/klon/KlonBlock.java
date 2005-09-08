@@ -21,6 +21,16 @@ public class KlonBlock extends Identity {
     return result;
   }
 
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = super.duplicate(value);
+    Block source = (Block) value.getData();
+    if (source != null) {
+      result.setData(source.clone());
+    }
+    return result;
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,

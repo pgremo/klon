@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Message implements Serializable {
+public class Message implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 735141555296332120L;
   private KlonObject selector;
@@ -67,6 +67,19 @@ public class Message implements Serializable {
 
   public void setSelector(KlonObject selector) {
     this.selector = selector;
+  }
+
+  @Override
+  public Object clone() {
+    Message result = new Message();
+    for (Message current : arguments) {
+      result.addArgument(current);
+    }
+    result.setAttached(attached);
+    result.setLiteral(literal);
+    result.setNext(next);
+    result.setSelector(selector);
+    return result;
   }
 
   public KlonObject eval(KlonObject receiver, KlonObject context)

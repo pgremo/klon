@@ -2,7 +2,7 @@ package klon;
 
 import java.io.Serializable;
 
-public class Buffer implements Serializable {
+public class Buffer implements Serializable, Cloneable {
 
   private static final long serialVersionUID = -579645227925145018L;
 
@@ -51,6 +51,14 @@ public class Buffer implements Serializable {
 
   public byte[] array() {
     return data;
+  }
+
+  @Override
+  public Object clone() {
+    byte[] newData = new byte[count];
+    System.arraycopy(data, 0, newData, 0, count);
+    Buffer result = new Buffer(newData);
+    return result;
   }
 
 }

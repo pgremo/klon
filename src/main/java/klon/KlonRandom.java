@@ -25,6 +25,13 @@ public class KlonRandom extends Identity {
       "argument must evaluate to a Random", message);
   }
 
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = super.duplicate(value);
+    result.setData(((MersenneTwister) result.getData()).clone());
+    return result;
+  }
+
   @ExposedAs("type")
   public static String type = "Random";
 

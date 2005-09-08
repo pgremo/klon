@@ -53,6 +53,13 @@ public class KlonBuffer extends Identity {
     return result;
   }
 
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = super.duplicate(value);
+    result.setData(((Buffer)value.getData()).clone());
+    return result;
+  }
+
   @ExposedAs("type")
   public static String type = "Buffer";
 

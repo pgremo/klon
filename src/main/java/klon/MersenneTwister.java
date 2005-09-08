@@ -2,7 +2,7 @@ package klon;
 
 import java.util.Random;
 
-public class MersenneTwister extends Random {
+public class MersenneTwister extends Random implements Cloneable {
 
   private static final long serialVersionUID = 3257853164429259320L;
   private static final int MASK = 0xffff0000;
@@ -12,6 +12,7 @@ public class MersenneTwister extends Random {
   private static int[] MAG = new int[]{0x0, 0x9908b0df};
   private int[] values;
   private int index;
+  private long seed;
 
   /**
    * Constructor for MersenneTwister.
@@ -39,15 +40,16 @@ public class MersenneTwister extends Random {
    */
   synchronized public void setSeed(long value) {
     super.setSeed(value);
+    this.seed = value;
 
-    int seed = (int) value;
+    int current = (int) value;
     values = new int[MAX];
 
     for (index = 0; index < MAX; index++) {
-      values[index] = seed & MASK;
-      seed = (MULTIPLIER * seed) + 1;
-      values[index] |= (seed & MASK) >>> 16;
-      seed = (MULTIPLIER * seed) + 1;
+      values[index] = current & MASK;
+      current = (MULTIPLIER * current) + 1;
+      values[index] |= (current & MASK) >>> 16;
+      current = (MULTIPLIER * current) + 1;
     }
   }
 
@@ -90,5 +92,10 @@ public class MersenneTwister extends Random {
     y ^= y >>> 18;
 
     return y >>> (32 - bits);
+  }
+
+  @Override
+  public Object clone() {
+    return new MersenneTwister(seed);
   }
 }

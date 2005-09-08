@@ -12,7 +12,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-@Prototype(name = "String", bindings = "Object")
+@Bindings("Object")
 public class KlonString extends Identity {
 
   private static final long serialVersionUID = -7547715800603443713L;
@@ -99,6 +99,9 @@ public class KlonString extends Identity {
     throw KlonException.newException(receiver, "Illegal Argument",
       "argument must evaluate to a string", message);
   }
+
+  @ExposedAs("type")
+  public static String type = "String";
 
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,

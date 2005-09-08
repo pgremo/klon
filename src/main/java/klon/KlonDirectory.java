@@ -3,7 +3,7 @@ package klon;
 import java.io.File;
 import java.io.IOException;
 
-@Prototype(name = "Directory", bindings = "Object")
+@Bindings("Object")
 public class KlonDirectory extends Identity {
 
   private static final long serialVersionUID = -1107185693710331200L;
@@ -22,6 +22,9 @@ public class KlonDirectory extends Identity {
     result.setData(file);
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Directory";
 
   @ExposedAs("path")
   public static KlonObject path(KlonObject receiver, KlonObject context,

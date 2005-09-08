@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Message", bindings = "Object")
+@Bindings("Object")
 public class KlonMessage extends Identity {
 
   private static final long serialVersionUID = 7244365877217781727L;
@@ -13,10 +13,14 @@ public class KlonMessage extends Identity {
 
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message").duplicate();
+    KlonObject result = root.getSlot("Message")
+      .duplicate();
     result.setData(message);
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Message";
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

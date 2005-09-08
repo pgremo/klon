@@ -8,8 +8,7 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface Prototype {
-  String name();
+public @interface Bindings {
 
-  String[] bindings() default "";
+  String[] value() default "";
 }

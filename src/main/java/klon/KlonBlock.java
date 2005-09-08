@@ -2,7 +2,7 @@ package klon;
 
 import java.util.List;
 
-@Prototype(name = "Block", bindings = "Object")
+@Bindings("Object")
 public class KlonBlock extends Identity {
 
   private static final long serialVersionUID = -5339972783724473883L;
@@ -56,6 +56,9 @@ public class KlonBlock extends Identity {
     }
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Block";
 
   @ExposedAs("parameters")
   public static KlonObject parameters(KlonObject receiver, KlonObject context,

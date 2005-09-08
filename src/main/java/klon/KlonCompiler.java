@@ -1,6 +1,6 @@
 package klon;
 
-@Prototype(name = "Compiler", bindings = "Object")
+@Bindings("Object")
 public class KlonCompiler extends Identity {
 
   private static final long serialVersionUID = 359686882876703383L;
@@ -15,6 +15,9 @@ public class KlonCompiler extends Identity {
     result.setIdentity(new KlonCompiler());
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Compiler";
 
   @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,

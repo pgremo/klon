@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-@Prototype(name = "Buffer", bindings = "Object")
+@Bindings("Object")
 public class KlonBuffer extends Identity {
 
   private static final long serialVersionUID = -5905250334048375486L;
@@ -52,6 +52,9 @@ public class KlonBuffer extends Identity {
     result.setIdentity(new KlonBuffer());
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Buffer";
 
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,

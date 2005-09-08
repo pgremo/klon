@@ -12,7 +12,8 @@
 		<module name="EqualsHashCode"/>
 		<module name="ExplicitInitialization"/>
 		<module name="HiddenField">
-    	<property name="tokens" value="VARIABLE_DEF"/>
+			<property name="tokens" value="VARIABLE_DEF"/>
+			<property name="ignoreFormat" value="type"/>
 		</module>
 		<module name="InnerAssignment"/>
 		<module name="MultipleVariableDeclarations"/>

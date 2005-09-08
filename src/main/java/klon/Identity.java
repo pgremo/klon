@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Prototype(name = "Object", bindings = "Klon")
+@Bindings("Klon")
 public class Identity implements Serializable {
 
   private static final long serialVersionUID = -8518903977702842129L;
@@ -54,6 +54,9 @@ public class Identity implements Serializable {
     }
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Object";
 
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Prototype(name = "File", bindings = "Object")
+@Bindings("Object")
 public class KlonFile extends Identity {
 
   private static final long serialVersionUID = 3159106516324355579L;
@@ -27,6 +27,9 @@ public class KlonFile extends Identity {
     result.setData(file);
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "File";
 
   @ExposedAs("path")
   public static KlonObject path(KlonObject receiver, KlonObject context,

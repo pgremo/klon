@@ -2,7 +2,7 @@ package klon;
 
 import java.text.NumberFormat;
 
-@Prototype(name = "Number", bindings = "Object")
+@Bindings("Object")
 public class KlonNumber extends Identity {
 
   private static final long serialVersionUID = -3735761349600472088L;
@@ -65,6 +65,9 @@ public class KlonNumber extends Identity {
     throw KlonException.newException(receiver, "Illegal Argument",
       "argument must evaluate to a number", message);
   }
+
+  @ExposedAs("type")
+  public static String type = "Number";
 
   @ExposedAs("pi")
   public static final Double PI = Math.PI;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@Prototype(name = "Map", bindings = "Object")
+@Bindings("Object")
 public class KlonMap extends Identity {
 
   private static final long serialVersionUID = 7294688679770243365L;
@@ -24,6 +24,9 @@ public class KlonMap extends Identity {
       (Map<KlonObject, KlonObject>) value.getData()));
     return result;
   }
+
+  @ExposedAs("type")
+  public static String type = "Map";
 
   @SuppressWarnings("unchecked")
   @ExposedAs("atPut")

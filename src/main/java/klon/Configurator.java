@@ -18,21 +18,15 @@ public final class Configurator {
   public static void setSlots(KlonObject root, KlonObject target,
       Class<? extends Object> type) throws Exception {
 
-    Prototype prototype = type.getAnnotation(Prototype.class);
-    if (prototype == null) {
-      throw KlonException.newException(root, "Invalid Argument", type.getName()
-          + " must have a " + Prototype.class.getSimpleName() + " annotation.",
-        null);
-    }
-
-    for (String current : prototype.bindings()) {
-      KlonObject binding = root.getSlot(current);
-      if (binding != null) {
-        target.bind(binding);
+    Bindings prototype = type.getAnnotation(Bindings.class);
+    if (prototype != null) {
+      for (String current : prototype.value()) {
+        KlonObject binding = root.getSlot(current);
+        if (binding != null) {
+          target.bind(binding);
+        }
       }
     }
-
-    target.setSlot("type", KlonString.newString(root, prototype.name()));
 
     setSlotsFromFields(root, target, type);
     setSlotsFromMethods(root, target, type);

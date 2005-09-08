@@ -56,7 +56,13 @@ public class KlonBuffer extends Identity {
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (Buffer) receiver.getData());
+    int size = 8;
+    if (message.getArgumentCount() > 0) {
+      size = KlonNumber.evalAsNumber(receiver, message, 0)
+        .intValue();
+    }
+    size = Math.min(size, 8);
+    return KlonNumber.newNumber(receiver, size, (Buffer) receiver.getData());
   }
 
   @ExposedAs("asString")

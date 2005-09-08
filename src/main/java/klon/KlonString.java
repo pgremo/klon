@@ -9,6 +9,8 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Prototype(name = "String", bindings = "Object")
 public class KlonString extends Identity {
@@ -113,6 +115,27 @@ public class KlonString extends Identity {
       Message message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
       context, message, 0)) ? receiver : receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("endsWith")
+  public static KlonObject endsWith(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
+      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+  }
+
+  @ExposedAs("split")
+  public static KlonObject split(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    List<KlonObject> result = new ArrayList<KlonObject>();
+    String delimiter = "\\s";
+    if (message.getArgumentCount() > 0) {
+      delimiter = KlonString.evalAsString(receiver, message, 0);
+    }
+    for (String current : ((String) receiver.getData()).split(delimiter)) {
+      result.add(KlonString.newString(receiver, current));
+    }
+    return KlonList.newList(receiver, result);
   }
 
   @ExposedAs("asBuffer")

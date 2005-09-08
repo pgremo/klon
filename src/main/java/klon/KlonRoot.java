@@ -76,6 +76,10 @@ public final class KlonRoot {
     prototypes.setSlot("Random", random);
     random.configure(root, KlonRandom.class);
 
+    KlonObject directory = KlonDirectory.prototype();
+    prototypes.setSlot("Directory", directory);
+    directory.configure(root, KlonDirectory.class);
+
     KlonObject file = KlonFile.prototype();
     prototypes.setSlot("File", file);
     file.configure(root, KlonFile.class);

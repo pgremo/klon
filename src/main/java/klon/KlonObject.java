@@ -30,7 +30,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
       Message message) throws KlonObject {
     return identity.activate(this, receiver, context, message);
   }
-
+  
   public void setData(Object value) {
     this.data = value;
   }

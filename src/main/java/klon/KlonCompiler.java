@@ -16,8 +16,10 @@ public class KlonCompiler extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Compiler";
+  @Override
+  public String getName() {
+    return "Compiler";
+  }
 
   @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,
@@ -26,4 +28,5 @@ public class KlonCompiler extends Identity {
     Message result = new Compiler(receiver).fromString(string);
     return KlonMessage.newMessage(receiver, result);
   }
+
 }

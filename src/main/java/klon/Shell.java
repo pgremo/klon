@@ -9,8 +9,11 @@ public class Shell {
 
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
-  private static final String[] PRINTABLES = new String[] { "Exception", "Nil",
-      "Number", "String" };
+  private static final String[] PRINTABLES = new String[]{
+      "Exception",
+      "Nil",
+      "Number",
+      "String"};
   private Reader in;
   private MonitoredPrintStream out;
 
@@ -20,18 +23,20 @@ public class Shell {
   }
 
   public void process() throws KlonObject, IOException {
-    KlonObject properties = KlonRoot.getROOT().getSlot("Properties");
+    KlonObject properties = KlonRoot.getROOT()
+      .getSlot("Properties");
     KlonObject version = properties.getSlot("klon.version");
     KlonObject build = properties.getSlot("klon.build");
-    out.println("klon " + version.getData() + "."
-        + build.getData());
+    out.println("klon " + version.getData() + "." + build.getData());
     out.flush();
     while (true) {
       String prompt = "";
-      KlonObject promptSlot = KlonRoot.getROOT().getSlot("Properties").getSlot(
-          "klon.shell.prompt");
+      KlonObject promptSlot = KlonRoot.getROOT()
+        .getSlot("Properties")
+        .getSlot("klon.shell.prompt");
       if (promptSlot != null) {
-        prompt = promptSlot.getData().toString();
+        prompt = promptSlot.getData()
+          .toString();
       }
       out.print('\n');
       out.print(prompt);
@@ -55,15 +60,14 @@ public class Shell {
       out.setHasOutput(false);
     }
     if (!out.hasOutput()) {
-      Object type = value.getSlot("type").getData();
+      Object type = value.getIdentity()
+        .getName();
       if (Arrays.binarySearch(PRINTABLES, type) > -1) {
-        Message reportMessage = new Compiler(KlonRoot.getROOT())
-            .fromString("writeLine");
+        Message reportMessage = new Compiler(KlonRoot.getROOT()).fromString("writeLine");
         reportMessage.addArgument(value);
         reportMessage.eval(value, value);
       } else {
-        Message reportMessage = new Compiler(KlonRoot.getROOT())
-            .fromString("inspect");
+        Message reportMessage = new Compiler(KlonRoot.getROOT()).fromString("inspect");
         reportMessage.eval(value, value);
       }
     }

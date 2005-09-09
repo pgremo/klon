@@ -20,7 +20,9 @@ public class KlonLocals extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Locals";
+  @Override
+  public String getName() {
+    return "Locals";
+  }
 
 }

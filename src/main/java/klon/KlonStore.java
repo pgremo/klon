@@ -22,8 +22,10 @@ public class KlonStore extends Identity {
     return value;
   }
 
-  @ExposedAs("type")
-  public static String type = "Store";
+  @Override
+  public String getName() {
+    return "Store";
+  }
 
   @ExposedAs("store")
   public static KlonObject store(KlonObject receiver, KlonObject context,

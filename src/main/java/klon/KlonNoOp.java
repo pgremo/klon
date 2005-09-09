@@ -18,8 +18,10 @@ public class KlonNoOp extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "NoOp";
+  @Override
+  public String getName() {
+    return "NoOp";
+  }
 
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,

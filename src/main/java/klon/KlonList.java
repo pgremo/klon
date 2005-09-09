@@ -25,8 +25,10 @@ public class KlonList extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "List";
+  @Override
+  public String getName() {
+    return "List";
+  }
 
   @SuppressWarnings("unchecked")
   @Override

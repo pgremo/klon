@@ -23,6 +23,10 @@ public class Identity implements Serializable {
     this.activatable = activatable;
   }
 
+  public String getName() {
+    return "Object";
+  }
+
   @SuppressWarnings("unused")
   public KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = new KlonObject();
@@ -37,9 +41,10 @@ public class Identity implements Serializable {
     return o1.hashCode() - o2.hashCode();
   }
 
+  @SuppressWarnings("unused")
   public String format(KlonObject object) throws KlonObject {
-    return object.getSlot("type")
-      .getData() + "_0x" + Integer.toHexString(System.identityHashCode(object));
+    return object.getIdentity()
+      .getName() + "_0x" + Integer.toHexString(System.identityHashCode(object));
   }
 
   @SuppressWarnings("unused")
@@ -56,7 +61,11 @@ public class Identity implements Serializable {
   }
 
   @ExposedAs("type")
-  public static String type = "Object";
+  public static KlonObject type(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonString.newString(receiver, receiver.getIdentity()
+      .getName());
+  }
 
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,

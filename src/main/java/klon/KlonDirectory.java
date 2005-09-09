@@ -23,8 +23,10 @@ public class KlonDirectory extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Directory";
+  @Override
+  public String getName() {
+    return "Directory";
+  }
 
   @ExposedAs("path")
   public static KlonObject path(KlonObject receiver, KlonObject context,

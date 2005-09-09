@@ -31,6 +31,11 @@ public class KlonBlock extends Identity {
     return result;
   }
 
+  @Override
+  public String getName() {
+    return "Block";
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,
@@ -66,9 +71,6 @@ public class KlonBlock extends Identity {
     }
     return result;
   }
-
-  @ExposedAs("type")
-  public static String type = "Block";
 
   @ExposedAs("parameters")
   public static KlonObject parameters(KlonObject receiver, KlonObject context,

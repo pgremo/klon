@@ -16,8 +16,10 @@ public class KlonNil extends Identity {
     return value;
   }
 
-  @ExposedAs("type")
-  public static String type = "Nil";
+  @Override
+  public String getName() {
+    return "Nil";
+  }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

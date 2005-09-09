@@ -56,12 +56,14 @@ public class KlonBuffer extends Identity {
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = super.duplicate(value);
-    result.setData(((Buffer)value.getData()).clone());
+    result.setData(((Buffer) value.getData()).clone());
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Buffer";
+  @Override
+  public String getName() {
+    return "Buffer";
+  }
 
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,

@@ -25,8 +25,10 @@ public class KlonMap extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Map";
+  @Override
+  public String getName() {
+    return "Map";
+  }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("atPut")

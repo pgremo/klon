@@ -19,8 +19,10 @@ public class KlonMessage extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Message";
+  @Override
+  public String getName() {
+    return "Message";
+  }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,

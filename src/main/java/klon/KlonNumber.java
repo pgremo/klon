@@ -58,16 +58,18 @@ public class KlonNumber extends Identity {
   public static Double evalAsNumber(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Number".equals(result.getSlot("type")
-      .getData())) {
+    if ("Number".equals(result.getIdentity()
+      .getName())) {
       return (Double) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
       "argument must evaluate to a number", message);
   }
 
-  @ExposedAs("type")
-  public static String type = "Number";
+  @Override
+  public String getName() {
+    return "Number";
+  }
 
   @ExposedAs("pi")
   public static final Double PI = Math.PI;

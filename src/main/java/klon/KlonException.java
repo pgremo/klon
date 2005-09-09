@@ -26,8 +26,10 @@ public class KlonException extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Exception";
+  @Override
+  public String getName() {
+    return "Exception";
+  }
 
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,

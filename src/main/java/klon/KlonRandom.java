@@ -17,8 +17,8 @@ public class KlonRandom extends Identity {
   public static Random evalAsRandom(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Random".equals(result.getSlot("type")
-      .getData())) {
+    if ("Random".equals(result.getIdentity()
+      .getName())) {
       return (Random) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -32,8 +32,10 @@ public class KlonRandom extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "Random";
+  @Override
+  public String getName() {
+    return "Random";
+  }
 
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,

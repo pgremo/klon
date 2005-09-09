@@ -28,8 +28,10 @@ public class KlonFile extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "File";
+  @Override
+  public String getName() {
+    return "File";
+  }
 
   @ExposedAs("path")
   public static KlonObject path(KlonObject receiver, KlonObject context,

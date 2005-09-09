@@ -49,7 +49,9 @@ public class KlonNativeMethod extends Identity {
     return result;
   }
 
-  @ExposedAs("type")
-  public static String type = "NativeMethod";
+  @Override
+  public String getName() {
+    return "NativeMethod";
+  }
 
 }

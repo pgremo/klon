@@ -92,16 +92,18 @@ public class KlonString extends Identity {
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getSlot("type")
-      .getData())) {
+    if ("String".equals(result.getIdentity()
+      .getName())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
       "argument must evaluate to a string", message);
   }
 
-  @ExposedAs("type")
-  public static String type = "String";
+  @Override
+  public String getName() {
+    return "String";
+  }
 
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,

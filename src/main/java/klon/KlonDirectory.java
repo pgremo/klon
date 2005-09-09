@@ -11,7 +11,7 @@ public class KlonDirectory extends Identity {
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setData(new File("").getAbsoluteFile());
-    result.setIdentity(new KlonFile());
+    result.setIdentity(new KlonDirectory());
     return result;
   }
 

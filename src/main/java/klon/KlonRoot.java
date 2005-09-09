@@ -26,14 +26,12 @@ public final class KlonRoot {
     KlonObject object = KlonObject.prototype();
     KlonObject root = object.duplicate();
     KlonObject prototypes = object.duplicate();
-    KlonObject system = object.duplicate();
-    system.setSlot("Klon", root);
+    root.setSlot("Klon", root);
     root.setSlot("Prototypes", prototypes);
     prototypes.setSlot(object.getIdentity()
       .getName(), object);
     root.bind(object);
     root.bind(prototypes);
-    root.bind(system);
 
     KlonObject string = KlonString.prototype();
     prototypes.setSlot(string.getIdentity()
@@ -48,32 +46,25 @@ public final class KlonRoot {
     object.configure(root, Identity.class);
 
     Class[] types = new Class[]{
-        KlonException.class,
-        KlonNil.class,
-        KlonNumber.class,
         KlonBlock.class,
+        KlonBuffer.class,
+        KlonCompiler.class,
+        KlonDirectory.class,
+        KlonException.class,
+        KlonFile.class,
         KlonList.class,
+        KlonLocals.class,
         KlonMap.class,
         KlonMessage.class,
+        KlonNil.class,
+        KlonNoOp.class,
+        KlonNumber.class,
         KlonRandom.class,
-        KlonDirectory.class,
-        KlonFile.class,
-        KlonBuffer.class,
-        KlonStore.class,
-        KlonCompiler.class};
+        KlonStore.class};
     for (Class<? extends Object> current : types) {
       Method creator = current.getDeclaredMethod("prototype", (Class[]) null);
       KlonObject prototype = (KlonObject) creator.invoke(null);
       prototypes.setSlot(prototype.getIdentity()
-        .getName(), prototype);
-      prototype.configure(root, current);
-    }
-
-    types = new Class[]{KlonNoOp.class, KlonLocals.class};
-    for (Class<? extends Object> current : types) {
-      Method creator = current.getDeclaredMethod("prototype", (Class[]) null);
-      KlonObject prototype = (KlonObject) creator.invoke(null);
-      system.setSlot(prototype.getIdentity()
         .getName(), prototype);
       prototype.configure(root, current);
     }
@@ -99,6 +90,14 @@ public final class KlonRoot {
         .toString()));
     }
     root.setSlot("Properties", properties);
+
+    KlonObject environment = object.duplicate();
+    for (Map.Entry<String, String> current : System.getenv()
+      .entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root,
+        current.getValue()));
+    }
+    root.setSlot("Environment", environment);
 
     List<KlonObject> arguments = new ArrayList<KlonObject>(args.length);
     for (String current : args) {

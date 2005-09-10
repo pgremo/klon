@@ -24,8 +24,8 @@ public final class KlonRoot {
 
   public static void setup(String[] args) throws Exception {
     KlonObject object = KlonObject.prototype();
-    KlonObject root = object.duplicate();
-    KlonObject prototypes = object.duplicate();
+    KlonObject root = object.clone();
+    KlonObject prototypes = object.clone();
     root.setSlot("Klon", root);
     root.setSlot("Prototypes", prototypes);
     prototypes.setSlot(object.getName(), object);
@@ -66,14 +66,14 @@ public final class KlonRoot {
         System.getProperties().put(name, current.getValue().toString());
       }
     }
-    KlonObject properties = object.duplicate();
+    KlonObject properties = object.clone();
     for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
       properties.setSlot(current.getKey().toString(), KlonString.newString(
           root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 
-    KlonObject environment = object.duplicate();
+    KlonObject environment = object.clone();
     for (Map.Entry<String, String> current : System.getenv().entrySet()) {
       environment.setSlot(current.getKey(), KlonString.newString(root, current
           .getValue()));

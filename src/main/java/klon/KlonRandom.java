@@ -24,10 +24,10 @@ public class KlonRandom extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonRandom();
-    result.bind(value);
-    result.setData(((MersenneTwister) result.getData()).clone());
+    result.bind(this);
+    result.setData(((MersenneTwister) data).clone());
     return result;
   }
 

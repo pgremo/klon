@@ -17,11 +17,11 @@ public class KlonMap extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonMap();
-    result.bind(value);
+    result.bind(this);
     result.setData(new HashMap<KlonObject, KlonObject>(
-        (Map<KlonObject, KlonObject>) value.getData()));
+        (Map<KlonObject, KlonObject>) data));
     return result;
   }
 

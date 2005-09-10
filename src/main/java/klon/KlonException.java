@@ -9,7 +9,7 @@ public class KlonException extends KlonObject {
 
   public static KlonObject newException(KlonObject root, String name,
       String description, Message message) throws KlonObject {
-    KlonObject result = root.getSlot("Exception").duplicate();
+    KlonObject result = root.getSlot("Exception").clone();
     if (name != null) {
       result.setSlot("name", KlonString.newString(root, name));
     }
@@ -31,10 +31,10 @@ public class KlonException extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonException();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 
@@ -52,7 +52,7 @@ public class KlonException extends KlonObject {
     KlonObject result = receiver;
     KlonObject target = message.eval(context, index++);
     if (receiver.isBound(target)) {
-      KlonObject scope = context.duplicate();
+      KlonObject scope = context.clone();
       if (message.getArgumentCount() == 3) {
         String name = (String) message
             .getArgument(index++)

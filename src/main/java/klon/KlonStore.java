@@ -16,8 +16,8 @@ public class KlonStore extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) {
-    return value;
+  public KlonObject clone() {
+    return this;
   }
 
   @Override

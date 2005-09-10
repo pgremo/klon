@@ -14,7 +14,7 @@ public class KlonStoreTest extends TestCase {
 
   public void testDuplicate() throws Exception {
     KlonObject expected = KlonStore.prototype();
-    assertSame(expected,expected.duplicate());
+    assertSame(expected,expected.clone());
   }
 
   public void testOperations() throws Exception {

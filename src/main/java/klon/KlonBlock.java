@@ -9,7 +9,7 @@ public class KlonBlock extends KlonObject {
 
   public static KlonObject newBlock(KlonObject root, Block value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Block").duplicate();
+    KlonObject result = root.getSlot("Block").clone();
     result.setData(value);
     return result;
   }
@@ -19,10 +19,10 @@ public class KlonBlock extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonBlock();
-    result.bind(value);
-    Block source = (Block) value.getData();
+    result.bind(this);
+    Block source = (Block) data;
     if (source != null) {
       result.setData(source.clone());
     }

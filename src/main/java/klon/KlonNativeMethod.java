@@ -11,7 +11,7 @@ public class KlonNativeMethod extends KlonObject {
 
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {
-    KlonObject result = root.getSlot("NativeMethod").duplicate();
+    KlonObject result = root.getSlot("NativeMethod").clone();
     result.setData(new NativeMethod(subject));
     return result;
   }
@@ -52,10 +52,10 @@ public class KlonNativeMethod extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonNativeMethod();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 }

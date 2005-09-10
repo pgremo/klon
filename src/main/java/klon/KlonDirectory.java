@@ -16,7 +16,7 @@ public class KlonDirectory extends KlonObject {
 
   public static KlonObject newDirectory(KlonObject root, File file)
       throws KlonObject {
-    KlonObject result = root.getSlot("Directory").duplicate();
+    KlonObject result = root.getSlot("Directory").clone();
     result.setData(file);
     return result;
   }
@@ -27,10 +27,10 @@ public class KlonDirectory extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonDirectory();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

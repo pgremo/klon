@@ -32,14 +32,14 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    KlonObject result = root.getSlot("Buffer").duplicate();
+    KlonObject result = root.getSlot("Buffer").clone();
     result.setData(new Buffer(buffer.array()));
     return result;
   }
 
   public static KlonObject newBuffer(KlonObject root, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Buffer").duplicate();
+    KlonObject result = root.getSlot("Buffer").clone();
     result.setData(value);
     return result;
   }
@@ -51,10 +51,10 @@ public class KlonBuffer extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonBuffer();
-    result.bind(value);
-    result.setData(((Buffer) value.getData()).clone());
+    result.bind(this);
+    result.setData(((Buffer) data).clone());
     return result;
   }
 

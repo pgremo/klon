@@ -25,10 +25,6 @@ public class KlonObject extends Exception implements Cloneable,
     Configurator.setSlots(root, this, type);
   }
 
-  public KlonObject duplicate() throws KlonObject {
-    return duplicate(this);
-  }
-
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -171,15 +167,6 @@ public class KlonObject extends Exception implements Cloneable,
   }
 
   @Override
-  public Object clone() {
-    try {
-      return duplicate();
-    } catch (KlonObject e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @Override
   public boolean equals(Object obj) {
     boolean result;
     try {
@@ -187,6 +174,14 @@ public class KlonObject extends Exception implements Cloneable,
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+    return result;
+  }
+
+  @SuppressWarnings("unused")
+  public KlonObject clone() {
+    KlonObject result = new KlonObject();
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 
@@ -236,14 +231,6 @@ public class KlonObject extends Exception implements Cloneable,
   }
 
   @SuppressWarnings("unused")
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
-    result.bind(value);
-    result.setData(value.getData());
-    return result;
-  }
-
-  @SuppressWarnings("unused")
   public KlonObject activate(KlonObject slot, KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject result = slot;
@@ -286,7 +273,7 @@ public class KlonObject extends Exception implements Cloneable,
   @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.duplicate();
+    KlonObject result = receiver.clone();
     KlonObject slot = result.getSlot("init");
     if (slot != null) {
       slot.activate(result, context, message);

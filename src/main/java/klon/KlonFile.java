@@ -21,7 +21,7 @@ public class KlonFile extends KlonObject {
 
   public static KlonObject newFile(KlonObject root, File file)
       throws KlonObject {
-    KlonObject result = root.getSlot("File").duplicate();
+    KlonObject result = root.getSlot("File").clone();
     result.setData(file);
     return result;
   }
@@ -32,10 +32,10 @@ public class KlonFile extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonFile();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

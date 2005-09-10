@@ -6,7 +6,7 @@ public class KlonNoOp extends KlonObject {
 
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {
-    KlonObject result = root.getSlot("NoOp").duplicate();
+    KlonObject result = root.getSlot("NoOp").clone();
     result.setData(value);
     return result;
   }
@@ -21,10 +21,10 @@ public class KlonNoOp extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonNoOp();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

@@ -21,7 +21,7 @@ public class KlonString extends KlonObject {
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
-    KlonObject result = root.getSlot("String").duplicate();
+    KlonObject result = root.getSlot("String").clone();
     result.setData(value);
     return result;
   }
@@ -101,10 +101,10 @@ public class KlonString extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonString();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

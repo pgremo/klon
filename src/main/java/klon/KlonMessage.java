@@ -11,7 +11,7 @@ public class KlonMessage extends KlonObject {
 
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message").duplicate();
+    KlonObject result = root.getSlot("Message").clone();
     result.setData(message);
     return result;
   }
@@ -22,10 +22,10 @@ public class KlonMessage extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonMessage();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

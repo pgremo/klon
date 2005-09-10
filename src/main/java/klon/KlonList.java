@@ -18,7 +18,7 @@ public class KlonList extends KlonObject {
 
   public static KlonObject newList(KlonObject root, List<KlonObject> value)
       throws KlonObject {
-    KlonObject result = root.getSlot("List").duplicate();
+    KlonObject result = root.getSlot("List").clone();
     result.setData(value);
     return result;
   }
@@ -30,11 +30,10 @@ public class KlonList extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonList();
-    result.bind(value);
-    result
-        .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
+    result.bind(this);
+    result.setData(new ArrayList<KlonObject>((List<KlonObject>) data));
     return result;
   }
 

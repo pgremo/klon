@@ -16,14 +16,14 @@ public class KlonNumber extends KlonObject {
 
   public static KlonObject newNumber(KlonObject root, Double value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Number").duplicate();
+    KlonObject result = root.getSlot("Number").clone();
     result.setData(value);
     return result;
   }
 
   public static KlonObject newNumber(KlonObject root, int size, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Number").duplicate();
+    KlonObject result = root.getSlot("Number").clone();
     result.setData(value.getNumber(0, size));
     return result;
   }
@@ -67,10 +67,10 @@ public class KlonNumber extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonNumber();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

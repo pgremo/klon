@@ -11,7 +11,7 @@ public class KlonLocals extends KlonObject {
 
   public static KlonObject newLocals(KlonObject root, KlonObject self)
       throws KlonObject {
-    KlonObject result = root.getSlot("Locals").duplicate();
+    KlonObject result = root.getSlot("Locals").clone();
     result.setSlot("self", self);
     result.setData(self.getData());
     return result;
@@ -23,10 +23,10 @@ public class KlonLocals extends KlonObject {
   }
 
   @Override
-  public KlonObject duplicate(KlonObject value) throws KlonObject {
+  public KlonObject clone() {
     KlonObject result = new KlonLocals();
-    result.bind(value);
-    result.setData(value.getData());
+    result.bind(this);
+    result.setData(data);
     return result;
   }
 

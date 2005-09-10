@@ -11,10 +11,6 @@ public class KlonNoOp extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    return new KlonNoOp();
-  }
-
   @Override
   public String getName() {
     return "NoOp";

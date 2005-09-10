@@ -9,10 +9,9 @@ public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonMap();
-    result.setData(new HashMap<KlonObject, KlonObject>());
-    return result;
+  public KlonMap() {
+    super();
+    data = new HashMap<KlonObject, KlonObject>();
   }
 
   @SuppressWarnings("unchecked")

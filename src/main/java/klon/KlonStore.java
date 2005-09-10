@@ -11,10 +11,6 @@ public class KlonStore extends KlonObject {
 
   private static final long serialVersionUID = -4140594553364102878L;
 
-  public static KlonObject prototype() {
-    return new KlonStore();
-  }
-
   @Override
   public KlonObject clone() {
     return this;

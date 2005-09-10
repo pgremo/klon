@@ -1,6 +1,6 @@
 package klon;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ public final class KlonRoot {
   }
 
   public static void setup(String[] args) throws Exception {
-    KlonObject object = KlonObject.prototype();
+    KlonObject object = new KlonObject();
     KlonObject root = object.clone();
     KlonObject prototypes = object.clone();
     root.setSlot("Klon", root);
@@ -33,10 +33,10 @@ public final class KlonRoot {
     root.bind(prototypes);
     object.bind(root);
 
-    KlonObject string = KlonString.prototype();
+    KlonObject string = new KlonString();
     prototypes.setSlot(string.getName(), string);
 
-    KlonObject nativeMethod = KlonNativeMethod.prototype();
+    KlonObject nativeMethod = new KlonNativeMethod();
     prototypes.setSlot(nativeMethod.getName(), nativeMethod);
 
     string.configure(root, KlonString.class);
@@ -49,8 +49,8 @@ public final class KlonRoot {
         KlonMessage.class, KlonNil.class, KlonNoOp.class, KlonNumber.class,
         KlonRandom.class, KlonStore.class };
     for (Class<? extends Object> current : types) {
-      Method creator = current.getDeclaredMethod("prototype", (Class[]) null);
-      KlonObject prototype = (KlonObject) creator.invoke(null);
+      Constructor creator = current.getDeclaredConstructor((Class[]) null);
+      KlonObject prototype = (KlonObject) creator.newInstance((Object[]) null);
       prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root, current);
     }

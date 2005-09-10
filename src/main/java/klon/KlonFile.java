@@ -13,17 +13,16 @@ public class KlonFile extends KlonObject {
 
   private static final long serialVersionUID = 3159106516324355579L;
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonFile();
-    result.setData(new File("").getAbsoluteFile());
-    return result;
-  }
-
   public static KlonObject newFile(KlonObject root, File file)
       throws KlonObject {
     KlonObject result = root.getSlot("File").clone();
     result.setData(file);
     return result;
+  }
+
+  public KlonFile() {
+    super();
+    data = new File("").getAbsoluteFile();
   }
 
   @Override

@@ -44,10 +44,9 @@ public class KlonBuffer extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonBuffer();
-    result.setData(new Buffer());
-    return result;
+  public KlonBuffer() {
+    super();
+    data = new Buffer();
   }
 
   @Override

@@ -62,12 +62,6 @@ public class KlonString extends KlonObject {
     return newString(root, buffer.toString());
   }
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonString();
-    result.setData("");
-    return result;
-  }
-
   @SuppressWarnings("unused")
   @Override
   public int compareTo(KlonObject other) {
@@ -80,11 +74,6 @@ public class KlonString extends KlonObject {
     return result;
   }
 
-  @Override
-  public String toString() {
-    return "\"" + data + "\"";
-  }
-
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
@@ -93,6 +82,16 @@ public class KlonString extends KlonObject {
     }
     throw KlonException.newException(receiver, "Illegal Argument",
         "argument must evaluate to a string", message);
+  }
+
+  public KlonString() {
+    super();
+    data = "";
+  }
+
+  @Override
+  public String toString() {
+    return "\"" + data + "\"";
   }
 
   @Override

@@ -14,10 +14,6 @@ public class KlonBlock extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    return new KlonBlock();
-  }
-
   @Override
   public KlonObject clone() {
     KlonObject result = new KlonBlock();

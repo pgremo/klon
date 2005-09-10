@@ -28,10 +28,9 @@ public class KlonNumber extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonNumber();
-    result.setData(0D);
-    return result;
+  public KlonNumber() {
+    super();
+    data = 0D;
   }
 
   @SuppressWarnings("unused")

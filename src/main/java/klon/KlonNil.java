@@ -5,10 +5,6 @@ public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = -1742322624353726742L;
 
-  public static KlonObject prototype() {
-    return new KlonNil();
-  }
-
   @Override
   public KlonObject clone() {
     return this;

@@ -8,17 +8,16 @@ public class KlonDirectory extends KlonObject {
 
   private static final long serialVersionUID = -1107185693710331200L;
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonDirectory();
-    result.setData(new File("").getAbsoluteFile());
-    return result;
-  }
-
   public static KlonObject newDirectory(KlonObject root, File file)
       throws KlonObject {
     KlonObject result = root.getSlot("Directory").clone();
     result.setData(file);
     return result;
+  }
+
+  public KlonDirectory() {
+    super();
+    data = new File("").getAbsoluteFile();
   }
 
   @Override

@@ -10,10 +10,6 @@ public class KlonCompiler extends KlonObject {
     return this;
   }
 
-  public static KlonObject prototype() {
-    return new KlonCompiler();
-  }
-
   @Override
   public String getName() {
     return "Compiler";

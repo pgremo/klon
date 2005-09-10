@@ -10,17 +10,16 @@ public class KlonList extends KlonObject {
 
   private static final long serialVersionUID = -4331613935922113899L;
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonList();
-    result.setData(new ArrayList<KlonObject>());
-    return result;
-  }
-
   public static KlonObject newList(KlonObject root, List<KlonObject> value)
       throws KlonObject {
     KlonObject result = root.getSlot("List").clone();
     result.setData(value);
     return result;
+  }
+
+  public KlonList() {
+    super();
+    data = new ArrayList<KlonObject>();
   }
 
   @Override

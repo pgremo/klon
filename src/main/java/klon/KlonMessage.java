@@ -5,10 +5,6 @@ public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
 
-  public static KlonObject prototype() {
-    return new KlonMessage();
-  }
-
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
     KlonObject result = root.getSlot("Message").clone();

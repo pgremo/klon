@@ -16,10 +16,6 @@ public class KlonNativeMethod extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    return new KlonNativeMethod();
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,

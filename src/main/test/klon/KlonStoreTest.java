@@ -13,8 +13,8 @@ public class KlonStoreTest extends TestCase {
   }
 
   public void testDuplicate() throws Exception {
-    KlonObject expected = KlonStore.prototype();
-    assertSame(expected,expected.clone());
+    KlonObject expected = new KlonStore();
+    assertSame(expected, expected.clone());
   }
 
   public void testOperations() throws Exception {

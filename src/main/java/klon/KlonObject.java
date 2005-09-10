@@ -206,10 +206,6 @@ public class KlonObject extends Exception implements Cloneable,
     return result.toString();
   }
 
-  public static KlonObject prototype() {
-    return new KlonObject();
-  }
-
   public Object getData() {
     return data;
   }

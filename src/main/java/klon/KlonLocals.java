@@ -5,10 +5,6 @@ public class KlonLocals extends KlonObject {
 
   private static final long serialVersionUID = 1963856865914651978L;
 
-  public static KlonObject prototype() {
-    return new KlonLocals();
-  }
-
   public static KlonObject newLocals(KlonObject root, KlonObject self)
       throws KlonObject {
     KlonObject result = root.getSlot("Locals").clone();

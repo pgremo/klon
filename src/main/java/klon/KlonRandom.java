@@ -7,12 +7,6 @@ public class KlonRandom extends KlonObject {
 
   private static final long serialVersionUID = -7916992470486962761L;
 
-  public static KlonObject prototype() {
-    KlonObject result = new KlonRandom();
-    result.setData(new MersenneTwister());
-    return result;
-  }
-
   public static Random evalAsRandom(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
@@ -21,6 +15,11 @@ public class KlonRandom extends KlonObject {
     }
     throw KlonException.newException(receiver, "Illegal Argument",
         "argument must evaluate to a Random", message);
+  }
+
+  public KlonRandom() {
+    super();
+    data = new MersenneTwister();
   }
 
   @Override

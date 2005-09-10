@@ -21,10 +21,6 @@ public class KlonException extends KlonObject {
     return result;
   }
 
-  public static KlonObject prototype() {
-    return new KlonException();
-  }
-
   @Override
   public String getName() {
     return "Exception";

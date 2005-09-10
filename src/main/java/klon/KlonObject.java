@@ -191,8 +191,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     try {
       result = obj instanceof KlonObject
           && identity.compare(this, (KlonObject) obj) == 0;
-    } catch (KlonObject e) {
-      result = false;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
     return result;
   }
@@ -208,7 +208,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     try {
       result = identity.format(this);
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
     return result;
   }
@@ -221,16 +221,16 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     StringBuilder result = new StringBuilder();
     try {
       KlonObject name = getSlot("name");
-      KlonObject description = getSlot("description");
       if (name != null) {
         result.append(name.getData());
+        KlonObject description = getSlot("description");
         if (description != null) {
           result.append(":")
             .append(description.getData());
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
     return result.toString();
   }

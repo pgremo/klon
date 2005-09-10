@@ -1,5 +1,7 @@
 package klon;
 
+import java.util.ArrayList;
+
 @Bindings("Object")
 public class KlonException extends Identity {
 
@@ -14,7 +16,8 @@ public class KlonException extends Identity {
     if (description != null) {
       result.setSlot("description", KlonString.newString(root, description));
     }
-    result.setSlot("stackTrace", root.getSlot("List").duplicate());
+    result.setSlot("stackTrace", KlonList.newList(root,
+        new ArrayList<KlonObject>()));
     return result;
   }
 

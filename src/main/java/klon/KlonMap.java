@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@ExposedAs("Map")
 @Bindings("Object")
 public class KlonMap extends KlonObject {
 
@@ -25,7 +26,7 @@ public class KlonMap extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Map";
   }
 

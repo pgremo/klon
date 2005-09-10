@@ -2,6 +2,7 @@ package klon;
 
 import java.util.ArrayList;
 
+@ExposedAs("Exception")
 @Bindings("Object")
 public class KlonException extends KlonObject {
 
@@ -22,7 +23,7 @@ public class KlonException extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Exception";
   }
 
@@ -74,7 +75,7 @@ public class KlonException extends KlonObject {
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
-      buffer.append(receiver.getName()).append(" ").append(
+      buffer.append(receiver.getType()).append(" ").append(
           name.getData().toString()).append(":").append(
           description.getData().toString()).append("\n");
       for (KlonObject current : (Iterable<KlonObject>) stackTrace.getData()) {

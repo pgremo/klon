@@ -28,16 +28,16 @@ public final class KlonRoot {
     KlonObject prototypes = object.clone();
     root.setSlot("Klon", root);
     root.setSlot("Prototypes", prototypes);
-    prototypes.setSlot(object.getName(), object);
+    prototypes.setSlot(object.getType(), object);
     root.bind(object);
     root.bind(prototypes);
     object.bind(root);
 
     KlonObject string = new KlonString();
-    prototypes.setSlot(string.getName(), string);
+    prototypes.setSlot(string.getType(), string);
 
     KlonObject nativeMethod = new KlonNativeMethod();
-    prototypes.setSlot(nativeMethod.getName(), nativeMethod);
+    prototypes.setSlot(nativeMethod.getType(), nativeMethod);
 
     string.configure(root, KlonString.class);
     nativeMethod.configure(root, KlonNativeMethod.class);
@@ -49,10 +49,16 @@ public final class KlonRoot {
         KlonMessage.class, KlonNil.class, KlonNoOp.class, KlonNumber.class,
         KlonRandom.class, KlonStore.class };
     for (Class<? extends Object> current : types) {
-      Constructor creator = current.getDeclaredConstructor((Class[]) null);
-      KlonObject prototype = (KlonObject) creator.newInstance((Object[]) null);
-      prototypes.setSlot(prototype.getName(), prototype);
-      prototype.configure(root, current);
+      ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
+      if (exposedAs == null) {
+        System.out.print("Warning " + current + " is not exposed\n");
+      }else{
+        Constructor creator = current.getDeclaredConstructor((Class[]) null);
+        KlonObject prototype = (KlonObject) creator
+            .newInstance((Object[]) null);
+        prototypes.setSlot(exposedAs.value()[0], prototype);
+        prototype.configure(root, current);
+      }
     }
 
     Properties klonProperties = new Properties();

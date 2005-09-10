@@ -1,5 +1,6 @@
 package klon;
 
+@ExposedAs("Compiler")
 @Bindings("Object")
 public class KlonCompiler extends KlonObject {
 
@@ -11,7 +12,7 @@ public class KlonCompiler extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Compiler";
   }
 

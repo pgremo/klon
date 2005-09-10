@@ -1,5 +1,6 @@
 package klon;
 
+@ExposedAs("NoOp")
 public class KlonNoOp extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
@@ -9,11 +10,6 @@ public class KlonNoOp extends KlonObject {
     KlonObject result = root.getSlot("NoOp").clone();
     result.setData(value);
     return result;
-  }
-
-  @Override
-  public String getName() {
-    return "NoOp";
   }
 
   @Override

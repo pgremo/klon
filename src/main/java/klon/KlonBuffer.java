@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+@ExposedAs("Buffer")
 @Bindings("Object")
 public class KlonBuffer extends KlonObject {
 
@@ -58,7 +59,7 @@ public class KlonBuffer extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Buffer";
   }
 

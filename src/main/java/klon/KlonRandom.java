@@ -2,6 +2,7 @@ package klon;
 
 import java.util.Random;
 
+@ExposedAs("Random")
 @Bindings("Object")
 public class KlonRandom extends KlonObject {
 
@@ -10,7 +11,7 @@ public class KlonRandom extends KlonObject {
   public static Random evalAsRandom(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Random".equals(result.getName())) {
+    if ("Random".equals(result.getType())) {
       return (Random) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -31,7 +32,7 @@ public class KlonRandom extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Random";
   }
 

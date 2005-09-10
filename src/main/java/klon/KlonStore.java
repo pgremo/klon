@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+@ExposedAs("Store")
 @Bindings("Object")
 public class KlonStore extends KlonObject {
 
@@ -17,7 +18,7 @@ public class KlonStore extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Store";
   }
 

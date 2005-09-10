@@ -54,7 +54,7 @@ public class Shell {
       out.setHasOutput(false);
     }
     if (!out.hasOutput()) {
-      Object type = value.getName();
+      Object type = value.getType();
       if (Arrays.binarySearch(PRINTABLES, type) > -1) {
         Message reportMessage = new Compiler(KlonRoot.getROOT())
             .fromString("writeLine");

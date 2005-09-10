@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@ExposedAs("Object")
 public class KlonObject extends Exception implements Cloneable,
     Comparable<KlonObject> {
 
@@ -157,7 +158,7 @@ public class KlonObject extends Exception implements Cloneable,
 
   @Override
   public String toString() {
-    return getName() + "_0x"
+    return getType() + "_0x"
         + Integer.toHexString(System.identityHashCode(this));
   }
 
@@ -222,7 +223,7 @@ public class KlonObject extends Exception implements Cloneable,
     this.activatable = activatable;
   }
 
-  public String getName() {
+  public String getType() {
     return "Object";
   }
 
@@ -242,7 +243,7 @@ public class KlonObject extends Exception implements Cloneable,
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver, receiver.getName());
+    return KlonString.newString(receiver, receiver.getType());
   }
 
   @ExposedAs("bind")

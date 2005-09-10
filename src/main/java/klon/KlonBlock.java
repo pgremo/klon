@@ -2,6 +2,7 @@ package klon;
 
 import java.util.List;
 
+@ExposedAs("Block")
 @Bindings("Object")
 public class KlonBlock extends KlonObject {
 
@@ -26,7 +27,7 @@ public class KlonBlock extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Block";
   }
 

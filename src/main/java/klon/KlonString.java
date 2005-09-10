@@ -12,6 +12,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+@ExposedAs("String")
 @Bindings("Object")
 public class KlonString extends KlonObject {
 
@@ -66,7 +67,7 @@ public class KlonString extends KlonObject {
   @Override
   public int compareTo(KlonObject other) {
     int result;
-    if ("String".equals(other.getName())) {
+    if ("String".equals(other.getType())) {
       result = ((String) getData()).compareTo((String) other.getData());
     } else {
       result = hashCode() - other.hashCode();
@@ -77,7 +78,7 @@ public class KlonString extends KlonObject {
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getName())) {
+    if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -95,7 +96,7 @@ public class KlonString extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "String";
   }
 

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+@ExposedAs("List")
 @Bindings("Object")
 public class KlonList extends KlonObject {
 
@@ -23,7 +24,7 @@ public class KlonList extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "List";
   }
 
@@ -40,7 +41,7 @@ public class KlonList extends KlonObject {
   @Override
   public int compareTo(KlonObject other) {
     int result;
-    if ("List".equals(other.getName())) {
+    if ("List".equals(other.getType())) {
       List<KlonObject> l1 = (List<KlonObject>) getData();
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();

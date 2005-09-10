@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@ExposedAs("File")
 @Bindings("Object")
 public class KlonFile extends KlonObject {
 
@@ -26,7 +27,7 @@ public class KlonFile extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "File";
   }
 

@@ -1,5 +1,6 @@
 package klon;
 
+@ExposedAs("Message")
 @Bindings("Object")
 public class KlonMessage extends KlonObject {
 
@@ -13,7 +14,7 @@ public class KlonMessage extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Message";
   }
 

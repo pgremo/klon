@@ -3,6 +3,7 @@ package klon;
 import java.io.File;
 import java.io.IOException;
 
+@ExposedAs("Directory")
 @Bindings("Object")
 public class KlonDirectory extends KlonObject {
 
@@ -21,7 +22,7 @@ public class KlonDirectory extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Directory";
   }
 

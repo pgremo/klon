@@ -2,6 +2,7 @@ package klon;
 
 import java.text.NumberFormat;
 
+@ExposedAs("Number")
 @Bindings("Object")
 public class KlonNumber extends KlonObject {
 
@@ -37,7 +38,7 @@ public class KlonNumber extends KlonObject {
   @Override
   public int compareTo(KlonObject other) {
     int result;
-    if ("Number".equals(other.getName())) {
+    if ("Number".equals(other.getType())) {
       result = ((Double) getData()).compareTo((Double) other.getData());
     } else {
       result = hashCode() - other.hashCode();
@@ -53,7 +54,7 @@ public class KlonNumber extends KlonObject {
   public static Double evalAsNumber(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Number".equals(result.getName())) {
+    if ("Number".equals(result.getType())) {
       return (Double) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -61,7 +62,7 @@ public class KlonNumber extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Number";
   }
 

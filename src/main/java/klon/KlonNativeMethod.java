@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+@ExposedAs("NativeMethod")
 @Bindings("Object")
 public class KlonNativeMethod extends KlonObject {
 
@@ -43,7 +44,7 @@ public class KlonNativeMethod extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "NativeMethod";
   }
 

@@ -1,5 +1,6 @@
 package klon;
 
+@ExposedAs("Locals")
 @Bindings("Object")
 public class KlonLocals extends KlonObject {
 
@@ -14,7 +15,7 @@ public class KlonLocals extends KlonObject {
   }
 
   @Override
-  public String getName() {
+  public String getType() {
     return "Locals";
   }
 

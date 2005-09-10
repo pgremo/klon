@@ -3,7 +3,7 @@ package klon;
 import java.util.ArrayList;
 
 @Bindings("Object")
-public class KlonException extends Identity {
+public class KlonException extends KlonObject {
 
   private static final long serialVersionUID = -6012596192533993069L;
 
@@ -22,9 +22,7 @@ public class KlonException extends Identity {
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonException());
-    return result;
+    return new KlonException();
   }
 
   @Override
@@ -34,9 +32,8 @@ public class KlonException extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonException();
     result.bind(value);
-    result.setIdentity(new KlonException());
     result.setData(value.getData());
     return result;
   }
@@ -77,11 +74,11 @@ public class KlonException extends Identity {
     KlonObject name = receiver.getSlot("name");
     KlonObject description = receiver.getSlot("description");
     if (name == null && description == null) {
-      result = Identity.asString(receiver, context, message);
+      result = KlonObject.asString(receiver, context, message);
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
-      buffer.append(receiver.getIdentity().getName()).append(" ").append(
+      buffer.append(receiver.getName()).append(" ").append(
           name.getData().toString()).append(":").append(
           description.getData().toString()).append("\n");
       for (KlonObject current : (Iterable<KlonObject>) stackTrace.getData()) {

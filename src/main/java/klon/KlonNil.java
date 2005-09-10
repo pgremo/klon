@@ -1,14 +1,12 @@
 package klon;
 
 @Bindings("Object")
-public class KlonNil extends Identity {
+public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = -1742322624353726742L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonNil());
-    return result;
+    return new KlonNil();
   }
 
   @Override
@@ -28,33 +26,32 @@ public class KlonNil extends Identity {
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs({"and", "&&", "then"})
+  @ExposedAs( { "and", "&&", "then" })
   public static KlonObject noop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver;
   }
 
-  @ExposedAs({"elseIf"})
+  @ExposedAs( { "elseIf" })
   public static KlonObject elseIf(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return Identity.ifBranch(receiver, context, message);
+    return KlonObject.ifBranch(receiver, context, message);
   }
 
-  @ExposedAs({"or", "||"})
+  @ExposedAs( { "or", "||" })
   public static KlonObject or(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject other = message.eval(context, 0);
-    return receiver.getSlot("Nil")
-      .equals(other) ? receiver : other;
+    return receiver.getSlot("Nil").equals(other) ? receiver : other;
   }
 
-  @ExposedAs({"ifNil", "ifFalse", "else"})
+  @ExposedAs( { "ifNil", "ifFalse", "else" })
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return message.eval(context, 0);
   }
 
-  @ExposedAs({"isNil", "ifTrue"})
+  @ExposedAs( { "isNil", "ifTrue" })
   public static KlonObject isNil(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver.getSlot("Klon");
@@ -63,17 +60,15 @@ public class KlonNil extends Identity {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.equals(message.eval(receiver, 0))
-        ? receiver.getSlot("Klon")
-        : receiver.getSlot("Nil");
+    return receiver.equals(message.eval(receiver, 0)) ? receiver
+        .getSlot("Klon") : receiver.getSlot("Nil");
   }
 
   @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return !receiver.equals(message.eval(context, 0))
-        ? receiver.getSlot("Klon")
-        : receiver.getSlot("Nil");
+    return !receiver.equals(message.eval(context, 0)) ? receiver
+        .getSlot("Klon") : receiver.getSlot("Nil");
   }
 
 }

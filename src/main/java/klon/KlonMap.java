@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Bindings("Object")
-public class KlonMap extends Identity {
+public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonMap());
+    KlonObject result = new KlonMap();
     result.setData(new HashMap<KlonObject, KlonObject>());
     return result;
   }
@@ -19,9 +18,8 @@ public class KlonMap extends Identity {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonMap();
     result.bind(value);
-    result.setIdentity(new KlonMap());
     result.setData(new HashMap<KlonObject, KlonObject>(
         (Map<KlonObject, KlonObject>) value.getData()));
     return result;

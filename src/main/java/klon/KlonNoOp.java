@@ -1,6 +1,6 @@
 package klon;
 
-public class KlonNoOp extends Identity {
+public class KlonNoOp extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
 
@@ -12,9 +12,7 @@ public class KlonNoOp extends Identity {
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonNoOp());
-    return result;
+    return new KlonNoOp();
   }
 
   @Override
@@ -24,9 +22,8 @@ public class KlonNoOp extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonNoOp();
     result.bind(value);
-    result.setIdentity(new KlonNoOp());
     result.setData(value.getData());
     return result;
   }

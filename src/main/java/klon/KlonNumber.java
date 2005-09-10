@@ -3,7 +3,7 @@ package klon;
 import java.text.NumberFormat;
 
 @Bindings("Object")
-public class KlonNumber extends Identity {
+public class KlonNumber extends KlonObject {
 
   private static final long serialVersionUID = -3735761349600472088L;
 
@@ -29,15 +29,14 @@ public class KlonNumber extends Identity {
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonNumber());
+    KlonObject result = new KlonNumber();
     result.setData(0D);
     return result;
   }
 
   @SuppressWarnings("unused")
   @Override
-  public int compareTo(Identity other) {
+  public int compareTo(KlonObject other) {
     int result;
     if ("Number".equals(other.getName())) {
       result = ((Double) getData()).compareTo((Double) other.getData());
@@ -55,7 +54,7 @@ public class KlonNumber extends Identity {
   public static Double evalAsNumber(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Number".equals(result.getIdentity().getName())) {
+    if ("Number".equals(result.getName())) {
       return (Double) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -69,9 +68,8 @@ public class KlonNumber extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonNumber();
     result.bind(value);
-    result.setIdentity(new KlonNumber());
     result.setData(value.getData());
     return result;
   }

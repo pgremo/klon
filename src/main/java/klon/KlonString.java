@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Bindings("Object")
-public class KlonString extends Identity {
+public class KlonString extends KlonObject {
 
   private static final long serialVersionUID = -7547715800603443713L;
   private static Charset charset = Charset.forName("ISO-8859-15");
@@ -63,15 +63,14 @@ public class KlonString extends Identity {
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonString());
+    KlonObject result = new KlonString();
     result.setData("");
     return result;
   }
 
   @SuppressWarnings("unused")
   @Override
-  public int compareTo(Identity other) {
+  public int compareTo(KlonObject other) {
     int result;
     if ("String".equals(other.getName())) {
       result = ((String) getData()).compareTo((String) other.getData());
@@ -89,7 +88,7 @@ public class KlonString extends Identity {
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("String".equals(result.getIdentity().getName())) {
+    if ("String".equals(result.getName())) {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -103,9 +102,8 @@ public class KlonString extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonString();
     result.bind(value);
-    result.setIdentity(new KlonString());
     result.setData(value.getData());
     return result;
   }

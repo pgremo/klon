@@ -9,21 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Bindings("Object")
-public class KlonFile extends Identity {
+public class KlonFile extends KlonObject {
 
   private static final long serialVersionUID = 3159106516324355579L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonFile());
+    KlonObject result = new KlonFile();
     result.setData(new File("").getAbsoluteFile());
     return result;
   }
 
   public static KlonObject newFile(KlonObject root, File file)
       throws KlonObject {
-    KlonObject result = root.getSlot("File")
-      .duplicate();
+    KlonObject result = root.getSlot("File").duplicate();
     result.setData(file);
     return result;
   }
@@ -35,9 +33,8 @@ public class KlonFile extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonFile();
     result.bind(value);
-    result.setIdentity(new KlonFile());
     result.setData(value.getData());
     return result;
   }
@@ -46,32 +43,34 @@ public class KlonFile extends Identity {
   public static KlonObject path(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     try {
-      return KlonString.newString(receiver,
-        ((File) receiver.getData()).getCanonicalPath());
+      return KlonString.newString(receiver, ((File) receiver.getData())
+          .getCanonicalPath());
     } catch (IOException e) {
-      throw KlonException.newException(receiver, e.getClass()
-        .getSimpleName(), e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
     }
   }
 
   @ExposedAs("setPath")
   public static KlonObject setPath(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    receiver.setData(new File(KlonString.evalAsString(context, message, 0)).getAbsoluteFile());
+    receiver.setData(new File(KlonString.evalAsString(context, message, 0))
+        .getAbsoluteFile());
     return receiver;
   }
 
   @ExposedAs("name")
   public static KlonObject name(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver, ((File) receiver.getData()).getName());
+    return KlonString
+        .newString(receiver, ((File) receiver.getData()).getName());
   }
 
   @ExposedAs("parent")
   public static KlonObject parent(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonDirectory.newDirectory(receiver,
-      ((File) receiver.getData()).getParentFile());
+    return KlonDirectory.newDirectory(receiver, ((File) receiver.getData())
+        .getParentFile());
   }
 
   @ExposedAs("exists")
@@ -89,8 +88,8 @@ public class KlonFile extends Identity {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      (double) ((File) receiver.getData()).length());
+    return KlonNumber.newNumber(receiver, (double) ((File) receiver.getData())
+        .length());
   }
 
   @ExposedAs("remove")
@@ -100,8 +99,9 @@ public class KlonFile extends Identity {
     if (file.exists()) {
       file.delete();
     } else {
-      throw KlonException.newException(receiver, "File.doesNotExist",
-        file.getAbsolutePath() + " does not exist", message);
+      throw KlonException.newException(receiver, "File.doesNotExist", file
+          .getAbsolutePath()
+          + " does not exist", message);
     }
     return receiver;
   }
@@ -114,13 +114,15 @@ public class KlonFile extends Identity {
     File file = (File) receiver.getData();
     if (file.exists()) {
       if (target.exists()) {
-        throw KlonException.newException(receiver, "File.nameConflict",
-          target.getAbsolutePath() + " already exist", message);
+        throw KlonException.newException(receiver, "File.nameConflict", target
+            .getAbsolutePath()
+            + " already exist", message);
       }
       file.renameTo(target);
     } else {
-      throw KlonException.newException(receiver, "File.doesNotExist",
-        file.getAbsolutePath() + " does not exist", message);
+      throw KlonException.newException(receiver, "File.doesNotExist", file
+          .getAbsolutePath()
+          + " does not exist", message);
     }
     return receiver;
   }
@@ -158,13 +160,9 @@ public class KlonFile extends Identity {
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
-      index = (String) message.getArgument(arg++)
-        .getSelector()
-        .getData();
+      index = (String) message.getArgument(arg++).getSelector().getData();
     }
-    String value = (String) message.getArgument(arg++)
-      .getSelector()
-      .getData();
+    String value = (String) message.getArgument(arg++).getSelector().getData();
     Message code = message.getArgument(arg);
     FileInputStream in = null;
     try {
@@ -173,9 +171,11 @@ public class KlonFile extends Identity {
       int count = 1;
       while (current != -1) {
         if (index != null) {
-          context.setSlot(index, KlonNumber.newNumber(receiver, (double) count));
+          context
+              .setSlot(index, KlonNumber.newNumber(receiver, (double) count));
         }
-        context.setSlot(value, KlonNumber.newNumber(receiver, (double) current));
+        context
+            .setSlot(value, KlonNumber.newNumber(receiver, (double) current));
         result = code.eval(context, context);
         current = in.read();
         count++;

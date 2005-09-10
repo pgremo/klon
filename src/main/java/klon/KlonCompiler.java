@@ -1,7 +1,7 @@
 package klon;
 
 @Bindings("Object")
-public class KlonCompiler extends Identity {
+public class KlonCompiler extends KlonObject {
 
   private static final long serialVersionUID = 359686882876703383L;
 
@@ -11,9 +11,7 @@ public class KlonCompiler extends Identity {
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonCompiler());
-    return result;
+    return new KlonCompiler();
   }
 
   @Override

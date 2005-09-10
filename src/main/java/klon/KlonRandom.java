@@ -3,13 +3,12 @@ package klon;
 import java.util.Random;
 
 @Bindings("Object")
-public class KlonRandom extends Identity {
+public class KlonRandom extends KlonObject {
 
   private static final long serialVersionUID = -7916992470486962761L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonRandom());
+    KlonObject result = new KlonRandom();
     result.setData(new MersenneTwister());
     return result;
   }
@@ -17,7 +16,7 @@ public class KlonRandom extends Identity {
   public static Random evalAsRandom(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
-    if ("Random".equals(result.getIdentity().getName())) {
+    if ("Random".equals(result.getName())) {
       return (Random) result.getData();
     }
     throw KlonException.newException(receiver, "Illegal Argument",
@@ -26,9 +25,8 @@ public class KlonRandom extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonRandom();
     result.bind(value);
-    result.setIdentity(new KlonRandom());
     result.setData(((MersenneTwister) result.getData()).clone());
     return result;
   }

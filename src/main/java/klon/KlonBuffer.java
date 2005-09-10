@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 @Bindings("Object")
-public class KlonBuffer extends Identity {
+public class KlonBuffer extends KlonObject {
 
   private static final long serialVersionUID = -5905250334048375486L;
 
@@ -21,8 +21,8 @@ public class KlonBuffer extends Identity {
       while (channel.read(buffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
+      throw KlonException.newException(root, e.getClass().getSimpleName(), e
+          .getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -32,32 +32,28 @@ public class KlonBuffer extends Identity {
       }
     }
     buffer.position(0);
-    KlonObject result = root.getSlot("Buffer")
-      .duplicate();
+    KlonObject result = root.getSlot("Buffer").duplicate();
     result.setData(new Buffer(buffer.array()));
     return result;
   }
 
   public static KlonObject newBuffer(KlonObject root, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Buffer")
-      .duplicate();
+    KlonObject result = root.getSlot("Buffer").duplicate();
     result.setData(value);
     return result;
   }
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonBuffer());
+    KlonObject result = new KlonBuffer();
     result.setData(new Buffer());
     return result;
   }
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonBuffer();
     result.bind(value);
-    result.setIdentity(new KlonBuffer());
     result.setData(((Buffer) value.getData()).clone());
     return result;
   }
@@ -72,8 +68,7 @@ public class KlonBuffer extends Identity {
       Message message) throws KlonObject {
     int size = 8;
     if (message.getArgumentCount() > 0) {
-      size = KlonNumber.evalAsNumber(receiver, message, 0)
-        .intValue();
+      size = KlonNumber.evalAsNumber(receiver, message, 0).intValue();
     }
     size = Math.min(size, 8);
     return KlonNumber.newNumber(receiver, size, (Buffer) receiver.getData());

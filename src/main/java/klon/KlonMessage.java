@@ -1,21 +1,17 @@
 package klon;
 
-
 @Bindings("Object")
-public class KlonMessage extends Identity {
+public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonMessage());
-    return result;
+    return new KlonMessage();
   }
 
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message")
-      .duplicate();
+    KlonObject result = root.getSlot("Message").duplicate();
     result.setData(message);
     return result;
   }
@@ -27,9 +23,8 @@ public class KlonMessage extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonMessage();
     result.bind(value);
-    result.setIdentity(new KlonMessage());
     result.setData(value.getData());
     return result;
   }

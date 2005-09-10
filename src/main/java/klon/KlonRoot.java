@@ -23,79 +23,60 @@ public final class KlonRoot {
   }
 
   public static void setup(String[] args) throws Exception {
-    KlonObject object = Identity.prototype();
+    KlonObject object = KlonObject.prototype();
     KlonObject root = object.duplicate();
     KlonObject prototypes = object.duplicate();
     root.setSlot("Klon", root);
     root.setSlot("Prototypes", prototypes);
-    prototypes.setSlot(object.getIdentity()
-      .getName(), object);
+    prototypes.setSlot(object.getName(), object);
     root.bind(object);
     root.bind(prototypes);
+    object.bind(root);
 
     KlonObject string = KlonString.prototype();
-    prototypes.setSlot(string.getIdentity()
-      .getName(), string);
+    prototypes.setSlot(string.getName(), string);
 
     KlonObject nativeMethod = KlonNativeMethod.prototype();
-    prototypes.setSlot(nativeMethod.getIdentity()
-      .getName(), nativeMethod);
+    prototypes.setSlot(nativeMethod.getName(), nativeMethod);
 
     string.configure(root, KlonString.class);
     nativeMethod.configure(root, KlonNativeMethod.class);
-    object.configure(root, Identity.class);
+    object.configure(root, KlonObject.class);
 
-    Class[] types = new Class[]{
-        KlonBlock.class,
-        KlonBuffer.class,
-        KlonCompiler.class,
-        KlonDirectory.class,
-        KlonException.class,
-        KlonFile.class,
-        KlonList.class,
-        KlonLocals.class,
-        KlonMap.class,
-        KlonMessage.class,
-        KlonNil.class,
-        KlonNoOp.class,
-        KlonNumber.class,
-        KlonRandom.class,
-        KlonStore.class};
+    Class[] types = new Class[] { KlonBlock.class, KlonBuffer.class,
+        KlonCompiler.class, KlonDirectory.class, KlonException.class,
+        KlonFile.class, KlonList.class, KlonLocals.class, KlonMap.class,
+        KlonMessage.class, KlonNil.class, KlonNoOp.class, KlonNumber.class,
+        KlonRandom.class, KlonStore.class };
     for (Class<? extends Object> current : types) {
       Method creator = current.getDeclaredMethod("prototype", (Class[]) null);
       KlonObject prototype = (KlonObject) creator.invoke(null);
-      prototypes.setSlot(prototype.getIdentity()
-        .getName(), prototype);
+      prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root, current);
     }
 
     Properties klonProperties = new Properties();
-    klonProperties.load(KlonRoot.class.getResourceAsStream("/klon/version.properties"));
-    klonProperties.load(KlonRoot.class.getResourceAsStream("/klon/klon.properties"));
+    klonProperties.load(KlonRoot.class
+        .getResourceAsStream("/klon/version.properties"));
+    klonProperties.load(KlonRoot.class
+        .getResourceAsStream("/klon/klon.properties"));
     for (Map.Entry<Object, Object> current : klonProperties.entrySet()) {
-      String name = "klon." + current.getKey()
-        .toString();
-      if (System.getProperties()
-        .get(name) == null) {
-        System.getProperties()
-          .put(name, current.getValue()
-            .toString());
+      String name = "klon." + current.getKey().toString();
+      if (System.getProperties().get(name) == null) {
+        System.getProperties().put(name, current.getValue().toString());
       }
     }
     KlonObject properties = object.duplicate();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), KlonString.newString(
+          root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 
     KlonObject environment = object.duplicate();
-    for (Map.Entry<String, String> current : System.getenv()
-      .entrySet()) {
-      environment.setSlot(current.getKey(), KlonString.newString(root,
-        current.getValue()));
+    for (Map.Entry<String, String> current : System.getenv().entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root, current
+          .getValue()));
     }
     root.setSlot("Environment", environment);
 

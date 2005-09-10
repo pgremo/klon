@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 @Bindings("Object")
-public class KlonList extends Identity {
+public class KlonList extends KlonObject {
 
   private static final long serialVersionUID = -4331613935922113899L;
 
   public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new KlonList());
+    KlonObject result = new KlonList();
     result.setData(new ArrayList<KlonObject>());
     return result;
   }
@@ -32,9 +31,8 @@ public class KlonList extends Identity {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = new KlonObject();
+    KlonObject result = new KlonList();
     result.bind(value);
-    result.setIdentity(new KlonList());
     result
         .setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;
@@ -42,7 +40,7 @@ public class KlonList extends Identity {
 
   @SuppressWarnings( { "unused", "unchecked" })
   @Override
-  public int compareTo(Identity other) {
+  public int compareTo(KlonObject other) {
     int result;
     if ("List".equals(other.getName())) {
       List<KlonObject> l1 = (List<KlonObject>) getData();
@@ -245,7 +243,7 @@ public class KlonList extends Identity {
     KlonObject result;
     Object primitive = receiver.getData();
     if (primitive == null) {
-      result = Identity.asString(receiver, context, message);
+      result = KlonObject.asString(receiver, context, message);
     } else {
       Message stringMessage = new Compiler(receiver).fromString("asString");
       StringBuilder buffer = new StringBuilder();

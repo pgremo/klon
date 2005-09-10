@@ -15,6 +15,12 @@ public class Identity implements Serializable {
 
   private boolean activatable;
 
+  public static KlonObject prototype() {
+    KlonObject result = new KlonObject();
+    result.setIdentity(new Identity());
+    return result;
+  }
+
   public boolean isActivatable() {
     return activatable;
   }
@@ -43,8 +49,8 @@ public class Identity implements Serializable {
 
   @SuppressWarnings("unused")
   public String format(KlonObject object) throws KlonObject {
-    return object.getIdentity()
-      .getName() + "_0x" + Integer.toHexString(System.identityHashCode(object));
+    return object.getIdentity().getName() + "_0x"
+        + Integer.toHexString(System.identityHashCode(object));
   }
 
   @SuppressWarnings("unused")
@@ -63,8 +69,7 @@ public class Identity implements Serializable {
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonString.newString(receiver, receiver.getIdentity()
-      .getName());
+    return KlonString.newString(receiver, receiver.getIdentity().getName());
   }
 
   @ExposedAs("bind")
@@ -84,9 +89,8 @@ public class Identity implements Serializable {
   @ExposedAs("isBound")
   public static KlonObject isBound(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.isBound(message.eval(context, 0))
-        ? receiver
-        : receiver.getSlot("Nil");
+    return receiver.isBound(message.eval(context, 0)) ? receiver : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs("clone")
@@ -104,9 +108,8 @@ public class Identity implements Serializable {
   public static KlonObject setIsActivatable(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject value = message.eval(context, 0);
-    receiver.getIdentity()
-      .setActivatable(!receiver.getSlot("Nil")
-        .equals(value));
+    receiver.getIdentity().setActivatable(
+        !receiver.getSlot("Nil").equals(value));
     return receiver;
   }
 
@@ -119,17 +122,17 @@ public class Identity implements Serializable {
     if ("Message".equals(type.getData())) {
       if (message.getArgumentCount() > 1) {
         throw KlonException.newException(receiver, "Invalid Argument",
-          "argument must evaluate to a Message", message);
+            "argument must evaluate to a Message", message);
       }
       target = (Message) subject.getData();
     } else {
       if (!"String".equals(type.getData())) {
         throw KlonException.newException(receiver, "Invalid Argument",
-          "argument must evaluate to a String", message);
+            "argument must evaluate to a String", message);
       }
       target = new Message();
-      target.setSelector(KlonString.newString(receiver,
-        (String) subject.getData()));
+      target.setSelector(KlonString.newString(receiver, (String) subject
+          .getData()));
       for (int i = 1; i < message.getArgumentCount(); i++) {
         target.addArgument(message.getArgument(i));
       }
@@ -191,15 +194,10 @@ public class Identity implements Serializable {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    String name = (String) message.getArgument(0)
-      .getSelector()
-      .getData();
-    String value = (String) message.getArgument(1)
-      .getSelector()
-      .getData();
+    String name = (String) message.getArgument(0).getSelector().getData();
+    String value = (String) message.getArgument(1).getSelector().getData();
     Message code = message.getArgument(2);
-    for (Map.Entry<String, KlonObject> current : receiver.getSlots()
-      .entrySet()) {
+    for (Map.Entry<String, KlonObject> current : receiver.getSlots().entrySet()) {
       context.setSlot(name, KlonString.newString(receiver, current.getKey()));
       context.setSlot(value, current.getValue());
       result = code.eval(context, context);
@@ -227,8 +225,8 @@ public class Identity implements Serializable {
   @ExposedAs("uniqueId")
   public static KlonObject uniqueId(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      (double) System.identityHashCode(receiver));
+    return KlonNumber.newNumber(receiver, (double) System
+        .identityHashCode(receiver));
   }
 
   @ExposedAs("write")
@@ -236,9 +234,10 @@ public class Identity implements Serializable {
       Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      System.out.print(message.eval(context, i)
-        .perform(context, printMessage)
-        .getData());
+      System.out.print(message
+          .eval(context, i)
+            .perform(context, printMessage)
+            .getData());
     }
     return receiver;
   }
@@ -256,8 +255,7 @@ public class Identity implements Serializable {
       Message message) throws KlonObject {
     int result = 0;
     if (message.getArgumentCount() == 1) {
-      result = KlonNumber.evalAsNumber(context, message, 0)
-        .intValue();
+      result = KlonNumber.evalAsNumber(context, message, 0).intValue();
     }
     System.exit(result);
     return receiver.getSlot("Nil");
@@ -275,34 +273,28 @@ public class Identity implements Serializable {
     int count = message.getArgumentCount() - 1;
     List<KlonObject> parameters = new ArrayList<KlonObject>(count);
     for (int i = 0; i < count; i++) {
-      KlonObject current = message.getArgument(i)
-        .getSelector();
+      KlonObject current = message.getArgument(i).getSelector();
       if (current == null) {
         throw KlonException.newException(receiver, "Invalid Argument",
-          "argument must evaluate to a Symbol", message);
+            "argument must evaluate to a Symbol", message);
       }
       parameters.add(current);
     }
-    return KlonBlock.newBlock(receiver, new Block(parameters,
-      message.getArgument(count)));
+    return KlonBlock.newBlock(receiver, new Block(parameters, message
+        .getArgument(count)));
   }
 
   @ExposedAs("for")
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    String counter = (String) message.getArgument(0)
-      .getSelector()
-      .getData();
-    double start = KlonNumber.evalAsNumber(context, message, 1)
-      .intValue();
-    double end = KlonNumber.evalAsNumber(context, message, 2)
-      .intValue();
+    String counter = (String) message.getArgument(0).getSelector().getData();
+    double start = KlonNumber.evalAsNumber(context, message, 1).intValue();
+    double end = KlonNumber.evalAsNumber(context, message, 2).intValue();
     double increment;
     Message code;
     if (message.getArgumentCount() == 5) {
-      increment = KlonNumber.evalAsNumber(context, message, 3)
-        .intValue();
+      increment = KlonNumber.evalAsNumber(context, message, 3).intValue();
       code = message.getArgument(4);
     } else {
       increment = end - start < 0 ? -1 : 1;
@@ -335,8 +327,7 @@ public class Identity implements Serializable {
       Message message) throws KlonObject {
     KlonObject result = message.eval(context, 0);
     if (message.getArgumentCount() > 1) {
-      if (!receiver.getSlot("Nil")
-        .equals(result)) {
+      if (!receiver.getSlot("Nil").equals(result)) {
         result = message.eval(context, 1);
       } else if (message.getArgumentCount() == 3) {
         result = message.eval(context, 2);
@@ -351,7 +342,7 @@ public class Identity implements Serializable {
     return KlonNoOp.newNoOp(receiver, message.eval(context, 0));
   }
 
-  @ExposedAs({"and", "&&"})
+  @ExposedAs( { "and", "&&" })
   public static KlonObject and(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject nil = receiver.getSlot("Nil");
@@ -359,7 +350,7 @@ public class Identity implements Serializable {
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs({"or", "||", "else", "elseIf"})
+  @ExposedAs( { "or", "||", "else", "elseIf" })
   public static KlonObject noop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver;
@@ -387,64 +378,56 @@ public class Identity implements Serializable {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.equals(message.eval(context, 0))
-        ? receiver
-        : receiver.getSlot("Nil");
+    return receiver.equals(message.eval(context, 0)) ? receiver : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return !receiver.equals(message.eval(context, 0))
-        ? receiver
-        : receiver.getSlot("Nil");
+    return !receiver.equals(message.eval(context, 0)) ? receiver : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs("<")
   public static KlonObject lessThan(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    return receiver.compareTo(argument) < 0
-        ? argument
-        : receiver.getSlot("Nil");
+    return receiver.compareTo(argument) < 0 ? argument : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs(">")
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    return receiver.compareTo(argument) > 0
-        ? argument
-        : receiver.getSlot("Nil");
+    return receiver.compareTo(argument) > 0 ? argument : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs("<=")
   public static KlonObject lessThanEquals(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    return receiver.compareTo(argument) <= 0
-        ? argument
-        : receiver.getSlot("Nil");
+    return receiver.compareTo(argument) <= 0 ? argument : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs(">=")
   public static KlonObject greaterThanEquals(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject argument = message.eval(context, 0);
-    return receiver.compareTo(argument) >= 0
-        ? argument
-        : receiver.getSlot("Nil");
+    return receiver.compareTo(argument) >= 0 ? argument : receiver
+        .getSlot("Nil");
   }
 
   @ExposedAs("super")
   public static KlonObject superSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     Message target = message.getArgument(0);
-    String name = (String) target.getSelector()
-      .getData();
+    String name = (String) target.getSelector().getData();
     KlonObject parent = null;
-    Iterator<KlonObject> iterator = receiver.getBindings()
-      .iterator();
+    Iterator<KlonObject> iterator = receiver.getBindings().iterator();
     while (iterator.hasNext() && parent == null) {
       KlonObject current = iterator.next();
       if (current.getSlot(name) != null) {
@@ -469,7 +452,7 @@ public class Identity implements Serializable {
   public static KlonObject doString(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     Message target = new Compiler(receiver).fromString(KlonString.evalAsString(
-      context, message, 0));
+        context, message, 0));
     target.eval(receiver, context);
     return receiver;
   }
@@ -479,12 +462,13 @@ public class Identity implements Serializable {
       Message message) throws KlonObject {
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject string = KlonString.newString(receiver, new File(name));
-    Message target = new Compiler(receiver).fromString((String) string.getData());
+    Message target = new Compiler(receiver).fromString((String) string
+        .getData());
     target.eval(receiver, context);
     return receiver;
   }
 
-  @ExposedAs({"ifTrue", "", "brace", "bracket"})
+  @ExposedAs( { "ifTrue", "", "brace", "bracket" })
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return message.eval(context, 0);
@@ -521,10 +505,10 @@ public class Identity implements Serializable {
     }
     System.out.print("\n");
     TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
-      receiver.getSlots());
+        receiver.getSlots());
     for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
-      System.out.print(current.getKey() + " := " + current.getValue()
-        .toString() + "\n");
+      System.out.print(current.getKey() + " := "
+          + current.getValue().toString() + "\n");
     }
     return receiver.getSlot("Nil");
   }

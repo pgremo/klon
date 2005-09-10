@@ -235,14 +235,4 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     return result.toString();
   }
 
-  // ================
-  // Klon prototype methods
-  // ================
-
-  public static KlonObject prototype() {
-    KlonObject result = new KlonObject();
-    result.setIdentity(new Identity());
-    return result;
-  }
-
 }

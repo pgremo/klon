@@ -23,7 +23,7 @@ public final class KlonRoot {
   }
 
   public static void setup(String[] args) throws Exception {
-    KlonObject object = KlonObject.prototype();
+    KlonObject object = Identity.prototype();
     KlonObject root = object.duplicate();
     KlonObject prototypes = object.duplicate();
     root.setSlot("Klon", root);

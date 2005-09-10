@@ -71,20 +71,19 @@ public class KlonString extends Identity {
 
   @SuppressWarnings("unused")
   @Override
-  public int compare(KlonObject receiver, KlonObject other) throws KlonObject {
+  public int compareTo(Identity other) {
     int result;
-    if ("String".equals(other.getIdentity().getName())) {
-      result = ((String) receiver.getData())
-          .compareTo((String) other.getData());
+    if ("String".equals(other.getName())) {
+      result = ((String) getData()).compareTo((String) other.getData());
     } else {
-      result = receiver.hashCode() - other.hashCode();
+      result = hashCode() - other.hashCode();
     }
     return result;
   }
 
   @Override
-  public String format(KlonObject value) {
-    return "\"" + value.getData().toString() + "\"";
+  public String toString() {
+    return "\"" + data + "\"";
   }
 
   public static String evalAsString(KlonObject receiver, Message message,

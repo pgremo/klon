@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Bindings("Klon")
-public class Identity implements Serializable {
+public class Identity implements Serializable, Comparable<Identity> {
 
   private static final long serialVersionUID = -8518903977702842129L;
 
   private boolean activatable;
-  private Object data;
+  protected Object data;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
@@ -52,14 +52,8 @@ public class Identity implements Serializable {
   }
 
   @SuppressWarnings("unused")
-  public int compare(KlonObject o1, KlonObject o2) throws KlonObject {
-    return o1.hashCode() - o2.hashCode();
-  }
-
-  @SuppressWarnings("unused")
-  public String format(KlonObject object) throws KlonObject {
-    return object.getIdentity().getName() + "_0x"
-        + Integer.toHexString(System.identityHashCode(object));
+  public int compareTo(Identity o2) {
+    return hashCode() - o2.hashCode();
   }
 
   @SuppressWarnings("unused")
@@ -73,6 +67,17 @@ public class Identity implements Serializable {
       }
     }
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return getName() + "_0x"
+        + Integer.toHexString(System.identityHashCode(this));
+  }
+
+  @Override
+  public int hashCode() {
+    return data == null ? super.hashCode() : data.hashCode();
   }
 
   @ExposedAs("type")

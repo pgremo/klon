@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class KlonObject extends Exception implements Cloneable, Comparable {
+public class KlonObject extends Exception implements Cloneable,
+    Comparable<KlonObject> {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
@@ -162,12 +163,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   // java.lang.Comparable
   // ================
 
-  public int compareTo(Object o) {
-    try {
-      return identity.compare(this, (KlonObject) o);
-    } catch (KlonObject e) {
-      throw new RuntimeException(e);
-    }
+  public int compareTo(KlonObject o) {
+    return identity.compareTo(o.getIdentity());
   }
 
   // ================
@@ -188,7 +185,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     boolean result;
     try {
       result = obj instanceof KlonObject
-          && identity.compare(this, (KlonObject) obj) == 0;
+          && identity.compareTo(((KlonObject) obj).getIdentity()) == 0;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -197,16 +194,14 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
 
   @Override
   public int hashCode() {
-    return identity.getData() == null ? super.hashCode() : identity
-        .getData()
-          .hashCode();
+    return identity.hashCode();
   }
 
   @Override
   public String toString() {
     String result = null;
     try {
-      result = identity.format(this);
+      result = identity.toString();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

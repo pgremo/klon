@@ -10,8 +10,8 @@ public class KlonDirectory extends Identity {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(new File("").getAbsoluteFile());
     result.setIdentity(new KlonDirectory());
+    result.setData(new File("").getAbsoluteFile());
     return result;
   }
 
@@ -26,6 +26,15 @@ public class KlonDirectory extends Identity {
   @Override
   public String getName() {
     return "Directory";
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonDirectory());
+    result.setData(value.getData());
+    return result;
   }
 
   @ExposedAs("path")

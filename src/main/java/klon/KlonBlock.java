@@ -23,7 +23,9 @@ public class KlonBlock extends Identity {
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = super.duplicate(value);
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonBlock());
     Block source = (Block) value.getData();
     if (source != null) {
       result.setData(source.clone());

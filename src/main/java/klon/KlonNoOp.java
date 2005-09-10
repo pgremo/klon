@@ -6,8 +6,7 @@ public class KlonNoOp extends Identity {
 
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {
-    KlonObject result = root.getSlot("NoOp")
-      .duplicate();
+    KlonObject result = root.getSlot("NoOp").duplicate();
     result.setData(value);
     return result;
   }
@@ -21,6 +20,15 @@ public class KlonNoOp extends Identity {
   @Override
   public String getName() {
     return "NoOp";
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonNoOp());
+    result.setData(value.getData());
+    return result;
   }
 
   @ExposedAs("forward")

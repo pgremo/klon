@@ -1,5 +1,6 @@
 package klon;
 
+
 @Bindings("Object")
 public class KlonLocals extends Identity {
 
@@ -23,6 +24,15 @@ public class KlonLocals extends Identity {
   @Override
   public String getName() {
     return "Locals";
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonLocals());
+    result.setData(value.getData());
+    return result;
   }
 
 }

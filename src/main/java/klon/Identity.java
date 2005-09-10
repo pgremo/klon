@@ -14,11 +14,20 @@ public class Identity implements Serializable {
   private static final long serialVersionUID = -8518903977702842129L;
 
   private boolean activatable;
+  private Object data;
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
     result.setIdentity(new Identity());
     return result;
+  }
+
+  public Object getData() {
+    return data;
+  }
+
+  public void setData(Object value) {
+    this.data = value;
   }
 
   public boolean isActivatable() {
@@ -37,8 +46,8 @@ public class Identity implements Serializable {
   public KlonObject duplicate(KlonObject value) throws KlonObject {
     KlonObject result = new KlonObject();
     result.bind(value);
+    result.setIdentity(new Identity());
     result.setData(value.getData());
-    result.setIdentity(value.getIdentity());
     return result;
   }
 

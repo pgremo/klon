@@ -15,8 +15,8 @@ public class KlonFile extends Identity {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(new File("").getAbsoluteFile());
     result.setIdentity(new KlonFile());
+    result.setData(new File("").getAbsoluteFile());
     return result;
   }
 
@@ -31,6 +31,15 @@ public class KlonFile extends Identity {
   @Override
   public String getName() {
     return "File";
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonFile());
+    result.setData(value.getData());
+    return result;
   }
 
   @ExposedAs("path")

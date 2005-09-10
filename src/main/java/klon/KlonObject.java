@@ -14,7 +14,6 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private Identity identity;
-  private Object data;
 
   public void configure(KlonObject root, Class<? extends Object> type)
       throws Exception {
@@ -30,13 +29,13 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
       Message message) throws KlonObject {
     return identity.activate(this, receiver, context, message);
   }
-  
+
   public void setData(Object value) {
-    this.data = value;
+    identity.setData(value);
   }
 
   public Object getData() {
-    return data;
+    return identity.getData();
   }
 
   public Identity getIdentity() {
@@ -141,8 +140,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
   @SuppressWarnings("unchecked")
   public KlonObject perform(KlonObject context, Message message)
       throws KlonObject {
-    String name = (String) message.getSelector()
-      .getData();
+    String name = (String) message.getSelector().getData();
     KlonObject slot = getSlot(name);
     if (slot == null && "Locals".equals(context.getSlot("type"))) {
       slot = context.getSlot(name);
@@ -153,8 +151,8 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
     if (slot == null) {
       KlonObject e = KlonException.newException(this, "Invalid Slot", name
           + " does not exist", message);
-      ((List<KlonObject>) e.getSlot("stackTrace")
-        .getData()).add(KlonString.newString(context, message.toString()));
+      ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
+          .newString(context, message.toString()));
       throw e;
     }
     return slot.activate(this, context, message);
@@ -199,7 +197,9 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
 
   @Override
   public int hashCode() {
-    return data == null ? super.hashCode() : data.hashCode();
+    return identity.getData() == null ? super.hashCode() : identity
+        .getData()
+          .hashCode();
   }
 
   @Override
@@ -225,8 +225,7 @@ public class KlonObject extends Exception implements Cloneable, Comparable {
         result.append(name.getData());
         KlonObject description = getSlot("description");
         if (description != null) {
-          result.append(":")
-            .append(description.getData());
+          result.append(":").append(description.getData());
         }
       }
     } catch (Exception e) {

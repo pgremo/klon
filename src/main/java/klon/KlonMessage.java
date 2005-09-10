@@ -1,5 +1,6 @@
 package klon;
 
+
 @Bindings("Object")
 public class KlonMessage extends Identity {
 
@@ -22,6 +23,15 @@ public class KlonMessage extends Identity {
   @Override
   public String getName() {
     return "Message";
+  }
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonMessage());
+    result.setData(value.getData());
+    return result;
   }
 
   @ExposedAs("asString")

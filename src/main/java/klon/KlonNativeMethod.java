@@ -54,4 +54,13 @@ public class KlonNativeMethod extends Identity {
     return "NativeMethod";
   }
 
+
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonNativeMethod());
+    result.setData(value.getData());
+    return result;
+  }
 }

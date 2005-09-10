@@ -12,8 +12,8 @@ public class KlonList extends Identity {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(new ArrayList<KlonObject>());
     result.setIdentity(new KlonList());
+    result.setData(new ArrayList<KlonObject>());
     return result;
   }
 
@@ -33,7 +33,9 @@ public class KlonList extends Identity {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = super.duplicate(value);
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonList());
     result.setData(new ArrayList<KlonObject>((List<KlonObject>) value.getData()));
     return result;
   }

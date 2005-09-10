@@ -32,8 +32,8 @@ public class KlonNumber extends Identity {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(0D);
     result.setIdentity(new KlonNumber());
+    result.setData(0D);
     return result;
   }
 
@@ -71,6 +71,14 @@ public class KlonNumber extends Identity {
     return "Number";
   }
 
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonNumber());
+    result.setData(value.getData());
+    return result;
+  }
   @ExposedAs("pi")
   public static final Double PI = Math.PI;
 

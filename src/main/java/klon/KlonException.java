@@ -32,6 +32,15 @@ public class KlonException extends Identity {
     return "Exception";
   }
 
+  @Override
+  public KlonObject duplicate(KlonObject value) throws KlonObject {
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonException());
+    result.setData(value.getData());
+    return result;
+  }
+
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

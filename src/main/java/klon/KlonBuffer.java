@@ -48,14 +48,16 @@ public class KlonBuffer extends Identity {
 
   public static KlonObject prototype() {
     KlonObject result = new KlonObject();
-    result.setData(new Buffer());
     result.setIdentity(new KlonBuffer());
+    result.setData(new Buffer());
     return result;
   }
 
   @Override
   public KlonObject duplicate(KlonObject value) throws KlonObject {
-    KlonObject result = super.duplicate(value);
+    KlonObject result = new KlonObject();
+    result.bind(value);
+    result.setIdentity(new KlonBuffer());
     result.setData(((Buffer) value.getData()).clone());
     return result;
   }

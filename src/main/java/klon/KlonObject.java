@@ -26,6 +26,14 @@ public class KlonObject extends Exception implements Cloneable,
     Configurator.setSlots(root, this, type);
   }
 
+  public String getName() {
+    ExposedAs exposedAs = getClass().getAnnotation(ExposedAs.class);
+    if (exposedAs == null) {
+      throw new RuntimeException("Warning " + getClass() + " is not exposed.");
+    }
+    return exposedAs.value()[0];
+  }
+
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

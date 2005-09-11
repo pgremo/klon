@@ -14,16 +14,16 @@ public class KlonMessage extends KlonObject {
   }
 
   @Override
-  public String getType() {
-    return "Message";
-  }
-
-  @Override
   public KlonObject clone() {
     KlonObject result = new KlonMessage();
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "Message";
   }
 
   @ExposedAs("asString")

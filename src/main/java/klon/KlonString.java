@@ -63,18 +63,6 @@ public class KlonString extends KlonObject {
     return newString(root, buffer.toString());
   }
 
-  @SuppressWarnings("unused")
-  @Override
-  public int compareTo(KlonObject other) {
-    int result;
-    if ("String".equals(other.getType())) {
-      result = ((String) getData()).compareTo((String) other.getData());
-    } else {
-      result = hashCode() - other.hashCode();
-    }
-    return result;
-  }
-
   public static String evalAsString(KlonObject receiver, Message message,
       int index) throws KlonObject {
     KlonObject result = message.eval(receiver, index);
@@ -90,14 +78,21 @@ public class KlonString extends KlonObject {
     data = "";
   }
 
+  @SuppressWarnings("unused")
   @Override
-  public String toString() {
-    return "\"" + data + "\"";
+  public int compareTo(KlonObject other) {
+    int result;
+    if ("String".equals(other.getType())) {
+      result = ((String) getData()).compareTo((String) other.getData());
+    } else {
+      result = hashCode() - other.hashCode();
+    }
+    return result;
   }
 
   @Override
-  public String getType() {
-    return "String";
+  public String toString() {
+    return "\"" + data + "\"";
   }
 
   @Override
@@ -106,6 +101,11 @@ public class KlonString extends KlonObject {
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "String";
   }
 
   @ExposedAs("+")

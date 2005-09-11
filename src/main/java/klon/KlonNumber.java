@@ -29,6 +29,16 @@ public class KlonNumber extends KlonObject {
     return result;
   }
 
+  public static Double evalAsNumber(KlonObject receiver, Message message,
+      int index) throws KlonObject {
+    KlonObject result = message.eval(receiver, index);
+    if ("Number".equals(result.getType())) {
+      return (Double) result.getData();
+    }
+    throw KlonException.newException(receiver, "Illegal Argument",
+        "argument must evaluate to a number", message);
+  }
+
   public KlonNumber() {
     super();
     data = 0D;
@@ -47,23 +57,13 @@ public class KlonNumber extends KlonObject {
   }
 
   @Override
-  public String toString() {
-    return format.format(data);
-  }
-
-  public static Double evalAsNumber(KlonObject receiver, Message message,
-      int index) throws KlonObject {
-    KlonObject result = message.eval(receiver, index);
-    if ("Number".equals(result.getType())) {
-      return (Double) result.getData();
-    }
-    throw KlonException.newException(receiver, "Illegal Argument",
-        "argument must evaluate to a number", message);
+  public String getType() {
+    return "Number";
   }
 
   @Override
-  public String getType() {
-    return "Number";
+  public String toString() {
+    return format.format(data);
   }
 
   @Override

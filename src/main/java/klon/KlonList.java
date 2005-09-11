@@ -23,11 +23,6 @@ public class KlonList extends KlonObject {
     data = new ArrayList<KlonObject>();
   }
 
-  @Override
-  public String getType() {
-    return "List";
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject clone() {
@@ -35,6 +30,11 @@ public class KlonList extends KlonObject {
     result.bind(this);
     result.setData(new ArrayList<KlonObject>((List<KlonObject>) data));
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "List";
   }
 
   @SuppressWarnings( { "unused", "unchecked" })

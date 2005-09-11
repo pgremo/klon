@@ -15,16 +15,16 @@ public class KlonLocals extends KlonObject {
   }
 
   @Override
-  public String getType() {
-    return "Locals";
-  }
-
-  @Override
   public KlonObject clone() {
     KlonObject result = new KlonLocals();
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "Locals";
   }
 
 }

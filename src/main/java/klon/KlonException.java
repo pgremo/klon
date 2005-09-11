@@ -23,16 +23,16 @@ public class KlonException extends KlonObject {
   }
 
   @Override
-  public String getType() {
-    return "Exception";
-  }
-
-  @Override
   public KlonObject clone() {
     KlonObject result = new KlonException();
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "Exception";
   }
 
   @ExposedAs("raise")

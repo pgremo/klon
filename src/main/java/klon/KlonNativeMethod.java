@@ -17,6 +17,19 @@ public class KlonNativeMethod extends KlonObject {
     return result;
   }
 
+  @Override
+  public KlonObject clone() {
+    KlonObject result = new KlonNativeMethod();
+    result.bind(this);
+    result.setData(data);
+    return result;
+  }
+
+  @Override
+  public String getType() {
+    return "NativeMethod";
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,
@@ -43,16 +56,4 @@ public class KlonNativeMethod extends KlonObject {
     return result;
   }
 
-  @Override
-  public String getType() {
-    return "NativeMethod";
-  }
-
-  @Override
-  public KlonObject clone() {
-    KlonObject result = new KlonNativeMethod();
-    result.bind(this);
-    result.setData(data);
-    return result;
-  }
 }

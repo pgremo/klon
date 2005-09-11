@@ -27,16 +27,16 @@ public class KlonFile extends KlonObject {
   }
 
   @Override
-  public String getType() {
-    return "File";
-  }
-
-  @Override
   public KlonObject clone() {
     KlonObject result = new KlonFile();
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  @Override
+  public String getType() {
+    return "File";
   }
 
   @ExposedAs("path")

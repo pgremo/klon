@@ -39,9 +39,9 @@ public final class KlonRoot {
     KlonObject nativeMethod = new KlonNativeMethod();
     prototypes.setSlot(nativeMethod.getName(), nativeMethod);
 
-    string.configure(root, KlonString.class);
-    nativeMethod.configure(root, KlonNativeMethod.class);
-    object.configure(root, KlonObject.class);
+    string.configure(root);
+    nativeMethod.configure(root);
+    object.configure(root);
 
     Class[] types = new Class[] { KlonBlock.class, KlonBuffer.class,
         KlonCompiler.class, KlonDirectory.class, KlonException.class,
@@ -49,10 +49,11 @@ public final class KlonRoot {
         KlonMessage.class, KlonNil.class, KlonNoOp.class, KlonNumber.class,
         KlonRandom.class, KlonStore.class };
     for (Class<? extends Object> current : types) {
-      Constructor creator = current.getDeclaredConstructor((Class[]) null);
-      KlonObject prototype = (KlonObject) creator.newInstance((Object[]) null);
+      Constructor constructor = current.getDeclaredConstructor((Class[]) null);
+      KlonObject prototype = (KlonObject) constructor
+          .newInstance((Object[]) null);
       prototypes.setSlot(prototype.getName(), prototype);
-      prototype.configure(root, current);
+      prototype.configure(root);
     }
 
     Properties klonProperties = new Properties();

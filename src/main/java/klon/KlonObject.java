@@ -21,15 +21,14 @@ public class KlonObject extends Exception implements Cloneable,
   private boolean activatable;
   protected Object data;
 
-  public void configure(KlonObject root, Class<? extends Object> type)
-      throws Exception {
-    Configurator.setSlots(root, this, type);
+  public void configure(KlonObject root) throws Exception {
+    Configurator.configure(root, this);
   }
 
   public String getName() {
     ExposedAs exposedAs = getClass().getAnnotation(ExposedAs.class);
     if (exposedAs == null) {
-      throw new RuntimeException("Warning " + getClass() + " is not exposed.");
+      throw new RuntimeException(getClass() + " is not exposed.");
     }
     return exposedAs.value()[0];
   }
@@ -152,69 +151,6 @@ public class KlonObject extends Exception implements Cloneable,
     return slot.activate(this, context, message);
   }
 
-  // ================
-  // java.lang.Comparable
-  // ================
-
-  public int compareTo(KlonObject o) {
-    return hashCode() - o.hashCode();
-  }
-
-  // ================
-  // java.lang.Object
-  // ================
-
-  @Override
-  public String toString() {
-    return getType() + "_0x"
-        + Integer.toHexString(System.identityHashCode(this));
-  }
-
-  @Override
-  public int hashCode() {
-    return data == null ? super.hashCode() : data.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    boolean result;
-    try {
-      result = obj instanceof KlonObject && compareTo((KlonObject) obj) == 0;
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    return result;
-  }
-
-  @SuppressWarnings("unused")
-  public KlonObject clone() {
-    KlonObject result = new KlonObject();
-    result.bind(this);
-    result.setData(data);
-    return result;
-  }
-
-  // ================
-  // java.lang.Exception
-  // ================
-
-  public String getMessage() {
-    StringBuilder result = new StringBuilder();
-    try {
-      KlonObject name = getSlot("name");
-      if (name != null) {
-        result.append(name.getData());
-        KlonObject description = getSlot("description");
-        if (description != null) {
-          result.append(":").append(description.getData());
-        }
-      }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    return result.toString();
-  }
-
   public Object getData() {
     return data;
   }
@@ -247,6 +183,67 @@ public class KlonObject extends Exception implements Cloneable,
     }
     return result;
   }
+
+  // ================
+  // java.lang.Comparable
+  // ================
+
+  public int compareTo(KlonObject o) {
+    return hashCode() - o.hashCode();
+  }
+
+  // ================
+  // java.lang.Object
+  // ================
+
+  @Override
+  public String toString() {
+    return getType() + "_0x"
+        + Integer.toHexString(System.identityHashCode(this));
+  }
+
+  @Override
+  public int hashCode() {
+    return data == null ? super.hashCode() : data.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof KlonObject && compareTo((KlonObject) obj) == 0;
+  }
+
+  @SuppressWarnings("unused")
+  public KlonObject clone() {
+    KlonObject result = new KlonObject();
+    result.bind(this);
+    result.setData(data);
+    return result;
+  }
+
+  // ================
+  // java.lang.Exception
+  // ================
+
+  public String getMessage() {
+    StringBuilder result = new StringBuilder();
+    try {
+      KlonObject name = getSlot("name");
+      if (name != null) {
+        result.append(name.getData());
+        KlonObject description = getSlot("description");
+        if (description != null) {
+          result.append(":").append(description.getData());
+        }
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    return result.toString();
+  }
+
+  // ================
+  // Exposed Methods
+  // ================
 
   @ExposedAs("type")
   public static KlonObject type(KlonObject receiver, KlonObject context,

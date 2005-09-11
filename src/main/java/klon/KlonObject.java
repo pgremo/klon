@@ -142,7 +142,7 @@ public class KlonObject extends Exception implements Cloneable,
       slot = getSlot("forward");
     }
     if (slot == null) {
-      KlonObject e = KlonException.newException(this, "Invalid Slot", name
+      KlonObject e = KlonException.newException(this, "Object.doesNotExist", name
           + " does not exist", message);
       ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
           .newString(context, message.toString()));
@@ -213,6 +213,7 @@ public class KlonObject extends Exception implements Cloneable,
   }
 
   @SuppressWarnings("unused")
+  @Override
   public KlonObject clone() {
     KlonObject result = new KlonObject();
     result.bind(this);
@@ -224,6 +225,7 @@ public class KlonObject extends Exception implements Cloneable,
   // java.lang.Exception
   // ================
 
+  @Override
   public String getMessage() {
     StringBuilder result = new StringBuilder();
     try {
@@ -299,13 +301,13 @@ public class KlonObject extends Exception implements Cloneable,
     KlonObject type = subject.getSlot("type");
     if ("Message".equals(type.getData())) {
       if (message.getArgumentCount() > 1) {
-        throw KlonException.newException(receiver, "Invalid Argument",
+        throw KlonException.newException(receiver, "Object.invalidArgument",
             "argument must evaluate to a Message", message);
       }
       target = (Message) subject.getData();
     } else {
       if (!"String".equals(type.getData())) {
-        throw KlonException.newException(receiver, "Invalid Argument",
+        throw KlonException.newException(receiver, "Object.invalidArgument",
             "argument must evaluate to a String", message);
       }
       target = new Message();
@@ -324,7 +326,7 @@ public class KlonObject extends Exception implements Cloneable,
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject result = receiver.getSlot(name);
     if (result == null) {
-      throw KlonException.newException(receiver, "Invalid Slot", name
+      throw KlonException.newException(receiver, "Object.doesNotExist", name
           + " does not exist", message);
     }
     return result;
@@ -353,7 +355,7 @@ public class KlonObject extends Exception implements Cloneable,
     KlonObject value = message.eval(context, 1);
     KlonObject result = receiver.updateSlot(name, value);
     if (result == null) {
-      throw KlonException.newException(receiver, "Invalid Slot", name
+      throw KlonException.newException(receiver, "Object.doesNotExist", name
           + " does not exist", null);
     }
     return value;
@@ -453,7 +455,7 @@ public class KlonObject extends Exception implements Cloneable,
     for (int i = 0; i < count; i++) {
       KlonObject current = message.getArgument(i).getSelector();
       if (current == null) {
-        throw KlonException.newException(receiver, "Invalid Argument",
+        throw KlonException.newException(receiver, "Object.invalidArgument",
             "argument must evaluate to a Symbol", message);
       }
       parameters.add(current);
@@ -613,7 +615,7 @@ public class KlonObject extends Exception implements Cloneable,
       }
     }
     if (parent == null) {
-      throw KlonException.newException(receiver, "Invalid Slot", name
+      throw KlonException.newException(receiver, "Object.doesNotExist", name
           + " does not exist", message);
     }
     return target.eval(receiver, context);

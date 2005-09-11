@@ -113,8 +113,8 @@ public class Message implements Serializable, Cloneable {
 
   public void assertArgumentCount(KlonObject receiver, int count)
       throws KlonObject {
-    if (arguments.size() != count) {
-      throw KlonException.newException(receiver, "Illegal Argument",
+    if (arguments.size() < count) {
+      throw KlonException.newException(receiver, "Message.illegalArgumentCount",
         "message must have " + count + " arguments", null);
     }
   }

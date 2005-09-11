@@ -52,7 +52,7 @@ public class KlonBlockTest extends TestCase {
       message.eval(object, object);
       fail("expected exception");
     } catch (KlonObject e) {
-      assertEquals("Invalid Argument:argument must evaluate to a Symbol",
+      assertEquals("Object.invalidArgument:argument must evaluate to a Symbol",
         e.getMessage());
     }
   }

@@ -69,7 +69,7 @@ public class KlonString extends KlonObject {
     if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
-    throw KlonException.newException(receiver, "Illegal Argument",
+    throw KlonException.newException(receiver, "Object.invalidArgument",
         "argument must evaluate to a string", message);
   }
 

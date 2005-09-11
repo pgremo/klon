@@ -74,7 +74,7 @@ public class KlonStore extends KlonObject {
       throws KlonObject {
     KlonObject pathSlot = receiver.getSlot("path");
     if (pathSlot == null) {
-      throw KlonException.newException(receiver, "Illegal Argument",
+      throw KlonException.newException(receiver, "Object.invalidArgument",
           "path is required", message);
     }
   }

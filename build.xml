@@ -220,6 +220,6 @@
 		</jar>
 	</target>
 
-	<target name="build" depends="clean, version.update, junit, jar" />
+	<target name="build" depends="clean, junit, version.update, jar" />
 
 </project>

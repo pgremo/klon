@@ -86,7 +86,7 @@ UnitTest TestCase := Object clone do(
 	        AssertionFailedError raise("assertion failed", message)
 	    )
 	    failComparison := method(expected, actual, message,
-	        failWithMessage("expected '" + expected asString + "' but was '" + actual asString + "'")
+	        failWithMessage("expected '" + expected + "' but was '" + actual + "'")
 	    )
 	    fail := method(
 	        failWithMessage("")

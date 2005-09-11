@@ -35,17 +35,15 @@ public class Shell {
       out.print('\n');
       out.print(prompt);
       out.flush();
-      String buffer = readMessage(in);
-      Message message = new Compiler(KlonRoot.getROOT()).fromString(buffer);
-      if (message != null) {
-        evalMessage(message);
-      }
+      Message message = new Compiler(KlonRoot.getROOT())
+          .fromString(readMessage(in));
+      evalMessage(message);
     }
   }
 
   private void evalMessage(Message message) throws KlonObject {
     out.setHasOutput(false);
-    KlonObject value = null;
+    KlonObject value;
     try {
       KlonObject root = KlonRoot.getROOT();
       value = message.eval(root, root);
@@ -54,8 +52,7 @@ public class Shell {
       out.setHasOutput(false);
     }
     if (!out.hasOutput()) {
-      Object type = value.getType();
-      if (Arrays.binarySearch(PRINTABLES, type) > -1) {
+      if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
         Message reportMessage = new Compiler(KlonRoot.getROOT())
             .fromString("writeLine");
         reportMessage.addArgument(value);

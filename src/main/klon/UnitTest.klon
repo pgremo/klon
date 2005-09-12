@@ -6,36 +6,34 @@ UnitTest TestFailure := Object clone do(
 	    test := Nil
 	    exception := Nil
 	    description := method(
-	    	"In " + test name + " " + exception backTraceString + "\n\n"
+	    	"In " + (test name) + " " + (exception stackTrace) + "\n\n"
 	    )
 	)
 	
 UnitTest TestResult := Object clone do(
 	    runCount := 0
-	    failureCount := 0
-	    errorCount := 0
 			init := method(
-	    	self testFailures := List clone
-	    	self testErrors := List clone
+	    	self failures := List clone
+	    	self errors := List clone
 	    )
 	    addTestFailure := method(testFailure,
-	    	testFailures add(testFailure)
+	    	failures add(testFailure)
 	    )
 	    addTestError := method(testError,
-				testErrors add(testError)
+				errors add(testError)
 			)
 	    testFailuresDescription := method(
 	        description := ""
-	        testFailures forEach(index, testFailure, description = description + (testFailure description))
+	        failures forEach(index, testFailure, description = description + (testFailure description))
 	        description
 	    )
 	    testErrorsDescription := method(
 	        description := ""
-	        testErrors forEach(index, testError, description = description + (testError description))
+	        errors forEach(index, testError, description = description + (testError description))
 	        description
 	    )
 	    shortSummary := method(
-	    	"" + runCount + " run, " + errorCount + " errors, " + failureCount + " failures"
+	    	"" + runCount + " run, " + (errors size) + " errors, " + (failures size) + " failures"
 	    )
 	    summary := method(
 	    	testErrorsDescription + "\n" + testFailuresDescription + "\n" + shortSummary
@@ -48,14 +46,12 @@ UnitTest TestResult := Object clone do(
 					testFailure test = aTest
 					testFailure exception = aException
 	        addTestFailure(testFailure)
-	        failureCount = failureCount + 1
 	    )
 	    testBroke := method(aTest, aException,
 	        testError := TestFailure clone
 					testError test = aTest
 					testError exception = aException
 	        addTestError(testError)
-	        errorCount = errorCount + 1
 	    )
 	)
 	

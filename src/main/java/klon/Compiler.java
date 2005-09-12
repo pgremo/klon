@@ -83,7 +83,8 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
 
     if (child.getId() == ATTACHED) {
       Message attached = (Message) child.getChildAt(0).getValue(0);
-      if ((Integer) node.getValue(1) == OPERATOR) {
+      if ((Integer) node.getValue(1) == OPERATOR
+          && message.getArgumentCount() == 0) {
         message.addArgument(attached);
         Message newAttached = attached.getAttached();
         attached.setAttached(null);

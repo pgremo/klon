@@ -20,7 +20,7 @@ public class KlonBlockTest extends TestCase {
     assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
       .toString());
 
-    message = compiler.fromString("asString");
+    message = object.getState().getAsString();
     value = message.eval(value, value);
     assertNotNull(value);
     assertEquals("block(a, self setSlot(\"result\", a))", value.getData()

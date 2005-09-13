@@ -289,7 +289,8 @@ public class KlonList extends KlonObject {
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      Message stringMessage = new Compiler(receiver).fromString("asString");
+      Message stringMessage = receiver.getState()
+        .getAsString();
       StringBuilder buffer = new StringBuilder();
       for (KlonObject current : (Iterable<KlonObject>) primitive) {
         if (buffer.length() > 0) {

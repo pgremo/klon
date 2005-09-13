@@ -11,6 +11,7 @@ public class KlonState implements Serializable {
 
   private static final long serialVersionUID = -6877483386219227949L;
   private KlonObject root;
+  private Message asString;
 
   public KlonState(String[] args) throws Exception {
     KlonObject object = new KlonObject(this);
@@ -93,6 +94,8 @@ public class KlonState implements Serializable {
     }
     root.setSlot("Arguments", KlonList.newList(root, arguments));
 
+    asString = new Compiler(root).fromString("asString");
+
   }
 
   public void setRoot(KlonObject root) {
@@ -101,6 +104,10 @@ public class KlonState implements Serializable {
 
   public KlonObject getRoot() {
     return root;
+  }
+
+  public Message getAsString() {
+    return asString;
   }
 
   public KlonObject doString(String value) throws KlonObject {

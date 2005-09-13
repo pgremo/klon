@@ -112,7 +112,8 @@ public class KlonString extends KlonObject {
   @ExposedAs("+")
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    Message printMessage = new Compiler(receiver).fromString("asString");
+    Message printMessage = receiver.getState()
+      .getAsString();
     return KlonString.newString(receiver, receiver.getData()
         + String.valueOf(message.eval(context, 0)
           .perform(context, printMessage)

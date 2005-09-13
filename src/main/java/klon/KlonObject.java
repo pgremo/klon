@@ -436,7 +436,8 @@ public class KlonObject extends Exception
   @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    Message printMessage = new Compiler(receiver).fromString("asString");
+    Message printMessage = receiver.getState()
+      .getAsString();
     for (int i = 0; i < message.getArgumentCount(); i++) {
       System.out.print(message.eval(context, i)
         .perform(context, printMessage)

@@ -439,9 +439,10 @@ public class KlonObject extends Exception
     Message printMessage = receiver.getState()
       .getAsString();
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      System.out.print(message.eval(context, i)
-        .perform(context, printMessage)
-        .getData());
+      receiver.getState()
+        .write((String) message.eval(context, i)
+          .perform(context, printMessage)
+          .getData());
     }
     return receiver;
   }
@@ -450,7 +451,8 @@ public class KlonObject extends Exception
   public static KlonObject writeLine(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     write(receiver, context, message);
-    System.out.print("\n");
+    receiver.getState()
+      .write("\n");
     return receiver;
   }
 
@@ -462,7 +464,8 @@ public class KlonObject extends Exception
       result = KlonNumber.evalAsNumber(context, message, 0)
         .intValue();
     }
-    System.exit(result);
+    receiver.getState()
+      .exit(result);
     return receiver.getSlot("Nil");
   }
 

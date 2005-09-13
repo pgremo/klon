@@ -12,6 +12,9 @@ public class KlonState implements Serializable {
   private static final long serialVersionUID = -6877483386219227949L;
   private KlonObject root;
   private Message asString;
+  private ExceptionListener exceptionListener;
+  private ExitListener exitListener;
+  private WriteListener writeListener;
 
   public KlonState(String[] args) throws Exception {
     KlonObject object = new KlonObject(this);
@@ -110,9 +113,44 @@ public class KlonState implements Serializable {
     return asString;
   }
 
-  public KlonObject doString(String value) throws KlonObject {
-    Message message = new Compiler(root).fromString(value);
-    KlonObject result = message.eval(root, root);
+  public void setExceptionListener(ExceptionListener exceptionListener) {
+    this.exceptionListener = exceptionListener;
+  }
+
+  public void setExitListener(ExitListener exitListener) {
+    this.exitListener = exitListener;
+  }
+
+  public void setWriteListener(WriteListener writeListener) {
+    this.writeListener = writeListener;
+  }
+
+  public void exception(KlonObject exception) {
+    if (exceptionListener != null) {
+      exceptionListener.onException(this, exception);
+    }
+  }
+
+  public void exit(int result) {
+    if (exitListener != null) {
+      exitListener.onExit(this, result);
+    }
+  }
+
+  public void write(String value) {
+    if (writeListener != null) {
+      writeListener.onWrite(this, value);
+    }
+  }
+
+  public KlonObject doString(String value) {
+    KlonObject result = null;
+    try {
+      result = new Compiler(root).fromString(value)
+        .eval(root, root);
+    } catch (KlonObject e) {
+      exception(e);
+    }
     return result;
   }
 }

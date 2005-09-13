@@ -22,7 +22,8 @@ public class KlonString extends KlonObject {
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
-    KlonObject result = root.getSlot("String").clone();
+    KlonObject result = root.getSlot("String")
+      .clone();
     result.setData(value);
     return result;
   }
@@ -37,8 +38,8 @@ public class KlonString extends KlonObject {
       while (channel.read(byteBuffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -57,8 +58,8 @@ public class KlonString extends KlonObject {
     try {
       buffer = decoder.decode(ByteBuffer.wrap(byteBuffer.array()));
     } catch (CharacterCodingException e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     }
     return newString(root, buffer.toString());
   }
@@ -70,11 +71,11 @@ public class KlonString extends KlonObject {
       return (String) result.getData();
     }
     throw KlonException.newException(receiver, "Object.invalidArgument",
-        "argument must evaluate to a string", message);
+      "argument must evaluate to a string", message);
   }
 
-  public KlonString() {
-    super();
+  public KlonString(KlonState state) {
+    super(state);
     data = "";
   }
 
@@ -97,7 +98,7 @@ public class KlonString extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonString();
+    KlonObject result = new KlonString(state);
     result.bind(this);
     result.setData(data);
     return result;
@@ -113,24 +114,23 @@ public class KlonString extends KlonObject {
       Message message) throws KlonObject {
     Message printMessage = new Compiler(receiver).fromString("asString");
     return KlonString.newString(receiver, receiver.getData()
-        + String.valueOf(message
-            .eval(context, 0)
-              .perform(context, printMessage)
-              .getData()));
+        + String.valueOf(message.eval(context, 0)
+          .perform(context, printMessage)
+          .getData()));
   }
 
   @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
-        context, message, 0)) ? receiver : receiver.getSlot("Nil");
+      context, message, 0)) ? receiver : receiver.getSlot("Nil");
   }
 
   @ExposedAs("endsWith")
   public static KlonObject endsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
-        context, message, 0)) ? receiver : receiver.getSlot("Nil");
+      context, message, 0)) ? receiver : receiver.getSlot("Nil");
   }
 
   @ExposedAs("split")
@@ -150,8 +150,8 @@ public class KlonString extends KlonObject {
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonBuffer.newBuffer(receiver, new Buffer(((String) receiver
-        .getData()).getBytes()));
+    return KlonBuffer.newBuffer(receiver, new Buffer(
+      ((String) receiver.getData()).getBytes()));
   }
 
   @SuppressWarnings("unused")

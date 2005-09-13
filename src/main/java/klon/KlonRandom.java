@@ -15,17 +15,17 @@ public class KlonRandom extends KlonObject {
       return (Random) result.getData();
     }
     throw KlonException.newException(receiver, "Object.invalidArgument",
-        "argument must evaluate to a Random", message);
+      "argument must evaluate to a Random", message);
   }
 
-  public KlonRandom() {
-    super();
+  public KlonRandom(KlonState state) {
+    super(state);
     data = new MersenneTwister();
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonRandom();
+    KlonObject result = new KlonRandom(state);
     result.bind(this);
     result.setData(((MersenneTwister) data).clone());
     return result;
@@ -40,15 +40,16 @@ public class KlonRandom extends KlonObject {
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
-        message, 0).longValue());
+      message, 0)
+      .longValue());
     return receiver;
   }
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, ((Random) receiver.getData())
-        .nextDouble());
+    return KlonNumber.newNumber(receiver,
+      ((Random) receiver.getData()).nextDouble());
   }
 
 }

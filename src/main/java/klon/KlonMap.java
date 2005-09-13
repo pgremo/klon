@@ -10,18 +10,18 @@ public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;
 
-  public KlonMap() {
-    super();
+  public KlonMap(KlonState state) {
+    super(state);
     data = new HashMap<KlonObject, KlonObject>();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonMap();
+    KlonObject result = new KlonMap(state);
     result.bind(this);
     result.setData(new HashMap<KlonObject, KlonObject>(
-        (Map<KlonObject, KlonObject>) data));
+      (Map<KlonObject, KlonObject>) data));
     return result;
   }
 
@@ -58,8 +58,7 @@ public class KlonMap extends KlonObject {
   public static KlonObject at(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
-    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData())
-        .get(key);
+    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData()).get(key);
     if (result == null) {
       result = receiver.getSlot("Nil");
     }
@@ -108,11 +107,14 @@ public class KlonMap extends KlonObject {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = receiver.getSlot("Nil");
-    String name = (String) message.getArgument(0).getSelector().getData();
-    String value = (String) message.getArgument(1).getSelector().getData();
+    String name = (String) message.getArgument(0)
+      .getSelector()
+      .getData();
+    String value = (String) message.getArgument(1)
+      .getSelector()
+      .getData();
     Message code = message.getArgument(2);
-    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver
-        .getData()).entrySet()) {
+    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver.getData()).entrySet()) {
       context.setSlot(name, current.getKey());
       context.setSlot(value, current.getValue());
       result = code.eval(context, context);
@@ -124,24 +126,24 @@ public class KlonMap extends KlonObject {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((Map) receiver.getData())
-        .size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((Map) receiver.getData()).size());
   }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("keys")
   public static KlonObject keys(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .keySet()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).keySet()));
   }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("values")
   public static KlonObject values(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .values()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).values()));
   }
 
 }

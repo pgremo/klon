@@ -9,57 +9,61 @@ public class Shell {
 
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
-  private static final String[] PRINTABLES = new String[] { "Exception", "Nil",
-      "Number", "String" };
+  private static final String[] PRINTABLES = new String[]{
+      "Exception",
+      "Nil",
+      "Number",
+      "String"};
   private Reader in;
   private MonitoredPrintStream out;
+  private KlonState state;
 
-  public Shell(Reader in, MonitoredPrintStream out) {
+  public Shell(Reader in, MonitoredPrintStream out, KlonState state) {
     this.in = in;
     this.out = out;
+    this.state = state;
   }
 
   public void process() throws KlonObject, IOException {
-    KlonObject properties = KlonRoot.getROOT().getSlot("Properties");
+    KlonObject properties = state.getRoot()
+      .getSlot("Properties");
     KlonObject version = properties.getSlot("klon.version");
     KlonObject build = properties.getSlot("klon.build");
     out.println("klon " + version.getData() + "." + build.getData());
     out.flush();
     while (true) {
       String prompt = "";
-      KlonObject promptSlot = KlonRoot.getROOT().getSlot("Properties").getSlot(
-          "klon.shell.prompt");
+      KlonObject promptSlot = state.getRoot()
+        .getSlot("Properties")
+        .getSlot("klon.shell.prompt");
       if (promptSlot != null) {
-        prompt = promptSlot.getData().toString();
+        prompt = promptSlot.getData()
+          .toString();
       }
       out.print('\n');
       out.print(prompt);
       out.flush();
-      Message message = new Compiler(KlonRoot.getROOT())
-          .fromString(readMessage(in));
+      String message = readMessage(in);
       evalMessage(message);
     }
   }
 
-  private void evalMessage(Message message) throws KlonObject {
+  private void evalMessage(String message) throws KlonObject {
     out.setHasOutput(false);
     KlonObject value;
     try {
-      KlonObject root = KlonRoot.getROOT();
-      value = message.eval(root, root);
+      value = state.doString(message);
     } catch (KlonObject e) {
       value = e;
       out.setHasOutput(false);
     }
     if (!out.hasOutput()) {
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
-        Message reportMessage = new Compiler(KlonRoot.getROOT())
-            .fromString("writeLine");
+        Message reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
         reportMessage.addArgument(value);
         reportMessage.eval(value, value);
       } else {
-        Message reportMessage = new Compiler(KlonRoot.getROOT())
-            .fromString("inspect");
+        Message reportMessage = new Compiler(state.getRoot()).fromString("inspect");
         reportMessage.eval(value, value);
       }
     }
@@ -95,10 +99,9 @@ public class Shell {
 
   public static void main(String[] args) {
     try {
-      KlonRoot.setup(args);
       MonitoredPrintStream newOut = new MonitoredPrintStream(System.out);
       System.setOut(newOut);
-      new Shell(new InputStreamReader(System.in), newOut).process();
+      new Shell(new InputStreamReader(System.in), newOut, new KlonState(args)).process();
     } catch (Exception e) {
       System.err.print(e.getMessage() + "\n");
       e.printStackTrace(System.err);

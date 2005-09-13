@@ -12,14 +12,19 @@ public class KlonNativeMethod extends KlonObject {
 
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {
-    KlonObject result = root.getSlot("NativeMethod").clone();
+    KlonObject result = root.getSlot("NativeMethod")
+      .clone();
     result.setData(new NativeMethod(subject));
     return result;
   }
 
+  public KlonNativeMethod(KlonState state) {
+    super(state);
+  }
+
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonNativeMethod();
+    KlonObject result = new KlonNativeMethod(state);
     result.bind(this);
     result.setData(data);
     return result;
@@ -40,17 +45,17 @@ public class KlonNativeMethod extends KlonObject {
       try {
         try {
           result = (KlonObject) ((NativeMethod) value).invoke(receiver,
-              context, message);
+            context, message);
         } catch (InvocationTargetException e) {
           throw e.getTargetException();
         }
       } catch (KlonObject e) {
-        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
-            .newString(receiver, message.toString()));
+        ((List<KlonObject>) e.getSlot("stackTrace")
+          .getData()).add(KlonString.newString(receiver, message.toString()));
         throw e;
       } catch (Throwable e) {
-        throw KlonException.newException(receiver,
-            e.getClass().getSimpleName(), e.getMessage(), message);
+        throw KlonException.newException(receiver, e.getClass()
+          .getSimpleName(), e.getMessage(), message);
       }
     }
     return result;

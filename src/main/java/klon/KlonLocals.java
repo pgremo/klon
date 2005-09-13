@@ -8,15 +8,20 @@ public class KlonLocals extends KlonObject {
 
   public static KlonObject newLocals(KlonObject root, KlonObject self)
       throws KlonObject {
-    KlonObject result = root.getSlot("Locals").clone();
+    KlonObject result = root.getSlot("Locals")
+      .clone();
     result.setSlot("self", self);
     result.setData(self.getData());
     return result;
   }
 
+  public KlonLocals(KlonState state) {
+    super(state);
+  }
+
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonLocals();
+    KlonObject result = new KlonLocals(state);
     result.bind(this);
     result.setData(data);
     return result;

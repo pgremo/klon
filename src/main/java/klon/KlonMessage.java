@@ -8,14 +8,19 @@ public class KlonMessage extends KlonObject {
 
   public static KlonObject newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message").clone();
+    KlonObject result = root.getSlot("Message")
+      .clone();
     result.setData(message);
     return result;
   }
 
+  public KlonMessage(KlonState state) {
+    super(state);
+  }
+
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonMessage();
+    KlonObject result = new KlonMessage(state);
     result.bind(this);
     result.setData(data);
     return result;

@@ -7,14 +7,19 @@ public class KlonNoOp extends KlonObject {
 
   public static KlonObject newNoOp(KlonObject root, Object value)
       throws KlonObject {
-    KlonObject result = root.getSlot("NoOp").clone();
+    KlonObject result = root.getSlot("NoOp")
+      .clone();
     result.setData(value);
     return result;
   }
 
+  public KlonNoOp(KlonState state) {
+    super(state);
+  }
+
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonNoOp();
+    KlonObject result = new KlonNoOp(state);
     result.bind(this);
     result.setData(data);
     return result;

@@ -13,20 +13,21 @@ public class KlonList extends KlonObject {
 
   public static KlonObject newList(KlonObject root, List<KlonObject> value)
       throws KlonObject {
-    KlonObject result = root.getSlot("List").clone();
+    KlonObject result = root.getSlot("List")
+      .clone();
     result.setData(value);
     return result;
   }
 
-  public KlonList() {
-    super();
+  public KlonList(KlonState state) {
+    super(state);
     data = new ArrayList<KlonObject>();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonList();
+    KlonObject result = new KlonList(state);
     result.bind(this);
     result.setData(new ArrayList<KlonObject>((List<KlonObject>) data));
     return result;
@@ -37,7 +38,7 @@ public class KlonList extends KlonObject {
     return "List";
   }
 
-  @SuppressWarnings( { "unused", "unchecked" })
+  @SuppressWarnings({"unused", "unchecked"})
   @Override
   public int compareTo(KlonObject other) {
     int result;
@@ -46,7 +47,8 @@ public class KlonList extends KlonObject {
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();
       for (int i = 0; result == 0 && i < l1.size(); i++) {
-        result = l1.get(i).compareTo(l2.get(i));
+        result = l1.get(i)
+          .compareTo(l2.get(i));
       }
     } else {
       result = hashCode() - other.hashCode();
@@ -77,7 +79,8 @@ public class KlonList extends KlonObject {
   public static KlonObject atInsert(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     message.assertArgumentCount(receiver, 2);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0).intValue();
+    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+      .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
       data.add(index, message.eval(context, 1));
@@ -90,7 +93,8 @@ public class KlonList extends KlonObject {
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     message.assertArgumentCount(receiver, 1);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0).intValue();
+    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+      .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
       data.remove(index);
@@ -104,7 +108,8 @@ public class KlonList extends KlonObject {
       Message message) throws KlonObject {
     KlonObject result;
     message.assertArgumentCount(receiver, 1);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0).intValue();
+    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+      .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty() || index < 0 || index >= data.size()) {
       result = receiver.getSlot("Nil");
@@ -140,8 +145,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((List) receiver.getData())
-        .size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((List) receiver.getData()).size());
   }
 
   @SuppressWarnings("unused")
@@ -158,7 +163,8 @@ public class KlonList extends KlonObject {
       Message message) throws KlonObject {
     Random random;
     if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random").getData();
+      random = (Random) receiver.getSlot("Random")
+        .getData();
     } else {
       random = KlonRandom.evalAsRandom(receiver, message, 0);
     }
@@ -172,7 +178,8 @@ public class KlonList extends KlonObject {
       Message message) throws KlonObject {
     Random random;
     if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random").getData();
+      random = (Random) receiver.getSlot("Random")
+        .getData();
     } else {
       random = KlonRandom.evalAsRandom(receiver, message, 0);
     }
@@ -195,9 +202,13 @@ public class KlonList extends KlonObject {
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
-      index = (String) message.getArgument(arg++).getSelector().getData();
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
     }
-    String value = (String) message.getArgument(arg++).getSelector().getData();
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
     Message code = message.getArgument(arg);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; i < list.size(); i++) {
@@ -219,9 +230,13 @@ public class KlonList extends KlonObject {
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
-      index = (String) message.getArgument(arg++).getSelector().getData();
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
     }
-    String value = (String) message.getArgument(arg++).getSelector().getData();
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
     Message code = message.getArgument(arg);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; nil.equals(result) && i < list.size(); i++) {
@@ -244,9 +259,13 @@ public class KlonList extends KlonObject {
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
-      index = (String) message.getArgument(arg++).getSelector().getData();
+      index = (String) message.getArgument(arg++)
+        .getSelector()
+        .getData();
     }
-    String value = (String) message.getArgument(arg++).getSelector().getData();
+    String value = (String) message.getArgument(arg++)
+      .getSelector()
+      .getData();
     Message code = message.getArgument(arg);
     for (int i = 0; i < list.size(); i++) {
       if (index != null) {
@@ -276,7 +295,8 @@ public class KlonList extends KlonObject {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
-        buffer.append(stringMessage.eval(current, context).getData());
+        buffer.append(stringMessage.eval(current, context)
+          .getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

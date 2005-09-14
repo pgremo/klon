@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class KlonState implements Serializable {
+public class State implements Serializable {
 
   private static final long serialVersionUID = -6877483386219227949L;
   private KlonObject root;
@@ -16,7 +16,7 @@ public class KlonState implements Serializable {
   private ExitListener exitListener;
   private WriteListener writeListener;
 
-  public KlonState(String[] args) throws Exception {
+  public State(String[] args) throws Exception {
     KlonObject object = new KlonObject(this);
     root = object.clone();
     KlonObject prototypes = object.clone();
@@ -54,7 +54,7 @@ public class KlonState implements Serializable {
         KlonRandom.class,
         KlonStore.class};
     for (Class<? extends Object> current : types) {
-      Constructor constructor = current.getDeclaredConstructor(new Class[]{KlonState.class});
+      Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
       KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
       prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root);

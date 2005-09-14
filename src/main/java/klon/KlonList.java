@@ -19,7 +19,7 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  public KlonList(KlonState state) {
+  public KlonList(State state) {
     super(state);
     data = new ArrayList<KlonObject>();
   }

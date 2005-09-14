@@ -18,13 +18,13 @@ public class KlonObject extends Exception
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  protected KlonState state;
+  protected State state;
   private List<KlonObject> bindings = new LinkedList<KlonObject>();
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
   private boolean activatable;
   protected Object data;
 
-  public KlonObject(KlonState state) {
+  public KlonObject(State state) {
     this.state = state;
   }
 
@@ -159,11 +159,11 @@ public class KlonObject extends Exception
     return slot.activate(this, context, message);
   }
 
-  public KlonState getState() {
+  public State getState() {
     return state;
   }
 
-  public void setState(KlonState state) {
+  public void setState(State state) {
     this.state = state;
   }
 

@@ -14,7 +14,7 @@ public class KlonMessage extends KlonObject {
     return result;
   }
 
-  public KlonMessage(KlonState state) {
+  public KlonMessage(State state) {
     super(state);
   }
 

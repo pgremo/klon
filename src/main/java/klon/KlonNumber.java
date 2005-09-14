@@ -41,7 +41,7 @@ public class KlonNumber extends KlonObject {
       "argument must evaluate to a number", message);
   }
 
-  public KlonNumber(KlonState state) {
+  public KlonNumber(State state) {
     super(state);
     data = 0D;
   }

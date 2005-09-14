@@ -6,7 +6,7 @@ public class KlonCompiler extends KlonObject {
 
   private static final long serialVersionUID = 359686882876703383L;
 
-  public KlonCompiler(KlonState state) {
+  public KlonCompiler(State state) {
     super(state);
   }
 

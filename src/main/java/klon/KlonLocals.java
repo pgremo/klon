@@ -15,7 +15,7 @@ public class KlonLocals extends KlonObject {
     return result;
   }
 
-  public KlonLocals(KlonState state) {
+  public KlonLocals(State state) {
     super(state);
   }
 

@@ -13,7 +13,7 @@ public class KlonNoOp extends KlonObject {
     return result;
   }
 
-  public KlonNoOp(KlonState state) {
+  public KlonNoOp(State state) {
     super(state);
   }
 

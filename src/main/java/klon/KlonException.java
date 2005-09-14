@@ -23,7 +23,7 @@ public class KlonException extends KlonObject {
     return result;
   }
 
-  public KlonException(KlonState state) {
+  public KlonException(State state) {
     super(state);
   }
 

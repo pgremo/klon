@@ -18,7 +18,7 @@ public class KlonNativeMethod extends KlonObject {
     return result;
   }
 
-  public KlonNativeMethod(KlonState state) {
+  public KlonNativeMethod(State state) {
     super(state);
   }
 

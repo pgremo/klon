@@ -47,7 +47,7 @@ public class KlonBuffer extends KlonObject {
     return result;
   }
 
-  public KlonBuffer(KlonState state) {
+  public KlonBuffer(State state) {
     super(state);
     data = new Buffer();
   }

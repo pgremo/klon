@@ -15,10 +15,10 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
       "Number",
       "String"};
   private Reader in;
-  private KlonState state;
+  private State state;
   private boolean hasPrint;
 
-  public Shell(Reader in, KlonState state) {
+  public Shell(Reader in, State state) {
     this.in = in;
     this.state = state;
   }
@@ -89,7 +89,7 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
     return buffer.toString();
   }
 
-  public void onException(KlonState state, KlonObject exception) {
+  public void onException(State state, KlonObject exception) {
     try {
       Message reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
       reportMessage.addArgument(exception);
@@ -99,18 +99,18 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
     }
   }
 
-  public void onExit(KlonState state, int result) {
+  public void onExit(State state, int result) {
     System.exit(result);
   }
 
-  public void onWrite(KlonState state, String value) {
+  public void onWrite(State state, String value) {
     System.out.print(value);
     hasPrint = true;
   }
 
   public static void main(String[] args) {
     try {
-      KlonState state = new KlonState(args);
+      State state = new State(args);
       Shell shell = new Shell(new InputStreamReader(System.in), state);
       state.setExceptionListener(shell);
       state.setExitListener(shell);

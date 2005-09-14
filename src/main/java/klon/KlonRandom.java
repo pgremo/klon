@@ -18,7 +18,7 @@ public class KlonRandom extends KlonObject {
       "argument must evaluate to a Random", message);
   }
 
-  public KlonRandom(KlonState state) {
+  public KlonRandom(State state) {
     super(state);
     data = new MersenneTwister();
   }

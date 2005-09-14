@@ -2,5 +2,5 @@ package klon;
 
 public interface WriteListener {
 
-  void onWrite(KlonState state, String value);
+  void onWrite(State state, String value);
 }

@@ -74,7 +74,7 @@ public class KlonString extends KlonObject {
       "argument must evaluate to a string", message);
   }
 
-  public KlonString(KlonState state) {
+  public KlonString(State state) {
     super(state);
     data = "";
   }

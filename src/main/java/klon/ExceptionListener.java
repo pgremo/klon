@@ -2,5 +2,5 @@ package klon;
 
 public interface ExceptionListener {
 
-  void onException(KlonState state, KlonObject exception);
+  void onException(State state, KlonObject exception);
 }

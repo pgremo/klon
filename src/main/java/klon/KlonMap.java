@@ -10,7 +10,7 @@ public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;
 
-  public KlonMap(KlonState state) {
+  public KlonMap(State state) {
     super(state);
     data = new HashMap<KlonObject, KlonObject>();
   }

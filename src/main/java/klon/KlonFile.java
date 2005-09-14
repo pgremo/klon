@@ -22,7 +22,7 @@ public class KlonFile extends KlonObject {
     return result;
   }
 
-  public KlonFile(KlonState state) {
+  public KlonFile(State state) {
     super(state);
     data = new File("").getAbsoluteFile();
   }

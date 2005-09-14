@@ -2,5 +2,5 @@ package klon;
 
 public interface ExitListener {
 
-  void onExit(KlonState state, int result);
+  void onExit(State state, int result);
 }

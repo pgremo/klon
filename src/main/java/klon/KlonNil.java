@@ -6,7 +6,7 @@ public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = -1742322624353726742L;
 
-  public KlonNil(KlonState state) {
+  public KlonNil(State state) {
     super(state);
   }
 

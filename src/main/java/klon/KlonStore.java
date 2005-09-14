@@ -12,7 +12,7 @@ public class KlonStore extends KlonObject {
 
   private static final long serialVersionUID = -4140594553364102878L;
 
-  public KlonStore(KlonState state) {
+  public KlonStore(State state) {
     super(state);
   }
 

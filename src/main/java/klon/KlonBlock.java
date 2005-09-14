@@ -16,7 +16,7 @@ public class KlonBlock extends KlonObject {
     return result;
   }
 
-  public KlonBlock(KlonState state) {
+  public KlonBlock(State state) {
     super(state);
   }
 

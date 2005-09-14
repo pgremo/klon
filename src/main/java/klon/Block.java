@@ -9,6 +9,7 @@ public class Block implements Serializable, Cloneable {
   private static final long serialVersionUID = 8908253496842815003L;
   private List<KlonObject> parameters;
   private Message code;
+  private KlonObject blockLocals;
 
   public Block(List<KlonObject> parameters, Message code) {
     this.parameters = parameters;
@@ -23,9 +24,23 @@ public class Block implements Serializable, Cloneable {
     return code;
   }
 
+  public KlonObject getBlockLocals() {
+    return blockLocals;
+  }
+
+  public void setBlockLocals(KlonObject blockLocals) {
+    this.blockLocals = blockLocals;
+  }
+
   @Override
   public String toString() {
-    StringBuilder result = new StringBuilder("block(");
+    StringBuilder result = new StringBuilder();
+    if (blockLocals == null) {
+      result.append("method");
+    } else {
+      result.append("block");
+    }
+    result.append("(");
     for (int i = 0; i < parameters.size(); i++) {
       if (i > 0) {
         result.append(", ");

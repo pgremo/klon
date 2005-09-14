@@ -4,11 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 @ExposedAs("Object")
 public class KlonObject extends Exception
@@ -400,8 +403,11 @@ public class KlonObject extends Exception
       .getSelector()
       .getData();
     Message code = message.getArgument(2);
-    for (Map.Entry<String, KlonObject> current : receiver.getSlots()
-      .entrySet()) {
+    // this is to protectect against concurrent modification exceptions
+    Set<Entry<String, KlonObject>> entries = new HashSet<Entry<String, KlonObject>>(
+      receiver.getSlots()
+        .entrySet());
+    for (Map.Entry<String, KlonObject> current : entries) {
       context.setSlot(name, KlonString.newString(receiver, current.getKey()));
       context.setSlot(value, current.getValue());
       result = code.eval(context, context);
@@ -472,7 +478,9 @@ public class KlonObject extends Exception
   @ExposedAs("block")
   public static KlonObject block(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return method(receiver, context, message);
+    KlonObject result = method(receiver, context, message);
+    ((Block) result.getData()).setBlockLocals(context);
+    return result;
   }
 
   @ExposedAs("method")

@@ -45,23 +45,38 @@ public class KlonBlock extends KlonObject {
     if (value == null) {
       result = slot;
     } else {
-      KlonObject scope = KlonLocals.newLocals(receiver, receiver);
+      KlonObject scope = ((Block) slot.getData()).getBlockLocals();
+      if (scope == null) {
+        scope = receiver;
+      }
+
+      KlonObject locals = receiver.getSlot("Locals")
+        .clone();
+
+      locals.setSlot("self", receiver);
+      locals.setSlot("receiver", scope);
+      locals.setSlot("sender", context);
+      locals.setSlot("block", slot);
+      locals.setSlot("message", KlonMessage.newMessage(receiver, message));
+
+      locals.setData(receiver.getData());
+
       List<KlonObject> parameters = value.getParameters();
       int limit = Math.min(message.getArgumentCount(), parameters.size());
       int i = 0;
       for (; i < limit; i++) {
-        scope.setSlot((String) parameters.get(i)
+        locals.setSlot((String) parameters.get(i)
           .getData(), message.eval(context, i));
       }
       KlonObject nil = receiver.getSlot("Nil");
       for (; i < parameters.size(); i++) {
-        scope.setSlot((String) parameters.get(i)
+        locals.setSlot((String) parameters.get(i)
           .getData(), nil);
       }
       result = nil;
       try {
         result = value.getCode()
-          .eval(scope, scope);
+          .eval(locals, locals);
       } catch (KlonObject e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
           .getData()).add(KlonString.newString(receiver, message.toString()));

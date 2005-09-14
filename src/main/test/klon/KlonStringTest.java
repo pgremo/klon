@@ -25,7 +25,7 @@ public class KlonStringTest extends TestCase {
     Message message = compiler.fromString("\"Hello\" == \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
 
     message = compiler.fromString("\"Hello\" == \"Hello\"");
     value = message.eval(object, object);

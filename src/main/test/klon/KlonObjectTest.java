@@ -88,7 +88,7 @@ public class KlonObjectTest extends TestCase {
     Message message = compiler.fromString("Object and Nil");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testOrNonNil() throws Exception {
@@ -141,7 +141,7 @@ public class KlonObjectTest extends TestCase {
     message = compiler.fromString("Thing ?blah");
     value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testGreaterThan() throws Exception {
@@ -152,7 +152,7 @@ public class KlonObjectTest extends TestCase {
 
     message = compiler.fromString("2 > 3");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testGreaterThanEquals() throws Exception {
@@ -167,14 +167,14 @@ public class KlonObjectTest extends TestCase {
 
     message = compiler.fromString("2 >= 3");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIsEqual() throws Exception {
     Compiler compiler = new Compiler(object);
     Message message = compiler.fromString("2 == 3");
     KlonObject value = message.eval(object, object);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
 
     message = compiler.fromString("2 == 2");
     value = message.eval(object, object);
@@ -189,7 +189,7 @@ public class KlonObjectTest extends TestCase {
 
     message = compiler.fromString("3 < 2");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testLessThanEquals() throws Exception {
@@ -204,6 +204,6 @@ public class KlonObjectTest extends TestCase {
 
     message = compiler.fromString("3 <= 2");
     value = message.eval(object, object);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 }

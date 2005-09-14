@@ -103,7 +103,7 @@ public class Message implements Serializable, Cloneable {
   public KlonObject eval(KlonObject context, int index) throws KlonObject {
     KlonObject result;
     if (index >= arguments.size()) {
-      result = context.getSlot("Nil");
+      result = KlonNil.newNil(context);
     } else {
       result = arguments.get(index)
         .eval(context, context);

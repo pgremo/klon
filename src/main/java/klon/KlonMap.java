@@ -60,7 +60,7 @@ public class KlonMap extends KlonObject {
     KlonObject key = message.eval(context, 0);
     KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData()).get(key);
     if (result == null) {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     }
     return result;
   }
@@ -83,7 +83,7 @@ public class KlonMap extends KlonObject {
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsKey(key)) {
       result = receiver;
     } else {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     }
     return result;
   }
@@ -97,7 +97,7 @@ public class KlonMap extends KlonObject {
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsValue(value)) {
       result = receiver;
     } else {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     }
     return result;
   }
@@ -106,7 +106,7 @@ public class KlonMap extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     String name = (String) message.getArgument(0)
       .getSelector()
       .getData();

@@ -292,7 +292,7 @@ public class KlonObject extends Exception
       Message message) throws KlonObject {
     return receiver.isBound(message.eval(context, 0))
         ? receiver
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("clone")
@@ -310,7 +310,7 @@ public class KlonObject extends Exception
   public static KlonObject setIsActivatable(KlonObject receiver,
       KlonObject context, Message message) throws KlonObject {
     KlonObject value = message.eval(context, 0);
-    receiver.setActivatable(!receiver.getSlot("Nil")
+    receiver.setActivatable(!KlonNil.newNil(receiver)
       .equals(value));
     return receiver;
   }
@@ -358,7 +358,7 @@ public class KlonObject extends Exception
   public static KlonObject hasSlot(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     String name = KlonString.evalAsString(context, message, 0);
-    return receiver.getSlot(name) == null ? receiver.getSlot("Nil") : receiver;
+    return receiver.getSlot(name) == null ? KlonNil.newNil(receiver) : receiver;
   }
 
   @ExposedAs("setSlot")
@@ -395,7 +395,7 @@ public class KlonObject extends Exception
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     String name = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -472,7 +472,7 @@ public class KlonObject extends Exception
     }
     receiver.getState()
       .exit(result);
-    return receiver.getSlot("Nil");
+    return KlonNil.newNil(receiver);
   }
 
   @ExposedAs("block")
@@ -504,7 +504,7 @@ public class KlonObject extends Exception
   @ExposedAs("for")
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     String counter = (String) message.getArgument(0)
       .getSelector()
       .getData();
@@ -534,7 +534,7 @@ public class KlonObject extends Exception
   @ExposedAs("while")
   public static KlonObject whileLoop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     Message condition = message.getArgument(0);
     Message code = message.getArgument(1);
@@ -549,7 +549,7 @@ public class KlonObject extends Exception
       Message message) throws KlonObject {
     KlonObject result = message.eval(context, 0);
     if (message.getArgumentCount() > 1) {
-      if (!receiver.getSlot("Nil")
+      if (!KlonNil.newNil(receiver)
         .equals(result)) {
         result = message.eval(context, 1);
       } else if (message.getArgumentCount() == 3) {
@@ -568,7 +568,7 @@ public class KlonObject extends Exception
   @ExposedAs({"and", "&&"})
   public static KlonObject and(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     return nil.equals(message.eval(context, 0)) ? nil : receiver;
   }
 
@@ -582,7 +582,7 @@ public class KlonObject extends Exception
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.getSlot("Nil");
+    return KlonNil.newNil(receiver);
   }
 
   @SuppressWarnings("unused")
@@ -595,7 +595,7 @@ public class KlonObject extends Exception
   @ExposedAs("isNil")
   public static KlonObject isNil(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.getSlot("Nil");
+    return KlonNil.newNil(receiver);
   }
 
   @ExposedAs("==")
@@ -603,7 +603,7 @@ public class KlonObject extends Exception
       Message message) throws KlonObject {
     return receiver.equals(message.eval(context, 0))
         ? receiver
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("!=")
@@ -611,7 +611,7 @@ public class KlonObject extends Exception
       Message message) throws KlonObject {
     return !receiver.equals(message.eval(context, 0))
         ? receiver
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("<")
@@ -620,7 +620,7 @@ public class KlonObject extends Exception
     KlonObject argument = message.eval(context, 0);
     return receiver.compareTo(argument) < 0
         ? argument
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs(">")
@@ -629,7 +629,7 @@ public class KlonObject extends Exception
     KlonObject argument = message.eval(context, 0);
     return receiver.compareTo(argument) > 0
         ? argument
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("<=")
@@ -638,7 +638,7 @@ public class KlonObject extends Exception
     KlonObject argument = message.eval(context, 0);
     return receiver.compareTo(argument) <= 0
         ? argument
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs(">=")
@@ -647,7 +647,7 @@ public class KlonObject extends Exception
     KlonObject argument = message.eval(context, 0);
     return receiver.compareTo(argument) >= 0
         ? argument
-        : receiver.getSlot("Nil");
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("super")
@@ -740,13 +740,13 @@ public class KlonObject extends Exception
       System.out.print(current.getKey() + " := " + current.getValue()
         .toString() + "\n");
     }
-    return receiver.getSlot("Nil");
+    return KlonNil.newNil(receiver);
   }
 
   @ExposedAs("?")
   public static KlonObject condition(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     Message target = message.getArgument(0);
     KlonObject selector = target.getSelector();
     if (selector != null

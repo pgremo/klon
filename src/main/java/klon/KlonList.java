@@ -112,7 +112,7 @@ public class KlonList extends KlonObject {
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty() || index < 0 || index >= data.size()) {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     } else {
       result = data.get(index);
     }
@@ -126,7 +126,7 @@ public class KlonList extends KlonObject {
     KlonObject result;
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty()) {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     } else {
       result = data.remove(0);
     }
@@ -186,7 +186,7 @@ public class KlonList extends KlonObject {
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     KlonObject result;
     if (data.isEmpty()) {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     } else {
       result = data.get(random.nextInt(data.size()));
     }
@@ -197,7 +197,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     int arg = 0;
     String index = null;
@@ -225,7 +225,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("detect")
   public static KlonObject detect(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     int arg = 0;
     String index = null;
@@ -253,7 +253,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("collect")
   public static KlonObject collect(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     List<KlonObject> result = new ArrayList<KlonObject>(list.size());
     int arg = 0;

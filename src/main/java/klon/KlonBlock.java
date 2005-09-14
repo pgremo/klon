@@ -68,7 +68,7 @@ public class KlonBlock extends KlonObject {
         locals.setSlot((String) parameters.get(i)
           .getData(), message.eval(context, i));
       }
-      KlonObject nil = receiver.getSlot("Nil");
+      KlonObject nil = KlonNil.newNil(receiver);
       for (; i < parameters.size(); i++) {
         locals.setSlot((String) parameters.get(i)
           .getData(), nil);
@@ -104,7 +104,7 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     if (!result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
       result = message.getArgument(0)
@@ -116,7 +116,7 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     if (result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
       result = message.getArgument(0)
@@ -128,7 +128,7 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("whileTrue")
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     while (!nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
       message.getArgument(0)
@@ -140,7 +140,7 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("whileFalse")
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     while (nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getCode()))) {
       message.getArgument(0)

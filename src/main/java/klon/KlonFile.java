@@ -79,7 +79,7 @@ public class KlonFile extends KlonObject {
     if (((File) receiver.getData()).exists()) {
       result = receiver;
     } else {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     }
     return result;
   }
@@ -151,7 +151,7 @@ public class KlonFile extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject nil = receiver.getSlot("Nil");
+    KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     int arg = 0;
     String index = null;

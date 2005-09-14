@@ -81,7 +81,7 @@ public class KlonBlockTest extends TestCase {
     message = compiler.fromString("block(1 == 12) ifTrue(13)");
     value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIfFalse() throws Exception {
@@ -94,7 +94,7 @@ public class KlonBlockTest extends TestCase {
     message = compiler.fromString("block(1 == 1) ifFalse(13)");
     value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testWhileTrue() throws Exception {
@@ -102,7 +102,7 @@ public class KlonBlockTest extends TestCase {
     Message message = compiler.fromString("a := 0; block(a < 10) whileTrue(a = a + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
     assertEquals(KlonNumber.newNumber(object, 10.0D), object.getSlot("a"));
   }
 
@@ -111,7 +111,7 @@ public class KlonBlockTest extends TestCase {
     Message message = compiler.fromString("a := 20; block(a < 10) whileFalse(a = a - 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals(object.getSlot("Nil"), value);
+    assertEquals(KlonNil.newNil(object), value);
     assertEquals(KlonNumber.newNumber(object, 9.0D), object.getSlot("a"));
   }
 }

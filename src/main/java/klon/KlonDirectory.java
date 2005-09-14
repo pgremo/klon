@@ -91,7 +91,7 @@ public class KlonDirectory extends KlonObject {
     if (((File) receiver.getData()).exists()) {
       result = receiver;
     } else {
-      result = receiver.getSlot("Nil");
+      result = KlonNil.newNil(receiver);
     }
     return result;
   }
@@ -99,7 +99,7 @@ public class KlonDirectory extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    KlonObject result = receiver.getSlot("Nil");
+    KlonObject result = KlonNil.newNil(receiver);
     String value = (String) message.getArgument(0)
       .getSelector()
       .getData();

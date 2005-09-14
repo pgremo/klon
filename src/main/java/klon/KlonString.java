@@ -124,14 +124,14 @@ public class KlonString extends KlonObject {
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
-      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+      context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("endsWith")
   public static KlonObject endsWith(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
-      context, message, 0)) ? receiver : receiver.getSlot("Nil");
+      context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("split")

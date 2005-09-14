@@ -10,11 +10,13 @@ import java.util.Properties;
 public class State implements Serializable {
 
   private static final long serialVersionUID = -6877483386219227949L;
-  private KlonObject root;
-  private Message asString;
   private ExceptionListener exceptionListener;
   private ExitListener exitListener;
   private WriteListener writeListener;
+  private KlonObject root;
+  private Message asString;
+  private KlonObject nil;
+  private KlonObject noOp;
 
   public State(String[] args) throws Exception {
     KlonObject object = new KlonObject(this);
@@ -37,6 +39,14 @@ public class State implements Serializable {
     nativeMethod.configure(root);
     object.configure(root);
 
+    nil = new KlonNil(this);
+    prototypes.setSlot(nil.getName(), nil);
+    nil.configure(root);
+
+    noOp = new KlonNoOp(this);
+    prototypes.setSlot(noOp.getName(), noOp);
+    noOp.configure(root);
+
     Class[] types = new Class[]{
         KlonBlock.class,
         KlonBuffer.class,
@@ -48,8 +58,6 @@ public class State implements Serializable {
         KlonLocals.class,
         KlonMap.class,
         KlonMessage.class,
-        KlonNil.class,
-        KlonNoOp.class,
         KlonNumber.class,
         KlonRandom.class,
         KlonStore.class};
@@ -107,6 +115,14 @@ public class State implements Serializable {
 
   public KlonObject getRoot() {
     return root;
+  }
+
+  public KlonObject getNil() {
+    return nil;
+  }
+
+  public KlonObject getNoOp() {
+    return noOp;
   }
 
   public Message getAsString() {

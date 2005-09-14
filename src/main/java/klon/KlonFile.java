@@ -72,6 +72,7 @@ public class KlonFile extends KlonObject {
       ((File) receiver.getData()).getParentFile());
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("exists")
   public static KlonObject exists(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -147,7 +148,7 @@ public class KlonFile extends KlonObject {
     return KlonList.newList(receiver, result);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "unused"})
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

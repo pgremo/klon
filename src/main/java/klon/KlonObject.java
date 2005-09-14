@@ -579,6 +579,7 @@ public class KlonObject extends Exception
     return receiver;
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -592,6 +593,7 @@ public class KlonObject extends Exception
     return receiver;
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("isNil")
   public static KlonObject isNil(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
@@ -717,6 +719,7 @@ public class KlonObject extends Exception
     return result;
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

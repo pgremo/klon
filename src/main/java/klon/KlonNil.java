@@ -6,8 +6,9 @@ public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = -1742322624353726742L;
 
-  public static KlonObject newNil(KlonObject root) throws KlonObject {
-    return root.getSlot("Nil");
+  public static KlonObject newNil(KlonObject root) {
+    return root.getState()
+      .getNil();
   }
 
   public KlonNil(State state) {

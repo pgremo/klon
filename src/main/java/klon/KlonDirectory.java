@@ -84,6 +84,7 @@ public class KlonDirectory extends KlonObject {
     return receiver;
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("exists")
   public static KlonObject exists(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

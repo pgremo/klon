@@ -119,7 +119,7 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "unused"})
   @ExposedAs("pop")
   public static KlonObject pop(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {

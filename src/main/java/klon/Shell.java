@@ -5,8 +5,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
 
-public class Shell implements ExceptionListener, ExitListener, WriteListener {
+public class Shell {
 
+  private static final long serialVersionUID = -7997503355735054042L;
   private static final String OPEN_GROUP = "({[";
   private static final String CLOSE_GROUP = ")}]";
   private static final String[] PRINTABLES = new String[]{
@@ -16,11 +17,12 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
       "String"};
   private Reader in;
   private State state;
-  private boolean hasPrint;
+  private ShellListener listener;
 
-  public Shell(Reader in, State state) {
+  public Shell(Reader in, State state, ShellListener listener) {
     this.in = in;
     this.state = state;
+    this.listener = listener;
   }
 
   public void process() throws KlonObject, IOException {
@@ -47,9 +49,9 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
   }
 
   private void evalMessage(String message) throws KlonObject {
-    hasPrint = false;
+    listener.setHasPrint(false);
     KlonObject value = state.doString(message);
-    if (!hasPrint) {
+    if (!listener.getHasPrint()) {
       Message reportMessage;
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
         reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
@@ -89,32 +91,14 @@ public class Shell implements ExceptionListener, ExitListener, WriteListener {
     return buffer.toString();
   }
 
-  public void onException(State state, KlonObject exception) {
-    try {
-      Message reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
-      reportMessage.addArgument(exception);
-      reportMessage.eval(exception, exception);
-    } catch (KlonObject e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void onExit(State state, int result) {
-    System.exit(result);
-  }
-
-  public void onWrite(State state, String value) {
-    System.out.print(value);
-    hasPrint = true;
-  }
-
   public static void main(String[] args) {
     try {
       State state = new State(args);
-      Shell shell = new Shell(new InputStreamReader(System.in), state);
-      state.setExceptionListener(shell);
-      state.setExitListener(shell);
-      state.setWriteListener(shell);
+      ShellListener listener = new ShellListener();
+      state.setExceptionListener(listener);
+      state.setExitListener(listener);
+      state.setWriteListener(listener);
+      Shell shell = new Shell(new InputStreamReader(System.in), state, listener);
       shell.process();
     } catch (Exception e) {
       System.err.print(e.getMessage() + "\n");

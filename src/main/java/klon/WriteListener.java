@@ -1,6 +1,8 @@
 package klon;
 
-public interface WriteListener {
+import java.io.Serializable;
+
+public interface WriteListener extends Serializable {
 
   void onWrite(State state, String value);
 }

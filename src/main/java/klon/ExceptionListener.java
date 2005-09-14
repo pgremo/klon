@@ -1,6 +1,8 @@
 package klon;
 
-public interface ExceptionListener {
+import java.io.Serializable;
+
+public interface ExceptionListener extends Serializable {
 
   void onException(State state, KlonObject exception);
 }

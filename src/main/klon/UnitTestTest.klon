@@ -229,8 +229,8 @@ TestSuiteTest := TestCase clone do(
 
 ObjectTest := TestCase clone do(
     testAsString := method(
-        assertTrue(Object clone asString beginsWith("Object ("))
-        assertTrue(Nil asString beginsWith("Nil ("))
+        assertTrue(Object clone asString beginsWith("Object_0x"))
+        assertTrue(Nil asString beginsWith(""))
     )
 )
 

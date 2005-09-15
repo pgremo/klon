@@ -59,6 +59,7 @@ public class State implements Serializable {
         KlonMap.class,
         KlonMessage.class,
         KlonNumber.class,
+        KlonPrototyper.class,
         KlonRandom.class,
         KlonStore.class};
     for (Class<? extends Object> current : types) {

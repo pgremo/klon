@@ -61,7 +61,9 @@ public class KlonList extends KlonObject {
   public static KlonObject add(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     message.assertArgumentCount(receiver, 1);
-    ((List) receiver.getData()).add(message.eval(context, 0));
+    for (int i = 0; i < message.getArgumentCount(); i++) {
+      ((List) receiver.getData()).add(message.eval(context, i));
+    }
     return receiver;
   }
 
@@ -75,8 +77,8 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("atInsert")
-  public static KlonObject atInsert(KlonObject receiver, KlonObject context,
+  @ExposedAs("atPut")
+  public static KlonObject atPut(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     message.assertArgumentCount(receiver, 2);
     int index = KlonNumber.evalAsNumber(receiver, message, 0)
@@ -147,6 +149,14 @@ public class KlonList extends KlonObject {
       Message message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
       (double) ((List) receiver.getData()).size());
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("clear")
+  public static KlonObject clear(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ((List) receiver.getData()).clear();
+    return receiver;
   }
 
   @SuppressWarnings("unused")

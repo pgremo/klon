@@ -130,6 +130,14 @@ public class KlonMap extends KlonObject {
       (double) ((Map) receiver.getData()).size());
   }
 
+  @SuppressWarnings({"unchecked", "unused"})
+  @ExposedAs("clear")
+  public static KlonObject clear(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    ((Map) receiver.getData()).clear();
+    return receiver;
+  }
+
   @SuppressWarnings("unchecked")
   @ExposedAs("keys")
   public static KlonObject keys(KlonObject receiver, KlonObject context,

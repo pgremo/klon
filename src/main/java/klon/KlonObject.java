@@ -479,7 +479,7 @@ public class KlonObject extends Exception
   public static KlonObject block(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = method(receiver, context, message);
-    ((KlonBlock) result).setBlockLocals(context);
+    ((Block) result.getData()).setBlockLocals(context);
     return result;
   }
 
@@ -497,7 +497,8 @@ public class KlonObject extends Exception
       }
       parameters.add(current);
     }
-    return KlonBlock.newBlock(receiver, parameters, message.getArgument(count));
+    return KlonBlock.newBlock(receiver, new Block(parameters,
+      message.getArgument(count)));
   }
 
   @ExposedAs("for")

@@ -17,10 +17,10 @@ public class KlonBlockTest extends TestCase {
     Message message = compiler.fromString("setter := block(a,self result := a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals("block(a, self setSlot(\"result\", a))", value.toString());
+    assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
+      .toString());
 
-    message = object.getState()
-      .getAsString();
+    message = object.getState().getAsString();
     value = message.eval(value, value);
     assertNotNull(value);
     assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
@@ -41,8 +41,7 @@ public class KlonBlockTest extends TestCase {
     message = compiler.fromString("asString");
     value = message.eval(value, value);
     assertNotNull(value);
-    assertEquals("\"Block_0x", value.toString()
-      .substring(0, 9));
+    assertEquals("null", value.getData());
   }
 
   public void testInvalid() throws Exception {
@@ -63,7 +62,8 @@ public class KlonBlockTest extends TestCase {
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("block(a, b, self setSlot(\"result\", a +(b)))",
-      value.toString());
+      value.getData()
+        .toString());
 
     message = compiler.fromString("setter(\"Hello\")");
     value = message.eval(object, object);

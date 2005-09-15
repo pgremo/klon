@@ -12,6 +12,8 @@ public class KlonBlock extends KlonObject {
       throws KlonObject {
     KlonObject result = root.getSlot("Block")
       .clone();
+    value.setScope(root.getState()
+      .getNil());
     result.setData(value);
     return result;
   }
@@ -45,8 +47,9 @@ public class KlonBlock extends KlonObject {
     if (value == null) {
       result = slot;
     } else {
-      KlonObject scope = ((Block) slot.getData()).getBlockLocals();
-      if (scope == null) {
+      KlonObject scope = ((Block) slot.getData()).getScope();
+      if (scope == scope.getState()
+        .getNil()) {
         scope = receiver;
       }
 
@@ -56,7 +59,7 @@ public class KlonBlock extends KlonObject {
       locals.setSlot("self", receiver);
       locals.setSlot("receiver", scope);
       locals.setSlot("sender", context);
-      locals.setSlot("block", slot);
+      locals.setSlot("slot", slot);
       locals.setSlot("message", KlonMessage.newMessage(receiver, message));
 
       locals.setData(receiver.getData());
@@ -75,7 +78,7 @@ public class KlonBlock extends KlonObject {
       }
       result = nil;
       try {
-        result = value.getCode()
+        result = value.getMessage()
           .eval(locals, locals);
       } catch (KlonObject e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
@@ -98,7 +101,7 @@ public class KlonBlock extends KlonObject {
   public static KlonObject code(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return KlonMessage.newMessage(receiver,
-      ((Block) receiver.getData()).getCode());
+      ((Block) receiver.getData()).getMessage());
   }
 
   @ExposedAs("ifTrue")
@@ -106,7 +109,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonObject {
     KlonObject result = KlonNil.newNil(receiver);
     if (!result.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
+      ((Block) (receiver.getData())).getMessage()))) {
       result = message.getArgument(0)
         .eval(context, context);
     }
@@ -118,7 +121,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonObject {
     KlonObject result = KlonNil.newNil(receiver);
     if (result.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
+      ((Block) (receiver.getData())).getMessage()))) {
       result = message.getArgument(0)
         .eval(context, context);
     }
@@ -130,7 +133,7 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     while (!nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
+      ((Block) (receiver.getData())).getMessage()))) {
       message.getArgument(0)
         .eval(context, context);
     }
@@ -142,11 +145,26 @@ public class KlonBlock extends KlonObject {
       Message message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     while (nil.equals(receiver.activate(context, context,
-      ((Block) (receiver.getData())).getCode()))) {
+      ((Block) (receiver.getData())).getMessage()))) {
       message.getArgument(0)
         .eval(context, context);
     }
     return nil;
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("scope")
+  public static KlonObject scope(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return ((Block) receiver.getData()).getScope();
+  }
+
+  @ExposedAs("setScope")
+  public static KlonObject setScope(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    message.assertArgumentCount(receiver, 1);
+    ((Block) receiver.getData()).setScope(message.eval(context, 0));
+    return receiver;
   }
 
   @ExposedAs("asString")

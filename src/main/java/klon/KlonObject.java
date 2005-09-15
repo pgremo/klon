@@ -479,7 +479,7 @@ public class KlonObject extends Exception
   public static KlonObject block(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result = method(receiver, context, message);
-    ((Block) result.getData()).setBlockLocals(context);
+    ((Block) result.getData()).setScope(context);
     return result;
   }
 

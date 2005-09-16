@@ -1,0 +1,10 @@
+String syllables := method(
+	  cleanPattern := "\\W+"
+	  oneConsonant := "(?i)(?=[aeiou](?:tch|ch|ph|sh|th|wh|zh|[a-z&&[^aeiou]])[aeiou])([aeiou])(tch|ch|ph|sh|th|wh|zh|[a-z&&[^aeiou]])"
+	  twoConsonants := "(?i)(?=[aeiou][a-z&&[^aeiou]][a-z&&[^aeiou]][aeiou])([aeiou][a-z&&[^aeiou]])([a-z&&[^aeiou]])"
+	  threeConsonants := "(?i)(?=[aeiou][a-z&&[^aeiou]]{3}[aeiou])([aeiou](tch|ch|ph|sh|th|wh|zh|[a-z&&[^aeiou]]))([a-z&&[^aeiou]]{1,2})"
+	  fourConsonants := "(?i)(?=[aeiou][a-z&&[^aeiou]]{4}[aeiou])([aeiou][a-z&&[^aeiou]]{2})([a-z&&[^aeiou]]{2})"
+	  splitPattern := "-+"
+	
+	  replace(cleanPattern, "-") replace(oneConsonant, "$1-$2") replace(twoConsonants, "$1-$2") replace(threeConsonants, "$1-$3") replace(fourConsonants, "$1-$2") split(splitPattern)
+  )

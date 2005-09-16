@@ -109,7 +109,7 @@ public class KlonString extends KlonObject {
     return "String";
   }
 
-  @ExposedAs("+")
+  @ExposedAs({"+", "concatonate"})
   public static KlonObject append(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     Message printMessage = receiver.getState()
@@ -134,18 +134,42 @@ public class KlonString extends KlonObject {
       context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
+  @ExposedAs("lowerCase")
+  public static KlonObject lowerCase(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonString.newString(receiver,
+      ((String) receiver.getData()).toLowerCase());
+  }
+
+  @ExposedAs("upperCase")
+  public static KlonObject upperCase(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    return KlonString.newString(receiver,
+      ((String) receiver.getData()).toUpperCase());
+  }
+
   @ExposedAs("split")
   public static KlonObject split(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     List<KlonObject> result = new ArrayList<KlonObject>();
     String delimiter = "\\s";
     if (message.getArgumentCount() > 0) {
-      delimiter = KlonString.evalAsString(receiver, message, 0);
+      delimiter = KlonString.evalAsString(context, message, 0);
     }
     for (String current : ((String) receiver.getData()).split(delimiter)) {
       result.add(KlonString.newString(receiver, current));
     }
     return KlonList.newList(receiver, result);
+  }
+
+  @ExposedAs("replace")
+  public static KlonObject replace(KlonObject receiver, KlonObject context,
+      Message message) throws KlonObject {
+    message.assertArgumentCount(receiver, 2);
+    String search = KlonString.evalAsString(context, message, 0);
+    String replace = KlonString.evalAsString(context, message, 1);
+    String result = ((String) receiver.getData()).replaceAll(search, replace);
+    return KlonString.newString(receiver, result);
   }
 
   @ExposedAs("asBuffer")

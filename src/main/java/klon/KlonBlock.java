@@ -53,7 +53,8 @@ public class KlonBlock extends KlonObject {
         scope = receiver;
       }
 
-      KlonObject locals = receiver.getSlot("Locals")
+      KlonObject locals = receiver.getState()
+        .getLocals()
         .clone();
 
       locals.setSlot("self", receiver);

@@ -17,6 +17,7 @@ public class State implements Serializable {
   private Message asString;
   private KlonObject nil;
   private KlonObject noOp;
+  private KlonObject locals;
 
   public State(String[] args) throws Exception {
     KlonObject object = new KlonObject(this);
@@ -47,6 +48,10 @@ public class State implements Serializable {
     prototypes.setSlot(noOp.getName(), noOp);
     noOp.configure(root);
 
+    locals = new KlonLocals(this);
+    prototypes.setSlot(locals.getName(), locals);
+    locals.configure(root);
+
     Class[] types = new Class[]{
         KlonBlock.class,
         KlonBuffer.class,
@@ -55,7 +60,6 @@ public class State implements Serializable {
         KlonException.class,
         KlonFile.class,
         KlonList.class,
-        KlonLocals.class,
         KlonMap.class,
         KlonMessage.class,
         KlonNumber.class,
@@ -124,6 +128,10 @@ public class State implements Serializable {
 
   public KlonObject getNoOp() {
     return noOp;
+  }
+
+  public KlonObject getLocals() {
+    return locals;
   }
 
   public Message getAsString() {

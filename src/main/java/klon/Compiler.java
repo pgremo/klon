@@ -97,7 +97,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
   @SuppressWarnings("unchecked")
   @Override
   protected void childGroup(Production node, Node child) {
-    if (child != null) {
+    if (child != null && child.getValueCount() > 0) {
       if (node.getValueCount() == 0) {
         node.addValue(child.getValue(0));
         node.addValue(child.getValue(1));

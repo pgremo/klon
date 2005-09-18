@@ -37,9 +37,9 @@ StandardMessage = ( Group | Symbol Group? ) Attached? ;
 
 SlotOperation = IDENTIFIER ( SET | UPDATE ) Attached ;
 
-Group = "(" MessageChain { "," MessageChain } ")"
-      | "{" MessageChain { "," MessageChain } "}"
-      | "[" MessageChain { "," MessageChain } "]" ;
+Group = "(" [ MessageChain { "," MessageChain } ] ")"
+      | "{" [ MessageChain { "," MessageChain } ] "}"
+      | "[" [ MessageChain { "," MessageChain } ] "]" ;
 
 Attached = Message;
         

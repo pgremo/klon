@@ -541,7 +541,7 @@ public class KlonObject extends Exception implements Cloneable,
   @ExposedAs("then")
   public static KlonObject then(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonEcho.newNoOp(receiver, message.eval(context, 0));
+    return KlonMirror.newNoOp(receiver, message.eval(context, 0));
   }
 
   @ExposedAs( { "and", "&&" })
@@ -553,7 +553,7 @@ public class KlonObject extends Exception implements Cloneable,
 
   @SuppressWarnings("unused")
   @ExposedAs( { "or", "||", "else", "elseIf" })
-  public static KlonObject echo(KlonObject receiver, KlonObject context,
+  public static KlonObject mirror(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     return receiver;
   }
@@ -686,7 +686,7 @@ public class KlonObject extends Exception implements Cloneable,
       Message message) throws KlonObject {
     KlonObject result;
     try {
-      result = KlonEcho.newNoOp(receiver, message.eval(context, 0));
+      result = KlonMirror.newNoOp(receiver, message.eval(context, 0));
     } catch (KlonObject e) {
       result = e;
     }

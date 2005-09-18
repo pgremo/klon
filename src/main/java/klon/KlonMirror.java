@@ -1,15 +1,15 @@
 package klon;
 
-@ExposedAs("NoOp")
-public class KlonEcho extends KlonObject {
+@ExposedAs("Mirror")
+public class KlonMirror extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
 
   public static KlonObject newNoOp(KlonObject root, Object value) {
-    return root.getState().getEcho();
+    return root.getState().getMirror();
   }
 
-  public KlonEcho(State state) {
+  public KlonMirror(State state) {
     super(state);
   }
 

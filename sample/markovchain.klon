@@ -1,0 +1,93 @@
+Counter := Object clone do {
+		init := method(
+				self count := 0
+			)
+		increment := method(
+				self count = count + 1
+			)
+		decrement := method(
+				self count = count - 1
+			)
+		asString := method(
+				count asString
+			)
+	}
+	
+Chain := Object clone do (
+		init := method(
+				self size := 0;
+				self storage := Map clone
+			)
+		add := method(value,
+				current := storage at(value)
+				if (current == Nil,
+						current = Counter clone
+						storage atPut(value, current)
+					)
+				current increment
+				self size = size + 1
+				self
+			)
+		asString := method(
+				"[" + size + "]: " + storage
+			)
+	)
+	
+MarkovChain := Object clone do (
+		init := method(
+				self storage := Map clone
+			)
+		add := method(key, value,
+				chain := storage at(key)
+				if (chain == Nil,
+						chain = Chain clone
+						storage atPut(key, chain)
+					)
+				chain add(value)
+				self
+			)
+		next := method(target, weight,
+				result := Nil
+				if (target == Nil) then(
+					keys := storage keys
+					result = keys at(keys size * weight)
+				)else(
+					chain := storage at(target)
+					if (chain != Nil,
+							limit := weight * (chain size)
+							level := 0;
+							chain storage forEach(key, rank,
+									if (level <= limit, result = key)
+									level = level + (rank count)
+								)
+						)
+				)
+				result
+			)
+		asString := method(
+				storage asString
+			)
+	)
+	
+doFile("sample/syllables.klon")
+
+WordFactory := Object clone do(
+		chain := MarkovChain clone
+		File clone setPath("sample/latin.txt") readLines forEach(word,
+				current := Nil
+				word syllables forEach(syllable,
+						chain add(current, syllable)
+						current = syllable
+					)
+				chain add(current, Nil)
+			)
+		create := method(
+				result := ""
+				current := chain next(Nil, Random next)
+				while (current != Nil,
+						result = result + current
+						current = chain next(current, Random next)
+					)
+				result
+			)
+	)

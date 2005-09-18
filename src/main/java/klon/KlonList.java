@@ -60,7 +60,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("add")
   public static KlonObject add(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
+    message.assertArgumentCount(context, 1);
     for (int i = 0; i < message.getArgumentCount(); i++) {
       ((List) receiver.getData()).add(message.eval(context, i));
     }
@@ -71,7 +71,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("remove")
   public static KlonObject remove(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
+    message.assertArgumentCount(context, 1);
     ((List) receiver.getData()).remove(message.eval(context, 0));
     return receiver;
   }
@@ -80,8 +80,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("atPut")
   public static KlonObject atPut(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    message.assertArgumentCount(receiver, 2);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+    message.assertArgumentCount(context, 2);
+    int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
@@ -94,8 +94,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("atRemove")
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+    message.assertArgumentCount(context, 1);
+    int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
@@ -109,8 +109,8 @@ public class KlonList extends KlonObject {
   public static KlonObject at(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
     KlonObject result;
-    message.assertArgumentCount(receiver, 1);
-    int index = KlonNumber.evalAsNumber(receiver, message, 0)
+    message.assertArgumentCount(context, 1);
+    int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty() || index < 0 || index >= data.size()) {

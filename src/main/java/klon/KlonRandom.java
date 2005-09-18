@@ -8,13 +8,13 @@ public class KlonRandom extends KlonObject {
 
   private static final long serialVersionUID = -7916992470486962761L;
 
-  public static Random evalAsRandom(KlonObject receiver, Message message,
+  public static Random evalAsRandom(KlonObject context, Message message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(receiver, index);
+    KlonObject result = message.eval(context, index);
     if ("Random".equals(result.getType())) {
       return (Random) result.getData();
     }
-    throw KlonException.newException(receiver, "Object.invalidArgument",
+    throw KlonException.newException(context, "Object.invalidArgument",
       "argument must evaluate to a Random", message);
   }
 

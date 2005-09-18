@@ -64,13 +64,13 @@ public class KlonString extends KlonObject {
     return newString(root, buffer.toString());
   }
 
-  public static String evalAsString(KlonObject receiver, Message message,
+  public static String evalAsString(KlonObject context, Message message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(receiver, index);
+    KlonObject result = message.eval(context, index);
     if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
-    throw KlonException.newException(receiver, "Object.invalidArgument",
+    throw KlonException.newException(context, "Object.invalidArgument",
       "argument must evaluate to a string", message);
   }
 

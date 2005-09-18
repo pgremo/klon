@@ -67,7 +67,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return receiver.equals(message.eval(receiver, 0))
+    return receiver.equals(message.eval(context, 0))
         ? receiver.getSlot("Klon")
         : KlonNil.newNil(receiver);
   }

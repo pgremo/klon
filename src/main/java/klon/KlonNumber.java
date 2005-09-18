@@ -31,13 +31,13 @@ public class KlonNumber extends KlonObject {
     return result;
   }
 
-  public static Double evalAsNumber(KlonObject receiver, Message message,
+  public static Double evalAsNumber(KlonObject context, Message message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(receiver, index);
+    KlonObject result = message.eval(context, index);
     if ("Number".equals(result.getType())) {
       return (Double) result.getData();
     }
-    throw KlonException.newException(receiver, "Object.invalidArgument",
+    throw KlonException.newException(context, "Object.invalidArgument",
       "argument must evaluate to a number", message);
   }
 

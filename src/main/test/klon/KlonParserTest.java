@@ -133,5 +133,11 @@ public class KlonParserTest extends TestCase {
     assertNotNull(message);
     assertEquals("setSlot(\"a\", b)", message.toString());
   }
+  
+  public void testNoArguments() throws Exception{
+    Message message = new Compiler(object).fromString("do(\n\n\t)");
+    assertNotNull(message);
+    assertEquals("do", message.toString());
+  }
 
 }

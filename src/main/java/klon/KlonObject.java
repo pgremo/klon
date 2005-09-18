@@ -296,7 +296,7 @@ public class KlonObject extends Exception implements Cloneable,
     KlonObject result = receiver.clone();
     KlonObject slot = result.getSlot("init");
     if (slot != null) {
-      slot.activate(result, context, message);
+      slot.activate(result, context, receiver.getState().getInit());
     }
     return result;
   }

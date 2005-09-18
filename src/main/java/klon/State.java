@@ -15,6 +15,7 @@ public class State implements Serializable {
   private WriteListener writeListener;
   private KlonObject root;
   private Message asString;
+  private Message init;
   private KlonObject nil;
   private KlonObject mirror;
   private KlonObject locals;
@@ -52,55 +53,42 @@ public class State implements Serializable {
     prototypes.setSlot(locals.getName(), locals);
     locals.configure(root);
 
-    Class[] types = new Class[]{
-        KlonBlock.class,
-        KlonBuffer.class,
-        KlonCompiler.class,
-        KlonDirectory.class,
-        KlonException.class,
-        KlonFile.class,
-        KlonList.class,
-        KlonMap.class,
-        KlonMessage.class,
-        KlonNumber.class,
-        KlonPrototyper.class,
-        KlonRandom.class,
-        KlonStore.class};
+    Class[] types = new Class[] { KlonBlock.class, KlonBuffer.class,
+        KlonCompiler.class, KlonDirectory.class, KlonException.class,
+        KlonFile.class, KlonList.class, KlonMap.class, KlonMessage.class,
+        KlonNumber.class, KlonPrototyper.class, KlonRandom.class,
+        KlonStore.class };
     for (Class<? extends Object> current : types) {
-      Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
-      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
+      Constructor constructor = current
+          .getDeclaredConstructor(new Class[] { State.class });
+      KlonObject prototype = (KlonObject) constructor
+          .newInstance(new Object[] { this });
       prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root);
     }
 
     Properties klonProperties = new Properties();
     klonProperties.load(getClass().getResourceAsStream(
-      "/klon/version.properties"));
-    klonProperties.load(getClass().getResourceAsStream("/klon/klon.properties"));
+        "/klon/version.properties"));
+    klonProperties
+        .load(getClass().getResourceAsStream("/klon/klon.properties"));
     for (Map.Entry<Object, Object> current : klonProperties.entrySet()) {
-      String name = "klon." + current.getKey()
-        .toString();
-      if (System.getProperties()
-        .get(name) == null) {
-        System.getProperties()
-          .put(name, current.getValue()
-            .toString());
+      String name = "klon." + current.getKey().toString();
+      if (System.getProperties().get(name) == null) {
+        System.getProperties().put(name, current.getValue().toString());
       }
     }
     KlonObject properties = object.clone();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), KlonString.newString(
+          root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 
     KlonObject environment = object.clone();
-    for (Map.Entry<String, String> current : System.getenv()
-      .entrySet()) {
-      environment.setSlot(current.getKey(), KlonString.newString(root,
-        current.getValue()));
+    for (Map.Entry<String, String> current : System.getenv().entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root, current
+          .getValue()));
     }
     root.setSlot("Environment", environment);
 
@@ -111,6 +99,7 @@ public class State implements Serializable {
     root.setSlot("Arguments", KlonList.newList(root, arguments));
 
     asString = new Compiler(root).fromString("asString");
+    init = new Compiler(root).fromString("init");
 
   }
 
@@ -136,6 +125,10 @@ public class State implements Serializable {
 
   public Message getAsString() {
     return asString;
+  }
+
+  public Message getInit() {
+    return init;
   }
 
   public void setExceptionListener(ExceptionListener exceptionListener) {
@@ -171,8 +164,7 @@ public class State implements Serializable {
   public KlonObject doString(String value) {
     KlonObject result = null;
     try {
-      result = new Compiler(root).fromString(value)
-        .eval(root, root);
+      result = new Compiler(root).fromString(value).eval(root, root);
     } catch (KlonObject e) {
       exception(e);
     }

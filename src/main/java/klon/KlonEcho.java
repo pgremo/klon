@@ -1,16 +1,16 @@
 package klon;
 
 @ExposedAs("NoOp")
-public class KlonNoOp extends KlonObject {
+public class KlonEcho extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
 
   public static KlonObject newNoOp(KlonObject root, Object value) {
     return root.getState()
-      .getNoOp();
+      .getEcho();
   }
 
-  public KlonNoOp(State state) {
+  public KlonEcho(State state) {
     super(state);
   }
 
@@ -22,7 +22,7 @@ public class KlonNoOp extends KlonObject {
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    return KlonObject.noop(receiver, context, message);
+    return KlonObject.echo(receiver, context, message);
   }
 
 }

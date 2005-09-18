@@ -62,7 +62,7 @@ public class KlonException extends KlonObject {
         scope.setSlot(name, receiver);
       }
       message.eval(scope, index);
-      result = KlonNoOp.newNoOp(receiver, receiver);
+      result = KlonEcho.newNoOp(receiver, receiver);
     }
     return result;
   }

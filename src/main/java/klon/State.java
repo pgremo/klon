@@ -16,7 +16,7 @@ public class State implements Serializable {
   private KlonObject root;
   private Message asString;
   private KlonObject nil;
-  private KlonObject noOp;
+  private KlonObject echo;
   private KlonObject locals;
 
   public State(String[] args) throws Exception {
@@ -44,9 +44,9 @@ public class State implements Serializable {
     prototypes.setSlot(nil.getName(), nil);
     nil.configure(root);
 
-    noOp = new KlonNoOp(this);
-    prototypes.setSlot(noOp.getName(), noOp);
-    noOp.configure(root);
+    echo = new KlonEcho(this);
+    prototypes.setSlot(echo.getName(), echo);
+    echo.configure(root);
 
     locals = new KlonLocals(this);
     prototypes.setSlot(locals.getName(), locals);
@@ -126,8 +126,8 @@ public class State implements Serializable {
     return nil;
   }
 
-  public KlonObject getNoOp() {
-    return noOp;
+  public KlonObject getEcho() {
+    return echo;
   }
 
   public KlonObject getLocals() {

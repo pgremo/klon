@@ -9,7 +9,7 @@ public class KlonException extends KlonObject {
   private static final long serialVersionUID = -6012596192533993069L;
 
   public static KlonObject newException(KlonObject root, String name,
-      String description, Message message) throws KlonObject {
+      String description, KlonMessage message) throws KlonObject {
     KlonObject result = root.getSlot("Exception")
       .clone();
     if (name != null) {
@@ -42,14 +42,14 @@ public class KlonException extends KlonObject {
 
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     throw KlonException.newException(receiver, KlonString.evalAsString(context,
       message, 0), KlonString.evalAsString(context, message, 1), message);
   }
 
   @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
+      KlonObject context, KlonMessage message) throws KlonObject {
     int index = 0;
     KlonObject result = receiver;
     KlonObject target = message.eval(context, index++);
@@ -70,7 +70,7 @@ public class KlonException extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result;
     KlonObject name = receiver.getSlot("name");
     KlonObject description = receiver.getSlot("description");

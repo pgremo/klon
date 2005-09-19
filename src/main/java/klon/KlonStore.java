@@ -31,7 +31,7 @@ public class KlonStore extends KlonObject {
 
   @ExposedAs("store")
   public static KlonObject store(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     validate(receiver, message);
     ObjectOutputStream out = null;
     try {
@@ -56,7 +56,7 @@ public class KlonStore extends KlonObject {
 
   @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     validate(receiver, message);
     ObjectInputStream in = null;
     try {
@@ -80,7 +80,7 @@ public class KlonStore extends KlonObject {
     }
   }
 
-  private static void validate(KlonObject receiver, Message message)
+  private static void validate(KlonObject receiver, KlonMessage message)
       throws KlonObject {
     KlonObject pathSlot = receiver.getSlot("path");
     if (pathSlot == null) {

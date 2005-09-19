@@ -22,10 +22,9 @@ public class KlonCompiler extends KlonObject {
 
   @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     String string = KlonString.evalAsString(receiver, message, 0);
-    Message result = new Compiler(receiver).fromString(string);
-    return KlonMessage.newMessage(receiver, result);
+    return new Compiler(receiver).fromString(string);
   }
 
 }

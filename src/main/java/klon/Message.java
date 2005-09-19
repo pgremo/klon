@@ -10,9 +10,9 @@ public class Message implements Serializable, Cloneable {
   private static final long serialVersionUID = 735141555296332120L;
   private KlonObject selector;
   private KlonObject literal;
-  private List<Message> arguments = new ArrayList<Message>();
-  private Message attached;
-  private Message next;
+  private List<KlonMessage> arguments = new ArrayList<KlonMessage>();
+  private KlonMessage attached;
+  private KlonMessage next;
 
   public Message() {
   }
@@ -25,23 +25,19 @@ public class Message implements Serializable, Cloneable {
     return arguments.size();
   }
 
-  public void addArgument(Message message) {
+  public void addArgument(KlonMessage message) {
     arguments.add(message);
   }
 
-  public void addArgument(KlonObject argument) {
-    arguments.add(new Message(argument));
-  }
-
-  public Message getArgument(int index) {
+  public KlonMessage getArgument(int index) {
     return arguments.get(index);
   }
 
-  public Message getAttached() {
+  public KlonMessage getAttached() {
     return attached;
   }
 
-  public void setAttached(Message attached) {
+  public void setAttached(KlonMessage attached) {
     this.attached = attached;
   }
 
@@ -53,11 +49,11 @@ public class Message implements Serializable, Cloneable {
     this.literal = literal;
   }
 
-  public Message getNext() {
+  public KlonMessage getNext() {
     return next;
   }
 
-  public void setNext(Message next) {
+  public void setNext(KlonMessage next) {
     this.next = next;
   }
 
@@ -72,7 +68,7 @@ public class Message implements Serializable, Cloneable {
   @Override
   public Object clone() {
     Message result = new Message();
-    for (Message current : arguments) {
+    for (KlonMessage current : arguments) {
       result.addArgument(current);
     }
     result.setAttached(attached);
@@ -80,43 +76,6 @@ public class Message implements Serializable, Cloneable {
     result.setNext(next);
     result.setSelector(selector);
     return result;
-  }
-
-  public KlonObject eval(KlonObject receiver, KlonObject context)
-      throws KlonObject {
-    KlonObject self = receiver;
-    for (Message outer = this; outer != null; outer = outer.getNext()) {
-      for (Message inner = outer; inner != null; inner = inner.getAttached()) {
-        KlonObject value = inner.getLiteral();
-        if (value == null) {
-          value = self.perform(context, inner);
-        }
-        self = value;
-      }
-      if (outer.getNext() != null) {
-        self = context;
-      }
-    }
-    return self;
-  }
-
-  public KlonObject eval(KlonObject context, int index) throws KlonObject {
-    KlonObject result;
-    if (index >= arguments.size()) {
-      result = KlonNil.newNil(context);
-    } else {
-      result = arguments.get(index)
-        .eval(context, context);
-    }
-    return result;
-  }
-
-  public void assertArgumentCount(KlonObject receiver, int count)
-      throws KlonObject {
-    if (arguments.size() < count) {
-      throw KlonException.newException(receiver, "Message.illegalArgumentCount",
-        "message must have " + count + " arguments", null);
-    }
   }
 
   @Override
@@ -131,11 +90,11 @@ public class Message implements Serializable, Cloneable {
     argumentsToString(result);
     if (attached != null) {
       result.append(" ")
-        .append(attached);
+        .append(attached.getData());
     }
     if (next != null) {
       result.append(";\n")
-        .append(next);
+        .append(next.getData());
     }
     return result.toString();
   }
@@ -143,9 +102,10 @@ public class Message implements Serializable, Cloneable {
   private void argumentsToString(StringBuilder result) {
     if (arguments.size() > 0) {
       result.append("(");
-      Iterator<Message> iterator = arguments.iterator();
+      Iterator<KlonMessage> iterator = arguments.iterator();
       while (iterator.hasNext()) {
-        result.append(iterator.next());
+        result.append(iterator.next()
+          .getData());
         if (iterator.hasNext()) {
           result.append(", ");
         }

@@ -2,12 +2,15 @@ package klon;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public final class Configurator {
 
-  private static final Class[] VALID_PARAMETERS = new Class[] {
-      KlonObject.class, KlonObject.class, Message.class };
-  private static final Class[] VALID_EXCEPTIONS = new Class[] { KlonObject.class };
+  private static final Class[] VALID_PARAMETERS = new Class[]{
+      KlonObject.class,
+      KlonObject.class,
+      KlonMessage.class};
+  private static final Class[] VALID_EXCEPTIONS = new Class[]{KlonObject.class};
 
   private Configurator() {
 
@@ -37,16 +40,16 @@ public final class Configurator {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
         String identity = "'" + current.getName() + "' in "
-            + current.getDeclaringClass() + " exposed as '" + exposedAs.value()
-            + "'";
+            + current.getDeclaringClass() + " exposed as '"
+            + Arrays.toString(exposedAs.value()) + "'";
         if (!KlonObject.class.equals(current.getReturnType())) {
-          throw KlonException.newException(root, "Invalid Argument", identity
-              + " must have a return type of " + KlonObject.class + ".", null);
+          throw new IllegalArgumentException(identity
+              + " must have a return type of " + KlonObject.class + ".");
         }
         validateParameters(root, current, identity);
         validateExceptions(root, current, identity);
         KlonObject nativeMethod = KlonNativeMethod.newNativeMethod(root,
-            current);
+          current);
         for (String name : exposedAs.value()) {
           target.setSlot(name, nativeMethod);
         }
@@ -54,32 +57,32 @@ public final class Configurator {
     }
   }
 
+  @SuppressWarnings("unused")
   private static void validateExceptions(KlonObject root, Method current,
       String identity) throws KlonObject {
     if (current.getExceptionTypes().length != VALID_EXCEPTIONS.length) {
-      throw KlonException.newException(root, "Invalid Argument", identity
-          + " must have " + VALID_EXCEPTIONS.length + " exception(s).", null);
+      throw new IllegalArgumentException(identity + " must have "
+          + VALID_EXCEPTIONS.length + " exception(s).");
     }
     for (int i = 0; i < VALID_EXCEPTIONS.length; i++) {
       if (!VALID_EXCEPTIONS[i].equals(current.getExceptionTypes()[i])) {
-        throw KlonException.newException(root, "Invalid Argument", identity
-            + " exception " + i + " must be a " + VALID_EXCEPTIONS[i] + ".",
-            null);
+        throw new IllegalArgumentException(identity + " exception " + i
+            + " must be a " + VALID_EXCEPTIONS[i] + ".");
       }
     }
   }
 
+  @SuppressWarnings("unused")
   private static void validateParameters(KlonObject root, Method current,
       String identity) throws KlonObject {
     if (current.getParameterTypes().length != VALID_PARAMETERS.length) {
-      throw KlonException.newException(root, "Invalid Argument", identity
-          + " must have " + VALID_PARAMETERS.length + " parameter(s).", null);
+      throw new IllegalArgumentException(identity + " must have "
+          + VALID_PARAMETERS.length + " parameter(s).");
     }
     for (int i = 0; i < VALID_PARAMETERS.length; i++) {
       if (!VALID_PARAMETERS[i].equals(current.getParameterTypes()[i])) {
-        throw KlonException.newException(root, "Invalid Argument", identity
-            + " parameter " + i + " must be a " + VALID_PARAMETERS[i] + ".",
-            null);
+        throw new IllegalArgumentException(identity + " parameter " + i
+            + " must be a " + VALID_PARAMETERS[i] + ".");
       }
     }
   }

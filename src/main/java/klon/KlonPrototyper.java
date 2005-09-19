@@ -24,7 +24,7 @@ public class KlonPrototyper extends KlonObject {
 
   @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     try {
       message.assertArgumentCount(receiver, 2);
       String typeName = KlonString.evalAsString(receiver, message, 1);

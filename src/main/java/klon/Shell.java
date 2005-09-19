@@ -52,10 +52,11 @@ public class Shell {
     listener.setHasPrint(false);
     KlonObject value = state.doString(message);
     if (!listener.getHasPrint()) {
-      Message reportMessage;
+      KlonMessage reportMessage;
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
         reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
-        reportMessage.addArgument(value);
+        reportMessage.addArgument(KlonMessage.newMessage(value, new Message(
+          value)));
       } else {
         reportMessage = new Compiler(state.getRoot()).fromString("inspect");
       }

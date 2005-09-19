@@ -42,7 +42,7 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("path")
   public static KlonObject path(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     try {
       return KlonString.newString(receiver,
         ((File) receiver.getData()).getCanonicalPath());
@@ -54,20 +54,20 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("setPath")
   public static KlonObject setPath(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     receiver.setData(new File(KlonString.evalAsString(context, message, 0)).getAbsoluteFile());
     return receiver;
   }
 
   @ExposedAs("name")
   public static KlonObject name(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, ((File) receiver.getData()).getName());
   }
 
   @ExposedAs("parent")
   public static KlonObject parent(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonDirectory.newDirectory(receiver,
       ((File) receiver.getData()).getParentFile());
   }
@@ -75,7 +75,7 @@ public class KlonFile extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("exists")
   public static KlonObject exists(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result;
     if (((File) receiver.getData()).exists()) {
       result = receiver;
@@ -87,14 +87,14 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
       (double) ((File) receiver.getData()).length());
   }
 
   @ExposedAs("remove")
   public static KlonObject remove(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     File file = (File) receiver.getData();
     if (file.exists()) {
       file.delete();
@@ -107,7 +107,7 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("moveTo")
   public static KlonObject moveTo(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     message.assertArgumentCount(receiver, 1);
     File target = new File(KlonString.evalAsString(receiver, message, 0));
     File file = (File) receiver.getData();
@@ -126,7 +126,7 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("readLines")
   public static KlonObject readLines(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     List<KlonObject> result = new ArrayList<KlonObject>();
     BufferedReader in = null;
     try {
@@ -151,7 +151,7 @@ public class KlonFile extends KlonObject {
   @SuppressWarnings({"unchecked", "unused"})
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     int arg = 0;
@@ -164,7 +164,7 @@ public class KlonFile extends KlonObject {
     String value = (String) message.getArgument(arg++)
       .getSelector()
       .getData();
-    Message code = message.getArgument(arg);
+    KlonMessage code = message.getArgument(arg);
     FileInputStream in = null;
     try {
       in = new FileInputStream((File) receiver.getData());
@@ -192,13 +192,13 @@ public class KlonFile extends KlonObject {
 
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonBuffer.newBuffer(receiver, (File) receiver.getData());
   }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, (File) receiver.getData());
   }
 

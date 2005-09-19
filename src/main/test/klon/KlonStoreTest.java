@@ -27,7 +27,7 @@ public class KlonStoreTest extends TestCase {
 
   public void testOperations() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler
+    KlonMessage message = compiler
         .fromString("Account:=Object clone;Store path:=\"testdump\";Store store");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Store"), value);

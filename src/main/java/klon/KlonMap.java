@@ -33,7 +33,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("atPut")
   public static KlonObject atPut(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
     KlonObject value = message.eval(context, 1);
     ((Map) receiver.getData()).put(key, value);
@@ -43,7 +43,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("atPutIfAbsent")
   public static KlonObject atPutIfAbsent(KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
+      KlonObject context, KlonMessage message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
     KlonObject value = message.eval(context, 1);
     Map map = (Map) receiver.getData();
@@ -56,7 +56,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("at")
   public static KlonObject at(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
     KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData())
         .get(key);
@@ -69,7 +69,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("atRemove")
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
     ((Map<KlonObject, KlonObject>) receiver.getData()).remove(key);
     return receiver;
@@ -78,7 +78,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("hasKey")
   public static KlonObject hasKey(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject key = message.eval(context, 0);
     KlonObject result;
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsKey(key)) {
@@ -92,7 +92,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("hasValue")
   public static KlonObject hasValue(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject value = message.eval(context, 0);
     KlonObject result;
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsValue(value)) {
@@ -106,11 +106,11 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result = KlonNil.newNil(receiver);
     String name = (String) message.getArgument(0).getSelector().getData();
     String value = (String) message.getArgument(1).getSelector().getData();
-    Message code = message.getArgument(2);
+    KlonMessage code = message.getArgument(2);
     for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver
         .getData()).entrySet()) {
       context.setSlot(name, current.getKey());
@@ -123,7 +123,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonNumber.newNumber(receiver, (double) ((Map) receiver.getData())
         .size());
   }
@@ -131,7 +131,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings( { "unchecked", "unused" })
   @ExposedAs("clear")
   public static KlonObject clear(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     ((Map) receiver.getData()).clear();
     return receiver;
   }
@@ -139,7 +139,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("keys")
   public static KlonObject keys(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
         .keySet()));
   }
@@ -147,7 +147,7 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("values")
   public static KlonObject values(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
         .values()));
   }
@@ -155,13 +155,13 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result;
     Object primitive = receiver.getData();
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      Message stringMessage = receiver.getState().getAsString();
+      KlonMessage stringMessage = receiver.getState().getAsString();
       StringBuilder buffer = new StringBuilder();
       for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) primitive)
           .entrySet()) {

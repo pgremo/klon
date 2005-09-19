@@ -8,7 +8,7 @@ public class KlonRandom extends KlonObject {
 
   private static final long serialVersionUID = -7916992470486962761L;
 
-  public static Random evalAsRandom(KlonObject context, Message message,
+  public static Random evalAsRandom(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
     KlonObject result = message.eval(context, index);
     if ("Random".equals(result.getType())) {
@@ -38,7 +38,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
       message, 0)
       .longValue());
@@ -47,7 +47,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonNumber.newNumber(receiver,
       ((Random) receiver.getData()).nextDouble());
   }

@@ -14,35 +14,35 @@ public class KlonNilTest extends TestCase {
 
   public void testAsString() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil asString");
+    KlonMessage message = compiler.fromString("Nil asString");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonString.newString(object, ""), value);
   }
 
   public void testAnd() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil and Object");
+    KlonMessage message = compiler.fromString("Nil and Object");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIfNil() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil ifNil(Object)");
+    KlonMessage message = compiler.fromString("Nil ifNil(Object)");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Object"), value);
   }
 
   public void testIsNil() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil isNil");
+    KlonMessage message = compiler.fromString("Nil isNil");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Klon"), value);
   }
 
   public void testIsEquals() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil == Nil");
+    KlonMessage message = compiler.fromString("Nil == Nil");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Klon"), value);
 
@@ -53,7 +53,7 @@ public class KlonNilTest extends TestCase {
 
   public void testOr() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("Nil or Nil");
+    KlonMessage message = compiler.fromString("Nil or Nil");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
 

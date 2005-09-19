@@ -64,7 +64,7 @@ public class KlonString extends KlonObject {
     return newString(root, buffer.toString());
   }
 
-  public static String evalAsString(KlonObject context, Message message,
+  public static String evalAsString(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
     KlonObject result = message.eval(context, index);
     if ("String".equals(result.getType())) {
@@ -111,8 +111,8 @@ public class KlonString extends KlonObject {
 
   @ExposedAs({"+", "concatonate"})
   public static KlonObject append(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
-    Message printMessage = receiver.getState()
+      KlonMessage message) throws KlonObject {
+    KlonMessage printMessage = receiver.getState()
       .getAsString();
     return KlonString.newString(receiver, receiver.getData()
         + String.valueOf(message.eval(context, 0)
@@ -122,35 +122,35 @@ public class KlonString extends KlonObject {
 
   @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
       context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("endsWith")
   public static KlonObject endsWith(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
       context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("lowerCase")
   public static KlonObject lowerCase(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver,
       ((String) receiver.getData()).toLowerCase());
   }
 
   @ExposedAs("upperCase")
   public static KlonObject upperCase(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver,
       ((String) receiver.getData()).toUpperCase());
   }
 
   @ExposedAs("split")
   public static KlonObject split(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     List<KlonObject> result = new ArrayList<KlonObject>();
     String delimiter = "\\s";
     if (message.getArgumentCount() > 0) {
@@ -164,7 +164,7 @@ public class KlonString extends KlonObject {
 
   @ExposedAs("replace")
   public static KlonObject replace(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     message.assertArgumentCount(receiver, 2);
     String search = KlonString.evalAsString(context, message, 0);
     String replace = KlonString.evalAsString(context, message, 1);
@@ -174,7 +174,7 @@ public class KlonString extends KlonObject {
 
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonBuffer.newBuffer(receiver, new Buffer(
       ((String) receiver.getData()).getBytes()));
   }
@@ -182,7 +182,7 @@ public class KlonString extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return receiver;
   }
 }

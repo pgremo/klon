@@ -21,7 +21,7 @@ public class KlonMirror extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return receiver;
   }
 

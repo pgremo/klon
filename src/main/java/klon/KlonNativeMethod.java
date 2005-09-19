@@ -38,7 +38,7 @@ public class KlonNativeMethod extends KlonObject {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
+      KlonObject context, KlonMessage message) throws KlonObject {
     KlonObject result = slot;
     Object value = slot.getData();
     if (value != null) {
@@ -51,7 +51,8 @@ public class KlonNativeMethod extends KlonObject {
         }
       } catch (KlonObject e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
-          .getData()).add(KlonString.newString(receiver, message.toString()));
+          .getData()).add(KlonString.newString(receiver, message.getData()
+          .toString()));
         throw e;
       } catch (Throwable e) {
         throw KlonException.newException(receiver, e.getClass()

@@ -41,7 +41,7 @@ public class KlonBlock extends KlonObject {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, Message message) throws KlonObject {
+      KlonObject context, KlonMessage message) throws KlonObject {
     Block value = (Block) slot.getData();
     KlonObject result;
     if (value == null) {
@@ -61,7 +61,7 @@ public class KlonBlock extends KlonObject {
       locals.setSlot("receiver", scope);
       locals.setSlot("sender", context);
       locals.setSlot("slot", slot);
-      locals.setSlot("message", KlonMessage.newMessage(receiver, message));
+      locals.setSlot("message", message);
 
       locals.setData(receiver.getData());
 
@@ -83,7 +83,8 @@ public class KlonBlock extends KlonObject {
           .eval(locals, locals);
       } catch (KlonObject e) {
         ((List<KlonObject>) e.getSlot("stackTrace")
-          .getData()).add(KlonString.newString(receiver, message.toString()));
+          .getData()).add(KlonString.newString(receiver, message.getData()
+          .toString()));
         throw e;
       }
 
@@ -93,21 +94,21 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("parameters")
   public static KlonObject parameters(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonList.newList(receiver,
       ((Block) receiver.getData()).getParameters());
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs("code")
   public static KlonObject code(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
-    return KlonMessage.newMessage(receiver,
-      ((Block) receiver.getData()).getMessage());
+      KlonMessage message) throws KlonObject {
+    return ((Block) receiver.getData()).getMessage();
   }
 
   @ExposedAs("ifTrue")
   public static KlonObject ifTrue(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result = KlonNil.newNil(receiver);
     if (!result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getMessage()))) {
@@ -119,7 +120,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("ifFalse")
   public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject result = KlonNil.newNil(receiver);
     if (result.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getMessage()))) {
@@ -131,7 +132,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("whileTrue")
   public static KlonObject whileTrue(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     while (!nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getMessage()))) {
@@ -143,7 +144,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("whileFalse")
   public static KlonObject whileFalse(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     while (nil.equals(receiver.activate(context, context,
       ((Block) (receiver.getData())).getMessage()))) {
@@ -156,13 +157,13 @@ public class KlonBlock extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("scope")
   public static KlonObject scope(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return ((Block) receiver.getData()).getScope();
   }
 
   @ExposedAs("setScope")
   public static KlonObject setScope(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     message.assertArgumentCount(receiver, 1);
     ((Block) receiver.getData()).setScope(message.eval(context, 0));
     return receiver;
@@ -170,7 +171,7 @@ public class KlonBlock extends KlonObject {
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, String.valueOf(receiver.getData()));
   }
 

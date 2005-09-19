@@ -14,49 +14,49 @@ public class KlonNumberTest extends TestCase {
 
   public void testAdd() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("1 + 1");
+    KlonMessage message = compiler.fromString("1 + 1");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
   }
 
   public void testSubtract() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("5 - 3");
+    KlonMessage message = compiler.fromString("5 - 3");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
   }
 
   public void testMultiply() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("7 * 3");
+    KlonMessage message = compiler.fromString("7 * 3");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 21D), value);
   }
 
   public void testDivide() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("48 / 6");
+    KlonMessage message = compiler.fromString("48 / 6");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 8D), value);
   }
 
   public void testModulus() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("1 % 4");
+    KlonMessage message = compiler.fromString("1 % 4");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 1D), value);
   }
 
   public void testPower() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("2 power(3)");
+    KlonMessage message = compiler.fromString("2 power(3)");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 8D), value);
   }
 
   public void testAbsoluteValue() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("2 abs");
+    KlonMessage message = compiler.fromString("2 abs");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
@@ -67,7 +67,7 @@ public class KlonNumberTest extends TestCase {
 
   public void testSquareRoot() throws Exception {
     Compiler compiler = new Compiler(object);
-    Message message = compiler.fromString("4 sqrt");
+    KlonMessage message = compiler.fromString("4 sqrt");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
   }

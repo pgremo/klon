@@ -6,9 +6,9 @@ public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
 
-  public static KlonObject newMessage(KlonObject root, Message message)
+  public static KlonMessage newMessage(KlonObject root, Message message)
       throws KlonObject {
-    KlonObject result = root.getSlot("Message")
+    KlonMessage result = (KlonMessage) root.getSlot("Message")
       .clone();
     result.setData(message);
     return result;
@@ -31,9 +31,90 @@ public class KlonMessage extends KlonObject {
     return "Message";
   }
 
+  public void setAttached(KlonMessage attached) {
+    ((Message) data).setAttached(attached);
+  }
+
+  public KlonMessage getAttached() {
+    return ((Message) data).getAttached();
+  }
+
+  public void setLiteral(KlonObject literal) {
+    ((Message) data).setLiteral(literal);
+  }
+
+  public KlonObject getLiteral() {
+    return ((Message) data).getLiteral();
+  }
+
+  public void setNext(KlonMessage selector) {
+    ((Message) data).setNext(selector);
+  }
+
+  public KlonMessage getNext() {
+    return ((Message) data).getNext();
+  }
+
+  public void setSelector(KlonObject selector) {
+    ((Message) data).setSelector(selector);
+  }
+
+  public KlonObject getSelector() {
+    return ((Message) data).getSelector();
+  }
+
+  public int getArgumentCount() {
+    return ((Message) data).getArgumentCount();
+  }
+
+  public void addArgument(KlonMessage argument) {
+    ((Message) data).addArgument(argument);
+  }
+
+  public KlonMessage getArgument(int index) {
+    return ((Message) data).getArgument(index);
+  }
+
+  public KlonObject eval(KlonObject receiver, KlonObject context)
+      throws KlonObject {
+    KlonObject self = receiver;
+    for (KlonMessage outer = this; outer != null; outer = outer.getNext()) {
+      for (KlonMessage inner = outer; inner != null; inner = inner.getAttached()) {
+        KlonObject value = inner.getLiteral();
+        if (value == null) {
+          value = self.perform(context, inner);
+        }
+        self = value;
+      }
+      if (outer.getNext() != null) {
+        self = context;
+      }
+    }
+    return self;
+  }
+
+  public KlonObject eval(KlonObject context, int index) throws KlonObject {
+    KlonObject result;
+    if (index >= getArgumentCount()) {
+      result = KlonNil.newNil(context);
+    } else {
+      result = getArgument(index).eval(context, context);
+    }
+    return result;
+  }
+
+  public void assertArgumentCount(KlonObject receiver, int count)
+      throws KlonObject {
+    if (getArgumentCount() < count) {
+      throw KlonException.newException(receiver,
+        "Message.illegalArgumentCount", "message must have " + count
+            + " arguments", null);
+    }
+  }
+
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      Message message) throws KlonObject {
+      KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, String.valueOf(receiver.getData()));
   }
 

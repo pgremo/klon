@@ -8,10 +8,10 @@ public class Block implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 8908253496842815003L;
   private List<KlonObject> parameters;
-  private Message message;
+  private KlonMessage message;
   private KlonObject scope;
 
-  public Block(List<KlonObject> parameters, Message message) {
+  public Block(List<KlonObject> parameters, KlonMessage message) {
     this.parameters = parameters;
     this.message = message;
   }
@@ -20,7 +20,7 @@ public class Block implements Serializable, Cloneable {
     return parameters;
   }
 
-  public Message getMessage() {
+  public KlonMessage getMessage() {
     return message;
   }
 
@@ -51,7 +51,7 @@ public class Block implements Serializable, Cloneable {
     if (parameters.size() > 0) {
       result.append(", ");
     }
-    result.append(message)
+    result.append(message.getData())
       .append(")");
     return result.toString();
   }
@@ -59,7 +59,7 @@ public class Block implements Serializable, Cloneable {
   @Override
   public Object clone() {
     return new Block(new ArrayList<KlonObject>(parameters),
-      (Message) message.clone());
+      (KlonMessage) message.clone());
   }
 
 }

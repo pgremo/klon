@@ -13,6 +13,7 @@ public class State implements Serializable {
   private ExceptionListener exceptionListener;
   private ExitListener exitListener;
   private WriteListener writeListener;
+  private String[] arguments;
   private KlonObject root;
   private Message asString;
   private Message init;
@@ -20,7 +21,24 @@ public class State implements Serializable {
   private KlonObject mirror;
   private KlonObject locals;
 
-  public State(String[] args) throws Exception {
+  public State(String[] arguments) throws Exception {
+    this.arguments = arguments;
+
+    Properties klonProperties = new Properties();
+    Properties currentProperties = new Properties();
+    currentProperties.load(getClass().getResourceAsStream(
+      "/klon/version.properties"));
+    currentProperties.load(getClass().getResourceAsStream(
+      "/klon/klon.properties"));
+    for (Map.Entry<Object, Object> current : currentProperties.entrySet()) {
+      String name = "klon." + current.getKey()
+        .toString();
+      klonProperties.put(name, current.getValue()
+        .toString());
+    }
+    klonProperties.putAll(System.getProperties());
+    System.setProperties(klonProperties);
+
     KlonObject object = new KlonObject(this);
     root = object.clone();
     KlonObject prototypes = object.clone();
@@ -53,54 +71,57 @@ public class State implements Serializable {
     prototypes.setSlot(locals.getName(), locals);
     locals.configure(root);
 
-    Class[] types = new Class[] { KlonBlock.class, KlonBuffer.class,
-        KlonCompiler.class, KlonDirectory.class, KlonException.class,
-        KlonFile.class, KlonList.class, KlonMap.class, KlonMessage.class,
-        KlonNumber.class, KlonPrototyper.class, KlonRandom.class,
-        KlonStore.class };
+    Class[] types = new Class[]{
+        KlonBlock.class,
+        KlonBuffer.class,
+        KlonCompiler.class,
+        KlonDirectory.class,
+        KlonException.class,
+        KlonFile.class,
+        KlonList.class,
+        KlonMap.class,
+        KlonMessage.class,
+        KlonNumber.class,
+        KlonPrototyper.class,
+        KlonRandom.class,
+        KlonStore.class};
     for (Class<? extends Object> current : types) {
-      Constructor constructor = current
-          .getDeclaredConstructor(new Class[] { State.class });
-      KlonObject prototype = (KlonObject) constructor
-          .newInstance(new Object[] { this });
+      Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
+      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
       prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root);
     }
 
-    Properties klonProperties = new Properties();
-    klonProperties.load(getClass().getResourceAsStream(
-        "/klon/version.properties"));
-    klonProperties
-        .load(getClass().getResourceAsStream("/klon/klon.properties"));
-    for (Map.Entry<Object, Object> current : klonProperties.entrySet()) {
-      String name = "klon." + current.getKey().toString();
-      if (System.getProperties().get(name) == null) {
-        System.getProperties().put(name, current.getValue().toString());
-      }
-    }
     KlonObject properties = object.clone();
-    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
-      properties.setSlot(current.getKey().toString(), KlonString.newString(
-          root, current.getValue().toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties()
+      .entrySet()) {
+      properties.setSlot(current.getKey()
+        .toString(), KlonString.newString(root, current.getValue()
+        .toString()));
     }
     root.setSlot("Properties", properties);
 
     KlonObject environment = object.clone();
-    for (Map.Entry<String, String> current : System.getenv().entrySet()) {
-      environment.setSlot(current.getKey(), KlonString.newString(root, current
-          .getValue()));
+    for (Map.Entry<String, String> current : System.getenv()
+      .entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root,
+        current.getValue()));
     }
     root.setSlot("Environment", environment);
 
-    List<KlonObject> arguments = new ArrayList<KlonObject>(args.length);
-    for (String current : args) {
-      arguments.add(KlonString.newString(root, current));
+    List<KlonObject> args = new ArrayList<KlonObject>(arguments.length);
+    for (String current : arguments) {
+      args.add(KlonString.newString(root, current));
     }
-    root.setSlot("Arguments", KlonList.newList(root, arguments));
+    root.setSlot("Arguments", KlonList.newList(root, args));
 
     asString = new Compiler(root).fromString("asString");
     init = new Compiler(root).fromString("init");
 
+  }
+
+  public String[] getArguments() {
+    return arguments;
   }
 
   public void setRoot(KlonObject root) {
@@ -164,7 +185,8 @@ public class State implements Serializable {
   public KlonObject doString(String value) {
     KlonObject result = null;
     try {
-      result = new Compiler(root).fromString(value).eval(root, root);
+      result = new Compiler(root).fromString(value)
+        .eval(root, root);
     } catch (KlonObject e) {
       exception(e);
     }

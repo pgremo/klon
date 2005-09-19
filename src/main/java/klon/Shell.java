@@ -17,12 +17,10 @@ public class Shell {
       "String"};
   private Reader in;
   private State state;
-  private ShellListener listener;
 
-  public Shell(Reader in, State state, ShellListener listener) {
+  public Shell(Reader in, State state) {
     this.in = in;
     this.state = state;
-    this.listener = listener;
   }
 
   public void process() throws KlonObject, IOException {
@@ -49,9 +47,13 @@ public class Shell {
   }
 
   private void evalMessage(String message) throws KlonObject {
-    listener.setHasPrint(false);
+    ((ShellListener) state.getRoot()
+      .getState()
+      .getWriteListener()).setHasPrint(false);
     KlonObject value = state.doString(message);
-    if (!listener.getHasPrint()) {
+    if (!((ShellListener) state.getRoot()
+      .getState()
+      .getWriteListener()).getHasPrint()) {
       KlonMessage reportMessage;
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
         reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
@@ -99,7 +101,7 @@ public class Shell {
       state.setExceptionListener(listener);
       state.setExitListener(listener);
       state.setWriteListener(listener);
-      Shell shell = new Shell(new InputStreamReader(System.in), state, listener);
+      Shell shell = new Shell(new InputStreamReader(System.in), state);
       shell.process();
     } catch (Exception e) {
       System.err.print(e.getMessage() + "\n");

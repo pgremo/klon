@@ -152,12 +152,24 @@ public class State implements Serializable {
     return init;
   }
 
+  public ExceptionListener getExceptionListener() {
+    return exceptionListener;
+  }
+
   public void setExceptionListener(ExceptionListener exceptionListener) {
     this.exceptionListener = exceptionListener;
   }
 
+  public ExitListener getExitListener() {
+    return exitListener;
+  }
+
   public void setExitListener(ExitListener exitListener) {
     this.exitListener = exitListener;
+  }
+
+  public WriteListener getWriteListener() {
+    return writeListener;
   }
 
   public void setWriteListener(WriteListener writeListener) {

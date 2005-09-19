@@ -25,6 +25,9 @@ public class KlonStore extends KlonObject {
   public String getType() {
     return "Store";
   }
+  
+  @ExposedAs("path")
+  public static final String path = "klon.image";
 
   @ExposedAs("store")
   public static KlonObject store(KlonObject receiver, KlonObject context,

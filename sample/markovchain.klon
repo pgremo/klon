@@ -72,7 +72,7 @@ MarkovChain := Object clone do (
 doFile("sample/syllables.klon")
 
 WordFactory := Object clone do(
-	init := method(file,
+	loadChain := method(file,
 			self chain := MarkovChain clone
 			file readLines forEach(word,
 					current := Nil
@@ -83,13 +83,13 @@ WordFactory := Object clone do(
 					chain add(current, Nil)
 				)
 		)
-		create := method(
-				result := ""
-				current := chain next(Nil, Random next)
-				while (current != Nil,
-						result = result + current
-						current = chain next(current, Random next)
-					)
-				result
-			)
+	create := method(
+			result := ""
+			current := chain next(Nil, Random next)
+			while (current != Nil,
+					result = result + current
+					current = chain next(current, Random next)
+				)
+			result
+		)
 	)

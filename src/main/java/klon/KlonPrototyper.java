@@ -25,22 +25,19 @@ public class KlonPrototyper extends KlonObject {
   @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
       Message message) throws KlonObject {
-    message.assertArgumentCount(receiver, 2);
-    KlonObject namespace = message.eval(context, 0);
-    String typeName = KlonString.evalAsString(receiver, message, 1);
-    KlonObject prototype;
     try {
+      message.assertArgumentCount(receiver, 2);
+      String typeName = KlonString.evalAsString(receiver, message, 1);
       Class type = Class.forName(typeName);
       Constructor constructor = type.getDeclaredConstructor(new Class[]{State.class});
-      prototype = (KlonObject) constructor.newInstance(new Object[]{receiver.getState()});
-      namespace.setSlot(prototype.getName(), prototype);
-      prototype.configure(namespace);
+      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{receiver.getState()});
+      prototype.configure(receiver);
+      return prototype;
     } catch (KlonObject e) {
       throw e;
     } catch (Exception e) {
       throw KlonException.newException(receiver, e.getClass()
         .getSimpleName(), e.getMessage(), message);
     }
-    return prototype;
   }
 }

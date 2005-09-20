@@ -6,10 +6,6 @@ Rank := List clone do(
 Suit := list("Clubs", "Diamonds", "Hearts", "Spades")
 
 Card := Object clone do(
-	init := method(suit, rank,
-		self suit := suit;
-		self rank := rank
-	)
 	asString = method(rank + " of " + suit)
 )
 
@@ -17,7 +13,10 @@ Deck := List clone do(
 	init := method(
 			Suit forEach(suit,
 				Rank forEach(rank,
-					add(Card clone(suit, rank))
+					card := Card clone
+					card suit := suit
+					card rank := rank
+					add(card)
 				)
 			)
 		)

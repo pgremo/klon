@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="src/main/resource"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/test"/>
-	<classpathentry kind="lib" path="lib/grammatica/jars/grammatica-1.5.alpha1.jar"/>
+	<classpathentry kind="lib" path="lib/grammatica/jars/grammatica-1.5.alpha2.jar"/>
 	<classpathentry kind="lib" path="lib/junit/jars/junit-3.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

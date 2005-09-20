@@ -17,11 +17,11 @@
 		<pathelement path="${grammar.classes}" />
 		<filelist dir="${lib}">
 			<file name="antlr/jars/antlr-2.7.5.jar" />
-			<file name="checkstyle/jars/checkstyle-4.0-beta5.jar" />
+			<file name="checkstyle/jars/checkstyle-4.0-beta6.jar" />
 			<file name="commons-beanutils/jars/commons-beanutils-1.7.0.jar" />
 			<file name="commons-logging/jars/commons-logging-1.0.3.jar" />
 			<file name="regexp/jars/regexp-1.3.jar" />
-			<file name="grammatica/jars/grammatica-1.5.alpha1.jar" />
+			<file name="grammatica/jars/grammatica-1.5.alpha2.jar" />
 			<file name="junit/jars/junit-3.8.1.jar" />
 			<file name="emma/jars/emma.jar" />
 			<file name="emma/jars/emma_ant.jar" />
@@ -201,7 +201,7 @@
 
 	<target name="jar" depends="compile">
 
-		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha1.jar" />
+		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha2.jar" />
 		<move file="target/unjar/LICENSE.txt" toFile="target/unjar/grammatica-LICENSE.txt" />
 		<move file="target/unjar/README.txt" toFile="target/unjar/grammatica-README.txt" />
 		<copy file="LICENSE.txt" toFile="target/unjar/${ant.project.name}-LICENSE.txt" />

@@ -6,11 +6,20 @@ public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
 
-  public static KlonMessage newMessage(KlonObject root, Message message)
+  public static KlonMessage newMessage(KlonObject root)
       throws KlonObject {
     KlonMessage result = (KlonMessage) root.getSlot("Message")
       .clone();
-    result.setData(message);
+    result.setData(new Message());
+    return result;
+  }
+
+  public static KlonMessage newMessageWithLiteral(KlonObject root,
+      KlonObject literal) throws KlonObject {
+    KlonMessage result = (KlonMessage) root.getSlot("Message")
+      .clone();
+    result.setData(new Message());
+    result.setLiteral(literal);
     return result;
   }
 
@@ -93,7 +102,8 @@ public class KlonMessage extends KlonObject {
     return self;
   }
 
-  public KlonObject evalArgument(KlonObject context, int index) throws KlonObject {
+  public KlonObject evalArgument(KlonObject context, int index)
+      throws KlonObject {
     KlonObject result;
     if (index >= getArgumentCount()) {
       result = KlonNil.newNil(context);

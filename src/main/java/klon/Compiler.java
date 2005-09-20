@@ -24,7 +24,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     KlonMessage result;
     String message = value.trim();
     if ("".equals(message)) {
-      result = KlonMessage.newMessage(root, new Message());
+      result = KlonMessage.newMessage(root);
       result.setSelector(KlonString.newString(root, ""));
     } else {
       try {
@@ -63,7 +63,7 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
     try {
       KlonMessage message = (KlonMessage) node.getValue(0);
       if (message == null) {
-        message = KlonMessage.newMessage(root, new Message());
+        message = KlonMessage.newMessage(root);
         node.addValue(message);
         Object type = child.getValue(1);
         node.addValue(type);
@@ -127,9 +127,9 @@ public class Compiler extends KlonAnalyzer implements KlonConstants {
       KlonMessage attached = (KlonMessage) node.getChildAt(2)
         .getChildAt(0)
         .getValue(0);
-      KlonMessage identifier = KlonMessage.newMessage(root, new Message());
+      KlonMessage identifier = KlonMessage.newMessage(root);
       identifier.setLiteral(slotName);
-      KlonMessage result = KlonMessage.newMessage(root, new Message());
+      KlonMessage result = KlonMessage.newMessage(root);
       result.setSelector((KlonObject) node.getChildAt(1)
         .getValue(0));
       result.addArgument(identifier);

@@ -333,7 +333,7 @@ public class KlonObject extends Exception
         throw KlonException.newException(receiver, "Object.invalidArgument",
           "argument must evaluate to a String", message);
       }
-      target = KlonMessage.newMessage(receiver, new Message());
+      target = KlonMessage.newMessage(receiver);
       target.setSelector(KlonString.newString(receiver,
         (String) subject.getData()));
       for (int i = 1; i < message.getArgumentCount(); i++) {

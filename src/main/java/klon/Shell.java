@@ -57,8 +57,8 @@ public class Shell {
       KlonMessage reportMessage;
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
         reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
-        reportMessage.addArgument(KlonMessage.newMessage(value, new Message(
-          value)));
+        reportMessage.addArgument(KlonMessage.newMessageWithLiteral(value,
+          value));
       } else {
         reportMessage = new Compiler(state.getRoot()).fromString("inspect");
       }

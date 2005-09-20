@@ -476,11 +476,11 @@ public class KlonObject extends Exception
     return KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("block")
-  public static KlonObject block(KlonObject receiver, KlonObject context,
+  @ExposedAs("function")
+  public static KlonObject function(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonObject result = method(receiver, context, message);
-    ((Block) result.getData()).setScope(context);
+    ((Function) result.getData()).setScope(context);
     return result;
   }
 
@@ -498,8 +498,7 @@ public class KlonObject extends Exception
       }
       parameters.add(current);
     }
-    return KlonBlock.newBlock(receiver, new Block(parameters,
-      message.getArgument(count)));
+    return KlonFunction.newBlock(receiver, parameters, message.getArgument(count));
   }
 
   @ExposedAs("for")

@@ -115,7 +115,7 @@ public class KlonMessage extends KlonObject {
 
   public void assertArgumentCount(int count) throws KlonObject {
     if (getArgumentCount() < count) {
-      throw KlonException.newException(this, "Message.illegalArgumentCount",
+      throw KlonException.newException(this, "Message.invalidArgumentCount",
         "message must have " + count + " arguments", null);
     }
   }

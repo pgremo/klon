@@ -2,7 +2,7 @@ package klon;
 
 import junit.framework.TestCase;
 
-public class KlonBlockTest extends TestCase {
+public class KlonFunctionTest extends TestCase {
 
   private KlonObject object;
 
@@ -14,17 +14,17 @@ public class KlonBlockTest extends TestCase {
 
   public void testCreate() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := block(a,self result := a)");
+    KlonMessage message = compiler.fromString("setter := function(a,self result := a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
+    assertEquals("function(a, self setSlot(\"result\", a))", value.getData()
       .toString());
 
     message = object.getState()
       .getAsString();
     value = message.eval(value, value);
     assertNotNull(value);
-    assertEquals("block(a, self setSlot(\"result\", a))", value.getData()
+    assertEquals("function(a, self setSlot(\"result\", a))", value.getData()
       .toString());
 
     message = compiler.fromString("setter(\"Hello\")");
@@ -35,7 +35,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testActivatePrototype() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Block");
+    KlonMessage message = compiler.fromString("Function");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
 
@@ -47,7 +47,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testInvalid() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := block(\"a\",self result := a)");
+    KlonMessage message = compiler.fromString("setter := function(\"a\",self result := a)");
     try {
       message.eval(object, object);
       fail("expected exception");
@@ -59,10 +59,10 @@ public class KlonBlockTest extends TestCase {
 
   public void testInsuficientArguments() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := block(a,b,self result := a + b)");
+    KlonMessage message = compiler.fromString("setter := function(a,b,self result := a + b)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
-    assertEquals("block(a, b, self setSlot(\"result\", a +(b)))",
+    assertEquals("function(a, b, self setSlot(\"result\", a +(b)))",
       value.getData()
         .toString());
 
@@ -74,12 +74,12 @@ public class KlonBlockTest extends TestCase {
 
   public void testIfTrue() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("block(1 == 1) ifTrue(13)");
+    KlonMessage message = compiler.fromString("function(1 == 1) ifTrue(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("13", value.toString());
 
-    message = compiler.fromString("block(1 == 12) ifTrue(13)");
+    message = compiler.fromString("function(1 == 12) ifTrue(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
@@ -87,12 +87,12 @@ public class KlonBlockTest extends TestCase {
 
   public void testIfFalse() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("block(1 == 12) ifFalse(13)");
+    KlonMessage message = compiler.fromString("function(1 == 12) ifFalse(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("13", value.toString());
 
-    message = compiler.fromString("block(1 == 1) ifFalse(13)");
+    message = compiler.fromString("function(1 == 1) ifFalse(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
@@ -100,7 +100,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testWhileTrue() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("a := 0; block(a < 10) whileTrue(a = a + 1)");
+    KlonMessage message = compiler.fromString("a := 0; function(a < 10) whileTrue(a = a + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
@@ -109,7 +109,7 @@ public class KlonBlockTest extends TestCase {
 
   public void testWhileFalse() throws Exception {
     Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("a := 20; block(a < 10) whileFalse(a = a - 1)");
+    KlonMessage message = compiler.fromString("a := 20; function(a < 10) whileFalse(a = a - 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);

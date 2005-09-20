@@ -72,7 +72,7 @@ public class State implements Serializable {
     locals.configure(root);
 
     Class[] types = new Class[]{
-        KlonBlock.class,
+        KlonFunction.class,
         KlonBuffer.class,
         KlonCompiler.class,
         KlonDirectory.class,

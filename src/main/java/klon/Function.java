@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block implements Serializable, Cloneable {
+public class Function implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 8908253496842815003L;
   private List<KlonObject> parameters;
   private KlonMessage message;
   private KlonObject scope;
 
-  public Block(List<KlonObject> parameters, KlonMessage message) {
+  public Function(List<KlonObject> parameters, KlonMessage message) {
     this.parameters = parameters;
     this.message = message;
   }
@@ -22,6 +22,10 @@ public class Block implements Serializable, Cloneable {
 
   public KlonMessage getMessage() {
     return message;
+  }
+
+  public void setMessage(KlonMessage message) {
+    this.message = message;
   }
 
   public KlonObject getScope() {
@@ -38,7 +42,7 @@ public class Block implements Serializable, Cloneable {
     if (scope == null) {
       result.append("method");
     } else {
-      result.append("block");
+      result.append("function");
     }
     result.append("(");
     for (int i = 0; i < parameters.size(); i++) {
@@ -58,7 +62,7 @@ public class Block implements Serializable, Cloneable {
 
   @Override
   public Object clone() {
-    return new Block(new ArrayList<KlonObject>(parameters),
+    return new Function(new ArrayList<KlonObject>(parameters),
       (KlonMessage) message.clone());
   }
 

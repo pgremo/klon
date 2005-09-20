@@ -60,9 +60,9 @@ public class KlonList extends KlonObject {
   @ExposedAs("add")
   public static KlonObject add(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(context, 1);
+    message.assertArgumentCount(1);
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      ((List) receiver.getData()).add(message.eval(context, i));
+      ((List) receiver.getData()).add(message.evalArgument(context, i));
     }
     return receiver;
   }
@@ -71,8 +71,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("remove")
   public static KlonObject remove(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(context, 1);
-    ((List) receiver.getData()).remove(message.eval(context, 0));
+    message.assertArgumentCount(1);
+    ((List) receiver.getData()).remove(message.evalArgument(context, 0));
     return receiver;
   }
 
@@ -80,12 +80,12 @@ public class KlonList extends KlonObject {
   @ExposedAs("atPut")
   public static KlonObject atPut(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(context, 2);
+    message.assertArgumentCount(2);
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
-      data.add(index, message.eval(context, 1));
+      data.add(index, message.evalArgument(context, 1));
     }
     return receiver;
   }
@@ -94,7 +94,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("atRemove")
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(context, 1);
+    message.assertArgumentCount(1);
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
@@ -109,7 +109,7 @@ public class KlonList extends KlonObject {
   public static KlonObject at(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonObject result;
-    message.assertArgumentCount(context, 1);
+    message.assertArgumentCount(1);
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
@@ -139,8 +139,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("push")
   public static KlonObject push(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
-    ((List) receiver.getData()).add(0, message.eval(context, 0));
+    message.assertArgumentCount(1);
+    ((List) receiver.getData()).add(0, message.evalArgument(context, 0));
     return receiver;
   }
 

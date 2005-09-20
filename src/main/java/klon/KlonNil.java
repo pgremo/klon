@@ -47,7 +47,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs({"or", "||"})
   public static KlonObject or(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject other = message.eval(context, 0);
+    KlonObject other = message.evalArgument(context, 0);
     return KlonNil.newNil(receiver)
       .equals(other) ? receiver : other;
   }
@@ -55,7 +55,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs({"ifNil", "ifFalse", "else"})
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return message.eval(context, 0);
+    return message.evalArgument(context, 0);
   }
 
   @ExposedAs({"isNil", "ifTrue"})
@@ -67,7 +67,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return receiver.equals(message.eval(context, 0))
+    return receiver.equals(message.evalArgument(context, 0))
         ? receiver.getSlot("Klon")
         : KlonNil.newNil(receiver);
   }
@@ -75,7 +75,7 @@ public class KlonNil extends KlonObject {
   @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return !receiver.equals(message.eval(context, 0))
+    return !receiver.equals(message.evalArgument(context, 0))
         ? receiver.getSlot("Klon")
         : KlonNil.newNil(receiver);
   }

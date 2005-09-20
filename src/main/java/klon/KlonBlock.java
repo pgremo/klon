@@ -70,7 +70,7 @@ public class KlonBlock extends KlonObject {
       int i = 0;
       for (; i < limit; i++) {
         locals.setSlot((String) parameters.get(i)
-          .getData(), message.eval(context, i));
+          .getData(), message.evalArgument(context, i));
       }
       KlonObject nil = KlonNil.newNil(receiver);
       for (; i < parameters.size(); i++) {
@@ -164,8 +164,8 @@ public class KlonBlock extends KlonObject {
   @ExposedAs("setScope")
   public static KlonObject setScope(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
-    ((Block) receiver.getData()).setScope(message.eval(context, 0));
+    message.assertArgumentCount(1);
+    ((Block) receiver.getData()).setScope(message.evalArgument(context, 0));
     return receiver;
   }
 

@@ -108,7 +108,7 @@ public class KlonFile extends KlonObject {
   @ExposedAs("moveTo")
   public static KlonObject moveTo(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(receiver, 1);
+    message.assertArgumentCount(1);
     File target = new File(KlonString.evalAsString(receiver, message, 0));
     File file = (File) receiver.getData();
     if (file.exists()) {

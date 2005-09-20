@@ -10,7 +10,7 @@ public class KlonRandom extends KlonObject {
 
   public static Random evalAsRandom(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(context, index);
+    KlonObject result = message.evalArgument(context, index);
     if ("Random".equals(result.getType())) {
       return (Random) result.getData();
     }

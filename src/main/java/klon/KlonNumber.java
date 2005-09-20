@@ -33,7 +33,7 @@ public class KlonNumber extends KlonObject {
 
   public static Double evalAsNumber(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(context, index);
+    KlonObject result = message.evalArgument(context, index);
     if ("Number".equals(result.getType())) {
       return (Double) result.getData();
     }

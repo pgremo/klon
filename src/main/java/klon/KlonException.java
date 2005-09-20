@@ -52,7 +52,7 @@ public class KlonException extends KlonObject {
       KlonObject context, KlonMessage message) throws KlonObject {
     int index = 0;
     KlonObject result = receiver;
-    KlonObject target = message.eval(context, index++);
+    KlonObject target = message.evalArgument(context, index++);
     if (receiver.isBound(target)) {
       KlonObject scope = context.clone();
       if (message.getArgumentCount() == 3) {
@@ -61,7 +61,7 @@ public class KlonException extends KlonObject {
           .getData();
         scope.setSlot(name, receiver);
       }
-      message.eval(scope, index);
+      message.evalArgument(scope, index);
       result = KlonMirror.newNoOp(receiver, receiver);
     }
     return result;

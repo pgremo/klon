@@ -93,7 +93,7 @@ public class KlonMessage extends KlonObject {
     return self;
   }
 
-  public KlonObject eval(KlonObject context, int index) throws KlonObject {
+  public KlonObject evalArgument(KlonObject context, int index) throws KlonObject {
     KlonObject result;
     if (index >= getArgumentCount()) {
       result = KlonNil.newNil(context);
@@ -103,12 +103,10 @@ public class KlonMessage extends KlonObject {
     return result;
   }
 
-  public void assertArgumentCount(KlonObject receiver, int count)
-      throws KlonObject {
+  public void assertArgumentCount(int count) throws KlonObject {
     if (getArgumentCount() < count) {
-      throw KlonException.newException(receiver,
-        "Message.illegalArgumentCount", "message must have " + count
-            + " arguments", null);
+      throw KlonException.newException(this, "Message.illegalArgumentCount",
+        "message must have " + count + " arguments", null);
     }
   }
 

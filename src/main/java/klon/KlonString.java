@@ -66,7 +66,7 @@ public class KlonString extends KlonObject {
 
   public static String evalAsString(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
-    KlonObject result = message.eval(context, index);
+    KlonObject result = message.evalArgument(context, index);
     if ("String".equals(result.getType())) {
       return (String) result.getData();
     }
@@ -115,7 +115,7 @@ public class KlonString extends KlonObject {
     KlonMessage printMessage = receiver.getState()
       .getAsString();
     return KlonString.newString(receiver, receiver.getData()
-        + String.valueOf(message.eval(context, 0)
+        + String.valueOf(message.evalArgument(context, 0)
           .perform(context, printMessage)
           .getData()));
   }
@@ -165,7 +165,7 @@ public class KlonString extends KlonObject {
   @ExposedAs("replace")
   public static KlonObject replace(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(receiver, 2);
+    message.assertArgumentCount(2);
     String search = KlonString.evalAsString(context, message, 0);
     String replace = KlonString.evalAsString(context, message, 1);
     String result = ((String) receiver.getData()).replaceAll(search, replace);

@@ -34,8 +34,8 @@ public class KlonMap extends KlonObject {
   @ExposedAs("atPut")
   public static KlonObject atPut(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject key = message.eval(context, 0);
-    KlonObject value = message.eval(context, 1);
+    KlonObject key = message.evalArgument(context, 0);
+    KlonObject value = message.evalArgument(context, 1);
     ((Map) receiver.getData()).put(key, value);
     return receiver;
   }
@@ -44,8 +44,8 @@ public class KlonMap extends KlonObject {
   @ExposedAs("atPutIfAbsent")
   public static KlonObject atPutIfAbsent(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject key = message.eval(context, 0);
-    KlonObject value = message.eval(context, 1);
+    KlonObject key = message.evalArgument(context, 0);
+    KlonObject value = message.evalArgument(context, 1);
     Map map = (Map) receiver.getData();
     if (!map.containsKey(key)) {
       map.put(key, value);
@@ -57,7 +57,7 @@ public class KlonMap extends KlonObject {
   @ExposedAs("at")
   public static KlonObject at(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject key = message.eval(context, 0);
+    KlonObject key = message.evalArgument(context, 0);
     KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData())
         .get(key);
     if (result == null) {
@@ -70,7 +70,7 @@ public class KlonMap extends KlonObject {
   @ExposedAs("atRemove")
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject key = message.eval(context, 0);
+    KlonObject key = message.evalArgument(context, 0);
     ((Map<KlonObject, KlonObject>) receiver.getData()).remove(key);
     return receiver;
   }
@@ -79,7 +79,7 @@ public class KlonMap extends KlonObject {
   @ExposedAs("hasKey")
   public static KlonObject hasKey(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject key = message.eval(context, 0);
+    KlonObject key = message.evalArgument(context, 0);
     KlonObject result;
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsKey(key)) {
       result = receiver;
@@ -93,7 +93,7 @@ public class KlonMap extends KlonObject {
   @ExposedAs("hasValue")
   public static KlonObject hasValue(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject value = message.eval(context, 0);
+    KlonObject value = message.evalArgument(context, 0);
     KlonObject result;
     if (((Map<KlonObject, KlonObject>) receiver.getData()).containsValue(value)) {
       result = receiver;

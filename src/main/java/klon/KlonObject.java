@@ -277,21 +277,21 @@ public class KlonObject extends Exception
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.bind(message.eval(context, 0));
+    receiver.bind(message.evalArgument(context, 0));
     return receiver;
   }
 
   @ExposedAs("unbind")
   public static KlonObject unbind(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.unbind(message.eval(context, 0));
+    receiver.unbind(message.evalArgument(context, 0));
     return receiver;
   }
 
   @ExposedAs("isBound")
   public static KlonObject isBound(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return receiver.isBound(message.eval(context, 0))
+    return receiver.isBound(message.evalArgument(context, 0))
         ? receiver
         : KlonNil.newNil(receiver);
   }
@@ -311,7 +311,7 @@ public class KlonObject extends Exception
   @ExposedAs("setIsActivatable")
   public static KlonObject setIsActivatable(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject value = message.eval(context, 0);
+    KlonObject value = message.evalArgument(context, 0);
     receiver.setActivatable(!KlonNil.newNil(receiver)
       .equals(value));
     return receiver;
@@ -321,7 +321,7 @@ public class KlonObject extends Exception
   public static KlonObject send(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonMessage target;
-    KlonObject subject = message.eval(context, 0);
+    KlonObject subject = message.evalArgument(context, 0);
     if ("Message".equals(subject.getType())) {
       if (message.getArgumentCount() > 1) {
         throw KlonException.newException(receiver, "Object.invalidArgument",
@@ -366,7 +366,7 @@ public class KlonObject extends Exception
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     String name = KlonString.evalAsString(context, message, 0);
-    KlonObject value = message.eval(context, 1);
+    KlonObject value = message.evalArgument(context, 1);
     receiver.setSlot(name, value);
     return value;
   }
@@ -375,7 +375,7 @@ public class KlonObject extends Exception
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     String name = KlonString.evalAsString(context, message, 0);
-    KlonObject value = message.eval(context, 1);
+    KlonObject value = message.evalArgument(context, 1);
     KlonObject result = receiver.updateSlot(name, value);
     if (result == null) {
       throw KlonException.newException(receiver, "Object.doesNotExist", name
@@ -422,7 +422,7 @@ public class KlonObject extends Exception
       KlonMessage message) throws KlonObject {
     List list = new ArrayList();
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      list.add(message.eval(context, i));
+      list.add(message.evalArgument(context, i));
     }
     return KlonList.newList(receiver, list);
   }
@@ -447,7 +447,7 @@ public class KlonObject extends Exception
       .getAsString();
     for (int i = 0; i < message.getArgumentCount(); i++) {
       receiver.getState()
-        .write((String) message.eval(context, i)
+        .write((String) message.evalArgument(context, i)
           .perform(context, printMessage)
           .getData());
     }
@@ -548,13 +548,13 @@ public class KlonObject extends Exception
   @ExposedAs("if")
   public static KlonObject ifBranch(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject result = message.eval(context, 0);
+    KlonObject result = message.evalArgument(context, 0);
     if (message.getArgumentCount() > 1) {
       if (!KlonNil.newNil(receiver)
         .equals(result)) {
-        result = message.eval(context, 1);
+        result = message.evalArgument(context, 1);
       } else if (message.getArgumentCount() == 3) {
-        result = message.eval(context, 2);
+        result = message.evalArgument(context, 2);
       }
     }
     return result;
@@ -563,14 +563,14 @@ public class KlonObject extends Exception
   @ExposedAs("then")
   public static KlonObject then(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonMirror.newNoOp(receiver, message.eval(context, 0));
+    return KlonMirror.newNoOp(receiver, message.evalArgument(context, 0));
   }
 
   @ExposedAs({"and", "&&"})
   public static KlonObject and(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
-    return nil.equals(message.eval(context, 0)) ? nil : receiver;
+    return nil.equals(message.evalArgument(context, 0)) ? nil : receiver;
   }
 
   @SuppressWarnings("unused")
@@ -604,7 +604,7 @@ public class KlonObject extends Exception
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return receiver.equals(message.eval(context, 0))
+    return receiver.equals(message.evalArgument(context, 0))
         ? receiver
         : KlonNil.newNil(receiver);
   }
@@ -612,7 +612,7 @@ public class KlonObject extends Exception
   @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return !receiver.equals(message.eval(context, 0))
+    return !receiver.equals(message.evalArgument(context, 0))
         ? receiver
         : KlonNil.newNil(receiver);
   }
@@ -620,7 +620,7 @@ public class KlonObject extends Exception
   @ExposedAs("<")
   public static KlonObject lessThan(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
+    KlonObject argument = message.evalArgument(context, 0);
     return receiver.compareTo(argument) < 0
         ? argument
         : KlonNil.newNil(receiver);
@@ -629,7 +629,7 @@ public class KlonObject extends Exception
   @ExposedAs(">")
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
+    KlonObject argument = message.evalArgument(context, 0);
     return receiver.compareTo(argument) > 0
         ? argument
         : KlonNil.newNil(receiver);
@@ -638,7 +638,7 @@ public class KlonObject extends Exception
   @ExposedAs("<=")
   public static KlonObject lessThanEquals(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
+    KlonObject argument = message.evalArgument(context, 0);
     return receiver.compareTo(argument) <= 0
         ? argument
         : KlonNil.newNil(receiver);
@@ -647,7 +647,7 @@ public class KlonObject extends Exception
   @ExposedAs(">=")
   public static KlonObject greaterThanEquals(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject argument = message.eval(context, 0);
+    KlonObject argument = message.evalArgument(context, 0);
     return receiver.compareTo(argument) >= 0
         ? argument
         : KlonNil.newNil(receiver);
@@ -679,7 +679,7 @@ public class KlonObject extends Exception
   public static KlonObject doArgument(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     if (message.getArgumentCount() > 0) {
-      message.eval(receiver, 0);
+      message.evalArgument(receiver, 0);
     }
     return receiver;
   }
@@ -706,7 +706,7 @@ public class KlonObject extends Exception
   @ExposedAs({"ifTrue", "", "brace", "bracket"})
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return message.eval(context, 0);
+    return message.evalArgument(context, 0);
   }
 
   @SuppressWarnings("unused")
@@ -715,7 +715,7 @@ public class KlonObject extends Exception
       KlonMessage message) throws KlonObject {
     KlonObject result;
     try {
-      result = KlonMirror.newNoOp(receiver, message.eval(context, 0));
+      result = KlonMirror.newNoOp(receiver, message.evalArgument(context, 0));
     } catch (KlonObject e) {
       result = e;
     }

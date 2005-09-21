@@ -1,6 +1,7 @@
 package klon;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 @ExposedAs("Number")
 @Bindings("Object")
@@ -8,11 +9,15 @@ public class KlonNumber extends KlonObject {
 
   private static final long serialVersionUID = -3735761349600472088L;
 
-  private static NumberFormat format = NumberFormat.getInstance();
+  private static DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
   static {
     format.setGroupingUsed(false);
     format.setMinimumFractionDigits(0);
     format.setMaximumFractionDigits(Integer.MAX_VALUE);
+    DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
+    symbols.setInfinity("Infinity");
+    symbols.setNaN("NaN");
+    format.setDecimalFormatSymbols(symbols);
   }
 
   public static KlonObject newNumber(KlonObject root, Double value)
@@ -20,14 +25,6 @@ public class KlonNumber extends KlonObject {
     KlonObject result = root.getSlot("Number")
       .clone();
     result.setData(value);
-    return result;
-  }
-
-  public static KlonObject newNumber(KlonObject root, int size, Buffer value)
-      throws KlonObject {
-    KlonObject result = root.getSlot("Number")
-      .clone();
-    result.setData(value.getNumber(0, size));
     return result;
   }
 
@@ -295,14 +292,8 @@ public class KlonNumber extends KlonObject {
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    int size = 8;
-    if (message.getArgumentCount() > 0) {
-      size = KlonNumber.evalAsNumber(receiver, message, 0)
-        .intValue();
-    }
-    size = Math.min(size, 8);
     Buffer value = new Buffer(8);
-    value.putNumber(0, size, (Double) receiver.getData());
+    value.putDouble(0, (Double) receiver.getData());
     return KlonBuffer.newBuffer(receiver, value);
   }
 

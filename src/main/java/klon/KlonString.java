@@ -49,14 +49,9 @@ public class KlonString extends KlonObject {
       }
     }
     byteBuffer.position(0);
-    return newString(root, new Buffer(byteBuffer.array()));
-  }
-
-  public static KlonObject newString(KlonObject root, Buffer byteBuffer)
-      throws KlonObject {
     CharBuffer buffer;
     try {
-      buffer = decoder.decode(ByteBuffer.wrap(byteBuffer.array()));
+      buffer = decoder.decode(ByteBuffer.wrap(new Buffer(byteBuffer.array()).array()));
     } catch (CharacterCodingException e) {
       throw KlonException.newException(root, e.getClass()
         .getSimpleName(), e.getMessage(), null);
@@ -177,6 +172,14 @@ public class KlonString extends KlonObject {
       KlonMessage message) throws KlonObject {
     return KlonBuffer.newBuffer(receiver, new Buffer(
       ((String) receiver.getData()).getBytes()));
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("asNumber")
+  public static KlonObject asNumber(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    return KlonNumber.newNumber(receiver,
+      Double.valueOf((String) receiver.getData()));
   }
 
   @SuppressWarnings("unused")

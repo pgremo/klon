@@ -68,19 +68,15 @@ public class KlonBuffer extends KlonObject {
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    int size = 8;
-    if (message.getArgumentCount() > 0) {
-      size = KlonNumber.evalAsNumber(receiver, message, 0)
-        .intValue();
-    }
-    size = Math.min(size, 8);
-    return KlonNumber.newNumber(receiver, size, (Buffer) receiver.getData());
+    Buffer buffer = (Buffer) receiver.getData();
+    return KlonNumber.newNumber(receiver, buffer.getDouble(0));
   }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonString.newString(receiver, (Buffer) receiver.getData());
+    return KlonString.newString(receiver, new String(
+      ((Buffer) receiver.getData()).array()));
   }
 
 }

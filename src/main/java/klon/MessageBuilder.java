@@ -1,48 +1,21 @@
 package klon;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import klon.grammar.grammatica.KlonAnalyzer;
 import klon.grammar.grammatica.KlonConstants;
-import klon.grammar.grammatica.KlonParser;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
 import net.percederberg.grammatica.parser.Token;
 
-public class Compiler extends KlonAnalyzer implements KlonConstants {
+public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
 
   private KlonObject root;
 
-  public Compiler(KlonObject root) {
+  public MessageBuilder(KlonObject root) {
     this.root = root;
-  }
-
-  public KlonMessage fromString(String value) throws KlonObject {
-    KlonMessage result;
-    String message = value.trim();
-    if ("".equals(message)) {
-      result = KlonMessage.newMessage(root);
-      result.setSelector(KlonString.newString(root, ""));
-    } else {
-      try {
-        result = (KlonMessage) new KlonParser(new StringReader(message), this).parse()
-          .getValue(0);
-      } catch (Exception e) {
-        Throwable cause = e.getCause();
-        if (cause == null) {
-          cause = e;
-        }
-        if (cause instanceof KlonObject) {
-          throw (KlonObject) cause;
-        }
-        throw KlonException.newException(root, cause.getClass()
-          .getSimpleName(), cause.getMessage(), null);
-      }
-    }
-    return result;
   }
 
   @Override

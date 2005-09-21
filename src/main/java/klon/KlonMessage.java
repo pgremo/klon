@@ -1,13 +1,16 @@
 package klon;
 
+import java.io.StringReader;
+
+import klon.grammar.grammatica.KlonParser;
+
 @ExposedAs("Message")
 @Bindings("Object")
 public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
 
-  public static KlonMessage newMessage(KlonObject root)
-      throws KlonObject {
+  public static KlonMessage newMessage(KlonObject root) throws KlonObject {
     KlonMessage result = (KlonMessage) root.getSlot("Message")
       .clone();
     result.setData(new Message());
@@ -20,6 +23,26 @@ public class KlonMessage extends KlonObject {
       .clone();
     result.setData(new Message());
     result.setLiteral(literal);
+    return result;
+  }
+
+  public static KlonMessage newMessageFromString(KlonObject root, String value)
+      throws KlonObject {
+    KlonMessage result;
+    String message = value.trim();
+    if ("".equals(message)) {
+      result = newMessageWithLiteral(root, KlonString.newString(root, message));
+    } else {
+      try {
+        KlonParser parser = new KlonParser(new StringReader(message),
+          new MessageBuilder(root));
+        result = (KlonMessage) parser.parse()
+          .getValue(0);
+      } catch (Exception e) {
+        throw KlonException.newException(root, e.getClass()
+          .getSimpleName(), e.getMessage(), null);
+      }
+    }
     return result;
   }
 
@@ -117,6 +140,17 @@ public class KlonMessage extends KlonObject {
     if (getArgumentCount() < count) {
       throw KlonException.newException(this, "Message.invalidArgumentCount",
         "message must have " + count + " arguments", null);
+    }
+  }
+
+  @ExposedAs("fromString")
+  public static KlonObject fromString(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    String string = KlonString.evalAsString(receiver, message, 0);
+    try {
+      return KlonMessage.newMessageFromString(receiver, string);
+    } catch (KlonObject e) {
+      throw e;
     }
   }
 

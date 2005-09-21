@@ -11,7 +11,8 @@ public class ShellListener
 
   public void onException(State state, KlonObject exception) {
     try {
-      KlonMessage reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
+      KlonMessage reportMessage = KlonMessage.newMessageFromString(
+        state.getRoot(), "writeLine");
       reportMessage.addArgument(KlonMessage.newMessageWithLiteral(exception,
         exception));
       reportMessage.eval(exception, exception);

@@ -56,11 +56,13 @@ public class Shell {
       .getWriteListener()).getHasPrint()) {
       KlonMessage reportMessage;
       if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
-        reportMessage = new Compiler(state.getRoot()).fromString("writeLine");
+        reportMessage = KlonMessage.newMessageFromString(state.getRoot(),
+          "writeLine");
         reportMessage.addArgument(KlonMessage.newMessageWithLiteral(value,
           value));
       } else {
-        reportMessage = new Compiler(state.getRoot()).fromString("inspect");
+        reportMessage = KlonMessage.newMessageFromString(state.getRoot(),
+          "inspect");
       }
       reportMessage.eval(value, value);
     }

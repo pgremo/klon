@@ -13,24 +13,24 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testSlotOperations() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Account := 1");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Account := 1");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("1", value.toString());
-    message = compiler.fromString("Account");
+    message = KlonMessage.newMessageFromString(object, "Account");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("1", value.toString());
-    message = compiler.fromString("removeSlot(\"Account\")");
+    message = KlonMessage.newMessageFromString(object,
+      "removeSlot(\"Account\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(object, value);
   }
 
   public void testUpdateNonSlot() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("dummy = 1");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "dummy = 1");
     try {
       message.eval(object, object);
       fail("expected exception");
@@ -40,169 +40,157 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForIncrement() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := \"\"; for(a,1,10,total = total + \" \" + a); total");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := \"\"; for(a,1,10,total = total + \" \" + a); total");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\" 1 2 3 4 5 6 7 8 9 10\"", value.toString());
   }
 
   public void testForDecrement() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := \"\"; for(a,10,1,total = total + \" \" + a); total");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := \"\"; for(a,10,1,total = total + \" \" + a); total");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\" 10 9 8 7 6 5 4 3 2 1\"", value.toString());
   }
 
   public void testForStep() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := \"\"; for(a,10,1,-2,total = total + \" \" + a); total");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := \"\"; for(a,10,1,-2,total = total + \" \" + a); total");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\" 10 8 6 4 2\"", value.toString());
   }
 
   public void testForEqual() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := \"\"; for(a,10,10,total = total + \" \" + a); total");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := \"\"; for(a,10,10,total = total + \" \" + a); total");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\" 10\"", value.toString());
   }
 
   public void testAndNonNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Object and Object");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Object and Object");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(object.getSlot("Object"), value);
   }
 
   public void testAndNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Object and Nil");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Object and Nil");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testOrNonNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Object or Object");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Object or Object");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(object.getSlot("Object"), value);
   }
 
   public void testOrNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Object or Nil");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Object or Nil");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(object.getSlot("Object"), value);
   }
 
   public void testWhile() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := 0; while(total < 10, total = total + 1)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := 0; while(total < 10, total = total + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("10", value.toString());
   }
 
   public void testIf() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("total := 0; if(total == 0, total = 10)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "total := 0; if(total == 0, total = 10)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("10", value.toString());
-    message = compiler
-        .fromString("total := 10; if(total == 0, total = 10, total = 5)");
+    message = KlonMessage.newMessageFromString(object,
+      "total := 10; if(total == 0, total = 10, total = 5)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("5", value.toString());
   }
 
   public void testCondition() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler
-        .fromString("Thing := Object clone; Thing total := 10; Thing ?total");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Thing := Object clone; Thing total := 10; Thing ?total");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("10", value.toString());
 
-    message = compiler.fromString("Thing ?blah");
+    message = KlonMessage.newMessageFromString(object, "Thing ?blah");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testGreaterThan() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("3 > 2");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "3 > 2");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
-    message = compiler.fromString("2 > 3");
+    message = KlonMessage.newMessageFromString(object, "2 > 3");
     value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testGreaterThanEquals() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("2 >= 2");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "2 >= 2");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
-    message = compiler.fromString("3 >= 2");
+    message = KlonMessage.newMessageFromString(object, "3 >= 2");
     value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
-    message = compiler.fromString("2 >= 3");
+    message = KlonMessage.newMessageFromString(object, "2 >= 3");
     value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIsEqual() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("2 == 3");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "2 == 3");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
 
-    message = compiler.fromString("2 == 2");
+    message = KlonMessage.newMessageFromString(object, "2 == 2");
     value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
   }
 
   public void testLessThan() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("2 < 3");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "2 < 3");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 3D), value);
 
-    message = compiler.fromString("3 < 2");
+    message = KlonMessage.newMessageFromString(object, "3 < 2");
     value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testLessThanEquals() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("2 <= 2");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "2 <= 2");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
-    message = compiler.fromString("2 <= 3");
+    message = KlonMessage.newMessageFromString(object, "2 <= 3");
     value = message.eval(object, object);
     assertEquals(KlonNumber.newNumber(object, 3D), value);
 
-    message = compiler.fromString("3 <= 2");
+    message = KlonMessage.newMessageFromString(object, "3 <= 2");
     value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }

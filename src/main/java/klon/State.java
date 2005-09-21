@@ -74,7 +74,6 @@ public class State implements Serializable {
     Class[] types = new Class[]{
         KlonFunction.class,
         KlonBuffer.class,
-        KlonCompiler.class,
         KlonDirectory.class,
         KlonException.class,
         KlonFile.class,
@@ -82,7 +81,7 @@ public class State implements Serializable {
         KlonMap.class,
         KlonMessage.class,
         KlonNumber.class,
-        KlonPrototyper.class,
+        KlonImporter.class,
         KlonRandom.class,
         KlonStore.class};
     for (Class<? extends Object> current : types) {
@@ -115,8 +114,8 @@ public class State implements Serializable {
     }
     root.setSlot("Arguments", KlonList.newList(root, args));
 
-    asString = new Compiler(root).fromString("asString");
-    init = new Compiler(root).fromString("init");
+    asString = KlonMessage.newMessageFromString(root, "asString");
+    init = KlonMessage.newMessageFromString(root, "init");
 
   }
 
@@ -197,7 +196,7 @@ public class State implements Serializable {
   public KlonObject doString(String value) {
     KlonObject result = null;
     try {
-      result = new Compiler(root).fromString(value)
+      result = KlonMessage.newMessageFromString(root, value)
         .eval(root, root);
     } catch (KlonObject e) {
       exception(e);

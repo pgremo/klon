@@ -13,51 +13,48 @@ public class KlonNilTest extends TestCase {
   }
 
   public void testAsString() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil asString");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Nil asString");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonString.newString(object, ""), value);
   }
 
   public void testAnd() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil and Object");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Nil and Object");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIfNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil ifNil(Object)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "Nil ifNil(Object)");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Object"), value);
   }
 
   public void testIsNil() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil isNil");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "Nil isNil");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Klon"), value);
   }
 
   public void testIsEquals() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil == Nil");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "Nil == Nil");
     KlonObject value = message.eval(object, object);
     assertEquals(object.getSlot("Klon"), value);
 
-    message = compiler.fromString("Nil == Object");
+    message = KlonMessage.newMessageFromString(object, "Nil == Object");
     value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testOr() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Nil or Nil");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "Nil or Nil");
     KlonObject value = message.eval(object, object);
     assertEquals(KlonNil.newNil(object), value);
 
-    message = compiler.fromString("Nil or Object");
+    message = KlonMessage.newMessageFromString(object, "Nil or Object");
     value = message.eval(object, object);
     assertEquals(object.getSlot("Object"), value);
   }

@@ -13,21 +13,21 @@ public class KlonStringTest extends TestCase {
   }
 
   public void testAdd() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("\"Hello\" + \" \" + \"World\"");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "\"Hello\" + \" \" + \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\"Hello World\"", value.toString());
   }
 
   public void testIsEqual() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("\"Hello\" == \"World\"");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "\"Hello\" == \"World\"");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
 
-    message = compiler.fromString("\"Hello\" == \"Hello\"");
+    message = KlonMessage.newMessageFromString(object, "\"Hello\" == \"Hello\"");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("\"Hello\"", value.toString());

@@ -13,8 +13,8 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testCreate() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := function(a,self result := a)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "setter := function(a,self result := a)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("function(a, self setSlot(\"result\", a))", value.getData()
@@ -27,27 +27,26 @@ public class KlonFunctionTest extends TestCase {
     assertEquals("function(a, self setSlot(\"result\", a))", value.getData()
       .toString());
 
-    message = compiler.fromString("setter(\"Hello\")");
+    message = KlonMessage.newMessageFromString(object, "setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("Hello", value.getData());
   }
 
   public void testActivatePrototype() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("Function");
+    KlonMessage message = KlonMessage.newMessageFromString(object, "Function");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
 
-    message = compiler.fromString("asString");
+    message = KlonMessage.newMessageFromString(object, "asString");
     value = message.eval(value, value);
     assertNotNull(value);
     assertEquals("null", value.getData());
   }
 
   public void testInvalid() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := function(\"a\",self result := a)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "setter := function(\"a\",self result := a)");
     try {
       message.eval(object, object);
       fail("expected exception");
@@ -58,49 +57,51 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testInsuficientArguments() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("setter := function(a,b,self result := a + b)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "setter := function(a,b,self result := a + b)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("function(a, b, self setSlot(\"result\", a +(b)))",
       value.getData()
         .toString());
 
-    message = compiler.fromString("setter(\"Hello\")");
+    message = KlonMessage.newMessageFromString(object, "setter(\"Hello\")");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("Hello", value.getData());
   }
 
   public void testIfTrue() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("function(1 == 1) ifTrue(13)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "function(1 == 1) ifTrue(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("13", value.toString());
 
-    message = compiler.fromString("function(1 == 12) ifTrue(13)");
+    message = KlonMessage.newMessageFromString(object,
+      "function(1 == 12) ifTrue(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testIfFalse() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("function(1 == 12) ifFalse(13)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "function(1 == 12) ifFalse(13)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals("13", value.toString());
 
-    message = compiler.fromString("function(1 == 1) ifFalse(13)");
+    message = KlonMessage.newMessageFromString(object,
+      "function(1 == 1) ifFalse(13)");
     value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
   }
 
   public void testWhileTrue() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("a := 0; function(a < 10) whileTrue(a = a + 1)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "a := 0; function(a < 10) whileTrue(a = a + 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
@@ -108,8 +109,8 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testWhileFalse() throws Exception {
-    Compiler compiler = new Compiler(object);
-    KlonMessage message = compiler.fromString("a := 20; function(a < 10) whileFalse(a = a - 1)");
+    KlonMessage message = KlonMessage.newMessageFromString(object,
+      "a := 20; function(a < 10) whileFalse(a = a - 1)");
     KlonObject value = message.eval(object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);

@@ -498,7 +498,8 @@ public class KlonObject extends Exception
       }
       parameters.add(current);
     }
-    return KlonFunction.newBlock(receiver, parameters, message.getArgument(count));
+    return KlonFunction.newBlock(receiver, parameters,
+      message.getArgument(count));
   }
 
   @ExposedAs("for")
@@ -686,8 +687,9 @@ public class KlonObject extends Exception
   @ExposedAs("doString")
   public static KlonObject doString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonMessage target = new Compiler(receiver).fromString(KlonString.evalAsString(
-      context, message, 0));
+    message.assertArgumentCount(1);
+    KlonMessage target = KlonMessage.newMessageFromString(receiver,
+      KlonString.evalAsString(context, message, 0));
     target.eval(receiver, context);
     return receiver;
   }
@@ -695,9 +697,11 @@ public class KlonObject extends Exception
   @ExposedAs("doFile")
   public static KlonObject doFile(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject string = KlonString.newString(receiver, new File(name));
-    KlonMessage target = new Compiler(receiver).fromString((String) string.getData());
+    KlonMessage target = KlonMessage.newMessageFromString(receiver,
+      (String) string.getData());
     target.eval(receiver, context);
     return receiver;
   }

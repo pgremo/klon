@@ -2,19 +2,19 @@ package klon;
 
 import java.lang.reflect.Constructor;
 
-@ExposedAs("Prototyper")
+@ExposedAs("Importer")
 @Bindings("Object")
-public class KlonPrototyper extends KlonObject {
+public class KlonImporter extends KlonObject {
 
   private static final long serialVersionUID = 1409329651434043476L;
 
-  public KlonPrototyper(State state) {
+  public KlonImporter(State state) {
     super(state);
   }
 
   @Override
   public String getType() {
-    return "Prototyper";
+    return "Importer";
   }
 
   @Override

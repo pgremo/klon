@@ -22,8 +22,8 @@ public class KlonObject extends Exception
   private static final long serialVersionUID = 5234708348712278569L;
 
   protected State state;
-  private List<KlonObject> bindings = new LinkedList<KlonObject>();
-  private Map<String, KlonObject> slots = new HashMap<String, KlonObject>();
+  private List<KlonObject> bindings = new ArrayList<KlonObject>();
+  private Map<String, KlonObject> slots = new HashMap<String, KlonObject>(50);
   private boolean activatable;
   protected Object data;
 
@@ -563,7 +563,7 @@ public class KlonObject extends Exception
   @ExposedAs("then")
   public static KlonObject then(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonMirror.newNoOp(receiver, message.evalArgument(context, 0));
+    return KlonMirror.newMirror(receiver, message.evalArgument(context, 0));
   }
 
   @ExposedAs({"and", "&&"})
@@ -718,7 +718,7 @@ public class KlonObject extends Exception
       KlonMessage message) throws KlonObject {
     KlonObject result;
     try {
-      result = KlonMirror.newNoOp(receiver, message.evalArgument(context, 0));
+      result = KlonMirror.newMirror(receiver, message.evalArgument(context, 0));
     } catch (KlonObject e) {
       result = e;
     }

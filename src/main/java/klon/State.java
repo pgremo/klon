@@ -10,7 +10,6 @@ import java.util.Properties;
 public class State implements Serializable {
 
   private static final long serialVersionUID = -6877483386219227949L;
-  private ExceptionListener exceptionListener;
   private ExitListener exitListener;
   private WriteListener writeListener;
   private String[] arguments;
@@ -27,14 +26,12 @@ public class State implements Serializable {
     Properties klonProperties = new Properties();
     Properties currentProperties = new Properties();
     currentProperties.load(getClass().getResourceAsStream(
-      "/klon/version.properties"));
+        "/klon/version.properties"));
     currentProperties.load(getClass().getResourceAsStream(
-      "/klon/klon.properties"));
+        "/klon/klon.properties"));
     for (Map.Entry<Object, Object> current : currentProperties.entrySet()) {
-      String name = "klon." + current.getKey()
-        .toString();
-      klonProperties.put(name, current.getValue()
-        .toString());
+      String name = "klon." + current.getKey().toString();
+      klonProperties.put(name, current.getValue().toString());
     }
     klonProperties.putAll(System.getProperties());
     System.setProperties(klonProperties);
@@ -71,40 +68,30 @@ public class State implements Serializable {
     prototypes.setSlot(locals.getName(), locals);
     locals.configure(root);
 
-    Class[] types = new Class[]{
-        KlonFunction.class,
-        KlonBuffer.class,
-        KlonDirectory.class,
-        KlonException.class,
-        KlonFile.class,
-        KlonList.class,
-        KlonMap.class,
-        KlonMessage.class,
-        KlonNumber.class,
-        KlonImporter.class,
-        KlonRandom.class,
-        KlonStore.class};
+    Class[] types = new Class[] { KlonFunction.class, KlonBuffer.class,
+        KlonDirectory.class, KlonException.class, KlonFile.class,
+        KlonList.class, KlonMap.class, KlonMessage.class, KlonNumber.class,
+        KlonImporter.class, KlonRandom.class, KlonStore.class };
     for (Class<? extends Object> current : types) {
-      Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
-      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
+      Constructor constructor = current
+          .getDeclaredConstructor(new Class[] { State.class });
+      KlonObject prototype = (KlonObject) constructor
+          .newInstance(new Object[] { this });
       prototypes.setSlot(prototype.getName(), prototype);
       prototype.configure(root);
     }
 
     KlonObject properties = object.clone();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), KlonString.newString(
+          root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 
     KlonObject environment = object.clone();
-    for (Map.Entry<String, String> current : System.getenv()
-      .entrySet()) {
-      environment.setSlot(current.getKey(), KlonString.newString(root,
-        current.getValue()));
+    for (Map.Entry<String, String> current : System.getenv().entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root, current
+          .getValue()));
     }
     root.setSlot("Environment", environment);
 
@@ -151,14 +138,6 @@ public class State implements Serializable {
     return init;
   }
 
-  public ExceptionListener getExceptionListener() {
-    return exceptionListener;
-  }
-
-  public void setExceptionListener(ExceptionListener exceptionListener) {
-    this.exceptionListener = exceptionListener;
-  }
-
   public ExitListener getExitListener() {
     return exitListener;
   }
@@ -175,12 +154,6 @@ public class State implements Serializable {
     this.writeListener = writeListener;
   }
 
-  public void exception(KlonObject exception) {
-    if (exceptionListener != null) {
-      exceptionListener.onException(this, exception);
-    }
-  }
-
   public void exit(int result) {
     if (exitListener != null) {
       exitListener.onExit(this, result);
@@ -193,14 +166,14 @@ public class State implements Serializable {
     }
   }
 
-  public KlonObject doString(String value) {
+  public KlonObject doString(String value) throws KlonObject {
+    return doString(root, value);
+  }
+
+  public KlonObject doString(KlonObject target, String value) throws KlonObject {
     KlonObject result = null;
-    try {
-      result = KlonMessage.newMessageFromString(root, value)
-        .eval(root, root);
-    } catch (KlonObject e) {
-      exception(e);
-    }
+    result = KlonMessage.newMessageFromString(target, value).eval(target,
+        target);
     return result;
   }
 }

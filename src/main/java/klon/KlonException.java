@@ -10,8 +10,7 @@ public class KlonException extends KlonObject {
 
   public static KlonObject newException(KlonObject root, String name,
       String description, KlonMessage message) throws KlonObject {
-    KlonObject result = root.getSlot("Exception")
-      .clone();
+    KlonObject result = root.getSlot("Exception").clone();
     if (name != null) {
       result.setSlot("name", KlonString.newString(root, name));
     }
@@ -19,7 +18,7 @@ public class KlonException extends KlonObject {
       result.setSlot("description", KlonString.newString(root, description));
     }
     result.setSlot("stackTrace", KlonList.newList(root,
-      new ArrayList<KlonObject>()));
+        new ArrayList<KlonObject>()));
     return result;
   }
 
@@ -44,7 +43,7 @@ public class KlonException extends KlonObject {
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     throw KlonException.newException(receiver, KlonString.evalAsString(context,
-      message, 0), KlonString.evalAsString(context, message, 1), message);
+        message, 0), KlonString.evalAsString(context, message, 1), message);
   }
 
   @ExposedAs("catch")
@@ -56,9 +55,10 @@ public class KlonException extends KlonObject {
     if (receiver.isBound(target)) {
       KlonObject scope = context.clone();
       if (message.getArgumentCount() == 3) {
-        String name = (String) message.getArgument(index++)
-          .getSelector()
-          .getData();
+        String name = (String) message
+            .getArgument(index++)
+              .getSelector()
+              .getData();
         scope.setSlot(name, receiver);
       }
       message.evalArgument(scope, index);
@@ -79,22 +79,15 @@ public class KlonException extends KlonObject {
     } else {
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       StringBuilder buffer = new StringBuilder();
-      buffer.append(receiver.getType())
-        .append(" ")
-        .append(name.getData()
-          .toString())
-        .append(":")
-        .append(description.getData()
-          .toString())
-        .append("\n");
+      buffer.append(receiver.getType()).append(" ").append(
+          name.getData().toString()).append(":").append(
+          description.getData().toString()).append("\n");
       for (KlonObject current : (Iterable<KlonObject>) stackTrace.getData()) {
-        buffer.append(" at ")
-          .append(current.getData()
-            .toString())
-          .append("\n");
+        buffer.append(" at ").append(current.getData().toString()).append("\n");
       }
       result = KlonString.newString(receiver, buffer.toString());
     }
     return result;
   }
+
 }

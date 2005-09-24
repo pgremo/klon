@@ -1,28 +1,13 @@
 package klon;
 
-public class ShellListener
-    implements
-      ExceptionListener,
-      ExitListener,
-      WriteListener {
+public class ShellListener implements ExitListener, WriteListener {
 
   private static final long serialVersionUID = -142383084375472828L;
   private boolean hasPrint;
-
-  public void onException(State state, KlonObject exception) {
-    try {
-      KlonMessage reportMessage = KlonMessage.newMessageFromString(
-        state.getRoot(), "writeLine");
-      reportMessage.addArgument(KlonMessage.newMessageWithLiteral(exception,
-        exception));
-      reportMessage.eval(exception, exception);
-    } catch (KlonObject e) {
-      e.printStackTrace();
-    }
-  }
+  private boolean exit;
 
   public void onExit(State state, int result) {
-    System.exit(result);
+    exit = true;
   }
 
   public void onWrite(State state, String value) {
@@ -36,6 +21,10 @@ public class ShellListener
 
   public void setHasPrint(boolean hasPrint) {
     this.hasPrint = hasPrint;
+  }
+
+  public boolean isExit() {
+    return exit;
   }
 
 }

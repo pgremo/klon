@@ -8,13 +8,11 @@ public class KlonFunction extends KlonObject {
 
   private static final long serialVersionUID = -5339972783724473883L;
 
-  public static KlonObject newBlock(KlonObject root,
+  public static KlonObject newFunction(KlonObject root,
       List<KlonObject> parameters, KlonMessage message) throws KlonObject {
     KlonObject result = root.getSlot("Function")
       .clone();
     Function value = new Function(parameters, message);
-    value.setScope(root.getState()
-      .getNil());
     result.setData(value);
     return result;
   }

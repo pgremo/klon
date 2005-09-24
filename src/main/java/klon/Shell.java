@@ -3,18 +3,9 @@ package klon;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Arrays;
 
 public class Shell {
 
-  private static final long serialVersionUID = -7997503355735054042L;
-  private static final String OPEN_GROUP = "({[";
-  private static final String CLOSE_GROUP = ")}]";
-  private static final String[] PRINTABLES = new String[]{
-      "Exception",
-      "Nil",
-      "Number",
-      "String"};
   private Reader in;
   private State state;
 
@@ -23,48 +14,27 @@ public class Shell {
     this.state = state;
   }
 
-  public void process() throws KlonObject, IOException {
-    KlonObject properties = state.getRoot()
-      .getSlot("Properties");
-    KlonObject version = properties.getSlot("klon.version");
-    KlonObject build = properties.getSlot("klon.build");
-    System.out.print("klon " + version.getData() + "." + build.getData() + "\n");
-    System.out.flush();
-    while (true) {
-      String prompt = "";
-      KlonObject promptSlot = state.getRoot()
-        .getSlot("Properties")
-        .getSlot("klon.shell.prompt");
-      if (promptSlot != null) {
-        prompt = promptSlot.getData()
-          .toString();
+  public void process() throws IOException, KlonObject {
+    state
+        .doString("writeLine(\"klon \", Properties klon.version, \".\", Properties klon.build)");
+    while (!((ShellListener) state.getRoot().getState().getExitListener())
+        .isExit()) {
+      try {
+        state.doString("write(\"\\n\", Properties klon.shell.prompt)");
+        evalMessage(readMessage(in));
+      } catch (KlonObject e) {
+        state.doString(e, "asString print");
       }
-      System.out.print('\n');
-      System.out.print(prompt);
-      System.out.flush();
-      evalMessage(readMessage(in));
     }
   }
 
   private void evalMessage(String message) throws KlonObject {
-    ((ShellListener) state.getRoot()
-      .getState()
-      .getWriteListener()).setHasPrint(false);
+    ((ShellListener) state.getRoot().getState().getWriteListener())
+        .setHasPrint(false);
     KlonObject value = state.doString(message);
-    if (!((ShellListener) state.getRoot()
-      .getState()
-      .getWriteListener()).getHasPrint()) {
-      KlonMessage reportMessage;
-      if (Arrays.binarySearch(PRINTABLES, value.getType()) > -1) {
-        reportMessage = KlonMessage.newMessageFromString(state.getRoot(),
-          "writeLine");
-        reportMessage.addArgument(KlonMessage.newMessageWithLiteral(value,
-          value));
-      } else {
-        reportMessage = KlonMessage.newMessageFromString(state.getRoot(),
-          "inspect");
-      }
-      reportMessage.eval(value, value);
+    if (!((ShellListener) state.getRoot().getState().getWriteListener())
+        .getHasPrint()) {
+      state.doString(value, "print");
     }
   }
 
@@ -74,13 +44,13 @@ public class Shell {
     boolean quotting = false;
     char previous = 0;
     char current = 0;
-    while ("\n".indexOf(current) == -1 || depth > 0) {
+    while ('\n' != current || depth > 0) {
       current = (char) in.read();
       buffer.append(current);
-      if (OPEN_GROUP.indexOf(current) > -1 && !quotting) {
+      if ("({[".indexOf(current) > -1 && !quotting) {
         depth++;
       }
-      if (CLOSE_GROUP.indexOf(current) > -1 && !quotting) {
+      if (")}]".indexOf(current) > -1 && !quotting) {
         depth--;
       }
       if ('\\' != previous && '"' == current) {
@@ -100,7 +70,6 @@ public class Shell {
     try {
       State state = new State(args);
       ShellListener listener = new ShellListener();
-      state.setExceptionListener(listener);
       state.setExitListener(listener);
       state.setWriteListener(listener);
       Shell shell = new Shell(new InputStreamReader(System.in), state);

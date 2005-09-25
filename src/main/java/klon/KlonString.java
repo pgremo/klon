@@ -3,6 +3,8 @@ package klon;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
@@ -69,9 +71,26 @@ public class KlonString extends KlonObject {
         "argument must evaluate to a string", message);
   }
 
+  public KlonString() {
+
+  }
+
   public KlonString(State state) {
     super(state);
     data = "";
+  }
+
+  @Override
+  public String getType() {
+    return "String";
+  }
+
+  @Override
+  public KlonObject clone() {
+    KlonObject result = new KlonString(state);
+    result.bind(this);
+    result.setData(data);
+    return result;
   }
 
   @SuppressWarnings("unused")
@@ -86,22 +105,20 @@ public class KlonString extends KlonObject {
     return result;
   }
 
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
+  }
+
   @Override
   public String toString() {
     return "\"" + data + "\"";
-  }
-
-  @Override
-  public KlonObject clone() {
-    KlonObject result = new KlonString(state);
-    result.bind(this);
-    result.setData(data);
-    return result;
-  }
-
-  @Override
-  public String getType() {
-    return "String";
   }
 
   @ExposedAs( { "+", "concatonate" })

@@ -1,5 +1,8 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +13,29 @@ public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;
 
+  public KlonMap() {
+
+  }
+
   public KlonMap(State state) {
     super(state);
     data = new HashMap<KlonObject, KlonObject>();
+  }
+
+  @Override
+  public String getType() {
+    return "Map";
+  }
+
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @SuppressWarnings("unchecked")
@@ -23,11 +46,6 @@ public class KlonMap extends KlonObject {
     result.setData(new HashMap<KlonObject, KlonObject>(
         (Map<KlonObject, KlonObject>) data));
     return result;
-  }
-
-  @Override
-  public String getType() {
-    return "Map";
   }
 
   @SuppressWarnings("unchecked")

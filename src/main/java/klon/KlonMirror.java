@@ -1,5 +1,9 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 @ExposedAs("Mirror")
 public class KlonMirror extends KlonObject {
 
@@ -9,8 +13,23 @@ public class KlonMirror extends KlonObject {
     return root.getState().getMirror();
   }
 
+  public KlonMirror() {
+
+  }
+
   public KlonMirror(State state) {
     super(state);
+  }
+
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @Override

@@ -1,5 +1,8 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -39,6 +42,10 @@ public class KlonNumber extends KlonObject {
         "argument must evaluate to a number", message);
   }
 
+  public KlonNumber() {
+
+  }
+
   public KlonNumber(State state) {
     super(state);
     data = 0D;
@@ -72,6 +79,17 @@ public class KlonNumber extends KlonObject {
     result.bind(this);
     result.setData(data);
     return result;
+  }
+
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @ExposedAs("pi")

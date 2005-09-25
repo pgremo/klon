@@ -3,6 +3,8 @@ package klon;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -22,8 +24,8 @@ public class KlonBuffer extends KlonObject {
       while (channel.read(buffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
+      throw KlonException.newException(root, e.getClass().getSimpleName(), e
+          .getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -33,23 +35,30 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    KlonObject result = root.getSlot("Buffer")
-      .clone();
+    KlonObject result = root.getSlot("Buffer").clone();
     result.setData(new Buffer(buffer.array()));
     return result;
   }
 
   public static KlonObject newBuffer(KlonObject root, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Buffer")
-      .clone();
+    KlonObject result = root.getSlot("Buffer").clone();
     result.setData(value);
     return result;
+  }
+
+  public KlonBuffer() {
+
   }
 
   public KlonBuffer(State state) {
     super(state);
     data = new Buffer();
+  }
+
+  @Override
+  public String getType() {
+    return "Buffer";
   }
 
   @Override
@@ -60,9 +69,15 @@ public class KlonBuffer extends KlonObject {
     return result;
   }
 
-  @Override
-  public String getType() {
-    return "Buffer";
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @ExposedAs("asNumber")
@@ -75,8 +90,8 @@ public class KlonBuffer extends KlonObject {
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonString.newString(receiver, new String(
-      ((Buffer) receiver.getData()).array()));
+    return KlonString.newString(receiver, new String(((Buffer) receiver
+        .getData()).array()));
   }
 
 }

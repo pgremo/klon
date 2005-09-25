@@ -1,5 +1,9 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 @ExposedAs("Nil")
 @Bindings("Object")
 public class KlonNil extends KlonObject {
@@ -10,8 +14,17 @@ public class KlonNil extends KlonObject {
     return root.getState().getNil();
   }
 
+  public KlonNil() {
+
+  }
+
   public KlonNil(State state) {
     super(state);
+  }
+
+  @Override
+  public String getType() {
+    return "Nil";
   }
 
   @Override
@@ -19,9 +32,15 @@ public class KlonNil extends KlonObject {
     return this;
   }
 
-  @Override
-  public String getType() {
-    return "Nil";
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @ExposedAs("asString")

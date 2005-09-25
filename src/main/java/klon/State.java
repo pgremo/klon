@@ -20,6 +20,10 @@ public class State implements Serializable {
   private KlonObject mirror;
   private KlonObject locals;
 
+  private State() throws Exception {
+    this(new String[] {});
+  }
+
   public State(String[] arguments) throws Exception {
     this.arguments = arguments;
 

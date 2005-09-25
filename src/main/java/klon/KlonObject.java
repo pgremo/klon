@@ -1,6 +1,10 @@
 package klon;
 
+import java.io.Externalizable;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +18,7 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 @ExposedAs("Object")
-public class KlonObject extends Exception implements Cloneable,
+public class KlonObject extends Exception implements Cloneable, Externalizable,
     Comparable<KlonObject> {
 
   private static final long serialVersionUID = 5234708348712278569L;
@@ -24,6 +28,10 @@ public class KlonObject extends Exception implements Cloneable,
   private Map<String, KlonObject> slots = new HashMap<String, KlonObject>(50);
   private boolean activatable;
   protected Object data;
+
+  public KlonObject() {
+
+  }
 
   public KlonObject(State state) {
     this.state = state;
@@ -198,6 +206,26 @@ public class KlonObject extends Exception implements Cloneable,
       }
     }
     return result;
+  }
+
+  // ================
+  // java.io.Externalizable
+  // ================
+
+  @SuppressWarnings("unchecked")
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    state = (State) in.readObject();
+    bindings = (List<KlonObject>) in.readObject();
+    slots = (Map<String, KlonObject>) in.readObject();
+    activatable = (Boolean) in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(state);
+    out.writeObject(bindings);
+    out.writeObject(slots);
+    out.writeObject(activatable);
   }
 
   // ================
@@ -738,4 +766,5 @@ public class KlonObject extends Exception implements Cloneable,
     }
     return result;
   }
+
 }

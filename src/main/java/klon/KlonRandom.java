@@ -1,5 +1,8 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Random;
 
 @ExposedAs("Random")
@@ -15,20 +18,16 @@ public class KlonRandom extends KlonObject {
       return (Random) result.getData();
     }
     throw KlonException.newException(context, "Object.invalidArgument",
-      "argument must evaluate to a Random", message);
+        "argument must evaluate to a Random", message);
+  }
+
+  public KlonRandom() {
+
   }
 
   public KlonRandom(State state) {
     super(state);
-    data = new MersenneTwister();
-  }
-
-  @Override
-  public KlonObject clone() {
-    KlonObject result = new KlonRandom(state);
-    result.bind(this);
-    result.setData(((MersenneTwister) data).clone());
-    return result;
+    data = new Random();
   }
 
   @Override
@@ -36,20 +35,47 @@ public class KlonRandom extends KlonObject {
     return "Random";
   }
 
+  @Override
+  public KlonObject clone() {
+    KlonObject result = new KlonRandom(state);
+    result.bind(this);
+    result.setData(new Random());
+    return result;
+  }
+
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
+  }
+
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
-      message, 0)
-      .longValue());
+        message, 0).longValue());
     return receiver;
   }
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      ((Random) receiver.getData()).nextDouble());
+    double result = ((Random) receiver.getData()).nextDouble();
+    int count = message.getArgumentCount();
+    if (count > 0) {
+      double max = KlonNumber.evalAsNumber(context, message, count - 1);
+      double min = 0;
+      if (count > 1) {
+        min = KlonNumber.evalAsNumber(context, message, 0);
+      }
+      result = min + ((max - min) * result);
+    }
+    return KlonNumber.newNumber(receiver, result);
   }
 
 }

@@ -1,5 +1,8 @@
 package klon;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.StringReader;
 
 import klon.grammar.grammatica.KlonParser;
@@ -11,16 +14,14 @@ public class KlonMessage extends KlonObject {
   private static final long serialVersionUID = 7244365877217781727L;
 
   public static KlonMessage newMessage(KlonObject root) throws KlonObject {
-    KlonMessage result = (KlonMessage) root.getSlot("Message")
-      .clone();
+    KlonMessage result = (KlonMessage) root.getSlot("Message").clone();
     result.setData(new Message());
     return result;
   }
 
   public static KlonMessage newMessageWithLiteral(KlonObject root,
       KlonObject literal) throws KlonObject {
-    KlonMessage result = (KlonMessage) root.getSlot("Message")
-      .clone();
+    KlonMessage result = (KlonMessage) root.getSlot("Message").clone();
     result.setData(new Message());
     result.setLiteral(literal);
     return result;
@@ -35,19 +36,38 @@ public class KlonMessage extends KlonObject {
     } else {
       try {
         KlonParser parser = new KlonParser(new StringReader(message),
-          new MessageBuilder(root));
-        result = (KlonMessage) parser.parse()
-          .getValue(0);
+            new MessageBuilder(root));
+        result = (KlonMessage) parser.parse().getValue(0);
       } catch (Exception e) {
-        throw KlonException.newException(root, e.getClass()
-          .getSimpleName(), e.getMessage(), null);
+        throw KlonException.newException(root, e.getClass().getSimpleName(), e
+            .getMessage(), null);
       }
     }
     return result;
   }
 
+  public KlonMessage() {
+
+  }
+
   public KlonMessage(State state) {
     super(state);
+  }
+
+  @Override
+  public String getType() {
+    return "Message";
+  }
+
+  public void readExternal(ObjectInput in) throws IOException,
+      ClassNotFoundException {
+    super.readExternal(in);
+    data = in.readObject();
+  }
+
+  public void writeExternal(ObjectOutput out) throws IOException {
+    super.writeExternal(out);
+    out.writeObject(data);
   }
 
   @Override
@@ -56,11 +76,6 @@ public class KlonMessage extends KlonObject {
     result.bind(this);
     result.setData(data);
     return result;
-  }
-
-  @Override
-  public String getType() {
-    return "Message";
   }
 
   public void setAttached(KlonMessage attached) {
@@ -111,7 +126,8 @@ public class KlonMessage extends KlonObject {
       throws KlonObject {
     KlonObject self = receiver;
     for (KlonMessage outer = this; outer != null; outer = outer.getNext()) {
-      for (KlonMessage inner = outer; inner != null; inner = inner.getAttached()) {
+      for (KlonMessage inner = outer; inner != null; inner = inner
+          .getAttached()) {
         KlonObject value = inner.getLiteral();
         if (value == null) {
           value = self.perform(context, inner);
@@ -139,7 +155,7 @@ public class KlonMessage extends KlonObject {
   public void assertArgumentCount(int count) throws KlonObject {
     if (getArgumentCount() < count) {
       throw KlonException.newException(this, "Message.invalidArgumentCount",
-        "message must have " + count + " arguments", null);
+          "message must have " + count + " arguments", null);
     }
   }
 

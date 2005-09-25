@@ -3,9 +3,7 @@ package klon;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 @ExposedAs("Store")
@@ -30,17 +28,6 @@ public class KlonStore extends KlonObject {
   @Override
   public KlonObject clone() {
     return this;
-  }
-
-  public void readExternal(ObjectInput in) throws IOException,
-      ClassNotFoundException {
-    super.readExternal(in);
-    data = in.readObject();
-  }
-
-  public void writeExternal(ObjectOutput out) throws IOException {
-    super.writeExternal(out);
-    out.writeObject(data);
   }
 
   @ExposedAs("path")

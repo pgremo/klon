@@ -1,8 +1,5 @@
 package klon;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.lang.reflect.Constructor;
 
 @ExposedAs("Importer")
@@ -22,17 +19,6 @@ public class KlonImporter extends KlonObject {
   @Override
   public String getType() {
     return "Importer";
-  }
-
-  public void readExternal(ObjectInput in) throws IOException,
-      ClassNotFoundException {
-    super.readExternal(in);
-    data = in.readObject();
-  }
-
-  public void writeExternal(ObjectOutput out) throws IOException {
-    super.writeExternal(out);
-    out.writeObject(data);
   }
 
   @Override

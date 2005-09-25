@@ -157,7 +157,9 @@ public class KlonFile extends KlonObject {
         result.add(KlonString.newString(receiver, line));
         line = in.readLine();
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
     } finally {
       if (in != null) {
         try {
@@ -173,8 +175,7 @@ public class KlonFile extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject nil = KlonNil.newNil(receiver);
-    KlonObject result = nil;
+    KlonObject result = KlonNil.newNil(receiver);
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
@@ -198,7 +199,10 @@ public class KlonFile extends KlonObject {
         current = in.read();
         count++;
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
+    } finally {
       if (in != null) {
         try {
           in.close();

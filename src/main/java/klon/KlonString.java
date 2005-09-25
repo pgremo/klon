@@ -38,7 +38,7 @@ public class KlonString extends KlonObject {
       FileChannel channel = in.getChannel();
       while (channel.read(byteBuffer) > 0) {
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
       throw KlonException.newException(root, e.getClass().getSimpleName(), e
           .getMessage(), null);
     } finally {

@@ -62,8 +62,10 @@ public class Function implements Serializable, Cloneable {
 
   @Override
   public Object clone() {
-    return new Function(new ArrayList<KlonObject>(parameters),
+    Function result = new Function(new ArrayList<KlonObject>(parameters),
       (KlonMessage) message.clone());
+    result.setScope(scope);
+    return result;
   }
 
 }

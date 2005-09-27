@@ -20,7 +20,7 @@ public class Shell {
     while (!((ShellListener) state.getRoot().getState().getExitListener())
         .isExit()) {
       try {
-        state.doString("write(\"\\n\", Properties klon.shell.prompt)");
+        state.doString("write(\"\\n\", Properties ?klon.shell.prompt)");
         evalMessage(readMessage(in));
       } catch (KlonObject e) {
         state.doString(e, "asString print");

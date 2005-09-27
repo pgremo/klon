@@ -14,8 +14,7 @@ public class Buffer implements Serializable, Cloneable {
   }
 
   public Buffer(int count) {
-    this.count = count;
-    this.data = new byte[count];
+    this(new byte[count]);
   }
 
   public Buffer(byte[] data) {

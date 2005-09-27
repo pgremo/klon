@@ -24,8 +24,8 @@ public class KlonBuffer extends KlonObject {
       while (channel.read(buffer) > 0) {
       }
     } catch (Exception e) {
-      throw KlonException.newException(root, e.getClass().getSimpleName(), e
-          .getMessage(), null);
+      throw KlonException.newException(root, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
     } finally {
       if (in != null) {
         try {
@@ -35,14 +35,16 @@ public class KlonBuffer extends KlonObject {
       }
     }
     buffer.position(0);
-    KlonObject result = root.getSlot("Buffer").clone();
+    KlonObject result = root.getSlot("Buffer")
+      .clone();
     result.setData(new Buffer(buffer.array()));
     return result;
   }
 
   public static KlonObject newBuffer(KlonObject root, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Buffer").clone();
+    KlonObject result = root.getSlot("Buffer")
+      .clone();
     result.setData(value);
     return result;
   }
@@ -84,14 +86,20 @@ public class KlonBuffer extends KlonObject {
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     Buffer buffer = (Buffer) receiver.getData();
-    return KlonNumber.newNumber(receiver, buffer.getDouble(0));
+    KlonObject result;
+    try {
+      result = KlonNumber.newNumber(receiver, buffer.getDouble(0));
+    } catch (RuntimeException e) {
+      result = KlonNil.newNil(receiver);
+    }
+    return result;
   }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonString.newString(receiver, new String(((Buffer) receiver
-        .getData()).toString()));
+    return KlonString.newString(receiver, new String(
+      ((Buffer) receiver.getData()).toString()));
   }
 
 }

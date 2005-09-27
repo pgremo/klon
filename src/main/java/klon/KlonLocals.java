@@ -42,4 +42,30 @@ public class KlonLocals extends KlonObject {
     return result;
   }
 
+  @ExposedAs("updateSlot")
+  public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    String name = KlonString.evalAsString(context, message, 0);
+    KlonObject value = message.evalArgument(context, 1);
+    KlonObject result = receiver.updateSlot(name, value);
+    if (result == null) {
+      forward(receiver, context, message);
+    }
+    return value;
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("forward")
+  public static KlonObject forward(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    KlonObject self = receiver.getSlot("self");
+    if (self == null || self == receiver) {
+      String name = (String) message.getSelector()
+        .getData();
+      throw KlonException.newException(receiver, "Object.doesNotExist", name
+          + " does not exist", message);
+    }
+    return self.perform(context, message);
+  }
+
 }

@@ -85,9 +85,9 @@ public class KlonBuffer extends KlonObject {
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    Buffer buffer = (Buffer) receiver.getData();
     KlonObject result;
     try {
+      Buffer buffer = (Buffer) receiver.getData();
       result = KlonNumber.newNumber(receiver, buffer.getDouble(0));
     } catch (RuntimeException e) {
       result = KlonNil.newNil(receiver);

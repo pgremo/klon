@@ -91,7 +91,7 @@ public class KlonBuffer extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, new String(((Buffer) receiver
-        .getData()).array()));
+        .getData()).toString()));
   }
 
 }

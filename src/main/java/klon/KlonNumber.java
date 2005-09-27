@@ -15,14 +15,15 @@ public class KlonNumber extends KlonObject {
 
   private static DecimalFormat format = (DecimalFormat) NumberFormat
       .getInstance();
+  
   static {
-    format.setGroupingUsed(false);
-    format.setMinimumFractionDigits(0);
-    format.setMaximumFractionDigits(Integer.MAX_VALUE);
     DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
     symbols.setInfinity("Infinity");
     symbols.setNaN("NaN");
     format.setDecimalFormatSymbols(symbols);
+    format.setGroupingUsed(false);
+    format.setMinimumFractionDigits(0);
+    format.setMaximumFractionDigits(Integer.MAX_VALUE);
   }
 
   public static KlonObject newNumber(KlonObject root, Double value)

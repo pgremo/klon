@@ -34,31 +34,38 @@ public class Buffer implements Serializable, Cloneable {
     count = newCount;
   }
 
+  public byte get(int position) {
+    if (position >= count) {
+      throw new ArrayIndexOutOfBoundsException();
+    }
+    return data[position];
+  }
+
   public void putDouble(int position, double value) {
     long target = Double.doubleToRawLongBits(value);
     for (int i = 0; i < 8; i++) {
-      data[position + i] = (byte) (target >> (i * 8));
+      put(position + i, (byte) (target >> (i * 8)));
     }
   }
 
   public double getDouble(int position) {
     long result = 0;
     for (int i = 0; i < 8; i++) {
-      result |= ((long) data[position + i] & 0xff) << (i * 8);
+      result |= ((long) get(position) & 0xff) << (i * 8);
     }
     return Double.longBitsToDouble(result);
-  }
-
-  public byte[] array() {
-    return data;
   }
 
   @Override
   public Object clone() {
     byte[] newData = new byte[count];
     System.arraycopy(data, 0, newData, 0, count);
-    Buffer result = new Buffer(newData);
-    return result;
+    return new Buffer(newData);
+  }
+
+  @Override
+  public String toString() {
+    return new String(data, 0, count);
   }
 
 }

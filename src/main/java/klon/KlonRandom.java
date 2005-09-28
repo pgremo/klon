@@ -57,6 +57,7 @@ public class KlonRandom extends KlonObject {
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
         message, 0).longValue());
     return receiver;

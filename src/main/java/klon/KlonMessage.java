@@ -164,6 +164,7 @@ public class KlonMessage extends KlonObject {
   @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     String string = KlonString.evalAsString(receiver, message, 0);
     try {
       return newMessageFromString(receiver, string);

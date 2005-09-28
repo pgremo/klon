@@ -124,6 +124,7 @@ public class KlonString extends KlonObject {
   @ExposedAs({"+", "concatenate"})
   public static KlonObject append(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     KlonMessage printMessage = receiver.getState()
       .getAsString();
     return KlonString.newString(receiver, receiver.getData()
@@ -135,6 +136,7 @@ public class KlonString extends KlonObject {
   @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
       context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
@@ -142,6 +144,7 @@ public class KlonString extends KlonObject {
   @ExposedAs("endsWith")
   public static KlonObject endsWith(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
       context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }

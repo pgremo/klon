@@ -69,9 +69,19 @@ public class KlonList extends KlonObject {
           .compareTo(l2.get(i));
       }
     } else {
-      result = hashCode() - other.hashCode();
+      result = super.compareTo(other);
     }
     return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  private static void validateIndex(KlonObject receiver, int index,
+      KlonMessage message) throws KlonObject {
+    List<KlonObject> data = (List<KlonObject>) receiver.getData();
+    if (!data.isEmpty() && index >= 0 && index < data.size()) {
+      throw KlonException.newException(receiver, "List.arrayIndexOutOfBounds",
+        String.valueOf(index), message);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -101,10 +111,9 @@ public class KlonList extends KlonObject {
     message.assertArgumentCount(2);
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
+    validateIndex(receiver, index, message);
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
-    if (!data.isEmpty() && index >= 0 && index < data.size()) {
-      data.add(index, message.evalArgument(context, 1));
-    }
+    data.add(index, message.evalArgument(context, 1));
     return receiver;
   }
 
@@ -115,10 +124,9 @@ public class KlonList extends KlonObject {
     message.assertArgumentCount(1);
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
+    validateIndex(receiver, index, message);
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
-    if (!data.isEmpty() && index >= 0 && index < data.size()) {
-      data.remove(index);
-    }
+    data.remove(index);
     return receiver;
   }
 
@@ -126,8 +134,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("at")
   public static KlonObject at(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject result;
     message.assertArgumentCount(1);
+    KlonObject result;
     int index = KlonNumber.evalAsNumber(context, message, 0)
       .intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
@@ -212,18 +220,18 @@ public class KlonList extends KlonObject {
   @ExposedAs("random")
   public static KlonObject random(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    Random random;
-    if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random")
-        .getData();
-    } else {
-      random = KlonRandom.evalAsRandom(receiver, message, 0);
-    }
-    List<KlonObject> data = (List<KlonObject>) receiver.getData();
     KlonObject result;
+    List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty()) {
       result = KlonNil.newNil(receiver);
     } else {
+      Random random;
+      if (message.getArgumentCount() == 0) {
+        random = (Random) receiver.getSlot("Random")
+          .getData();
+      } else {
+        random = KlonRandom.evalAsRandom(receiver, message, 0);
+      }
       result = data.get(random.nextInt(data.size()));
     }
     return result;
@@ -233,8 +241,8 @@ public class KlonList extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject nil = KlonNil.newNil(receiver);
-    KlonObject result = nil;
+    message.assertArgumentCount(2);
+    KlonObject result = KlonNil.newNil(receiver);
     int arg = 0;
     String index = null;
     if (message.getArgumentCount() == 3) {
@@ -261,6 +269,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("detect")
   public static KlonObject detect(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     KlonObject nil = KlonNil.newNil(receiver);
     KlonObject result = nil;
     int arg = 0;
@@ -289,6 +298,7 @@ public class KlonList extends KlonObject {
   @ExposedAs("collect")
   public static KlonObject collect(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     KlonObject nil = KlonNil.newNil(receiver);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     List<KlonObject> result = new ArrayList<KlonObject>(list.size());

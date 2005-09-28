@@ -45,6 +45,7 @@ public class KlonLocals extends KlonObject {
   @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject value = message.evalArgument(context, 1);
     KlonObject result = receiver.updateSlot(name, value);
@@ -60,10 +61,9 @@ public class KlonLocals extends KlonObject {
       KlonMessage message) throws KlonObject {
     KlonObject self = receiver.getSlot("self");
     if (self == null || self == receiver) {
-      String name = (String) message.getSelector()
-        .getData();
-      throw KlonException.newException(receiver, "Object.doesNotExist", name
-          + " does not exist", message);
+      throw KlonException.newException(receiver, "Object.doesNotExist",
+        message.getSelector()
+          .getData() + " does not exist", message);
     }
     return self.perform(context, message);
   }

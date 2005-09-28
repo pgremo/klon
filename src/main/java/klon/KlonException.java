@@ -47,6 +47,7 @@ public class KlonException extends KlonObject {
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     throw newException(receiver, KlonString.evalAsString(context, message, 0),
       KlonString.evalAsString(context, message, 1), message);
   }
@@ -54,6 +55,7 @@ public class KlonException extends KlonObject {
   @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     int index = 0;
     KlonObject result = receiver;
     KlonObject target = message.evalArgument(context, index++);

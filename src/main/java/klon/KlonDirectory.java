@@ -66,6 +66,7 @@ public class KlonDirectory extends KlonObject {
   @ExposedAs("setPath")
   public static KlonObject setPath(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
     receiver.setData(new File(KlonString.evalAsString(context, message, 0))
         .getAbsoluteFile());
     return receiver;
@@ -118,6 +119,7 @@ public class KlonDirectory extends KlonObject {
   @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(2);
     KlonObject result = KlonNil.newNil(receiver);
     String value = (String) message.getArgument(0).getSelector().getData();
     KlonMessage code = message.getArgument(1);

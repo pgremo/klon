@@ -13,9 +13,16 @@ public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -5301150120413808899L;
 
+  public static final Class[] PARAMETER_TYPES = new Class[]{
+      KlonObject.class,
+      KlonObject.class,
+      KlonMessage.class};
+  public static final Class[] EXCEPTIONS_TYPE = new Class[]{KlonObject.class};
+
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {
-    KlonObject result = root.getSlot("NativeMethod").clone();
+    KlonObject result = root.getSlot("NativeMethod")
+      .clone();
     result.setData(subject);
     return result;
   }
@@ -45,32 +52,21 @@ public class KlonNativeMethod extends KlonObject {
     super.writeExternal(out);
     Method method = (Method) getData();
     if (method == null) {
-      out.writeObject("null");
+      out.writeObject(null);
     } else {
-      out.writeObject(method.getDeclaringClass().getName());
+      out.writeObject(method.getDeclaringClass());
       out.writeObject(method.getName());
-      Class[] parameters = method.getParameterTypes();
-      out.writeInt(parameters.length);
-      for (Class current : parameters) {
-        out.writeObject(current.getName());
-      }
     }
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    String typeName = (String) in.readObject();
-    if (!"null".equals(typeName)) {
-      Class type = Class.forName(typeName);
+    Class type = (Class) in.readObject();
+    if (type != null) {
       String name = (String) in.readObject();
-      int size = in.readInt();
-      Class[] parameters = new Class[size];
-      for (int i = 0; i < size; i++) {
-        parameters[i] = Class.forName((String) in.readObject());
-      }
       try {
-        setData(type.getMethod(name, parameters));
+        setData(type.getMethod(name, PARAMETER_TYPES));
       } catch (NoSuchMethodException e) {
         throw new RuntimeException(e);
       }
@@ -91,12 +87,13 @@ public class KlonNativeMethod extends KlonObject {
           throw e.getTargetException();
         }
       } catch (KlonObject e) {
-        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
-            .newString(receiver, message.getData().toString()));
+        ((List<KlonObject>) e.getSlot("stackTrace")
+          .getData()).add(KlonString.newString(receiver, message.getData()
+          .toString()));
         throw e;
       } catch (Throwable e) {
-        throw KlonException.newException(receiver,
-            e.getClass().getSimpleName(), e.getMessage(), message);
+        throw KlonException.newException(receiver, e.getClass()
+          .getSimpleName(), e.getMessage(), message);
       }
     }
     return result;

@@ -62,10 +62,9 @@ public class KlonException extends KlonObject {
     if (receiver.isBound(target)) {
       KlonObject scope = context.clone();
       if (message.getArgumentCount() == 3) {
-        String name = (String) message.getArgument(index++)
+        scope.setSlot((String) message.getArgument(index++)
           .getSelector()
-          .getData();
-        scope.setSlot(name, receiver);
+          .getData(), receiver);
       }
       message.evalArgument(scope, index);
       result = KlonMirror.newMirror(receiver, receiver);

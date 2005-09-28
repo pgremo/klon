@@ -6,12 +6,6 @@ import java.util.Arrays;
 
 public final class Configurator {
 
-  private static final Class[] VALID_PARAMETERS = new Class[]{
-      KlonObject.class,
-      KlonObject.class,
-      KlonMessage.class};
-  private static final Class[] VALID_EXCEPTIONS = new Class[]{KlonObject.class};
-
   private Configurator() {
 
   }
@@ -60,14 +54,14 @@ public final class Configurator {
   @SuppressWarnings("unused")
   private static void validateExceptions(KlonObject root, Method current,
       String identity) throws KlonObject {
-    if (current.getExceptionTypes().length != VALID_EXCEPTIONS.length) {
+    if (current.getExceptionTypes().length != KlonNativeMethod.EXCEPTIONS_TYPE.length) {
       throw new IllegalArgumentException(identity + " must have "
-          + VALID_EXCEPTIONS.length + " exception(s).");
+          + KlonNativeMethod.EXCEPTIONS_TYPE.length + " exception(s).");
     }
-    for (int i = 0; i < VALID_EXCEPTIONS.length; i++) {
-      if (!VALID_EXCEPTIONS[i].equals(current.getExceptionTypes()[i])) {
+    for (int i = 0; i < KlonNativeMethod.EXCEPTIONS_TYPE.length; i++) {
+      if (!KlonNativeMethod.EXCEPTIONS_TYPE[i].equals(current.getExceptionTypes()[i])) {
         throw new IllegalArgumentException(identity + " exception " + i
-            + " must be a " + VALID_EXCEPTIONS[i] + ".");
+            + " must be a " + KlonNativeMethod.EXCEPTIONS_TYPE[i] + ".");
       }
     }
   }
@@ -75,14 +69,14 @@ public final class Configurator {
   @SuppressWarnings("unused")
   private static void validateParameters(KlonObject root, Method current,
       String identity) throws KlonObject {
-    if (current.getParameterTypes().length != VALID_PARAMETERS.length) {
+    if (current.getParameterTypes().length != KlonNativeMethod.PARAMETER_TYPES.length) {
       throw new IllegalArgumentException(identity + " must have "
-          + VALID_PARAMETERS.length + " parameter(s).");
+          + KlonNativeMethod.PARAMETER_TYPES.length + " parameter(s).");
     }
-    for (int i = 0; i < VALID_PARAMETERS.length; i++) {
-      if (!VALID_PARAMETERS[i].equals(current.getParameterTypes()[i])) {
+    for (int i = 0; i < KlonNativeMethod.PARAMETER_TYPES.length; i++) {
+      if (!KlonNativeMethod.PARAMETER_TYPES[i].equals(current.getParameterTypes()[i])) {
         throw new IllegalArgumentException(identity + " parameter " + i
-            + " must be a " + VALID_PARAMETERS[i] + ".");
+            + " must be a " + KlonNativeMethod.PARAMETER_TYPES[i] + ".");
       }
     }
   }

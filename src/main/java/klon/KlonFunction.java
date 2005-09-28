@@ -103,7 +103,6 @@ public class KlonFunction extends KlonObject {
           .toString()));
         throw e;
       }
-
     }
     return result;
   }

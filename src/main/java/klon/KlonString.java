@@ -1,16 +1,8 @@
 package klon;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +11,6 @@ import java.util.List;
 public class KlonString extends KlonObject {
 
   private static final long serialVersionUID = -7547715800603443713L;
-  private static Charset charset = Charset.forName("ISO-8859-15");
-  private static CharsetDecoder decoder = charset.newDecoder();
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
@@ -28,37 +18,6 @@ public class KlonString extends KlonObject {
       .clone();
     result.setData(value);
     return result;
-  }
-
-  public static KlonObject newString(KlonObject root, File file)
-      throws KlonObject {
-    ByteBuffer byteBuffer = ByteBuffer.allocate((int) file.length());
-    FileInputStream in = null;
-    try {
-      in = new FileInputStream(file);
-      FileChannel channel = in.getChannel();
-      while (channel.read(byteBuffer) > 0) {
-      }
-    } catch (IOException e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
-    } finally {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (IOException e) {
-        }
-      }
-    }
-    byteBuffer.position(0);
-    CharBuffer charBuffer;
-    try {
-      charBuffer = decoder.decode(byteBuffer);
-    } catch (CharacterCodingException e) {
-      throw KlonException.newException(root, e.getClass()
-        .getSimpleName(), e.getMessage(), null);
-    }
-    return newString(root, charBuffer.toString());
   }
 
   public static String evalAsString(KlonObject context, KlonMessage message,

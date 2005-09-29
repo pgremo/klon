@@ -106,7 +106,7 @@ public class State implements Serializable {
     root.setSlot("Arguments", KlonList.newList(root, args));
 
     asString = KlonMessage.newMessageFromString(root, "asString");
-    init = KlonMessage.newMessageFromString(root, "init");
+    init = KlonMessage.newMessageFromString(root, "?init");
 
   }
 

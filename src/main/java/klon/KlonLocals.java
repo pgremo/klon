@@ -61,9 +61,7 @@ public class KlonLocals extends KlonObject {
       KlonMessage message) throws KlonObject {
     KlonObject self = receiver.getSlot("self");
     if (self == null || self == receiver) {
-      throw KlonException.newException(receiver, "Object.doesNotExist",
-        message.getSelector()
-          .getData() + " does not exist", message);
+      KlonObject.forward(receiver, context, message);
     }
     return self.perform(context, message);
   }

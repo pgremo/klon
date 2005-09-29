@@ -7,6 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +21,8 @@ import java.util.List;
 public class KlonFile extends KlonObject {
 
   private static final long serialVersionUID = 3159106516324355579L;
+  private static Charset charset = Charset.forName("ISO-8859-15");
+  private static CharsetDecoder decoder = charset.newDecoder();
 
   public static KlonObject newFile(KlonObject root, File file)
       throws KlonObject {
@@ -216,13 +224,59 @@ public class KlonFile extends KlonObject {
   @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonBuffer.newBuffer(receiver, (File) receiver.getData());
+    File file = (File) receiver.getData();
+    ByteBuffer buffer = ByteBuffer.allocate((int) file.length());
+    FileInputStream in = null;
+    try {
+      in = new FileInputStream(file);
+      FileChannel channel = in.getChannel();
+      while (channel.read(buffer) > 0) {
+      }
+    } catch (Exception e) {
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
+    } finally {
+      if (in != null) {
+        try {
+          in.close();
+        } catch (IOException e) {
+        }
+      }
+    }
+    return KlonBuffer.newBuffer(receiver, new Buffer(buffer.array()));
   }
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonString.newString(receiver, (File) receiver.getData());
+    File file = (File) receiver.getData();
+    ByteBuffer byteBuffer = ByteBuffer.allocate((int) file.length());
+    FileInputStream in = null;
+    try {
+      in = new FileInputStream(file);
+      FileChannel channel = in.getChannel();
+      while (channel.read(byteBuffer) > 0) {
+      }
+    } catch (IOException e) {
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
+    } finally {
+      if (in != null) {
+        try {
+          in.close();
+        } catch (IOException e) {
+        }
+      }
+    }
+    byteBuffer.position(0);
+    CharBuffer charBuffer;
+    try {
+      charBuffer = decoder.decode(byteBuffer);
+    } catch (CharacterCodingException e) {
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), null);
+    }
+    return KlonString.newString(receiver, charBuffer.toString());
   }
 
 }

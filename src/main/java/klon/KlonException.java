@@ -84,7 +84,7 @@ public class KlonException extends KlonObject {
     } else {
       StringBuilder buffer = new StringBuilder();
       buffer.append(receiver.getType())
-        .append(" ");
+        .append(":");
       if (name != null) {
         buffer.append(String.valueOf(name.getData()));
       }

@@ -8,11 +8,9 @@ import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
@@ -316,11 +314,9 @@ public class KlonObject extends Exception
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonObject result = receiver.clone();
-    KlonObject slot = result.getSlot("init");
-    if (slot != null) {
-      slot.activate(result, context, receiver.getState()
-        .getInit());
-    }
+    result.getState()
+      .getInit()
+      .eval(result, context);
     return result;
   }
 
@@ -341,10 +337,6 @@ public class KlonObject extends Exception
     KlonMessage target;
     KlonObject subject = message.evalArgument(context, 0);
     if ("Message".equals(subject.getType())) {
-      if (message.getArgumentCount() > 1) {
-        throw KlonException.newException(receiver, "Object.invalidArgument",
-          "argument must evaluate to a Message", message);
-      }
       target = (KlonMessage) subject;
     } else {
       if (!"String".equals(subject.getType())) {
@@ -352,8 +344,7 @@ public class KlonObject extends Exception
           "argument must evaluate to a String", message);
       }
       target = KlonMessage.newMessage(receiver);
-      target.setSelector(KlonString.newString(receiver,
-        (String) subject.getData()));
+      target.setSelector(subject);
       for (int i = 1; i < message.getArgumentCount(); i++) {
         target.addArgument(message.getArgument(i));
       }
@@ -429,7 +420,7 @@ public class KlonObject extends Exception
       .getData();
     KlonMessage code = message.getArgument(2);
     // this is to protect against concurrent modification exceptions
-    Set<Entry<String, KlonObject>> entries = new HashSet<Entry<String, KlonObject>>(
+    List<Entry<String, KlonObject>> entries = new ArrayList<Entry<String, KlonObject>>(
       receiver.getSlots()
         .entrySet());
     for (Map.Entry<String, KlonObject> current : entries) {
@@ -441,7 +432,7 @@ public class KlonObject extends Exception
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("list")
+  @ExposedAs({"list", "bracket"})
   public static KlonObject list(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     int count = message.getArgumentCount();
@@ -743,14 +734,15 @@ public class KlonObject extends Exception
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     String name = KlonString.evalAsString(context, message, 0);
-    KlonObject string = KlonString.newString(receiver, new File(name));
+    KlonObject file = KlonFile.newFile(receiver, new File(name));
+    KlonObject string = KlonFile.asString(file, context, message);
     KlonMessage target = KlonMessage.newMessageFromString(receiver,
       (String) string.getData());
     target.eval(receiver, context);
     return receiver;
   }
 
-  @ExposedAs({"ifTrue", "", "brace", "bracket"})
+  @ExposedAs({"ifTrue", "", "brace"})
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
@@ -761,9 +753,9 @@ public class KlonObject extends Exception
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    throw KlonException.newException(receiver, "Object.doesNotExist",
-      message.getSelector()
-        .getData() + " does not exist", message);
+    throw KlonException.newException(receiver, "Object.doesNotRespond",
+      receiver.getType() + " does not respond to '" + message.getSelector()
+        .getData() + "'", message);
   }
 
   @SuppressWarnings("unused")

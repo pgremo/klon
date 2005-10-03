@@ -49,6 +49,7 @@ public class KlonNumber extends KlonObject {
 
   public KlonNumber(State state) {
     super(state);
+    type = "Number";
     data = 0D;
   }
 
@@ -62,11 +63,6 @@ public class KlonNumber extends KlonObject {
       result = hashCode() - other.hashCode();
     }
     return result;
-  }
-
-  @Override
-  public String getType() {
-    return "Number";
   }
 
   @Override

@@ -33,11 +33,7 @@ public class KlonNativeMethod extends KlonObject {
 
   public KlonNativeMethod(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "NativeMethod";
+    type = "NativeMethod";
   }
 
   @Override

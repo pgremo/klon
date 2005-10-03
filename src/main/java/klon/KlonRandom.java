@@ -18,7 +18,7 @@ public class KlonRandom extends KlonObject {
       return (Random) result.getData();
     }
     throw KlonException.newException(context, "Object.invalidArgument",
-        "argument must evaluate to a Random", message);
+      "argument must evaluate to a Random", message);
   }
 
   public KlonRandom() {
@@ -27,12 +27,8 @@ public class KlonRandom extends KlonObject {
 
   public KlonRandom(State state) {
     super(state);
+    type = "Random";
     data = new Random();
-  }
-
-  @Override
-  public String getType() {
-    return "Random";
   }
 
   @Override
@@ -59,7 +55,8 @@ public class KlonRandom extends KlonObject {
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
-        message, 0).longValue());
+      message, 0)
+      .longValue());
     return receiver;
   }
 

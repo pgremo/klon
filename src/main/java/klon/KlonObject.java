@@ -15,15 +15,21 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 
 @ExposedAs("Object")
-public class KlonObject extends Exception implements Cloneable, Externalizable,
-    Comparable<KlonObject> {
+public class KlonObject extends Exception
+    implements
+      Cloneable,
+      Externalizable,
+      Comparable<KlonObject> {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  protected State state;
+  //tag
+  protected String type;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
   private boolean activatable;
+  
+  protected State state;
   protected Object data;
 
   public KlonObject() {
@@ -32,6 +38,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
 
   public KlonObject(State state) {
     bindings = new ArrayList<KlonObject>();
+    type = "Object";
     this.state = state;
   }
 
@@ -146,7 +153,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   @SuppressWarnings("unchecked")
   public KlonObject perform(KlonObject context, KlonMessage message)
       throws KlonObject {
-    String name = (String) message.getSelector().getData();
+    String name = (String) message.getSelector()
+      .getData();
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = getSlot("forward");
@@ -181,8 +189,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     this.activatable = activatable;
   }
 
-  public String getType() {
-    return "Object";
+  public final String getType() {
+    return type;
   }
 
   @SuppressWarnings("unused")
@@ -232,8 +240,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
 
   @Override
   public String toString() {
-    return getType() + "_0x"
+    String result = getType() + "_0x"
         + Integer.toHexString(System.identityHashCode(this));
+    return result;
   }
 
   @Override
@@ -268,7 +277,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         result.append(name.getData());
         KlonObject description = getSlot("description");
         if (description != null) {
-          result.append(":").append(description.getData());
+          result.append(":")
+            .append(description.getData());
         }
       }
     } catch (Exception e) {
@@ -307,7 +317,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject isBound(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return receiver.isBound(message.evalArgument(context, 0)) ? receiver
+    return receiver.isBound(message.evalArgument(context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
@@ -315,7 +326,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     KlonObject result = receiver.clone();
-    result.getState().getInit().eval(result, context);
+    result.getState()
+      .getInit()
+      .eval(result, context);
     return result;
   }
 
@@ -324,7 +337,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject context, KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonObject value = message.evalArgument(context, 0);
-    receiver.setActivatable(!KlonNil.newNil(receiver).equals(value));
+    receiver.setActivatable(!KlonNil.newNil(receiver)
+      .equals(value));
     return receiver;
   }
 
@@ -339,7 +353,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     } else {
       if (!"String".equals(subject.getType())) {
         throw KlonException.newException(receiver, "Object.invalidArgument",
-            "argument must evaluate to a String", message);
+          "argument must evaluate to a String", message);
       }
       target = KlonMessage.newMessage(receiver);
       target.setSelector(subject);
@@ -367,8 +381,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject hasSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return receiver.getSlot(KlonString.evalAsString(context, message, 0)) == null ? KlonNil
-        .newNil(receiver)
+    return receiver.getSlot(KlonString.evalAsString(context, message, 0)) == null
+        ? KlonNil.newNil(receiver)
         : receiver;
   }
 
@@ -376,8 +390,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(2);
-    receiver.setSlot(KlonString.evalAsString(context, message, 0), message
-        .evalArgument(context, 1));
+    receiver.setSlot(KlonString.evalAsString(context, message, 0),
+      message.evalArgument(context, 1));
     return message.evalArgument(context, 1);
   }
 
@@ -410,14 +424,18 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(3);
     KlonObject result = KlonNil.newNil(receiver);
-    String name = (String) message.getArgument(0).getSelector().getData();
-    String value = (String) message.getArgument(1).getSelector().getData();
+    String name = (String) message.getArgument(0)
+      .getSelector()
+      .getData();
+    String value = (String) message.getArgument(1)
+      .getSelector()
+      .getData();
     KlonMessage code = message.getArgument(2);
     // this is to protect against concurrent modification exceptions
     Map<String, KlonObject> slots = receiver.getSlots();
     if (slots != null) {
       List<Entry<String, KlonObject>> entries = new ArrayList<Entry<String, KlonObject>>(
-          slots.entrySet());
+        slots.entrySet());
       for (Map.Entry<String, KlonObject> current : entries) {
         context.setSlot(name, KlonString.newString(receiver, current.getKey()));
         context.setSlot(value, current.getValue());
@@ -428,7 +446,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs( { "list", "bracket" })
+  @ExposedAs({"list", "bracket"})
   public static KlonObject list(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     int count = message.getArgumentCount();
@@ -448,8 +466,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   @ExposedAs("uniqueId")
   public static KlonObject uniqueId(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) System
-        .identityHashCode(receiver));
+    return KlonNumber.newNumber(receiver,
+      (double) System.identityHashCode(receiver));
   }
 
   @ExposedAs("print")
@@ -462,11 +480,13 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonMessage printMessage = receiver.getState().getAsString();
+    KlonMessage printMessage = receiver.getState()
+      .getAsString();
     for (int i = 0; i < message.getArgumentCount(); i++) {
-      receiver.getState().write(
-          (String) message.evalArgument(context, i).perform(context,
-              printMessage).getData());
+      receiver.getState()
+        .write((String) message.evalArgument(context, i)
+          .perform(context, printMessage)
+          .getData());
     }
     return receiver;
   }
@@ -475,7 +495,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject writeLine(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     write(receiver, context, message);
-    receiver.getState().write("\n");
+    receiver.getState()
+      .write("\n");
     return receiver;
   }
 
@@ -484,9 +505,11 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     int result = 0;
     if (message.getArgumentCount() > 0) {
-      result = KlonNumber.evalAsNumber(context, message, 0).intValue();
+      result = KlonNumber.evalAsNumber(context, message, 0)
+        .intValue();
     }
-    receiver.getState().exit(result);
+    receiver.getState()
+      .exit(result);
     return KlonNil.newNil(receiver);
   }
 
@@ -504,15 +527,16 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     int count = message.getArgumentCount() - 1;
     List<KlonObject> parameters = new ArrayList<KlonObject>(count);
     for (int i = 0; i < count; i++) {
-      KlonObject current = message.getArgument(i).getSelector();
+      KlonObject current = message.getArgument(i)
+        .getSelector();
       if (current == null) {
         throw KlonException.newException(receiver, "Object.invalidArgument",
-            "argument must evaluate to a Symbol", message);
+          "argument must evaluate to a Symbol", message);
       }
       parameters.add(current);
     }
-    return KlonFunction.newFunction(receiver, parameters, message
-        .getArgument(count));
+    return KlonFunction.newFunction(receiver, parameters,
+      message.getArgument(count));
   }
 
   @ExposedAs("for")
@@ -520,13 +544,18 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(3);
     KlonObject result = KlonNil.newNil(receiver);
-    String counter = (String) message.getArgument(0).getSelector().getData();
-    double start = KlonNumber.evalAsNumber(context, message, 1).intValue();
-    double end = KlonNumber.evalAsNumber(context, message, 2).intValue();
+    String counter = (String) message.getArgument(0)
+      .getSelector()
+      .getData();
+    double start = KlonNumber.evalAsNumber(context, message, 1)
+      .intValue();
+    double end = KlonNumber.evalAsNumber(context, message, 2)
+      .intValue();
     double increment;
     KlonMessage code;
     if (message.getArgumentCount() == 5) {
-      increment = KlonNumber.evalAsNumber(context, message, 3).intValue();
+      increment = KlonNumber.evalAsNumber(context, message, 3)
+        .intValue();
       code = message.getArgument(4);
     } else {
       increment = end - start < 0 ? -1 : 1;
@@ -561,7 +590,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     message.assertArgumentCount(1);
     KlonObject result = message.evalArgument(context, 0);
     if (message.getArgumentCount() > 1) {
-      if (!KlonNil.newNil(receiver).equals(result)) {
+      if (!KlonNil.newNil(receiver)
+        .equals(result)) {
         result = message.evalArgument(context, 1);
       } else if (message.getArgumentCount() == 3) {
         result = message.evalArgument(context, 2);
@@ -577,7 +607,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonMirror.newMirror(receiver, message.evalArgument(context, 0));
   }
 
-  @ExposedAs( { "and", "&&" })
+  @ExposedAs({"and", "&&"})
   public static KlonObject and(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
@@ -586,7 +616,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs( { "or", "||", "else", "elseIf" })
+  @ExposedAs({"or", "||", "else", "elseIf"})
   public static KlonObject mirror(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return receiver;
@@ -617,7 +647,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return receiver.equals(message.evalArgument(context, 0)) ? receiver
+    return receiver.equals(message.evalArgument(context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
@@ -625,7 +656,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return !receiver.equals(message.evalArgument(context, 0)) ? receiver
+    return !receiver.equals(message.evalArgument(context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
@@ -634,8 +666,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonObject argument = message.evalArgument(context, 0);
-    return receiver.compareTo(argument) < 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) < 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs(">")
@@ -643,8 +676,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonObject argument = message.evalArgument(context, 0);
-    return receiver.compareTo(argument) > 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) > 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("<=")
@@ -652,8 +686,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject context, KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonObject argument = message.evalArgument(context, 0);
-    return receiver.compareTo(argument) <= 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) <= 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs(">=")
@@ -661,8 +696,9 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject context, KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonObject argument = message.evalArgument(context, 0);
-    return receiver.compareTo(argument) >= 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) >= 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   @ExposedAs("super")
@@ -670,9 +706,11 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
     KlonMessage target = message.getArgument(0);
-    String name = (String) target.getSelector().getData();
+    String name = (String) target.getSelector()
+      .getData();
     KlonObject parent = null;
-    Iterator<KlonObject> iterator = receiver.getBindings().iterator();
+    Iterator<KlonObject> iterator = receiver.getBindings()
+      .iterator();
     while (iterator.hasNext() && parent == null) {
       KlonObject current = iterator.next();
       if (current.getSlot(name) != null) {
@@ -699,8 +737,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject doString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    KlonMessage target = KlonMessage.newMessageFromString(receiver, KlonString
-        .evalAsString(context, message, 0));
+    KlonMessage target = KlonMessage.newMessageFromString(receiver,
+      KlonString.evalAsString(context, message, 0));
     target.eval(receiver, context);
     return receiver;
   }
@@ -713,12 +751,12 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonObject file = KlonFile.newFile(receiver, new File(name));
     KlonObject string = KlonFile.asString(file, context, message);
     KlonMessage target = KlonMessage.newMessageFromString(receiver,
-        (String) string.getData());
+      (String) string.getData());
     target.eval(receiver, context);
     return receiver;
   }
 
-  @ExposedAs( { "ifTrue", "", "brace" })
+  @ExposedAs({"ifTrue", "", "brace"})
   public static KlonObject eval(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
@@ -730,8 +768,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     throw KlonException.newException(receiver, "Object.doesNotRespond",
-        receiver.getType() + " does not respond to '"
-            + message.getSelector().getData() + "'", message);
+      receiver.getType() + " does not respond to '" + message.getSelector()
+        .getData() + "'", message);
   }
 
   @SuppressWarnings("unused")
@@ -752,25 +790,33 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.getState().write(receiver.toString());
+    receiver.getState()
+      .write(receiver.toString());
     List<KlonObject> bindings = receiver.getBindings();
     if (!bindings.isEmpty()) {
-      receiver.getState().write(" (");
+      receiver.getState()
+        .write(" (");
       Iterator<KlonObject> iterator = bindings.iterator();
       while (iterator.hasNext()) {
-        receiver.getState().write(iterator.next().toString());
+        receiver.getState()
+          .write(iterator.next()
+            .toString());
         if (iterator.hasNext()) {
-          receiver.getState().write(", ");
+          receiver.getState()
+            .write(", ");
         }
       }
-      receiver.getState().write(")");
+      receiver.getState()
+        .write(")");
     }
-    receiver.getState().write("\n");
+    receiver.getState()
+      .write("\n");
     TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
-        receiver.getSlots());
+      receiver.getSlots());
     for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
-      receiver.getState().write(
-          current.getKey() + " := " + current.getValue().toString() + "\n");
+      receiver.getState()
+        .write(current.getKey() + " := " + current.getValue()
+          .toString() + "\n");
     }
     return KlonNil.newNil(receiver);
   }

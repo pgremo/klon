@@ -29,11 +29,7 @@ public class KlonException extends KlonObject {
 
   public KlonException(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "Exception";
+    type = "Exception";
   }
 
   @Override

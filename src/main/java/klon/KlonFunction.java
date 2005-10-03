@@ -26,11 +26,7 @@ public class KlonFunction extends KlonObject {
 
   public KlonFunction(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "Function";
+    type = "Function";
   }
 
   public void readExternal(ObjectInput in) throws IOException,

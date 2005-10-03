@@ -36,12 +36,8 @@ public class KlonString extends KlonObject {
 
   public KlonString(State state) {
     super(state);
+    type = "String";
     data = "";
-  }
-
-  @Override
-  public String getType() {
-    return "String";
   }
 
   @Override

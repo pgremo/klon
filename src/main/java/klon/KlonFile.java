@@ -38,12 +38,8 @@ public class KlonFile extends KlonObject {
 
   public KlonFile(State state) {
     super(state);
+    type = "File";
     data = new File("").getAbsoluteFile();
-  }
-
-  @Override
-  public String getType() {
-    return "File";
   }
 
   public void readExternal(ObjectInput in) throws IOException,

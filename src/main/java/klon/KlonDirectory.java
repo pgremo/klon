@@ -13,7 +13,8 @@ public class KlonDirectory extends KlonObject {
 
   public static KlonObject newDirectory(KlonObject root, File file)
       throws KlonObject {
-    KlonObject result = root.getSlot("Directory").clone();
+    KlonObject result = root.getSlot("Directory")
+      .clone();
     result.setData(file);
     return result;
   }
@@ -24,12 +25,8 @@ public class KlonDirectory extends KlonObject {
 
   public KlonDirectory(State state) {
     super(state);
+    type = "Directory";
     data = new File("").getAbsoluteFile();
-  }
-
-  @Override
-  public String getType() {
-    return "Directory";
   }
 
   public void readExternal(ObjectInput in) throws IOException,
@@ -55,11 +52,11 @@ public class KlonDirectory extends KlonObject {
   public static KlonObject path(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     try {
-      return KlonString.newString(receiver, ((File) receiver.getData())
-          .getCanonicalPath());
+      return KlonString.newString(receiver,
+        ((File) receiver.getData()).getCanonicalPath());
     } catch (IOException e) {
-      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
-          e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), message);
     }
   }
 
@@ -67,16 +64,14 @@ public class KlonDirectory extends KlonObject {
   public static KlonObject setPath(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    receiver.setData(new File(KlonString.evalAsString(context, message, 0))
-        .getAbsoluteFile());
+    receiver.setData(new File(KlonString.evalAsString(context, message, 0)).getAbsoluteFile());
     return receiver;
   }
 
   @ExposedAs("name")
   public static KlonObject name(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonString
-        .newString(receiver, ((File) receiver.getData()).getName());
+    return KlonString.newString(receiver, ((File) receiver.getData()).getName());
   }
 
   @ExposedAs("parent")
@@ -88,8 +83,8 @@ public class KlonDirectory extends KlonObject {
   @ExposedAs("count")
   public static KlonObject count(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((File) receiver.getData())
-        .list().length);
+    return KlonNumber.newNumber(receiver,
+      (double) ((File) receiver.getData()).list().length);
   }
 
   @ExposedAs("create")
@@ -121,7 +116,9 @@ public class KlonDirectory extends KlonObject {
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(2);
     KlonObject result = KlonNil.newNil(receiver);
-    String value = (String) message.getArgument(0).getSelector().getData();
+    String value = (String) message.getArgument(0)
+      .getSelector()
+      .getData();
     KlonMessage code = message.getArgument(1);
     for (File current : ((File) receiver.getData()).listFiles()) {
       context.setSlot(value, KlonFile.newFile(receiver, current));

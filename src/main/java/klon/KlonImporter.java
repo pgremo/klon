@@ -14,11 +14,7 @@ public class KlonImporter extends KlonObject {
 
   public KlonImporter(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "Importer";
+    type = "Importer";
   }
 
   @Override
@@ -33,17 +29,15 @@ public class KlonImporter extends KlonObject {
       message.assertArgumentCount(2);
       String typeName = KlonString.evalAsString(receiver, message, 1);
       Class type = Class.forName(typeName);
-      Constructor constructor = type
-          .getDeclaredConstructor(new Class[] { State.class });
-      KlonObject prototype = (KlonObject) constructor
-          .newInstance(new Object[] { receiver.getState() });
+      Constructor constructor = type.getDeclaredConstructor(new Class[]{State.class});
+      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{receiver.getState()});
       prototype.configure(context);
       return prototype;
     } catch (KlonObject e) {
       throw e;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
-          e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), message);
     }
   }
 }

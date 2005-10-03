@@ -3,23 +3,25 @@ package klon;
 import java.util.Queue;
 
 public class Actor implements Runnable {
-  private Queue<KlonMessage> messages;
-  private Scheduler scheduler;
-  private KlonObject receiver;
-  private KlonObject root;
 
-  public Actor(Scheduler scheduler, KlonObject receiver) {
+  private Queue<Future> messages;
+  private Scheduler scheduler;
+  private State state;
+
+  public Actor(Scheduler scheduler, State state) {
     this.scheduler = scheduler;
-    this.receiver = receiver;
+    this.state = state;
   }
 
   public void run() {
     while (!messages.isEmpty()) {
-      KlonMessage current = messages.poll();
+      Future current = messages.poll();
       try {
-        current.eval(receiver, root);
+        KlonMessage message = current.message();
+        KlonObject receiver = current.receiver();
+        current.setResult(message.eval(receiver, state.getRoot()));
       } catch (KlonObject e) {
-        // TODO:  this has to go somewhere.  Future?
+        current.setError(e);
       }
       scheduler.yield();
     }

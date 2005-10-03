@@ -16,11 +16,7 @@ public class KlonLocals extends KlonObject {
 
   public KlonLocals(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "Locals";
+    type = "Locals";
   }
 
   public void readExternal(ObjectInput in) throws IOException,

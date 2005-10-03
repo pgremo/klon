@@ -18,11 +18,7 @@ public class KlonStore extends KlonObject {
 
   public KlonStore(State state) {
     super(state);
-  }
-
-  @Override
-  public String getType() {
-    return "Store";
+    type = "Store";
   }
 
   @Override
@@ -39,14 +35,15 @@ public class KlonStore extends KlonObject {
     validate(receiver, message);
     ObjectOutputStream out = null;
     try {
-      out = new ObjectOutputStream(new FileOutputStream((String) receiver
-          .getSlot("path")
-            .getData()));
-      out.writeObject(receiver.getState().getRoot());
+      out = new ObjectOutputStream(new FileOutputStream(
+        (String) receiver.getSlot("path")
+          .getData()));
+      out.writeObject(receiver.getState()
+        .getRoot());
       return receiver;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
-          e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), message);
     } finally {
       if (out != null) {
         try {
@@ -64,13 +61,15 @@ public class KlonStore extends KlonObject {
     ObjectInputStream in = null;
     try {
       in = new ObjectInputStream(new FileInputStream((String) receiver.getSlot(
-          "path").getData()));
+        "path")
+        .getData()));
       KlonObject root = (KlonObject) in.readObject();
-      receiver.getState().setRoot(root);
+      receiver.getState()
+        .setRoot(root);
       return root;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
-          e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass()
+        .getSimpleName(), e.getMessage(), message);
     } finally {
       if (in != null) {
         try {
@@ -86,7 +85,7 @@ public class KlonStore extends KlonObject {
     KlonObject pathSlot = receiver.getSlot("path");
     if (pathSlot == null) {
       throw KlonException.newException(receiver, "Object.invalidArgument",
-          "path is required", message);
+        "path is required", message);
     }
   }
 }

@@ -9,23 +9,21 @@ public class Scheduler {
     return activeCount;
   }
 
-  public synchronized Coroutine create(Runnable worker) {
-    Coroutine result = new Coroutine(this, worker);
-    new Thread(result).start();
+  public synchronized void create(Coroutine coroutine) {
+    coroutine.start();
     try {
       createLock.wait();
     } catch (InterruptedException e) {
     }
-    return result;
   }
 
-  public synchronized void start() {
+  public synchronized void begin() {
     createLock.notify();
-    activeCount++;
     try {
       wait();
     } catch (InterruptedException e) {
     }
+    activeCount++;
   }
 
   public synchronized void yield() {
@@ -36,7 +34,7 @@ public class Scheduler {
     }
   }
 
-  public synchronized void stop() {
+  public synchronized void end() {
     activeCount--;
     notify();
   }

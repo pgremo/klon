@@ -24,12 +24,8 @@ public class KlonBuffer extends KlonObject {
 
   public KlonBuffer(State state) {
     super(state);
+    type = "Buffer";
     data = new Buffer();
-  }
-
-  @Override
-  public String getType() {
-    return "Buffer";
   }
 
   @Override

@@ -1,6 +1,6 @@
 package klon;
 
-public class Coroutine implements Runnable {
+public class Coroutine extends Thread {
 
   private Scheduler scheduler;
   private Runnable worker;
@@ -11,9 +11,9 @@ public class Coroutine implements Runnable {
   }
 
   public void run() {
-    scheduler.start();
+    scheduler.begin();
     worker.run();
-    scheduler.stop();
+    scheduler.end();
   }
 
 }

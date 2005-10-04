@@ -604,7 +604,7 @@ public class KlonObject extends Exception
   public static KlonObject then(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return KlonMirror.newMirror(receiver, message.evalArgument(context, 0));
+    return KlonVoid.newMirror(receiver, message.evalArgument(context, 0));
   }
 
   @ExposedAs({"and", "&&"})
@@ -779,7 +779,7 @@ public class KlonObject extends Exception
     message.assertArgumentCount(1);
     KlonObject result;
     try {
-      result = KlonMirror.newMirror(receiver, message.evalArgument(context, 0));
+      result = KlonVoid.newMirror(receiver, message.evalArgument(context, 0));
     } catch (KlonObject e) {
       result = e;
     }

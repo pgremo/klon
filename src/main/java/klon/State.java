@@ -16,9 +16,9 @@ public class State implements Serializable {
   private KlonObject root;
   private KlonMessage asString;
   private KlonMessage init;
-  private KlonObject nil;
-  private KlonObject mirror;
-  private KlonObject locals;
+  private KlonObject nilObject;
+  private KlonObject voidObject;
+  private KlonObject localsObject;
 
   private State() throws Exception {
     this(new String[]{});
@@ -62,17 +62,17 @@ public class State implements Serializable {
     nativeMethod.configure(root);
     object.configure(root);
 
-    nil = new KlonNil(this);
-    prototypes.setSlot(nil.getName(), nil);
-    nil.configure(root);
+    nilObject = new KlonNil(this);
+    prototypes.setSlot(nilObject.getName(), nilObject);
+    nilObject.configure(root);
 
-    mirror = new KlonMirror(this);
-    prototypes.setSlot(mirror.getName(), mirror);
-    mirror.configure(root);
+    voidObject = new KlonVoid(this);
+    prototypes.setSlot(voidObject.getName(), voidObject);
+    voidObject.configure(root);
 
-    locals = new KlonLocals(this);
-    prototypes.setSlot(locals.getName(), locals);
-    locals.configure(root);
+    localsObject = new KlonLocals(this);
+    prototypes.setSlot(localsObject.getName(), localsObject);
+    localsObject.configure(root);
 
     Class[] types = new Class[]{
         KlonFunction.class,
@@ -134,16 +134,16 @@ public class State implements Serializable {
     return root;
   }
 
-  public KlonObject getNil() {
-    return nil;
+  public KlonObject getNilObject() {
+    return nilObject;
   }
 
-  public KlonObject getMirror() {
-    return mirror;
+  public KlonObject getVoidObject() {
+    return voidObject;
   }
 
-  public KlonObject getLocals() {
-    return locals;
+  public KlonObject getLocalsObject() {
+    return localsObject;
   }
 
   public KlonMessage getAsString() {

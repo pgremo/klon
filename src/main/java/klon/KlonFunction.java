@@ -66,7 +66,7 @@ public class KlonFunction extends KlonObject {
       }
 
       KlonObject locals = receiver.getState()
-        .getLocals()
+        .getLocalsObject()
         .clone();
 
       locals.setSlot("self", receiver);

@@ -63,7 +63,7 @@ public class KlonException extends KlonObject {
           .getData(), receiver);
       }
       message.evalArgument(scope, index);
-      result = KlonMirror.newMirror(receiver, receiver);
+      result = KlonVoid.newMirror(receiver, receiver);
     }
     return result;
   }

@@ -1,19 +1,19 @@
 package klon;
 
-@ExposedAs("Mirror")
-public class KlonMirror extends KlonObject {
+@ExposedAs("Void")
+public class KlonVoid extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
 
   public static KlonObject newMirror(KlonObject root, Object value) {
-    return root.getState().getMirror();
+    return root.getState().getVoidObject();
   }
 
-  public KlonMirror() {
+  public KlonVoid() {
 
   }
 
-  public KlonMirror(State state) {
+  public KlonVoid(State state) {
     super(state);
   }
 

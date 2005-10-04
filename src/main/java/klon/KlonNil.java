@@ -8,7 +8,7 @@ public class KlonNil extends KlonObject {
 
   public static KlonObject newNil(KlonObject root) {
     return root.getState()
-      .getNil();
+      .getNilObject();
   }
 
   public KlonNil() {

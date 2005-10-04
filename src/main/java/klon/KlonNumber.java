@@ -50,7 +50,7 @@ public class KlonNumber extends KlonObject {
   public KlonNumber(State state) {
     super(state);
     type = "Number";
-    data = 0D;
+    setData(0D);
   }
 
   @SuppressWarnings("unused")
@@ -67,26 +67,26 @@ public class KlonNumber extends KlonObject {
 
   @Override
   public String toString() {
-    return format.format(data);
+    return format.format(getData());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonNumber(state);
+    KlonObject result = new KlonNumber(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @ExposedAs("pi")

@@ -61,64 +61,64 @@ public class KlonMessage extends KlonObject {
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonMessage(state);
+    KlonObject result = new KlonMessage(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 
   public void setAttached(KlonMessage attached) {
-    ((Message) data).setAttached(attached);
+    ((Message) getData()).setAttached(attached);
   }
 
   public KlonMessage getAttached() {
-    return ((Message) data).getAttached();
+    return ((Message) getData()).getAttached();
   }
 
   public void setLiteral(KlonObject literal) {
-    ((Message) data).setLiteral(literal);
+    ((Message) getData()).setLiteral(literal);
   }
 
   public KlonObject getLiteral() {
-    return ((Message) data).getLiteral();
+    return ((Message) getData()).getLiteral();
   }
 
   public void setNext(KlonMessage selector) {
-    ((Message) data).setNext(selector);
+    ((Message) getData()).setNext(selector);
   }
 
   public KlonMessage getNext() {
-    return ((Message) data).getNext();
+    return ((Message) getData()).getNext();
   }
 
   public void setSelector(KlonObject selector) {
-    ((Message) data).setSelector(selector);
+    ((Message) getData()).setSelector(selector);
   }
 
   public KlonObject getSelector() {
-    return ((Message) data).getSelector();
+    return ((Message) getData()).getSelector();
   }
 
   public int getArgumentCount() {
-    return ((Message) data).getArgumentCount();
+    return ((Message) getData()).getArgumentCount();
   }
 
   public void addArgument(KlonMessage argument) {
-    ((Message) data).addArgument(argument);
+    ((Message) getData()).addArgument(argument);
   }
 
   public KlonMessage getArgument(int index) {
-    return ((Message) data).getArgument(index);
+    return ((Message) getData()).getArgument(index);
   }
 
   public KlonObject eval(KlonObject receiver, KlonObject context)

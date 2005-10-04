@@ -20,27 +20,27 @@ public class KlonMap extends KlonObject {
   public KlonMap(State state) {
     super(state);
     type = "Map";
-    data = new HashMap<KlonObject, KlonObject>();
+    setData(new HashMap<KlonObject, KlonObject>());
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonMap(state);
+    KlonObject result = new KlonMap(getState());
     result.bind(this);
     result.setData(new HashMap<KlonObject, KlonObject>(
-      (Map<KlonObject, KlonObject>) data));
+      (Map<KlonObject, KlonObject>) getData()));
     return result;
   }
 

@@ -22,19 +22,19 @@ public class KlonLocals extends KlonObject {
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonLocals(state);
+    KlonObject result = new KlonLocals(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 

@@ -34,9 +34,9 @@ public class KlonException extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonException(state);
+    KlonObject result = new KlonException(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 

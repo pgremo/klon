@@ -25,12 +25,12 @@ public class KlonObject extends Exception
 
   //tag
   protected String type;
+  private State state;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
+
   private boolean activatable;
-  
-  protected State state;
-  protected Object data;
+  private Object data;
 
   public KlonObject() {
 

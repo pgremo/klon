@@ -37,14 +37,14 @@ public class KlonString extends KlonObject {
   public KlonString(State state) {
     super(state);
     type = "String";
-    data = "";
+    setData("");
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonString(state);
+    KlonObject result = new KlonString(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 
@@ -63,17 +63,17 @@ public class KlonString extends KlonObject {
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @Override
   public String toString() {
-    return "\"" + data + "\"";
+    return "\"" + getData() + "\"";
   }
 
   @ExposedAs({"+", "concatenate"})

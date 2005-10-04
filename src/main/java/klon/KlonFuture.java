@@ -15,9 +15,9 @@ public class KlonFuture extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonFuture(state);
+    KlonObject result = new KlonFuture(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 

@@ -26,25 +26,25 @@ public class KlonDirectory extends KlonObject {
   public KlonDirectory(State state) {
     super(state);
     type = "Directory";
-    data = new File("").getAbsoluteFile();
+    setData(new File("").getAbsoluteFile());
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonDirectory(state);
+    KlonObject result = new KlonDirectory(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 

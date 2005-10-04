@@ -30,26 +30,26 @@ public class KlonList extends KlonObject {
   public KlonList(State state) {
     super(state);
     type = "List";
-    data = new ArrayList<KlonObject>();
+    setData(new ArrayList<KlonObject>());
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonList(state);
+    KlonObject result = new KlonList(getState());
     result.bind(this);
-    result.setData(new ArrayList<KlonObject>((List<KlonObject>) data));
+    result.setData(new ArrayList<KlonObject>((List<KlonObject>) getData()));
     return result;
   }
 

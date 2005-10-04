@@ -38,9 +38,9 @@ public class KlonNativeMethod extends KlonObject {
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonNativeMethod(state);
+    KlonObject result = new KlonNativeMethod(getState());
     result.bind(this);
-    result.setData(data);
+    result.setData(getData());
     return result;
   }
 

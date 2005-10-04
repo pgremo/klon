@@ -32,19 +32,19 @@ public class KlonFunction extends KlonObject {
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonFunction(state);
+    KlonObject result = new KlonFunction(getState());
     result.bind(this);
-    Function source = (Function) data;
+    Function source = (Function) getData();
     if (source != null) {
       result.setData(source.clone());
     }

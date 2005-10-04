@@ -25,26 +25,26 @@ public class KlonBuffer extends KlonObject {
   public KlonBuffer(State state) {
     super(state);
     type = "Buffer";
-    data = new Buffer();
+    setData(new Buffer());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonBuffer(state);
+    KlonObject result = new KlonBuffer(getState());
     result.bind(this);
-    result.setData(((Buffer) data).clone());
+    result.setData(((Buffer) getData()).clone());
     return result;
   }
 
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @ExposedAs("asNumber")

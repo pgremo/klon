@@ -28,12 +28,12 @@ public class KlonRandom extends KlonObject {
   public KlonRandom(State state) {
     super(state);
     type = "Random";
-    data = new Random();
+    setData(new Random());
   }
 
   @Override
   public KlonObject clone() {
-    KlonObject result = new KlonRandom(state);
+    KlonObject result = new KlonRandom(getState());
     result.bind(this);
     result.setData(new Random());
     return result;
@@ -42,12 +42,12 @@ public class KlonRandom extends KlonObject {
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
-    data = in.readObject();
+    setData(in.readObject());
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     super.writeExternal(out);
-    out.writeObject(data);
+    out.writeObject(getData());
   }
 
   @ExposedAs("setSeed")

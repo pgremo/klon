@@ -34,7 +34,7 @@ public class KlonMessage extends KlonObject {
     KlonMessage result;
     String message = value.trim();
     if ("".equals(message)) {
-      result = newMessageWithLiteral(root, KlonString.newString(root, message));
+      result = newMessageWithLiteral(root, KlonVoid.newVoid(root, message));
     } else {
       try {
         KlonParser parser = new KlonParser(new StringReader(message),

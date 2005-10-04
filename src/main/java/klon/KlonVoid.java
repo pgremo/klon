@@ -5,7 +5,7 @@ public class KlonVoid extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;
 
-  public static KlonObject newMirror(KlonObject root, Object value) {
+  public static KlonObject newVoid(KlonObject root, Object value) {
     return root.getState().getVoidObject();
   }
 

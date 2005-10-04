@@ -23,12 +23,10 @@ public class KlonObject extends Exception
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  //tag
   protected String type;
   private State state;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
-
   private boolean activatable;
   private Object data;
 
@@ -37,8 +35,8 @@ public class KlonObject extends Exception
   }
 
   public KlonObject(State state) {
-    bindings = new ArrayList<KlonObject>();
-    type = "Object";
+    this.bindings = new ArrayList<KlonObject>();
+    this.type = "Object";
     this.state = state;
   }
 
@@ -604,7 +602,7 @@ public class KlonObject extends Exception
   public static KlonObject then(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    return KlonVoid.newMirror(receiver, message.evalArgument(context, 0));
+    return KlonVoid.newVoid(receiver, message.evalArgument(context, 0));
   }
 
   @ExposedAs({"and", "&&"})
@@ -779,7 +777,7 @@ public class KlonObject extends Exception
     message.assertArgumentCount(1);
     KlonObject result;
     try {
-      result = KlonVoid.newMirror(receiver, message.evalArgument(context, 0));
+      result = KlonVoid.newVoid(receiver, message.evalArgument(context, 0));
     } catch (KlonObject e) {
       result = e;
     }
@@ -811,12 +809,15 @@ public class KlonObject extends Exception
     }
     receiver.getState()
       .write("\n");
-    TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
-      receiver.getSlots());
-    for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
-      receiver.getState()
-        .write(current.getKey() + " := " + current.getValue()
-          .toString() + "\n");
+    Map<String, KlonObject> slots = receiver.getSlots();
+    if (slots != null) {
+      TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
+        slots);
+      for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
+        receiver.getState()
+          .write(current.getKey() + " := " + current.getValue()
+            .toString() + "\n");
+      }
     }
     return KlonNil.newNil(receiver);
   }

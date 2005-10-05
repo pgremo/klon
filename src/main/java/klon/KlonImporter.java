@@ -14,7 +14,7 @@ public class KlonImporter extends KlonObject {
 
   public KlonImporter(State state) {
     super(state);
-    type = "Importer";
+    setType("Importer");
   }
 
   @Override

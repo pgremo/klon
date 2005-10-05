@@ -10,7 +10,7 @@ public class KlonFuture extends KlonObject {
 
   public KlonFuture(State state) {
     super(state);
-    type = "Future";
+    setType("Future");
   }
 
   @Override

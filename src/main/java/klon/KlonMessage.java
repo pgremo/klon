@@ -55,7 +55,7 @@ public class KlonMessage extends KlonObject {
 
   public KlonMessage(State state) {
     super(state);
-    type = "Message";
+    setType("Message");
   }
 
   public void readExternal(ObjectInput in) throws IOException,

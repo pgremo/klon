@@ -24,7 +24,7 @@ public class KlonBuffer extends KlonObject {
 
   public KlonBuffer(State state) {
     super(state);
-    type = "Buffer";
+    setType("Buffer");
     setData(new Buffer());
   }
 

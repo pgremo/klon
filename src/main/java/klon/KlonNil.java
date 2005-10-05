@@ -17,7 +17,7 @@ public class KlonNil extends KlonObject {
 
   public KlonNil(State state) {
     super(state);
-    type = "Nil";
+    setType("Nil");
   }
 
   @Override

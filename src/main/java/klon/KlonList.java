@@ -29,7 +29,7 @@ public class KlonList extends KlonObject {
 
   public KlonList(State state) {
     super(state);
-    type = "List";
+    setType("List");
     setData(new ArrayList<KlonObject>());
   }
 

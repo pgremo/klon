@@ -36,7 +36,7 @@ public class KlonString extends KlonObject {
 
   public KlonString(State state) {
     super(state);
-    type = "String";
+    setType("String");
     setData("");
   }
 
@@ -168,9 +168,9 @@ public class KlonString extends KlonObject {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.getState()
-      .write(receiver.getData()
-        .toString() + "\n");
+    State state = receiver.getState();
+    state.write(receiver.getData());
+    state.write("\n");
     return KlonNil.newNil(receiver);
   }
 

@@ -49,7 +49,7 @@ public class KlonNumber extends KlonObject {
 
   public KlonNumber(State state) {
     super(state);
-    type = "Number";
+    setType("Number");
     setData(0D);
   }
 
@@ -344,8 +344,9 @@ public class KlonNumber extends KlonObject {
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.getState()
-      .write(receiver.toString() + "\n");
+    State state = receiver.getState();
+    state.write(receiver);
+    state.write("\n");
     return KlonNil.newNil(receiver);
   }
 }

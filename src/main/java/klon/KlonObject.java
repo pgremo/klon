@@ -23,7 +23,7 @@ public class KlonObject extends Exception
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  protected String type;
+  private String type;
   private State state;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
@@ -36,8 +36,8 @@ public class KlonObject extends Exception
 
   public KlonObject(State state) {
     this.bindings = new ArrayList<KlonObject>();
-    this.type = "Object";
     this.state = state;
+    this.type = "Object";
   }
 
   public void configure(KlonObject root) throws Exception {
@@ -171,6 +171,14 @@ public class KlonObject extends Exception
     this.state = state;
   }
 
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getType() {
+    return type;
+  }
+
   public Object getData() {
     return data;
   }
@@ -185,10 +193,6 @@ public class KlonObject extends Exception
 
   public void setActivatable(boolean activatable) {
     this.activatable = activatable;
-  }
-
-  public final String getType() {
-    return type;
   }
 
   @SuppressWarnings("unused")
@@ -788,35 +792,31 @@ public class KlonObject extends Exception
   @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    receiver.getState()
-      .write(receiver.toString());
+    State state = receiver.getState();
+    state.write(receiver.toString());
     List<KlonObject> bindings = receiver.getBindings();
     if (!bindings.isEmpty()) {
-      receiver.getState()
-        .write(" (");
+      state.write(" (");
       Iterator<KlonObject> iterator = bindings.iterator();
       while (iterator.hasNext()) {
-        receiver.getState()
-          .write(iterator.next()
-            .toString());
+        state.write(iterator.next()
+          .toString());
         if (iterator.hasNext()) {
-          receiver.getState()
-            .write(", ");
+          state.write(", ");
         }
       }
-      receiver.getState()
-        .write(")");
+      state.write(")");
     }
-    receiver.getState()
-      .write("\n");
+    state.write("\n");
     Map<String, KlonObject> slots = receiver.getSlots();
     if (slots != null) {
       TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
         slots);
       for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
-        receiver.getState()
-          .write(current.getKey() + " := " + current.getValue()
-            .toString() + "\n");
+        state.write(current.getKey());
+        state.write(" := ");
+        state.write(current.getValue());
+        state.write("\n");
       }
     }
     return KlonNil.newNil(receiver);

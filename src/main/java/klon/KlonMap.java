@@ -19,7 +19,7 @@ public class KlonMap extends KlonObject {
 
   public KlonMap(State state) {
     super(state);
-    type = "Map";
+    setType("Map");
     setData(new HashMap<KlonObject, KlonObject>());
   }
 

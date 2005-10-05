@@ -26,7 +26,7 @@ public class KlonFunction extends KlonObject {
 
   public KlonFunction(State state) {
     super(state);
-    type = "Function";
+    setType("Function");
   }
 
   public void readExternal(ObjectInput in) throws IOException,

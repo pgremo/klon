@@ -182,6 +182,10 @@ public class State implements Serializable {
     }
   }
 
+  public void write(Object value) {
+    write(String.valueOf(value));
+  }
+
   public KlonObject doString(String value) throws KlonObject {
     return doString(root, value);
   }

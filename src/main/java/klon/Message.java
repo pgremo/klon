@@ -10,7 +10,7 @@ public class Message implements Serializable, Cloneable {
   private static final long serialVersionUID = 735141555296332120L;
   private KlonObject selector;
   private KlonObject literal;
-  private List<KlonMessage> arguments = new ArrayList<KlonMessage>();
+  private List<KlonMessage> arguments;
   private KlonMessage attached;
   private KlonMessage next;
 
@@ -22,15 +22,18 @@ public class Message implements Serializable, Cloneable {
   }
 
   public int getArgumentCount() {
-    return arguments.size();
+    return arguments == null ? 0 : arguments.size();
   }
 
   public void addArgument(KlonMessage message) {
+    if (arguments == null) {
+      arguments = new ArrayList<KlonMessage>();
+    }
     arguments.add(message);
   }
 
   public KlonMessage getArgument(int index) {
-    return arguments.get(index);
+    return arguments == null ? null : arguments.get(index);
   }
 
   public KlonMessage getAttached() {
@@ -68,8 +71,10 @@ public class Message implements Serializable, Cloneable {
   @Override
   public Object clone() {
     Message result = new Message();
-    for (KlonMessage current : arguments) {
-      result.addArgument(current);
+    if (arguments != null) {
+      for (KlonMessage current : arguments) {
+        result.addArgument(current);
+      }
     }
     result.setAttached(attached);
     result.setLiteral(literal);
@@ -100,7 +105,7 @@ public class Message implements Serializable, Cloneable {
   }
 
   private void argumentsToString(StringBuilder result) {
-    if (arguments.size() > 0) {
+    if (arguments != null && arguments.size() > 0) {
       result.append("(");
       Iterator<KlonMessage> iterator = arguments.iterator();
       while (iterator.hasNext()) {

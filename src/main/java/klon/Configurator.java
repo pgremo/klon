@@ -88,12 +88,14 @@ public final class Configurator {
       if (exposedAs != null) {
         Object value = current.get(null);
         KlonObject object = null;
-        if (value instanceof Number) {
+        if (value == null) {
+          object = KlonNil.newNil(root);
+        } else if (value instanceof Number) {
           object = KlonNumber.newNumber(root, ((Number) value).doubleValue());
         } else if (value instanceof String) {
           object = KlonString.newString(root, (String) value);
         }
-        if (value != null) {
+        if (object != null) {
           for (String name : exposedAs.value()) {
             target.setSlot(name, object);
           }

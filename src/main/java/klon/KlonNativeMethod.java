@@ -70,10 +70,10 @@ public class KlonNativeMethod extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject result = slot;
-    Method value = (Method) slot.getData();
+  public KlonObject activate(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    KlonObject result = this;
+    Method value = (Method) getData();
     if (value != null) {
       try {
         try {

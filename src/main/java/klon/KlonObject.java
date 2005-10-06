@@ -26,7 +26,6 @@ public class KlonObject extends Exception
   private State state;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
-  private boolean activatable;
   private Object data;
 
   public KlonObject() {
@@ -53,7 +52,12 @@ public class KlonObject extends Exception
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    return activate(this, receiver, context, message);
+    KlonObject result = this;
+    KlonObject activate1 = this.getSlot("activate");
+    if (activate1 != null) {
+      result = activate1.activate(this, receiver, message);
+    }
+    return result;
   }
 
   public List<KlonObject> getBindings() {
@@ -177,45 +181,18 @@ public class KlonObject extends Exception
     this.data = value;
   }
 
-  public boolean isActivatable() {
-    return activatable;
-  }
-
-  public void setActivatable(boolean activatable) {
-    this.activatable = activatable;
-  }
-
-  @SuppressWarnings("unused")
-  public KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, KlonMessage message) throws KlonObject {
-    KlonObject result = slot;
-    if (activatable) {
-      KlonObject activate = slot.getSlot("activate");
-      if (activate != null) {
-        result = activate.activate(slot, receiver, message);
-      }
-    }
-    return result;
-  }
-
-  // ================
-  // java.io.Externalizable
-  // ================
-
   @SuppressWarnings("unchecked")
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     state = (State) in.readObject();
     bindings = (List<KlonObject>) in.readObject();
     slots = (Map<String, KlonObject>) in.readObject();
-    activatable = (Boolean) in.readObject();
   }
 
   public void writeExternal(ObjectOutput out) throws IOException {
     out.writeObject(state);
     out.writeObject(bindings);
     out.writeObject(slots);
-    out.writeObject(activatable);
   }
 
   // ================
@@ -314,16 +291,6 @@ public class KlonObject extends Exception
       .getInit()
       .eval(result, context);
     return result;
-  }
-
-  @ExposedAs("setIsActivatable")
-  public static KlonObject setIsActivatable(KlonObject receiver,
-      KlonObject context, KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(1);
-    KlonObject value = message.evalArgument(context, 0);
-    receiver.setActivatable(!KlonNil.newNil(receiver)
-      .equals(value));
-    return receiver;
   }
 
   @ExposedAs("send")

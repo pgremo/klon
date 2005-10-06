@@ -52,8 +52,9 @@ public class KlonFunction extends KlonObject {
 
   @SuppressWarnings("unchecked")
   @Override
-  public KlonObject activate(KlonObject slot, KlonObject receiver,
-      KlonObject context, KlonMessage message) throws KlonObject {
+  public KlonObject activate(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    KlonObject slot = this;
     Function value = (Function) slot.getData();
     KlonObject result;
     if (value == null) {

@@ -52,12 +52,10 @@ public class KlonObject extends Exception
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject result = this;
-    KlonObject activate1 = this.getSlot("activate");
-    if (activate1 != null) {
-      result = activate1.activate(this, receiver, message);
-    }
-    return result;
+    KlonObject activate = getSlot("activate");
+    return activate == null
+        ? mirror(this, context, message)
+        : activate.activate(this, context, message);
   }
 
   public List<KlonObject> getBindings() {
@@ -569,29 +567,15 @@ public class KlonObject extends Exception
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs({"or", "||", "else", "elseIf"})
+  @ExposedAs({"or", "||", "else", "elseIf", "ifNil", "activate"})
   public static KlonObject mirror(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return receiver;
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("ifFalse")
-  public static KlonObject ifFalse(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
-    return KlonNil.newNil(receiver);
-  }
-
-  @SuppressWarnings("unused")
-  @ExposedAs("ifNil")
-  public static KlonObject ifNil(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
-    return receiver;
-  }
-
-  @SuppressWarnings("unused")
-  @ExposedAs("isNil")
-  public static KlonObject isNil(KlonObject receiver, KlonObject context,
+  @ExposedAs({"ifFalse", "isNil"})
+  public static KlonObject nil(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return KlonNil.newNil(receiver);
   }

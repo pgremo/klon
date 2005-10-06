@@ -54,13 +54,12 @@ public class KlonFunction extends KlonObject {
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    KlonObject slot = this;
-    Function value = (Function) slot.getData();
+    Function value = (Function) getData();
     KlonObject result;
     if (value == null) {
-      result = slot;
+      result = this;
     } else {
-      KlonObject scope = ((Function) slot.getData()).getScope();
+      KlonObject scope = ((Function) getData()).getScope();
       if (scope == null) {
         scope = receiver;
       }
@@ -72,7 +71,7 @@ public class KlonFunction extends KlonObject {
       locals.setSlot("self", receiver);
       locals.setSlot("receiver", scope);
       locals.setSlot("sender", context);
-      locals.setSlot("slot", slot);
+      locals.setSlot("slot", this);
       locals.setSlot("message", message);
 
       locals.setData(receiver.getData());
@@ -84,12 +83,6 @@ public class KlonFunction extends KlonObject {
         locals.setSlot((String) parameters.get(i)
           .getData(), message.evalArgument(context, i));
       }
-      KlonObject nil = KlonNil.newNil(receiver);
-      for (; i < parameters.size(); i++) {
-        locals.setSlot((String) parameters.get(i)
-          .getData(), nil);
-      }
-      result = nil;
       try {
         result = value.getMessage()
           .eval(locals, locals);

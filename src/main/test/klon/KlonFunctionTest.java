@@ -65,10 +65,14 @@ public class KlonFunctionTest extends TestCase {
       value.getData()
         .toString());
 
-    message = KlonMessage.newMessageFromString(object, "setter(\"Hello\")");
-    value = message.eval(object, object);
-    assertNotNull(value);
-    assertEquals("Hello", value.getData());
+    try {
+      message = KlonMessage.newMessageFromString(object, "setter(\"Hello\")");
+      value = message.eval(object, object);
+      fail("should have caught an exception");
+    } catch (KlonObject e) {
+      assertEquals("Object.doesNotRespond:Receiver does not respond to 'b'",
+        e.getMessage());
+    }
   }
 
   public void testIfTrue() throws Exception {

@@ -22,12 +22,11 @@ public class KlonString extends KlonObject {
 
   public static String evalAsString(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
-    KlonObject result = message.evalArgument(context, index);
-    if ("String".equals(result.getType())) {
-      return (String) result.getData();
-    }
-    throw KlonException.newException(context, "Object.invalidArgument",
-      "argument must evaluate to a string", message);
+    KlonObject argument = message.evalArgument(context, index);
+    KlonMessage asNumber = KlonMessage.newMessageFromString(argument,
+      "asString");
+    return (String) asNumber.eval(argument, context)
+      .getData();
   }
 
   public KlonString() {

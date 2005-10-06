@@ -35,12 +35,11 @@ public class KlonNumber extends KlonObject {
 
   public static Double evalAsNumber(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
-    KlonObject result = message.evalArgument(context, index);
-    if ("Number".equals(result.getType())) {
-      return (Double) result.getData();
-    }
-    throw KlonException.newException(context, "Object.invalidArgument",
-      "argument must evaluate to a number", message);
+    KlonObject argument = message.evalArgument(context, index);
+    KlonMessage asNumber = KlonMessage.newMessageFromString(argument,
+      "asNumber");
+    return (Double) asNumber.eval(argument, context)
+      .getData();
   }
 
   public KlonNumber() {
@@ -338,6 +337,13 @@ public class KlonNumber extends KlonObject {
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return KlonString.newString(receiver, format.format(receiver.getData()));
+  }
+
+  @SuppressWarnings("unused")
+  @ExposedAs("asNumber")
+  public static KlonObject asNumber(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    return receiver;
   }
 
   @SuppressWarnings("unused")

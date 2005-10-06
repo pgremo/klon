@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @ExposedAs("List")
 @Bindings("Object")
@@ -207,18 +206,28 @@ public class KlonList extends KlonObject {
     return receiver;
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "unchecked"})
   @ExposedAs("shuffle")
   public static KlonObject shuffle(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    Random random;
-    if (message.getArgumentCount() == 0) {
-      random = (Random) receiver.getSlot("Random")
-        .getData();
-    } else {
-      random = KlonRandom.evalAsRandom(receiver, message, 0);
+    List data = (List) receiver.getData();
+    if (!data.isEmpty()) {
+      KlonObject random;
+      if (message.getArgumentCount() == 0) {
+        random = receiver.getSlot("Random");
+      } else {
+        random = message.evalArgument(receiver, 0);
+      }
+      KlonMessage nextMessage = KlonMessage.newMessageFromString(receiver,
+        "next(" + data.size() + ")");
+      for (int i = 0; i < data.size(); i++) {
+        int index = ((Double) nextMessage.eval(random, context)
+          .getData()).intValue();
+        Object tmp = data.get(index);
+        data.set(index, data.get(i));
+        data.set(i, tmp);
+      }
     }
-    Collections.shuffle((List) receiver.getData(), random);
     return receiver;
   }
 
@@ -231,14 +240,17 @@ public class KlonList extends KlonObject {
     if (data.isEmpty()) {
       result = KlonNil.newNil(receiver);
     } else {
-      Random random;
+      KlonObject random;
       if (message.getArgumentCount() == 0) {
-        random = (Random) receiver.getSlot("Random")
-          .getData();
+        random = receiver.getSlot("Random");
       } else {
-        random = KlonRandom.evalAsRandom(receiver, message, 0);
+        random = message.evalArgument(receiver, 0);
       }
-      result = data.get(random.nextInt(data.size()));
+      KlonMessage nextMessage = KlonMessage.newMessageFromString(receiver,
+        "next(" + data.size() + ")");
+      int index = ((Double) nextMessage.eval(random, context)
+        .getData()).intValue();
+      result = data.get(index);
     }
     return result;
   }

@@ -23,9 +23,9 @@ public class KlonString extends KlonObject {
   public static String evalAsString(KlonObject context, KlonMessage message,
       int index) throws KlonObject {
     KlonObject argument = message.evalArgument(context, index);
-    KlonMessage asNumber = KlonMessage.newMessageFromString(argument,
-      "asString");
-    return (String) asNumber.eval(argument, context)
+    KlonMessage asString = argument.getState()
+      .getAsString();
+    return (String) asString.eval(argument, context)
       .getData();
   }
 

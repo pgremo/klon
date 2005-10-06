@@ -242,9 +242,7 @@ public class KlonObject extends Exception
 
   @Override
   public String toString() {
-    String result = getType() + "_0x"
-        + Integer.toHexString(System.identityHashCode(this));
-    return result;
+    return "Object_0x" + Integer.toHexString(System.identityHashCode(this));
   }
 
   @Override
@@ -292,12 +290,6 @@ public class KlonObject extends Exception
   // ================
   // Exposed Methods
   // ================
-
-  @ExposedAs("type")
-  public static KlonObject type(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
-    return KlonString.newString(receiver, receiver.getType());
-  }
 
   @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,
@@ -353,10 +345,9 @@ public class KlonObject extends Exception
     if ("Message".equals(subject.getType())) {
       target = (KlonMessage) subject;
     } else {
-      if (!"String".equals(subject.getType())) {
-        throw KlonException.newException(receiver, "Object.invalidArgument",
-          "argument must evaluate to a String", message);
-      }
+      KlonMessage asString = subject.getState()
+        .getAsString();
+      subject = asString.eval(subject, context);
       target = KlonMessage.newMessage(receiver);
       target.setSelector(subject);
       for (int i = 1; i < message.getArgumentCount(); i++) {
@@ -770,7 +761,7 @@ public class KlonObject extends Exception
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     throw KlonException.newException(receiver, "Object.doesNotRespond",
-      receiver.getType() + " does not respond to '" + message.getSelector()
+      "Receiver does not respond to '" + message.getSelector()
         .getData() + "'", message);
   }
 

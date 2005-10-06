@@ -28,7 +28,6 @@ public class KlonList extends KlonObject {
 
   public KlonList(State state) {
     super(state);
-    setType("List");
     setData(new ArrayList<KlonObject>());
   }
 
@@ -56,7 +55,7 @@ public class KlonList extends KlonObject {
   @Override
   public int compareTo(KlonObject other) {
     int result;
-    if ("List".equals(other.getType())) {
+    if (other instanceof KlonList) {
       List<KlonObject> l1 = (List<KlonObject>) getData();
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();

@@ -25,7 +25,6 @@ public class KlonDirectory extends KlonObject {
 
   public KlonDirectory(State state) {
     super(state);
-    setType("Directory");
     setData(new File("").getAbsoluteFile());
   }
 

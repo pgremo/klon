@@ -17,7 +17,6 @@ public class KlonRandom extends KlonObject {
 
   public KlonRandom(State state) {
     super(state);
-    setType("Random");
     setData(new Random());
   }
 

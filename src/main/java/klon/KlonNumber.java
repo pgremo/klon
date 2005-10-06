@@ -48,7 +48,6 @@ public class KlonNumber extends KlonObject {
 
   public KlonNumber(State state) {
     super(state);
-    setType("Number");
     setData(0D);
   }
 
@@ -56,7 +55,7 @@ public class KlonNumber extends KlonObject {
   @Override
   public int compareTo(KlonObject other) {
     int result;
-    if ("Number".equals(other.getType())) {
+    if (other instanceof KlonNumber) {
       result = ((Double) getData()).compareTo((Double) other.getData());
     } else {
       result = hashCode() - other.hashCode();

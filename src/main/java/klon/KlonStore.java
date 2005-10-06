@@ -18,7 +18,6 @@ public class KlonStore extends KlonObject {
 
   public KlonStore(State state) {
     super(state);
-    setType("Store");
   }
 
   @Override

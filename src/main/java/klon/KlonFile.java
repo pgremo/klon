@@ -38,7 +38,6 @@ public class KlonFile extends KlonObject {
 
   public KlonFile(State state) {
     super(state);
-    setType("File");
     setData(new File("").getAbsoluteFile());
   }
 

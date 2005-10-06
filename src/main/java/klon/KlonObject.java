@@ -23,7 +23,6 @@ public class KlonObject extends Exception
 
   private static final long serialVersionUID = 5234708348712278569L;
 
-  private String type;
   private State state;
   private List<KlonObject> bindings;
   private Map<String, KlonObject> slots;
@@ -37,7 +36,6 @@ public class KlonObject extends Exception
   public KlonObject(State state) {
     this.bindings = new ArrayList<KlonObject>();
     this.state = state;
-    this.type = "Object";
   }
 
   public void configure(KlonObject root) throws Exception {
@@ -169,14 +167,6 @@ public class KlonObject extends Exception
 
   public void setState(State state) {
     this.state = state;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getType() {
-    return type;
   }
 
   public Object getData() {
@@ -340,20 +330,23 @@ public class KlonObject extends Exception
   public static KlonObject send(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     message.assertArgumentCount(1);
-    KlonMessage target;
     KlonObject subject = message.evalArgument(context, 0);
-    if ("Message".equals(subject.getType())) {
-      target = (KlonMessage) subject;
-    } else {
-      KlonMessage asString = subject.getState()
-        .getAsString();
-      subject = asString.eval(subject, context);
-      target = KlonMessage.newMessage(receiver);
-      target.setSelector(subject);
-      for (int i = 1; i < message.getArgumentCount(); i++) {
-        target.addArgument(message.getArgument(i));
-      }
+    KlonMessage asString = subject.getState()
+      .getAsString();
+    subject = asString.eval(subject, context);
+    KlonMessage target = KlonMessage.newMessage(receiver);
+    target.setSelector(subject);
+    for (int i = 1; i < message.getArgumentCount(); i++) {
+      target.addArgument(message.getArgument(i));
     }
+    return target.eval(receiver, context);
+  }
+
+  @ExposedAs("sendMessage")
+  public static KlonObject sendMessage(KlonObject receiver, KlonObject context,
+      KlonMessage message) throws KlonObject {
+    message.assertArgumentCount(1);
+    KlonMessage target = (KlonMessage) message.evalArgument(context, 0);
     return target.eval(receiver, context);
   }
 

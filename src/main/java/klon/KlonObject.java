@@ -37,18 +37,6 @@ public class KlonObject extends Exception
     this.state = state;
   }
 
-  public void configure(KlonObject root) throws Exception {
-    Configurator.configure(root, this);
-  }
-
-  public String getName() {
-    ExposedAs exposedAs = getClass().getAnnotation(ExposedAs.class);
-    if (exposedAs == null) {
-      throw new RuntimeException(getClass() + " is not exposed.");
-    }
-    return exposedAs.value()[0];
-  }
-
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
@@ -83,10 +71,9 @@ public class KlonObject extends Exception
 
   private boolean contains(Collection<KlonObject> collection, KlonObject object) {
     boolean found = false;
-    int target = System.identityHashCode(object);
     Iterator<KlonObject> iterator = collection.iterator();
     while (!found && iterator.hasNext()) {
-      found = target == System.identityHashCode(iterator.next());
+      found = object == iterator.next();
     }
     return found;
   }
@@ -567,7 +554,7 @@ public class KlonObject extends Exception
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs({"or", "||", "else", "elseIf", "ifNil", "activate"})
+  @ExposedAs({"or", "||", "else", "elseIf", "ifNil"})
   public static KlonObject mirror(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     return receiver;

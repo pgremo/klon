@@ -34,23 +34,26 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
   protected void childStandardMessage(Production node, Node child)
       throws ParseException {
     try {
-      KlonMessage message = (KlonMessage) node.getValue(0);
-      if (message == null) {
-        message = KlonMessage.newMessage(root);
-        node.addValue(message);
+      KlonMessage result = (KlonMessage) node.getValue(0);
+      if (result == null) {
+        result = KlonMessage.newMessage(root);
+        node.addValue(result);
         Object type = child.getValue(1);
         node.addValue(type);
         KlonObject subject = (KlonObject) child.getValue(0);
         if (type.equals(IDENTIFIER) || type.equals(OPERATOR)) {
-          message.setSelector(subject);
+          result.setSelector(subject);
         } else {
-          message.setLiteral(subject);
+          result.setLiteral(subject);
         }
+        Message message = (Message) result.getData();
+        message.setLine(node.getStartLine());
+        message.setColumn(node.getStartColumn());
       }
 
       if (child.getId() == GROUP) {
         for (KlonMessage arg : (Iterable<KlonMessage>) child.getValue(2)) {
-          message.addArgument(arg);
+          result.addArgument(arg);
         }
       }
 
@@ -58,13 +61,13 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
         KlonMessage attached = (KlonMessage) child.getChildAt(0)
           .getValue(0);
         if ((Integer) node.getValue(1) == OPERATOR
-            && message.getArgumentCount() == 0) {
-          message.addArgument(attached);
+            && result.getArgumentCount() == 0) {
+          result.addArgument(attached);
           KlonMessage newAttached = attached.getAttached();
           attached.setAttached(null);
           attached = newAttached;
         }
-        message.setAttached(attached);
+        result.setAttached(attached);
       }
     } catch (Exception e) {
       throw new ParseException(node.getId(), e.getMessage(),
@@ -103,10 +106,13 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       KlonMessage identifier = KlonMessage.newMessage(root);
       identifier.setLiteral(slotName);
       KlonMessage result = KlonMessage.newMessage(root);
-      result.setSelector((KlonObject) node.getChildAt(1)
+      Message message = (Message) result.getData();
+      message.setSelector((KlonObject) node.getChildAt(1)
         .getValue(0));
-      result.addArgument(identifier);
-      result.addArgument(attached);
+      message.addArgument(identifier);
+      message.addArgument(attached);
+      message.setLine(node.getStartLine());
+      message.setColumn(node.getStartColumn());
       node.addValue(result);
       return node;
     } catch (Exception e) {

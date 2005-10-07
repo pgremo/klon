@@ -44,35 +44,25 @@ public class State implements Serializable {
 
     KlonObject object = new KlonObject(this);
     root = object.clone();
-    KlonObject prototypes = object.clone();
-    root.setSlot("Klon", root);
-    root.setSlot("Prototypes", prototypes);
-    prototypes.setSlot(object.getName(), object);
     root.bind(object);
-    root.bind(prototypes);
+    root.setSlot("Klon", root);
+
     object.bind(root);
 
+    KlonObject prototypes = object.clone();
+    root.bind(prototypes);
+    root.setSlot("Prototypes", prototypes);
+    prototypes.setSlot(getName(KlonObject.class), object);
+
     KlonObject string = new KlonString(this);
-    prototypes.setSlot(string.getName(), string);
+    prototypes.setSlot(getName(KlonString.class), string);
 
     KlonObject nativeMethod = new KlonNativeMethod(this);
-    prototypes.setSlot(nativeMethod.getName(), nativeMethod);
+    prototypes.setSlot(getName(KlonNativeMethod.class), nativeMethod);
 
-    string.configure(root);
-    nativeMethod.configure(root);
-    object.configure(root);
-
-    nilObject = new KlonNil(this);
-    prototypes.setSlot(nilObject.getName(), nilObject);
-    nilObject.configure(root);
-
-    voidObject = new KlonVoid(this);
-    prototypes.setSlot(voidObject.getName(), voidObject);
-    voidObject.configure(root);
-
-    localsObject = new KlonLocals(this);
-    prototypes.setSlot(localsObject.getName(), localsObject);
-    localsObject.configure(root);
+    Configurator.configure(root, string);
+    Configurator.configure(root, nativeMethod);
+    Configurator.configure(root, object);
 
     Class[] types = new Class[]{
         KlonFunction.class,
@@ -81,18 +71,25 @@ public class State implements Serializable {
         KlonException.class,
         KlonFile.class,
         KlonList.class,
+        KlonLocals.class,
         KlonMap.class,
         KlonMessage.class,
+        KlonNil.class,
         KlonNumber.class,
         KlonImporter.class,
         KlonRandom.class,
-        KlonStore.class};
+        KlonStore.class,
+        KlonVoid.class};
     for (Class<? extends Object> current : types) {
       Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
       KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
-      prototypes.setSlot(prototype.getName(), prototype);
-      prototype.configure(root);
+      prototypes.setSlot(getName(current), prototype);
+      Configurator.configure(root, prototype);
     }
+
+    nilObject = root.getSlot("Nil");
+    voidObject = root.getSlot("Void");
+    localsObject = root.getSlot("Locals");
 
     KlonObject properties = object.clone();
     for (Map.Entry<Object, Object> current : System.getProperties()
@@ -120,6 +117,14 @@ public class State implements Serializable {
     asString = KlonMessage.newMessageFromString(root, "asString");
     init = KlonMessage.newMessageFromString(root, "?init");
 
+  }
+
+  private static String getName(Class<? extends Object> type) {
+    ExposedAs exposedAs = type.getAnnotation(ExposedAs.class);
+    if (exposedAs == null) {
+      throw new RuntimeException(type + " is not exposed.");
+    }
+    return exposedAs.value()[0];
   }
 
   public String[] getArguments() {

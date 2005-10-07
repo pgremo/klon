@@ -30,7 +30,7 @@ public class KlonImporter extends KlonObject {
       Class type = Class.forName(typeName);
       Constructor constructor = type.getDeclaredConstructor(new Class[]{State.class});
       KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{receiver.getState()});
-      prototype.configure(context);
+      Configurator.configure(context, prototype);
       return prototype;
     } catch (KlonObject e) {
       throw e;

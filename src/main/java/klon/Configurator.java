@@ -2,6 +2,7 @@ package klon;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 public final class Configurator {
@@ -36,6 +37,10 @@ public final class Configurator {
         String identity = "'" + current.getName() + "' in "
             + current.getDeclaringClass() + " exposed as '"
             + Arrays.toString(exposedAs.value()) + "'";
+        if (!Modifier.isStatic(current.getModifiers())) {
+          throw new IllegalArgumentException(identity + " must be static "
+              + KlonObject.class + ".");
+        }
         if (!KlonObject.class.equals(current.getReturnType())) {
           throw new IllegalArgumentException(identity
               + " must have a return type of " + KlonObject.class + ".");
@@ -86,6 +91,13 @@ public final class Configurator {
     for (Field current : type.getDeclaredFields()) {
       ExposedAs exposedAs = current.getAnnotation(ExposedAs.class);
       if (exposedAs != null) {
+        String identity = "'" + current.getName() + "' in "
+            + current.getDeclaringClass() + " exposed as '"
+            + Arrays.toString(exposedAs.value()) + "'";
+        if (!Modifier.isStatic(current.getModifiers())) {
+          throw new IllegalArgumentException(identity + " must be static "
+              + KlonObject.class + ".");
+        }
         Object value = current.get(null);
         KlonObject object = null;
         if (value == null) {

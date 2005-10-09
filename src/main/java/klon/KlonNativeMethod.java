@@ -16,7 +16,7 @@ public class KlonNativeMethod extends KlonObject {
   public static final Class[] PARAMETER_TYPES = new Class[]{
       KlonObject.class,
       KlonObject.class,
-      KlonMessage.class};
+      KlonObject.class};
   public static final Class[] EXCEPTIONS_TYPE = new Class[]{KlonObject.class};
 
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
@@ -71,7 +71,7 @@ public class KlonNativeMethod extends KlonObject {
   @SuppressWarnings("unchecked")
   @Override
   public KlonObject activate(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonObject result = this;
     Method value = (Method) getData();
     if (value != null) {

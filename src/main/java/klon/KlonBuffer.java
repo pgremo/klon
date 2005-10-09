@@ -48,7 +48,7 @@ public class KlonBuffer extends KlonObject {
 
   @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonObject result;
     try {
       Buffer buffer = (Buffer) receiver.getData();
@@ -61,7 +61,7 @@ public class KlonBuffer extends KlonObject {
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return KlonString.newString(receiver, new String(
       ((Buffer) receiver.getData()).toString()));
   }

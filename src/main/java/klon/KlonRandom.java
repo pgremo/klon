@@ -41,7 +41,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
         message, 0).longValue());
@@ -50,7 +50,7 @@ public class KlonRandom extends KlonObject {
 
   @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     double result = ((Random) receiver.getData()).nextDouble();
     int count = KlonMessage.getArgumentCount(message);
     if (count > 0) {

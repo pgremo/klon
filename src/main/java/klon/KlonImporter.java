@@ -23,7 +23,7 @@ public class KlonImporter extends KlonObject {
 
   @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     try {
       KlonMessage.assertArgumentCount(message, 2);
       String typeName = KlonString.evalAsString(receiver, message, 1);

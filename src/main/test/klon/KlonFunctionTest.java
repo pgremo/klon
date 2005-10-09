@@ -13,7 +13,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testCreate() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "setter := function(a,self result := a)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -34,7 +34,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testActivatePrototype() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "Function");
+    KlonObject message = KlonMessage.newMessageFromString(object, "Function");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
 
@@ -45,7 +45,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testInvalid() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "setter := function(\"a\",self result := a)");
     try {
       KlonMessage.eval(message, object, object);
@@ -57,7 +57,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testInsuficientArguments() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "setter := function(a,b,self result := a + b)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -76,7 +76,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testIfTrue() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "function(1 == 1) ifTrue(13)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -90,7 +90,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testIfFalse() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "function(1 == 12) ifFalse(13)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -104,7 +104,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testWhileTrue() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "a := 0; function(a < 10) whileTrue(a = a + 1)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -113,7 +113,7 @@ public class KlonFunctionTest extends TestCase {
   }
 
   public void testWhileFalse() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "a := 20; function(a < 10) whileFalse(a = a - 1)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);

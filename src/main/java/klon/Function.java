@@ -8,10 +8,10 @@ public class Function implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 8908253496842815003L;
   private List<KlonObject> parameters;
-  private KlonMessage message;
+  private KlonObject message;
   private KlonObject scope;
 
-  public Function(List<KlonObject> parameters, KlonMessage message) {
+  public Function(List<KlonObject> parameters, KlonObject message) {
     this.parameters = parameters;
     this.message = message;
   }
@@ -20,11 +20,11 @@ public class Function implements Serializable, Cloneable {
     return parameters;
   }
 
-  public KlonMessage getMessage() {
+  public KlonObject getMessage() {
     return message;
   }
 
-  public void setMessage(KlonMessage message) {
+  public void setMessage(KlonObject message) {
     this.message = message;
   }
 
@@ -49,21 +49,19 @@ public class Function implements Serializable, Cloneable {
       if (i > 0) {
         result.append(", ");
       }
-      result.append(parameters.get(i)
-        .getData());
+      result.append(parameters.get(i).getData());
     }
     if (parameters.size() > 0) {
       result.append(", ");
     }
-    result.append(message.getData())
-      .append(")");
+    result.append(message.getData()).append(")");
     return result.toString();
   }
 
   @Override
   public Object clone() {
     Function result = new Function(new ArrayList<KlonObject>(parameters),
-      (KlonMessage) message.clone());
+        message.clone());
     result.setScope(scope);
     return result;
   }

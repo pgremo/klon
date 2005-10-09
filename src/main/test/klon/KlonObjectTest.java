@@ -13,7 +13,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testSlotOperations() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Account := 1");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -30,7 +30,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testUpdateNonSlot() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "dummy = 1");
+    KlonObject message = KlonMessage.newMessageFromString(object, "dummy = 1");
     try {
       KlonMessage.eval(message, object, object);
       fail("expected exception");
@@ -40,7 +40,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForIncrement() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := \"\"; for(a,1,10,total = total + \" \" + a); total");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -48,7 +48,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForDecrement() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := \"\"; for(a,10,1,total = total + \" \" + a); total");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -56,7 +56,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForStep() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := \"\"; for(a,10,1,-2,total = total + \" \" + a); total");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -64,7 +64,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testForEqual() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := \"\"; for(a,10,10,total = total + \" \" + a); total");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -72,7 +72,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testAndNonNil() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Object and Object");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -80,7 +80,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testAndNil() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Object and Nil");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -88,7 +88,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testOrNonNil() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Object or Object");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -96,7 +96,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testOrNil() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Object or Nil");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -104,7 +104,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testWhile() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := 0; while(total < 10, total = total + 1)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -112,7 +112,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testIf() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "total := 0; if(total == 0, total = 10)");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -125,7 +125,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testCondition() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Thing := Object clone; Thing total := 10; Thing ?total");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
@@ -138,7 +138,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testGreaterThan() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "3 > 2");
+    KlonObject message = KlonMessage.newMessageFromString(object, "3 > 2");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
@@ -148,7 +148,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testGreaterThanEquals() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "2 >= 2");
+    KlonObject message = KlonMessage.newMessageFromString(object, "2 >= 2");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 
@@ -162,7 +162,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testIsEqual() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "2 == 3");
+    KlonObject message = KlonMessage.newMessageFromString(object, "2 == 3");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(KlonNil.newNil(object), value);
 
@@ -172,7 +172,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testLessThan() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "2 < 3");
+    KlonObject message = KlonMessage.newMessageFromString(object, "2 < 3");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(KlonNumber.newNumber(object, 3D), value);
 
@@ -182,7 +182,7 @@ public class KlonObjectTest extends TestCase {
   }
 
   public void testLessThanEquals() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "2 <= 2");
+    KlonObject message = KlonMessage.newMessageFromString(object, "2 <= 2");
     KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(KlonNumber.newNumber(object, 2D), value);
 

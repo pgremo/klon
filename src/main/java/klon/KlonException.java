@@ -9,7 +9,7 @@ public class KlonException extends KlonObject {
   private static final long serialVersionUID = -6012596192533993069L;
 
   public static KlonObject newException(KlonObject root, String name,
-      String description, KlonMessage message) throws KlonObject {
+      String description, KlonObject message) throws KlonObject {
     KlonObject result = root.getSlot("Exception").clone();
     if (name != null) {
       result.setSlot("name", KlonString.newString(root, name));
@@ -40,7 +40,7 @@ public class KlonException extends KlonObject {
 
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
     throw newException(receiver, KlonString.evalAsString(context, message, 0),
         KlonString.evalAsString(context, message, 1), message);
@@ -48,7 +48,7 @@ public class KlonException extends KlonObject {
 
   @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
-      KlonObject context, KlonMessage message) throws KlonObject {
+      KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
     int index = 0;
     KlonObject result = receiver;
@@ -68,7 +68,7 @@ public class KlonException extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonObject result;
     KlonObject name = receiver.getSlot("name");
     KlonObject description = receiver.getSlot("description");

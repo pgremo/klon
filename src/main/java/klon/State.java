@@ -14,8 +14,8 @@ public class State implements Serializable {
   private WriteListener writeListener;
   private String[] arguments;
   private KlonObject root;
-  private KlonMessage asString;
-  private KlonMessage init;
+  private KlonObject asString;
+  private KlonObject init;
   private KlonObject nilObject;
   private KlonObject voidObject;
   private KlonObject localsObject;
@@ -137,11 +137,11 @@ public class State implements Serializable {
     return localsObject;
   }
 
-  public KlonMessage getAsString() {
+  public KlonObject getAsString() {
     return asString;
   }
 
-  public KlonMessage getInit() {
+  public KlonObject getInit() {
     return init;
   }
 

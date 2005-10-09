@@ -25,7 +25,7 @@ public class KlonVoid extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return receiver;
   }
 

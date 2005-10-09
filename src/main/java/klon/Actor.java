@@ -17,9 +17,9 @@ public class Actor implements Runnable {
     while (!messages.isEmpty()) {
       Future current = messages.poll();
       try {
-        KlonMessage message = current.message();
+        KlonObject message = current.message();
         KlonObject receiver = current.receiver();
-        current.setResult(KlonMessage.eval(message, receiver, state.getRoot()));
+        current.setResult(KlonObject.eval(message, receiver, state.getRoot()));
       } catch (KlonObject e) {
         current.setError(e);
       }

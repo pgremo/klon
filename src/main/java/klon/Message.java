@@ -10,9 +10,9 @@ public class Message implements Serializable, Cloneable {
   private static final long serialVersionUID = 735141555296332120L;
   private KlonObject selector;
   private KlonObject literal;
-  private List<KlonMessage> arguments;
-  private KlonMessage attached;
-  private KlonMessage next;
+  private List<KlonObject> arguments;
+  private KlonObject attached;
+  private KlonObject next;
   private int line;
   private int column;
 
@@ -27,22 +27,22 @@ public class Message implements Serializable, Cloneable {
     return arguments == null ? 0 : arguments.size();
   }
 
-  public void addArgument(KlonMessage message) {
+  public void addArgument(KlonObject message) {
     if (arguments == null) {
-      arguments = new ArrayList<KlonMessage>();
+      arguments = new ArrayList<KlonObject>();
     }
     arguments.add(message);
   }
 
-  public KlonMessage getArgument(int index) {
+  public KlonObject getArgument(int index) {
     return arguments == null ? null : arguments.get(index);
   }
 
-  public KlonMessage getAttached() {
+  public KlonObject getAttached() {
     return attached;
   }
 
-  public void setAttached(KlonMessage attached) {
+  public void setAttached(KlonObject attached) {
     this.attached = attached;
   }
 
@@ -54,11 +54,11 @@ public class Message implements Serializable, Cloneable {
     this.literal = literal;
   }
 
-  public KlonMessage getNext() {
+  public KlonObject getNext() {
     return next;
   }
 
-  public void setNext(KlonMessage next) {
+  public void setNext(KlonObject next) {
     this.next = next;
   }
 
@@ -90,7 +90,7 @@ public class Message implements Serializable, Cloneable {
   public Object clone() {
     Message result = new Message();
     if (arguments != null) {
-      for (KlonMessage current : arguments) {
+      for (KlonObject current : arguments) {
         result.addArgument(current);
       }
     }
@@ -125,7 +125,7 @@ public class Message implements Serializable, Cloneable {
   private void argumentsToString(StringBuilder result) {
     if (arguments != null && arguments.size() > 0) {
       result.append("(");
-      Iterator<KlonMessage> iterator = arguments.iterator();
+      Iterator<KlonObject> iterator = arguments.iterator();
       while (iterator.hasNext()) {
         result.append(iterator.next()
           .getData());

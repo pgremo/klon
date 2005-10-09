@@ -30,7 +30,7 @@ public class KlonParserTest extends TestCase {
         {"0x0F", "15"},
         {"0XeE", "238"}};
     for (String[] current : expected) {
-      KlonMessage message = KlonMessage.newMessageFromString(object, current[0]);
+      KlonObject message = KlonMessage.newMessageFromString(object, current[0]);
       assertNotNull(message);
       assertEquals(current[1], message.getData()
         .toString());
@@ -43,7 +43,7 @@ public class KlonParserTest extends TestCase {
         {"\"\\\"abc\\\"\"", "\"\"abc\"\""},
         {"\"\\\"\"", "\"\"\""}};
     for (String[] current : expected) {
-      KlonMessage message = KlonMessage.newMessageFromString(object, current[0]);
+      KlonObject message = KlonMessage.newMessageFromString(object, current[0]);
       assertNotNull(message);
       assertEquals(current[1], message.getData()
         .toString());
@@ -51,7 +51,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testSuperOperator() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "super(do stuff)");
     assertNotNull(message);
     assertEquals("super(do stuff)", message.getData()
@@ -59,7 +59,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testHelloWorld() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "\"Hello world!\\n\" print");
     assertNotNull(message);
     assertEquals("\"Hello world!\n\" print", message.getData()
@@ -67,7 +67,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testCloneAssignment() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "Account := Object clone\nAccount balance := 0");
     assertNotNull(message);
     assertEquals(
@@ -77,7 +77,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testMessage() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "do(\"something\", 1)");
     assertNotNull(message);
     assertEquals("do(\"something\", 1)", message.getData()
@@ -85,28 +85,28 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testOperations() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "1 + 2 + 3");
+    KlonObject message = KlonMessage.newMessageFromString(object, "1 + 2 + 3");
     assertNotNull(message);
     assertEquals("1 +(2) +(3)", message.getData()
       .toString());
   }
 
   public void testBraceGrouping() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "{2 * 3}");
+    KlonObject message = KlonMessage.newMessageFromString(object, "{2 * 3}");
     assertNotNull(message);
     assertEquals("brace(2 *(3))", message.getData()
       .toString());
   }
 
   public void testBracketGrouping() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "[2 * 3]");
+    KlonObject message = KlonMessage.newMessageFromString(object, "[2 * 3]");
     assertNotNull(message);
     assertEquals("bracket(2 *(3))", message.getData()
       .toString());
   }
 
   public void testGroupingEnd() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "1 + (2 * 3)");
     assertNotNull(message);
     assertEquals("1 +(2 *(3))", message.getData()
@@ -114,7 +114,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testGroupingBegin() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object,
+    KlonObject message = KlonMessage.newMessageFromString(object,
       "(1 + 2) * 3");
     assertNotNull(message);
     assertEquals("(1 +(2)) *(3)", message.getData()
@@ -126,7 +126,7 @@ public class KlonParserTest extends TestCase {
     char[] data = new char[(int) file.length()];
     Reader input = new FileReader(file);
     input.read(data);
-    KlonMessage message = KlonMessage.newMessageFromString(object, new String(
+    KlonObject message = KlonMessage.newMessageFromString(object, new String(
       data));
     assertNotNull(message);
   }
@@ -136,7 +136,7 @@ public class KlonParserTest extends TestCase {
     char[] data = new char[(int) file.length()];
     Reader input = new FileReader(file);
     input.read(data);
-    KlonMessage message = KlonMessage.newMessageFromString(object, new String(
+    KlonObject message = KlonMessage.newMessageFromString(object, new String(
       data));
     assertNotNull(message);
   }
@@ -146,7 +146,7 @@ public class KlonParserTest extends TestCase {
     char[] data = new char[(int) file.length()];
     Reader input = new FileReader(file);
     input.read(data);
-    KlonMessage message = KlonMessage.newMessageFromString(object, new String(
+    KlonObject message = KlonMessage.newMessageFromString(object, new String(
       data));
     assertNotNull(message);
   }
@@ -156,7 +156,7 @@ public class KlonParserTest extends TestCase {
     char[] data = new char[(int) file.length()];
     Reader input = new FileReader(file);
     input.read(data);
-    KlonMessage message = KlonMessage.newMessageFromString(object, new String(
+    KlonObject message = KlonMessage.newMessageFromString(object, new String(
       data));
     assertNotNull(message);
     assertEquals("setSlot(\"a\", b)", message.getData()
@@ -164,7 +164,7 @@ public class KlonParserTest extends TestCase {
   }
 
   public void testNoArguments() throws Exception {
-    KlonMessage message = KlonMessage.newMessageFromString(object, "do(\n\n\t)");
+    KlonObject message = KlonMessage.newMessageFromString(object, "do(\n\n\t)");
     assertNotNull(message);
     assertEquals("do", message.getData()
       .toString());

@@ -73,11 +73,11 @@ public class KlonMessage extends KlonObject {
     return result;
   }
 
-  public static void setAttached(KlonObject message, KlonMessage attached) {
+  public static void setAttached(KlonObject message, KlonObject attached) {
     ((Message) message.getData()).setAttached(attached);
   }
 
-  public static KlonMessage getAttached(KlonObject message) {
+  public static KlonObject getAttached(KlonObject message) {
     return ((Message) message.getData()).getAttached();
   }
 
@@ -89,11 +89,11 @@ public class KlonMessage extends KlonObject {
     return ((Message) message.getData()).getLiteral();
   }
 
-  public static void setNext(KlonObject message, KlonMessage selector) {
+  public static void setNext(KlonObject message, KlonObject selector) {
     ((Message) message.getData()).setNext(selector);
   }
 
-  public static KlonMessage getNext(KlonObject message) {
+  public static KlonObject getNext(KlonObject message) {
     return ((Message) message.getData()).getNext();
   }
 
@@ -109,11 +109,11 @@ public class KlonMessage extends KlonObject {
     return ((Message) message.getData()).getArgumentCount();
   }
 
-  public static void addArgument(KlonObject message, KlonMessage argument) {
+  public static void addArgument(KlonObject message, KlonObject argument) {
     ((Message) message.getData()).addArgument(argument);
   }
 
-  public static KlonMessage getArgument(KlonObject message, int index) {
+  public static KlonObject getArgument(KlonObject message, int index) {
     return ((Message) message.getData()).getArgument(index);
   }
 
@@ -158,7 +158,7 @@ public class KlonMessage extends KlonObject {
 
   @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     String string = KlonString.evalAsString(receiver, message, 0);
     try {
@@ -170,7 +170,7 @@ public class KlonMessage extends KlonObject {
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return KlonString.newString(receiver, String.valueOf(receiver.getData()));
   }
 

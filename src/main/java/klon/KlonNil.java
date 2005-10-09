@@ -26,26 +26,26 @@ public class KlonNil extends KlonObject {
 
   @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return KlonString.newString(receiver, "");
   }
 
   @SuppressWarnings("unused")
   @ExposedAs({"and", "&&", "then"})
   public static KlonObject noop(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return receiver;
   }
 
   @ExposedAs({"elseIf"})
   public static KlonObject elseIf(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return KlonObject.ifBranch(receiver, context, message);
   }
 
   @ExposedAs({"or", "||"})
   public static KlonObject or(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject other = KlonMessage.evalArgument(message, context, 0);
     return KlonNil.newNil(receiver)
@@ -54,20 +54,20 @@ public class KlonNil extends KlonObject {
 
   @ExposedAs({"ifNil", "ifFalse", "else"})
   public static KlonObject eval(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return KlonMessage.evalArgument(message, context, 0);
   }
 
   @ExposedAs({"isNil", "ifTrue"})
   public static KlonObject isNil(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     return receiver.getSlot("Klon");
   }
 
   @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return receiver.equals(KlonMessage.evalArgument(message, context, 0))
         ? receiver.getSlot("Klon")
@@ -76,7 +76,7 @@ public class KlonNil extends KlonObject {
 
   @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return !receiver.equals(KlonMessage.evalArgument(message, context, 0))
         ? receiver.getSlot("Klon")
@@ -86,7 +86,7 @@ public class KlonNil extends KlonObject {
   @SuppressWarnings("unused")
   @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     receiver.getState()
       .write("");
     return KlonNil.newNil(receiver);

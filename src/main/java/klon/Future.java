@@ -4,11 +4,11 @@ public class Future {
 
   private Scheduler scheduler;
   private KlonObject receiver;
-  private KlonMessage message;
+  private KlonObject message;
   private KlonObject result;
   private KlonObject error;
 
-  public Future(Scheduler scheduler, KlonObject receiver, KlonMessage message) {
+  public Future(Scheduler scheduler, KlonObject receiver, KlonObject message) {
     this.scheduler = scheduler;
     this.receiver = receiver;
     this.message = message;
@@ -18,7 +18,7 @@ public class Future {
     return receiver;
   }
 
-  public KlonMessage message() {
+  public KlonObject message() {
     return message;
   }
 

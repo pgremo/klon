@@ -39,7 +39,7 @@ public class KlonLocals extends KlonObject {
 
   @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
     String name = KlonString.evalAsString(context, message, 0);
     KlonObject value = KlonMessage.evalArgument(message, context, 1);
@@ -53,7 +53,7 @@ public class KlonLocals extends KlonObject {
   @SuppressWarnings("unchecked")
   @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
-      KlonMessage message) throws KlonObject {
+      KlonObject message) throws KlonObject {
     KlonObject self = receiver.getSlot("self");
     if (self == null || self == receiver) {
       KlonObject.forward(receiver, context, message);

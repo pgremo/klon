@@ -28,14 +28,14 @@ public class KlonStoreTest extends TestCase {
   public void testOperations() throws Exception {
     KlonMessage message = KlonMessage.newMessageFromString(object,
       "Account:=Object clone;Store path:=\"testdump\";Store store");
-    KlonObject value = message.eval(object, object);
+    KlonObject value = KlonMessage.eval(message, object, object);
     assertEquals(object.getSlot("Store"), value);
 
     object = object.getState()
       .getRoot();
     message = KlonMessage.newMessageFromString(object,
       "Store path:=\"testdump\";Store load");
-    KlonObject savedValue = message.eval(object, object);
+    KlonObject savedValue = KlonMessage.eval(message, object, object);
     assertNotNull(savedValue.getSlot("Account"));
   }
 

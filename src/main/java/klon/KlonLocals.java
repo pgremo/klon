@@ -40,9 +40,9 @@ public class KlonLocals extends KlonObject {
   @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(2);
+    KlonMessage.assertArgumentCount(message, 2);
     String name = KlonString.evalAsString(context, message, 0);
-    KlonObject value = message.evalArgument(context, 1);
+    KlonObject value = KlonMessage.evalArgument(message, context, 1);
     KlonObject result = receiver.updateSlot(name, value);
     if (result == null) {
       forward(receiver, context, message);

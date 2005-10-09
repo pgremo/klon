@@ -15,7 +15,7 @@ public class KlonStringTest extends TestCase {
   public void testAdd() throws Exception {
     KlonMessage message = KlonMessage.newMessageFromString(object,
       "\"Hello\" + \" \" + \"World\"");
-    KlonObject value = message.eval(object, object);
+    KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
     assertEquals("\"Hello World\"", value.toString());
   }
@@ -23,12 +23,12 @@ public class KlonStringTest extends TestCase {
   public void testIsEqual() throws Exception {
     KlonMessage message = KlonMessage.newMessageFromString(object,
       "\"Hello\" == \"World\"");
-    KlonObject value = message.eval(object, object);
+    KlonObject value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
     assertEquals(KlonNil.newNil(object), value);
 
     message = KlonMessage.newMessageFromString(object, "\"Hello\" == \"Hello\"");
-    value = message.eval(object, object);
+    value = KlonMessage.eval(message, object, object);
     assertNotNull(value);
     assertEquals("\"Hello\"", value.toString());
   }

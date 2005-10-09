@@ -10,8 +10,7 @@ public class KlonException extends KlonObject {
 
   public static KlonObject newException(KlonObject root, String name,
       String description, KlonMessage message) throws KlonObject {
-    KlonObject result = root.getSlot("Exception")
-      .clone();
+    KlonObject result = root.getSlot("Exception").clone();
     if (name != null) {
       result.setSlot("name", KlonString.newString(root, name));
     }
@@ -19,7 +18,7 @@ public class KlonException extends KlonObject {
       result.setSlot("description", KlonString.newString(root, description));
     }
     result.setSlot("stackTrace", KlonList.newList(root,
-      new ArrayList<KlonObject>()));
+        new ArrayList<KlonObject>()));
     return result;
   }
 
@@ -42,26 +41,25 @@ public class KlonException extends KlonObject {
   @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(2);
+    KlonMessage.assertArgumentCount(message, 2);
     throw newException(receiver, KlonString.evalAsString(context, message, 0),
-      KlonString.evalAsString(context, message, 1), message);
+        KlonString.evalAsString(context, message, 1), message);
   }
 
   @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
       KlonObject context, KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(2);
+    KlonMessage.assertArgumentCount(message, 2);
     int index = 0;
     KlonObject result = receiver;
-    KlonObject target = message.evalArgument(context, index++);
+    KlonObject target = KlonMessage.evalArgument(message, context, index++);
     if (receiver.isBound(target)) {
       KlonObject scope = context.clone();
-      if (message.getArgumentCount() == 3) {
-        scope.setSlot((String) message.getArgument(index++)
-          .getSelector()
-          .getData(), receiver);
+      if (KlonMessage.getArgumentCount(message) == 3) {
+        scope.setSlot((String) KlonMessage.getSelector(
+            KlonMessage.getArgument(message, index++)).getData(), receiver);
       }
-      message.evalArgument(scope, index);
+      KlonMessage.evalArgument(message, scope, index);
       result = KlonVoid.newVoid(receiver, receiver);
     }
     return result;
@@ -88,10 +86,7 @@ public class KlonException extends KlonObject {
       buffer.append("\n");
       KlonObject stackTrace = receiver.getSlot("stackTrace");
       for (KlonObject current : (Iterable<KlonObject>) stackTrace.getData()) {
-        buffer.append(" at ")
-          .append(current.getData()
-            .toString())
-          .append("\n");
+        buffer.append(" at ").append(current.getData().toString()).append("\n");
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

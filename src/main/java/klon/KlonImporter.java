@@ -25,7 +25,7 @@ public class KlonImporter extends KlonObject {
   public static KlonObject load(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     try {
-      message.assertArgumentCount(2);
+      KlonMessage.assertArgumentCount(message, 2);
       String typeName = KlonString.evalAsString(receiver, message, 1);
       Class type = Class.forName(typeName);
       Constructor constructor = type.getDeclaredConstructor(new Class[]{State.class});

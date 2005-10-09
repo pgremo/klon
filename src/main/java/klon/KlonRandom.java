@@ -42,10 +42,9 @@ public class KlonRandom extends KlonObject {
   @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
-    message.assertArgumentCount(1);
+    KlonMessage.assertArgumentCount(message, 1);
     ((Random) receiver.getData()).setSeed(KlonNumber.evalAsNumber(context,
-      message, 0)
-      .longValue());
+        message, 0).longValue());
     return receiver;
   }
 
@@ -53,7 +52,7 @@ public class KlonRandom extends KlonObject {
   public static KlonObject next(KlonObject receiver, KlonObject context,
       KlonMessage message) throws KlonObject {
     double result = ((Random) receiver.getData()).nextDouble();
-    int count = message.getArgumentCount();
+    int count = KlonMessage.getArgumentCount(message);
     if (count > 0) {
       double max = KlonNumber.evalAsNumber(context, message, count - 1);
       double min = 0;

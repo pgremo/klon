@@ -21,7 +21,7 @@ public class State implements Serializable {
   private KlonObject localsObject;
 
   private State() throws Exception {
-    this(new String[]{});
+    this(new String[] {});
   }
 
   public State(String[] arguments) throws Exception {
@@ -30,14 +30,12 @@ public class State implements Serializable {
     Properties klonProperties = new Properties();
     Properties currentProperties = new Properties();
     currentProperties.load(getClass().getResourceAsStream(
-      "/klon/version.properties"));
+        "/klon/version.properties"));
     currentProperties.load(getClass().getResourceAsStream(
-      "/klon/klon.properties"));
+        "/klon/klon.properties"));
     for (Map.Entry<Object, Object> current : currentProperties.entrySet()) {
-      String name = "klon." + current.getKey()
-        .toString();
-      klonProperties.put(name, current.getValue()
-        .toString());
+      String name = "klon." + current.getKey().toString();
+      klonProperties.put(name, current.getValue().toString());
     }
     klonProperties.putAll(System.getProperties());
     System.setProperties(klonProperties);
@@ -64,25 +62,16 @@ public class State implements Serializable {
     Configurator.configure(root, nativeMethod);
     Configurator.configure(root, object);
 
-    Class[] types = new Class[]{
-        KlonFunction.class,
-        KlonBuffer.class,
-        KlonDirectory.class,
-        KlonException.class,
-        KlonFile.class,
-        KlonList.class,
-        KlonLocals.class,
-        KlonMap.class,
-        KlonMessage.class,
-        KlonNil.class,
-        KlonNumber.class,
-        KlonImporter.class,
-        KlonRandom.class,
-        KlonStore.class,
-        KlonVoid.class};
+    Class[] types = new Class[] { KlonFunction.class, KlonBuffer.class,
+        KlonDirectory.class, KlonException.class, KlonFile.class,
+        KlonList.class, KlonLocals.class, KlonMap.class, KlonMessage.class,
+        KlonNil.class, KlonNumber.class, KlonImporter.class, KlonRandom.class,
+        KlonStore.class, KlonVoid.class };
     for (Class<? extends Object> current : types) {
-      Constructor constructor = current.getDeclaredConstructor(new Class[]{State.class});
-      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{this});
+      Constructor constructor = current
+          .getDeclaredConstructor(new Class[] { State.class });
+      KlonObject prototype = (KlonObject) constructor
+          .newInstance(new Object[] { this });
       prototypes.setSlot(getName(current), prototype);
       Configurator.configure(root, prototype);
     }
@@ -92,19 +81,16 @@ public class State implements Serializable {
     localsObject = root.getSlot("Locals");
 
     KlonObject properties = object.clone();
-    for (Map.Entry<Object, Object> current : System.getProperties()
-      .entrySet()) {
-      properties.setSlot(current.getKey()
-        .toString(), KlonString.newString(root, current.getValue()
-        .toString()));
+    for (Map.Entry<Object, Object> current : System.getProperties().entrySet()) {
+      properties.setSlot(current.getKey().toString(), KlonString.newString(
+          root, current.getValue().toString()));
     }
     root.setSlot("Properties", properties);
 
     KlonObject environment = object.clone();
-    for (Map.Entry<String, String> current : System.getenv()
-      .entrySet()) {
-      environment.setSlot(current.getKey(), KlonString.newString(root,
-        current.getValue()));
+    for (Map.Entry<String, String> current : System.getenv().entrySet()) {
+      environment.setSlot(current.getKey(), KlonString.newString(root, current
+          .getValue()));
     }
     root.setSlot("Environment", environment);
 
@@ -196,7 +182,7 @@ public class State implements Serializable {
   }
 
   public KlonObject doString(KlonObject target, String value) throws KlonObject {
-    return KlonMessage.newMessageFromString(root, value)
-      .eval(target, target);
+    return KlonMessage.eval(KlonMessage.newMessageFromString(root, value),
+        target, target);
   }
 }

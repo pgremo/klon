@@ -13,7 +13,8 @@ public class KlonFunction extends KlonObject {
 
   public static KlonObject newFunction(KlonObject root,
       List<KlonObject> parameters, KlonObject message) throws KlonObject {
-    KlonObject result = root.getSlot("Function").clone();
+    KlonObject result = root.getSlot("Function")
+      .clone();
     Function value = new Function(parameters, message);
     result.setData(value);
     return result;
@@ -58,12 +59,14 @@ public class KlonFunction extends KlonObject {
     if (value == null) {
       result = this;
     } else {
-      KlonObject scope = ((Function) getData()).getScope();
+      KlonObject scope = value.getScope();
       if (scope == null) {
         scope = receiver;
       }
 
-      KlonObject locals = receiver.getState().getLocalsObject().clone();
+      KlonObject locals = receiver.getState()
+        .getLocalsObject()
+        .clone();
 
       locals.setSlot("self", receiver);
       locals.setSlot("receiver", scope);
@@ -74,18 +77,18 @@ public class KlonFunction extends KlonObject {
       locals.setData(receiver.getData());
 
       List<KlonObject> parameters = value.getParameters();
-      int limit = Math.min(KlonMessage.getArgumentCount(message), parameters
-          .size());
-      int i = 0;
-      for (; i < limit; i++) {
-        locals.setSlot((String) parameters.get(i).getData(), KlonMessage
-            .evalArgument(message, context, i));
+      int limit = Math.min(KlonMessage.getArgumentCount(message),
+        parameters.size());
+      for (int i = 0; i < limit; i++) {
+        locals.setSlot((String) parameters.get(i)
+          .getData(), KlonMessage.evalArgument(message, context, i));
       }
       try {
-        result = KlonObject.eval(value.getMessage(), locals, locals);
+        result = KlonMessage.eval(value.getMessage(), locals, locals);
       } catch (KlonObject e) {
-        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
-            .newString(receiver, message.getData().toString()));
+        ((List<KlonObject>) e.getSlot("stackTrace")
+          .getData()).add(KlonString.newString(receiver, message.getData()
+          .toString()));
         throw e;
       }
     }
@@ -95,8 +98,8 @@ public class KlonFunction extends KlonObject {
   @ExposedAs("parameters")
   public static KlonObject parameters(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonList.newList(receiver, ((Function) receiver.getData())
-        .getParameters());
+    return KlonList.newList(receiver,
+      ((Function) receiver.getData()).getParameters());
   }
 
   @SuppressWarnings("unused")
@@ -112,7 +115,7 @@ public class KlonFunction extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     ((Function) receiver.getData()).setMessage(KlonMessage.getArgument(message,
-        0));
+      0));
     return receiver;
   }
 
@@ -122,9 +125,9 @@ public class KlonFunction extends KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject result = KlonNil.newNil(receiver);
     if (!result.equals(receiver.activate(context, context,
-        ((Function) (receiver.getData())).getMessage()))) {
-      result = KlonObject.eval(KlonMessage.getArgument(message, 0), context,
-          context);
+      ((Function) (receiver.getData())).getMessage()))) {
+      result = KlonMessage.eval(KlonMessage.getArgument(message, 0), context,
+        context);
     }
     return result;
   }
@@ -134,10 +137,10 @@ public class KlonFunction extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject result = KlonNil.newNil(receiver);
-    if (result.equals(receiver.activate(context, context, ((Function) (receiver
-        .getData())).getMessage()))) {
-      result = KlonObject.eval(KlonMessage.getArgument(message, 0), context,
-          context);
+    if (result.equals(receiver.activate(context, context,
+      ((Function) (receiver.getData())).getMessage()))) {
+      result = KlonMessage.eval(KlonMessage.getArgument(message, 0), context,
+        context);
     }
     return result;
   }
@@ -149,8 +152,8 @@ public class KlonFunction extends KlonObject {
     KlonObject nil = KlonNil.newNil(receiver);
     KlonObject code = KlonMessage.getArgument(message, 0);
     while (!nil.equals(receiver.activate(context, context,
-        ((Function) (receiver.getData())).getMessage()))) {
-      KlonObject.eval(code, context, context);
+      ((Function) (receiver.getData())).getMessage()))) {
+      KlonMessage.eval(code, context, context);
     }
     return nil;
   }
@@ -161,9 +164,9 @@ public class KlonFunction extends KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject nil = KlonNil.newNil(receiver);
     KlonObject code = KlonMessage.getArgument(message, 0);
-    while (nil.equals(receiver.activate(context, context, ((Function) (receiver
-        .getData())).getMessage()))) {
-      KlonObject.eval(code, context, context);
+    while (nil.equals(receiver.activate(context, context,
+      ((Function) (receiver.getData())).getMessage()))) {
+      KlonMessage.eval(code, context, context);
     }
     return nil;
   }
@@ -184,7 +187,7 @@ public class KlonFunction extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     ((Function) receiver.getData()).setScope(KlonMessage.evalArgument(message,
-        context, 0));
+      context, 0));
     return receiver;
   }
 

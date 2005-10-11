@@ -50,7 +50,7 @@ public class KlonString extends KlonObject {
     if (other instanceof KlonString) {
       result = ((String) getData()).compareTo((String) other.getData());
     } else {
-      result = hashCode() - other.hashCode();
+      result = super.compareTo(other);
     }
     return result;
   }

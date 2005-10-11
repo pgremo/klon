@@ -57,7 +57,7 @@ public class KlonNumber extends KlonObject {
     if (other instanceof KlonNumber) {
       result = ((Double) getData()).compareTo((Double) other.getData());
     } else {
-      result = hashCode() - other.hashCode();
+      result = super.compareTo(other);
     }
     return result;
   }

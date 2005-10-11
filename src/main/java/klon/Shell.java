@@ -16,7 +16,7 @@ public class Shell {
 
   public void process() throws IOException, KlonObject {
     state
-        .doString("writeLine(\"klon \", Properties klon.version, \".\", Properties klon.build)");
+        .doString("writeLine(Properties klon.name, \" \", Properties klon.specification, \".\", Properties klon.implementation)");
     while (!((ShellListener) state.getRoot().getState().getExitListener())
         .isExit()) {
       try {

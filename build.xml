@@ -178,7 +178,7 @@
 			<entry key="version" default="0.0" />
 			<entry key="build" default="0" type="int" operation="+" />
 		</propertyfile>
-		<!--		
+<!--		
 		<echo file="commit.txt">update to build.</echo>
 		<cvs output="result.txt">
 			<commandline>
@@ -215,7 +215,7 @@
 				<attribute name="Specification-Title" value="${ant.project.name}" />
 				<attribute name="Specification-Version" value="${version}" />
 				<attribute name="Implementation-Title" value="${ant.project.name}" />
-				<attribute name="Implementation-Version" value="${version}.${build}" />
+				<attribute name="Implementation-Version" value="${build}" />
 			</manifest>
 		</jar>
 	</target>

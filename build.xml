@@ -2,7 +2,6 @@
 
 	<property name="src" value="src/main/java" />
 	<property name="classes" value="target/classes" />
-	<property name="resource" value="src/main/resource" />
 	<property name="grammar" value="src/main/grammatica" />
 	<property name="grammar.classes" value="target/grammar-classes" />
 	<property name="test" value="src/main/test" />
@@ -46,7 +45,7 @@
 
 	<target name="grammar.generate.grammatica">
 		<grammatica grammar="${grammar}/klon.grammar">
-			<java dir="${grammar}" package="klon.grammar.grammatica" public="true" />
+			<java dir="${grammar}" package="klon" public="true" />
 		</grammatica>
 	</target>
 
@@ -78,9 +77,6 @@
 			<classpath refid="classpath" />
 			<src path="${src}" />
 		</javac>
-		<copy todir="${classes}">
-			<fileset dir="${resource}" includes="**/*.*" />
-		</copy>
 	</target>
 
 	<target name="junit.compile" depends="compile">
@@ -162,19 +158,17 @@
 
 	<target name="emma" depends="emma.compile, junit, emma.report" />
 
-	<mkdir dir="${resource}/${ant.project.name}" />
-
-	<available property="version.exists" file="${resource}/${ant.project.name}/version.properties" />
+	<available property="version.exists" file="version.properties" />
 
 	<target name="version.create" unless="${version.exists}">
-		<propertyfile file="${resource}/${ant.project.name}/version.properties">
+		<propertyfile file="version.properties">
 			<entry key="version" default="0.0" />
 			<entry key="build" default="0" />
 		</propertyfile>
 	</target>
 
 	<target name="version.update">
-		<propertyfile file="${resource}/${ant.project.name}/version.properties">
+		<propertyfile file="version.properties">
 			<entry key="version" default="0.0" />
 			<entry key="build" default="0" type="int" operation="+" />
 		</propertyfile>
@@ -185,7 +179,7 @@
 				<argument value="commit" />
 				<argument value="-m" />
 				<argument value="commit.txt" />
-				<argument value="${resource}/${ant.project.name}/version.properties" />
+				<argument value="version.properties" />
 			</commandline>
 		</cvs>
 		<delete failonerror="false" file="commit.txt" />
@@ -196,7 +190,7 @@
 	</target>
 
 	<target name="version.get" depends="version.create">
-		<property file="${resource}/${ant.project.name}/version.properties" />
+		<property file="version.properties" />
 	</target>
 
 	<target name="jar" depends="compile">

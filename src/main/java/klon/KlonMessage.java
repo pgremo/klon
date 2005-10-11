@@ -5,8 +5,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StringReader;
 
-import klon.grammar.grammatica.KlonParser;
-
 @ExposedAs("Message")
 @Bindings("Object")
 public class KlonMessage extends KlonObject {

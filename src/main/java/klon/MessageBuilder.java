@@ -3,8 +3,6 @@ package klon;
 import java.util.ArrayList;
 import java.util.List;
 
-import klon.grammar.grammatica.KlonAnalyzer;
-import klon.grammar.grammatica.KlonConstants;
 import net.percederberg.grammatica.parser.Node;
 import net.percederberg.grammatica.parser.ParseException;
 import net.percederberg.grammatica.parser.Production;
@@ -25,7 +23,7 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(next);
     } else {
       KlonMessage.setNext((KlonObject) node.getValue(node.getValueCount() - 1),
-          next);
+        next);
     }
     node.addValue(next);
   }
@@ -59,7 +57,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       }
 
       if (child.getId() == ATTACHED) {
-        KlonObject attached = (KlonObject) child.getChildAt(0).getValue(0);
+        KlonObject attached = (KlonObject) child.getChildAt(0)
+          .getValue(0);
         if ((Integer) node.getValue(1) == OPERATOR
             && KlonMessage.getArgumentCount(result) == 0) {
           KlonMessage.addArgument(result, attached);
@@ -70,8 +69,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
         KlonMessage.setAttached(result, attached);
       }
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -98,17 +97,17 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
   @Override
   protected Node exitSlotOperation(Production node) throws ParseException {
     try {
-      KlonObject slotName = KlonString.newString(root, ((Token) node
-          .getChildAt(0)).getImage());
-      KlonObject attached = (KlonObject) node
-          .getChildAt(2)
-            .getChildAt(0)
-            .getValue(0);
+      KlonObject slotName = KlonString.newString(root,
+        ((Token) node.getChildAt(0)).getImage());
+      KlonObject attached = (KlonObject) node.getChildAt(2)
+        .getChildAt(0)
+        .getValue(0);
       KlonObject identifier = KlonMessage.newMessage(root);
       KlonMessage.setLiteral(identifier, slotName);
       KlonObject result = KlonMessage.newMessage(root);
       Message message = (Message) result.getData();
-      message.setSelector((KlonObject) node.getChildAt(1).getValue(0));
+      message.setSelector((KlonObject) node.getChildAt(1)
+        .getValue(0));
       message.addArgument(identifier);
       message.addArgument(attached);
       message.setLine(node.getStartLine());
@@ -116,8 +115,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(result);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -133,8 +132,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(IDENTIFIER);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -145,8 +144,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(OPERATOR);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -156,15 +155,15 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       String image = node.getImage();
       if (image.startsWith("0x") || image.startsWith("0X")) {
         node.addValue(KlonNumber.newNumber(root, (double) Integer.parseInt(
-            image.substring(2), 16)));
+          image.substring(2), 16)));
       } else {
         node.addValue(KlonNumber.newNumber(root, Double.parseDouble(image)));
       }
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -202,8 +201,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(node.getId());
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
 
   }
@@ -214,8 +213,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(KlonString.newString(root, "setSlot"));
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -225,8 +224,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(KlonString.newString(root, "updateSlot"));
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -247,8 +246,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(IDENTIFIER);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -259,8 +258,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(IDENTIFIER);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 
@@ -271,8 +270,8 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
       node.addValue(IDENTIFIER);
       return node;
     } catch (Exception e) {
-      throw new ParseException(node.getId(), e.getMessage(), node
-          .getStartLine(), node.getStartColumn());
+      throw new ParseException(node.getId(), e.getMessage(),
+        node.getStartLine(), node.getStartColumn());
     }
   }
 

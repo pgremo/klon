@@ -39,7 +39,7 @@ public class KlonMap extends KlonObject {
     KlonObject result = new KlonMap(getState());
     result.bind(this);
     result.setData(new HashMap<KlonObject, KlonObject>(
-        (Map<KlonObject, KlonObject>) getData()));
+      (Map<KlonObject, KlonObject>) getData()));
     return result;
   }
 
@@ -74,8 +74,7 @@ public class KlonMap extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject key = KlonMessage.evalArgument(message, context, 0);
-    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData())
-        .get(key);
+    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData()).get(key);
     if (result == null) {
       result = KlonNil.newNil(receiver);
     }
@@ -129,12 +128,13 @@ public class KlonMap extends KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
     KlonObject result = KlonNil.newNil(receiver);
     String name = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 0)).getData();
+      KlonMessage.getArgument(message, 0))
+      .getData();
     String value = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 1)).getData();
+      KlonMessage.getArgument(message, 1))
+      .getData();
     KlonObject code = KlonMessage.getArgument(message, 2);
-    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver
-        .getData()).entrySet()) {
+    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver.getData()).entrySet()) {
       context.setSlot(name, current.getKey());
       context.setSlot(value, current.getValue());
       result = KlonMessage.eval(code, context, context);
@@ -146,19 +146,20 @@ public class KlonMap extends KlonObject {
   @ExposedAs("isEmpty")
   public static KlonObject isEmpty(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return ((Map) receiver.getData()).isEmpty() ? receiver : KlonNil
-        .newNil(receiver);
+    return ((Map) receiver.getData()).isEmpty()
+        ? receiver
+        : KlonNil.newNil(receiver);
   }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((Map) receiver.getData())
-        .size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((Map) receiver.getData()).size());
   }
 
-  @SuppressWarnings( { "unchecked", "unused" })
+  @SuppressWarnings({"unchecked", "unused"})
   @ExposedAs("clear")
   public static KlonObject clear(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
@@ -170,16 +171,16 @@ public class KlonMap extends KlonObject {
   @ExposedAs("keys")
   public static KlonObject keys(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .keySet()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).keySet()));
   }
 
   @SuppressWarnings("unchecked")
   @ExposedAs("values")
   public static KlonObject values(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .values()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).values()));
   }
 
   @SuppressWarnings("unchecked")
@@ -191,20 +192,19 @@ public class KlonMap extends KlonObject {
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      KlonObject stringMessage = receiver.getState().getAsString();
+      KlonObject stringMessage = receiver.getState()
+        .getAsString();
       StringBuilder buffer = new StringBuilder();
-      for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) primitive)
-          .entrySet()) {
+      for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) primitive).entrySet()) {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
         buffer.append(
-            KlonObject
-                .eval(stringMessage, current.getKey(), context)
-                  .getData()).append("=").append(
-            KlonObject
-                .eval(stringMessage, current.getValue(), context)
-                  .getData());
+          KlonMessage.eval(stringMessage, current.getKey(), context)
+            .getData())
+          .append("=")
+          .append(KlonMessage.eval(stringMessage, current.getValue(), context)
+            .getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

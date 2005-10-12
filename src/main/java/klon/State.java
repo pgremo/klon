@@ -35,17 +35,17 @@ public class State implements Serializable {
       if (specificationTitle == null) {
         specificationTitle = "unkown";
       }
-      currentProperties.put("klon.name", specificationTitle);
+      currentProperties.put("klon.implementation.name", specificationTitle);
       String specificationVersion = spec.getSpecificationVersion();
       if (specificationVersion == null) {
         specificationVersion = "unkown";
       }
-      currentProperties.put("klon.specification", specificationVersion);
+      currentProperties.put("klon.specification.version", specificationVersion);
       String implementationVersion = spec.getImplementationVersion();
       if (implementationVersion == null) {
         implementationVersion = "unknown";
       }
-      currentProperties.put("klon.implementation", implementationVersion);
+      currentProperties.put("klon.implementation.version", implementationVersion);
     }
     currentProperties.put("klon.shell.prompt", "klon> ");
     klonProperties.putAll(currentProperties);

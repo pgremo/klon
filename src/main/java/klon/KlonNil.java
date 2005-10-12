@@ -48,8 +48,7 @@ public class KlonNil extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject other = KlonMessage.evalArgument(message, context, 0);
-    return KlonNil.newNil(receiver)
-      .equals(other) ? receiver : other;
+    return receiver.equals(other) ? receiver : other;
   }
 
   @ExposedAs({"ifNil", "ifFalse", "else"})
@@ -70,8 +69,9 @@ public class KlonNil extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return receiver.equals(KlonMessage.evalArgument(message, context, 0))
-        ? receiver.getSlot("Klon")
-        : KlonNil.newNil(receiver);
+        ? receiver.getState()
+          .getRoot()
+        : receiver;
   }
 
   @ExposedAs("!=")
@@ -79,8 +79,9 @@ public class KlonNil extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return !receiver.equals(KlonMessage.evalArgument(message, context, 0))
-        ? receiver.getSlot("Klon")
-        : KlonNil.newNil(receiver);
+        ? receiver.getState()
+          .getRoot()
+        : receiver;
   }
 
   @SuppressWarnings("unused")
@@ -89,7 +90,7 @@ public class KlonNil extends KlonObject {
       KlonObject message) throws KlonObject {
     receiver.getState()
       .write("");
-    return KlonNil.newNil(receiver);
+    return receiver;
   }
 
 }

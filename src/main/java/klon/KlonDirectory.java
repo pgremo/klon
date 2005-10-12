@@ -121,7 +121,7 @@ public class KlonDirectory extends KlonObject {
     KlonObject code = KlonMessage.getArgument(message, 1);
     for (File current : ((File) receiver.getData()).listFiles()) {
       context.setSlot(value, KlonFile.newFile(receiver, current));
-      result = KlonObject.eval(code, context, context);
+      result = KlonMessage.eval(code, context, context);
     }
     return result;
   }

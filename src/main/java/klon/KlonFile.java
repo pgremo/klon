@@ -202,7 +202,7 @@ public class KlonFile extends KlonObject {
         }
         context
             .setSlot(value, KlonNumber.newNumber(receiver, (double) current));
-        result = KlonObject.eval(code, context, context);
+        result = KlonMessage.eval(code, context, context);
         current = in.read();
         count++;
       }

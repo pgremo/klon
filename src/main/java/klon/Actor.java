@@ -19,7 +19,7 @@ public class Actor implements Runnable {
       try {
         KlonObject message = current.message();
         KlonObject receiver = current.receiver();
-        current.setResult(KlonObject.eval(message, receiver, state.getRoot()));
+        current.setResult(KlonMessage.eval(message, receiver, state.getRoot()));
       } catch (KlonObject e) {
         current.setError(e);
       }

@@ -14,6 +14,7 @@ public class State implements Serializable {
   private WriteListener writeListener;
   private String[] arguments;
   private KlonObject root;
+  private KlonObject asNumber;
   private KlonObject asString;
   private KlonObject init;
   private KlonObject nilObject;
@@ -125,6 +126,7 @@ public class State implements Serializable {
     root.setSlot("Arguments", KlonList.newList(root, args));
 
     asString = KlonMessage.newMessageFromString(root, "asString");
+    asNumber = KlonMessage.newMessageFromString(root, "asNumber");
     init = KlonMessage.newMessageFromString(root, "?init");
 
   }
@@ -159,6 +161,10 @@ public class State implements Serializable {
 
   public KlonObject getLocalsObject() {
     return localsObject;
+  }
+
+  public KlonObject getAsNumber() {
+    return asNumber;
   }
 
   public KlonObject getAsString() {

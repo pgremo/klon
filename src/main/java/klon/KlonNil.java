@@ -32,9 +32,9 @@ public class KlonNil extends KlonObject {
 
   @SuppressWarnings("unused")
   @ExposedAs({"and", "&&", "then"})
-  public static KlonObject noop(KlonObject receiver, KlonObject context,
+  public static KlonObject mirror(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return receiver;
+    return KlonObject.mirror(receiver, context, message);
   }
 
   @ExposedAs({"elseIf"})
@@ -58,10 +58,12 @@ public class KlonNil extends KlonObject {
     return KlonMessage.evalArgument(message, context, 0);
   }
 
+  @SuppressWarnings("unused")
   @ExposedAs({"isNil", "ifTrue"})
   public static KlonObject isNil(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return receiver.getSlot("Klon");
+    return receiver.getState()
+      .getRoot();
   }
 
   @ExposedAs("==")

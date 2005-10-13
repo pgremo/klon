@@ -80,7 +80,7 @@ public class KlonString extends KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject printMessage = receiver.getState()
       .getAsString();
-    return KlonString.newString(receiver, receiver.getData()
+    return newString(receiver, receiver.getData()
         + String.valueOf(KlonMessage.evalArgument(message, context, 0)
           .perform(context, printMessage)
           .getData()));
@@ -105,15 +105,13 @@ public class KlonString extends KlonObject {
   @ExposedAs("lowerCase")
   public static KlonObject lowerCase(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonString.newString(receiver,
-      ((String) receiver.getData()).toLowerCase());
+    return newString(receiver, ((String) receiver.getData()).toLowerCase());
   }
 
   @ExposedAs("upperCase")
   public static KlonObject upperCase(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonString.newString(receiver,
-      ((String) receiver.getData()).toUpperCase());
+    return newString(receiver, ((String) receiver.getData()).toUpperCase());
   }
 
   @ExposedAs("split")
@@ -125,7 +123,7 @@ public class KlonString extends KlonObject {
       delimiter = KlonString.evalAsString(context, message, 0);
     }
     for (String current : ((String) receiver.getData()).split(delimiter)) {
-      result.add(KlonString.newString(receiver, current));
+      result.add(newString(receiver, current));
     }
     return KlonList.newList(receiver, result);
   }
@@ -137,7 +135,36 @@ public class KlonString extends KlonObject {
     String search = KlonString.evalAsString(context, message, 0);
     String replace = KlonString.evalAsString(context, message, 1);
     String result = ((String) receiver.getData()).replaceAll(search, replace);
-    return KlonString.newString(receiver, result);
+    return newString(receiver, result);
+  }
+
+  @SuppressWarnings("unchecked")
+  @ExposedAs("forEach")
+  public static KlonObject forEach(KlonObject receiver, KlonObject context,
+      KlonObject message) throws KlonObject {
+    KlonMessage.assertArgumentCount(message, 2);
+    KlonObject result = KlonNil.newNil(receiver);
+    int arg = 0;
+    String index = null;
+    if (KlonMessage.getArgumentCount(message) == 3) {
+      index = (String) KlonMessage.getSelector(
+        KlonMessage.getArgument(message, arg++))
+        .getData();
+    }
+    String value = (String) KlonMessage.getSelector(
+      KlonMessage.getArgument(message, arg++))
+      .getData();
+    KlonObject code = KlonMessage.getArgument(message, arg);
+    String string = (String) receiver.getData();
+    for (int i = 0; i < string.length(); i++) {
+      if (index != null) {
+        context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
+      }
+      context.setSlot(value, newString(receiver,
+        String.valueOf(string.charAt(i))));
+      result = KlonMessage.eval(code, context, context);
+    }
+    return result;
   }
 
   @ExposedAs("asBuffer")

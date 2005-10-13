@@ -97,7 +97,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject add(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, (Double) receiver.getData()
+    return newNumber(receiver, (Double) receiver.getData()
         + evalAsNumber(context, message, 0));
   }
 
@@ -105,7 +105,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject subtract(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, (Double) receiver.getData()
+    return newNumber(receiver, (Double) receiver.getData()
         - evalAsNumber(context, message, 0));
   }
 
@@ -113,7 +113,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject multiply(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, (Double) receiver.getData()
+    return newNumber(receiver, (Double) receiver.getData()
         * evalAsNumber(context, message, 0));
   }
 
@@ -121,7 +121,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject divide(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, (Double) receiver.getData()
+    return newNumber(receiver, (Double) receiver.getData()
         / evalAsNumber(context, message, 0));
   }
 
@@ -129,7 +129,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject modulus(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, (Double) receiver.getData()
+    return newNumber(receiver, (Double) receiver.getData()
         % evalAsNumber(context, message, 0));
   }
 
@@ -137,115 +137,106 @@ public class KlonNumber extends KlonObject {
   public static KlonObject power(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, Math.pow((Double) receiver.getData(),
+    return newNumber(receiver, Math.pow((Double) receiver.getData(),
       evalAsNumber(context, message, 0)));
   }
 
   @ExposedAs("abs")
   public static KlonObject absoluteValue(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.abs((Double) receiver.getData()));
+    return newNumber(receiver, Math.abs((Double) receiver.getData()));
   }
 
   @ExposedAs("sin")
   public static KlonObject sin(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.sin((Double) receiver.getData()));
+    return newNumber(receiver, Math.sin((Double) receiver.getData()));
   }
 
   @ExposedAs("cos")
   public static KlonObject cos(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.cos((Double) receiver.getData()));
+    return newNumber(receiver, Math.cos((Double) receiver.getData()));
   }
 
   @ExposedAs("tan")
   public static KlonObject tan(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.tan((Double) receiver.getData()));
+    return newNumber(receiver, Math.tan((Double) receiver.getData()));
   }
 
   @ExposedAs("asin")
   public static KlonObject asin(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.asin((Double) receiver.getData()));
+    return newNumber(receiver, Math.asin((Double) receiver.getData()));
   }
 
   @ExposedAs("acos")
   public static KlonObject acos(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.acos((Double) receiver.getData()));
+    return newNumber(receiver, Math.acos((Double) receiver.getData()));
   }
 
   @ExposedAs("atan")
   public static KlonObject atan(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.atan((Double) receiver.getData()));
+    return newNumber(receiver, Math.atan((Double) receiver.getData()));
   }
 
   @ExposedAs("atan2")
   public static KlonObject atan2(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.atan2(
-      (Double) receiver.getData(), evalAsNumber(context, message, 0)));
+    return newNumber(receiver, Math.atan2((Double) receiver.getData(),
+      evalAsNumber(context, message, 0)));
   }
 
   @ExposedAs("floor")
   public static KlonObject floor(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.floor((Double) receiver.getData()));
+    return newNumber(receiver, Math.floor((Double) receiver.getData()));
   }
 
   @ExposedAs("ceiling")
   public static KlonObject ceiling(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.ceil((Double) receiver.getData()));
+    return newNumber(receiver, Math.ceil((Double) receiver.getData()));
   }
 
   @ExposedAs("round")
   public static KlonObject round(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      (double) Math.round((Double) receiver.getData()));
+    return newNumber(receiver, (double) Math.round((Double) receiver.getData()));
   }
 
   @ExposedAs("log")
   public static KlonObject log(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, Math.log((Double) receiver.getData()));
+    return newNumber(receiver, Math.log((Double) receiver.getData()));
   }
 
   @ExposedAs("log10")
   public static KlonObject log10(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.log10((Double) receiver.getData()));
+    return newNumber(receiver, Math.log10((Double) receiver.getData()));
   }
 
   @ExposedAs("sqrt")
   public static KlonObject squareRoot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.sqrt((Double) receiver.getData()));
+    return newNumber(receiver, Math.sqrt((Double) receiver.getData()));
   }
 
   @ExposedAs("signum")
   public static KlonObject signum(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.signum((Double) receiver.getData()));
+    return newNumber(receiver, Math.signum((Double) receiver.getData()));
   }
 
   @ExposedAs("max")
   public static KlonObject max(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, Math.max((Double) receiver.getData(),
+    return newNumber(receiver, Math.max((Double) receiver.getData(),
       evalAsNumber(context, message, 0)));
   }
 
@@ -253,7 +244,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject min(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver, Math.min((Double) receiver.getData(),
+    return newNumber(receiver, Math.min((Double) receiver.getData(),
       evalAsNumber(context, message, 0)));
   }
 
@@ -261,7 +252,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject and(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) (((Double) receiver.getData()).intValue() & evalAsNumber(
         context, message, 0).intValue()));
   }
@@ -270,7 +261,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject or(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) (((Double) receiver.getData()).intValue() | evalAsNumber(
         context, message, 0).intValue()));
   }
@@ -279,7 +270,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject xor(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) (((Double) receiver.getData()).intValue() ^ evalAsNumber(
         context, message, 0).intValue()));
   }
@@ -288,7 +279,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject compliment(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) ~((Double) receiver.getData()).intValue());
   }
 
@@ -296,7 +287,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject leftShift(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) (((Double) receiver.getData()).intValue() << evalAsNumber(
         context, message, 0).intValue()));
   }
@@ -305,7 +296,7 @@ public class KlonNumber extends KlonObject {
   public static KlonObject rightShift(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonNumber.newNumber(receiver,
+    return newNumber(receiver,
       (double) (((Double) receiver.getData()).intValue() >> evalAsNumber(
         context, message, 0).intValue()));
   }
@@ -313,8 +304,7 @@ public class KlonNumber extends KlonObject {
   @ExposedAs("integer")
   public static KlonObject integer(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Math.floor((Double) receiver.getData()));
+    return newNumber(receiver, Math.floor((Double) receiver.getData()));
   }
 
   @ExposedAs("asBuffer")

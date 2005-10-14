@@ -1,5 +1,6 @@
 <project name="klon" default="grammar.generate.grammatica">
 
+	<property name="version" value="1.0" />
 	<property name="src" value="src/main/java" />
 	<property name="classes" value="target/classes" />
 	<property name="grammar" value="src/main/grammatica" />
@@ -66,7 +67,7 @@
 		<fail message="Audit failed." if="audit.failed" />
 	</target>
 
-	<target name="compile" depends="grammar.generate.grammatica,checkstyle.report,version.get">
+	<target name="compile" depends="grammar.generate.grammatica,checkstyle.report">
 		<mkdir dir="${grammar.classes}" />
 		<javac fork="true" destdir="${grammar.classes}" debuglevel="lines,vars,source" debug="true" includeAntRuntime="false">
 			<classpath refid="classpath" />
@@ -158,41 +159,10 @@
 
 	<target name="emma" depends="emma.compile, junit, emma.report" />
 
-	<available property="version.exists" file="version.properties" />
-
-	<target name="version.create" unless="${version.exists}">
-		<propertyfile file="version.properties">
-			<entry key="version" default="0.0" />
-			<entry key="build" default="0" />
-		</propertyfile>
+	<target name="buildnumber" >
+		<buildnumber/>
 	</target>
-
-	<target name="version.update">
-		<propertyfile file="version.properties">
-			<entry key="version" default="0.0" />
-			<entry key="build" default="0" type="int" operation="+" />
-		</propertyfile>
-<!--		
-		<echo file="commit.txt">update to build.</echo>
-		<cvs output="result.txt">
-			<commandline>
-				<argument value="commit" />
-				<argument value="-m" />
-				<argument value="commit.txt" />
-				<argument value="version.properties" />
-			</commandline>
-		</cvs>
-		<delete failonerror="false" file="commit.txt" />
-		<loadfile property="result" srcFile="result.txt" />
-		<echo>${result}</echo>
-		<delete failonerror="false" file="result.txt" />
--->
-	</target>
-
-	<target name="version.get" depends="version.create">
-		<property file="version.properties" />
-	</target>
-
+	
 	<target name="jar" depends="compile">
 
 		<unjar dest="target/unjar" src="lib/grammatica/jars/grammatica-1.5.alpha2.jar" />
@@ -209,11 +179,11 @@
 				<attribute name="Specification-Title" value="${ant.project.name}" />
 				<attribute name="Specification-Version" value="${version}" />
 				<attribute name="Implementation-Title" value="${ant.project.name}" />
-				<attribute name="Implementation-Version" value="${build}" />
+				<attribute name="Implementation-Version" value="${build.number}" />
 			</manifest>
 		</jar>
 	</target>
 
-	<target name="build" depends="clean, emma, jar, version.update" />
+	<target name="build" depends="clean, emma, buildnumber, jar" />
 
 </project>

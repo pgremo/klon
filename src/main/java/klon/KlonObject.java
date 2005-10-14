@@ -367,9 +367,9 @@ public class KlonObject extends Exception
       KlonMessage.getArgument(message, 1))
       .getData();
     KlonObject code = KlonMessage.getArgument(message, 2);
-    // this is to protect against concurrent modification exceptions
     Map<String, KlonObject> slots = receiver.getSlots();
     if (slots != null) {
+      // this is to protect against concurrent modification exceptions
       List<Entry<String, KlonObject>> entries = new ArrayList<Entry<String, KlonObject>>(
         slots.entrySet());
       for (Map.Entry<String, KlonObject> current : entries) {

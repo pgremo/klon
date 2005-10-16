@@ -5,7 +5,9 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ExposedAs("NativeMethod")
 @Bindings("Object")
@@ -13,17 +15,20 @@ public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -5301150120413808899L;
 
-  public static final Class[] PARAMETER_TYPES = new Class[]{
-      KlonObject.class,
-      KlonObject.class,
-      KlonObject.class};
-  public static final Class[] EXCEPTIONS_TYPE = new Class[]{KlonObject.class};
+  public static final Class[] PARAMETER_TYPES = new Class[] { KlonObject.class,
+      KlonObject.class, KlonObject.class };
+  public static final Class[] EXCEPTIONS_TYPE = new Class[] { KlonObject.class };
+
+  private static final Map<Method, KlonObject> existing = new HashMap<Method, KlonObject>();
 
   public static KlonObject newNativeMethod(KlonObject root, Method subject)
       throws KlonObject {
-    KlonObject result = root.getSlot("NativeMethod")
-      .clone();
-    result.setData(subject);
+    KlonObject result = existing.get(subject);
+    if (result == null) {
+      result = root.getSlot("NativeMethod").clone();
+      result.setData(subject);
+      existing.put(subject, result);
+    }
     return result;
   }
 
@@ -82,13 +87,12 @@ public class KlonNativeMethod extends KlonObject {
           throw e.getTargetException();
         }
       } catch (KlonObject e) {
-        ((List<KlonObject>) e.getSlot("stackTrace")
-          .getData()).add(KlonString.newString(receiver, message.getData()
-          .toString()));
+        ((List<KlonObject>) e.getSlot("stackTrace").getData()).add(KlonString
+            .newString(receiver, message.getData().toString()));
         throw e;
       } catch (Throwable e) {
-        throw KlonException.newException(receiver, e.getClass()
-          .getSimpleName(), e.getMessage(), message);
+        throw KlonException.newException(receiver,
+            e.getClass().getSimpleName(), e.getMessage(), message);
       }
     }
     return result;

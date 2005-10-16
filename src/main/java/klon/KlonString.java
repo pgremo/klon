@@ -14,8 +14,7 @@ public class KlonString extends KlonObject {
 
   public static KlonObject newString(KlonObject root, String value)
       throws KlonObject {
-    KlonObject result = root.getSlot("String")
-      .clone();
+    KlonObject result = root.getSlot("String").clone();
     result.setData(value);
     return result;
   }
@@ -23,10 +22,8 @@ public class KlonString extends KlonObject {
   public static String evalAsString(KlonObject context, KlonObject message,
       int index) throws KlonObject {
     KlonObject argument = KlonMessage.evalArgument(message, context, index);
-    KlonObject asString = argument.getState()
-      .getAsString();
-    return (String) KlonMessage.eval(asString, argument, context)
-      .getData();
+    KlonObject asString = argument.getState().getAsString();
+    return (String) KlonMessage.eval(asString, argument, context).getData();
   }
 
   public KlonString() {
@@ -36,6 +33,41 @@ public class KlonString extends KlonObject {
   public KlonString(State state) {
     super(state);
     setData("");
+  }
+
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("+", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("append", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asBuffer", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("asBuffer", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asNumber", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("asNumber", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("beginsWith", KlonNativeMethod.newNativeMethod(root,
+        KlonString.class.getMethod("beginsWith",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("endsWith", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("endsWith", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("lowerCase", KlonNativeMethod.newNativeMethod(root,
+        KlonString.class.getMethod("lowerCase",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("print", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("print", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("replace", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("replace", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("split", KlonNativeMethod.newNativeMethod(root, KlonString.class
+        .getMethod("split", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("upperCase", KlonNativeMethod.newNativeMethod(root,
+        KlonString.class.getMethod("upperCase",
+            KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   @Override
@@ -74,47 +106,39 @@ public class KlonString extends KlonObject {
     return "\"" + getData() + "\"";
   }
 
-  @ExposedAs({"+"})
   public static KlonObject append(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    KlonObject printMessage = receiver.getState()
-      .getAsString();
+    KlonObject printMessage = receiver.getState().getAsString();
     return newString(receiver, receiver.getData()
-        + String.valueOf(KlonMessage.evalArgument(message, context, 0)
-          .perform(context, printMessage)
-          .getData()));
+        + String.valueOf(KlonMessage.evalArgument(message, context, 0).perform(
+            context, printMessage).getData()));
   }
 
-  @ExposedAs("beginsWith")
   public static KlonObject beginsWith(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return ((String) receiver.getData()).startsWith(KlonString.evalAsString(
-      context, message, 0)) ? receiver : KlonNil.newNil(receiver);
+        context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("endsWith")
   public static KlonObject endsWith(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return ((String) receiver.getData()).endsWith(KlonString.evalAsString(
-      context, message, 0)) ? receiver : KlonNil.newNil(receiver);
+        context, message, 0)) ? receiver : KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("lowerCase")
   public static KlonObject lowerCase(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return newString(receiver, ((String) receiver.getData()).toLowerCase());
   }
 
-  @ExposedAs("upperCase")
   public static KlonObject upperCase(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return newString(receiver, ((String) receiver.getData()).toUpperCase());
   }
 
-  @ExposedAs("split")
   public static KlonObject split(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     List<KlonObject> result = new ArrayList<KlonObject>();
@@ -128,7 +152,6 @@ public class KlonString extends KlonObject {
     return KlonList.newList(receiver, result);
   }
 
-  @ExposedAs("replace")
   public static KlonObject replace(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -139,7 +162,6 @@ public class KlonString extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -148,49 +170,43 @@ public class KlonString extends KlonObject {
     String index = null;
     if (KlonMessage.getArgumentCount(message) == 3) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
-        .getData();
+          KlonMessage.getArgument(message, arg++)).getData();
     }
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
+        KlonMessage.getArgument(message, arg++)).getData();
     KlonObject code = KlonMessage.getArgument(message, arg);
     String string = (String) receiver.getData();
     for (int i = 0; i < string.length(); i++) {
       if (index != null) {
         context.setSlot(index, KlonNumber.newNumber(receiver, (double) i));
       }
-      context.setSlot(value, newString(receiver,
-        String.valueOf(string.charAt(i))));
+      context.setSlot(value, newString(receiver, String.valueOf(string
+          .charAt(i))));
       result = KlonMessage.eval(code, context, context);
     }
     return result;
   }
 
-  @ExposedAs("asBuffer")
   public static KlonObject asBuffer(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonBuffer.newBuffer(receiver, new Buffer(
-      ((String) receiver.getData()).getBytes()));
+    return KlonBuffer.newBuffer(receiver, new Buffer(((String) receiver
+        .getData()).getBytes()));
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("asNumber")
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      Double.valueOf((String) receiver.getData()));
+    return KlonNumber.newNumber(receiver, Double.valueOf((String) receiver
+        .getData()));
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return receiver;
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     State state = receiver.getState();

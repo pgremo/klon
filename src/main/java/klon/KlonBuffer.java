@@ -5,15 +5,13 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 @ExposedAs("Buffer")
-@Bindings("Object")
 public class KlonBuffer extends KlonObject {
 
   private static final long serialVersionUID = -5905250334048375486L;
 
   public static KlonObject newBuffer(KlonObject root, Buffer value)
       throws KlonObject {
-    KlonObject result = root.getSlot("Buffer")
-      .clone();
+    KlonObject result = root.getSlot("Buffer").clone();
     result.setData(value);
     return result;
   }
@@ -46,7 +44,18 @@ public class KlonBuffer extends KlonObject {
     out.writeObject(getData());
   }
 
-  @ExposedAs("asNumber")
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("asNumber", KlonNativeMethod.newNativeMethod(root, KlonBuffer.class
+        .getMethod("asNumber", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonBuffer.class
+        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
   public static KlonObject asNumber(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;
@@ -59,11 +68,10 @@ public class KlonBuffer extends KlonObject {
     return result;
   }
 
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonString.newString(receiver, new String(
-      ((Buffer) receiver.getData()).toString()));
+    return KlonString.newString(receiver, new String(((Buffer) receiver
+        .getData()).toString()));
   }
 
 }

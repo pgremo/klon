@@ -16,8 +16,8 @@ public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -5301150120413808899L;
 
-  private static final Class[] PARAMETER_TYPES = new Class[] {
-      KlonObject.class, KlonObject.class, KlonObject.class };
+  public static final Class[] PARAMETER_TYPES = new Class[] { KlonObject.class,
+      KlonObject.class, KlonObject.class };
   private static final Class[] EXCEPTIONS_TYPE = new Class[] { KlonObject.class };
 
   private static final Map<Method, KlonObject> existing = new HashMap<Method, KlonObject>();
@@ -88,6 +88,13 @@ public class KlonNativeMethod extends KlonObject {
 
   public KlonNativeMethod(State state) {
     super(state);
+  }
+
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
   }
 
   @Override

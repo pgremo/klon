@@ -21,6 +21,18 @@ public class KlonRandom extends KlonObject {
   }
 
   @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("setSeed", KlonNativeMethod.newNativeMethod(root, KlonRandom.class
+        .getMethod("setSeed", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("next", KlonNativeMethod.newNativeMethod(root, KlonRandom.class
+        .getMethod("next", KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
+  @Override
   public KlonObject clone() {
     KlonObject result = new KlonRandom(getState());
     result.bind(this);
@@ -39,7 +51,6 @@ public class KlonRandom extends KlonObject {
     out.writeObject(getData());
   }
 
-  @ExposedAs("setSeed")
   public static KlonObject setSeed(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -48,7 +59,6 @@ public class KlonRandom extends KlonObject {
     return receiver;
   }
 
-  @ExposedAs("next")
   public static KlonObject next(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     double result = ((Random) receiver.getData()).nextDouble();

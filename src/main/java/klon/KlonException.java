@@ -31,6 +31,21 @@ public class KlonException extends KlonObject {
   }
 
   @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("raise", KlonNativeMethod.newNativeMethod(root, KlonException.class
+        .getMethod("raise", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("catch", KlonNativeMethod.newNativeMethod(root, KlonException.class
+        .getMethod("catchException", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root,
+        KlonException.class.getMethod("asString",
+            KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
+  @Override
   public KlonObject clone() {
     KlonObject result = new KlonException(getState());
     result.bind(this);
@@ -38,7 +53,6 @@ public class KlonException extends KlonObject {
     return result;
   }
 
-  @ExposedAs("raise")
   public static KlonObject raise(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -46,7 +60,6 @@ public class KlonException extends KlonObject {
         KlonString.evalAsString(context, message, 1), message);
   }
 
-  @ExposedAs("catch")
   public static KlonObject catchException(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -66,7 +79,6 @@ public class KlonException extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;

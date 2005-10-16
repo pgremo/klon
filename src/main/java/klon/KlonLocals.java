@@ -18,6 +18,19 @@ public class KlonLocals extends KlonObject {
     super(state);
   }
 
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("updateSlot", KlonNativeMethod.newNativeMethod(root,
+        KlonLocals.class.getMethod("updateSlot",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forward", KlonNativeMethod.newNativeMethod(root, KlonLocals.class
+        .getMethod("forward", KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
@@ -37,7 +50,6 @@ public class KlonLocals extends KlonObject {
     return result;
   }
 
-  @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -51,7 +63,6 @@ public class KlonLocals extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject self = receiver.getSlot("self");

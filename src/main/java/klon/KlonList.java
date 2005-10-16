@@ -16,8 +16,7 @@ public class KlonList extends KlonObject {
 
   public static KlonObject newList(KlonObject root, List<KlonObject> value)
       throws KlonObject {
-    KlonObject result = root.getSlot("List")
-      .clone();
+    KlonObject result = root.getSlot("List").clone();
     result.setData(value);
     return result;
   }
@@ -29,6 +28,52 @@ public class KlonList extends KlonObject {
   public KlonList(State state) {
     super(state);
     setData(new ArrayList<KlonObject>());
+  }
+
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("add", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("add", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("at", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("at", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("atPut", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("atPut", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("atRemove", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("atRemove", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("clear", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("clear", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("collect", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("collect", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("detect", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("detect", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isEmpty", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("isEmpty", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("pop", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("pop", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("push", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("push", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("random", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("random", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("remove", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("remove", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("reverse", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("reverse", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("select", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("select", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("shuffle", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("shuffle", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("size", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("size", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("sort", KlonNativeMethod.newNativeMethod(root, KlonList.class
+        .getMethod("sort", KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   public void readExternal(ObjectInput in) throws IOException,
@@ -51,7 +96,7 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
+  @SuppressWarnings( { "unused", "unchecked" })
   @Override
   public int compareTo(KlonObject other) {
     int result;
@@ -60,8 +105,7 @@ public class KlonList extends KlonObject {
       List<KlonObject> l2 = (List<KlonObject>) other.getData();
       result = l1.size() - l2.size();
       for (int i = 0; result == 0 && i < l1.size(); i++) {
-        result = l1.get(i)
-          .compareTo(l2.get(i));
+        result = l1.get(i).compareTo(l2.get(i));
       }
     } else {
       result = super.compareTo(other);
@@ -75,39 +119,35 @@ public class KlonList extends KlonObject {
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (!data.isEmpty() && index >= 0 && index < data.size()) {
       throw KlonException.newException(receiver, "List.arrayIndexOutOfBounds",
-        String.valueOf(index), message);
+          String.valueOf(index), message);
     }
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("add")
   public static KlonObject add(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     for (int i = 0; i < KlonMessage.getArgumentCount(message); i++) {
       ((List) receiver.getData()).add(KlonMessage.evalArgument(message,
-        context, i));
+          context, i));
     }
     return receiver;
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("remove")
   public static KlonObject remove(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     ((List) receiver.getData()).remove(KlonMessage.evalArgument(message,
-      context, 0));
+        context, 0));
     return receiver;
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("atPut")
   public static KlonObject atPut(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
-    int index = KlonNumber.evalAsNumber(context, message, 0)
-      .intValue();
+    int index = KlonNumber.evalAsNumber(context, message, 0).intValue();
     validateIndex(receiver, index, message);
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     data.add(index, KlonMessage.evalArgument(message, context, 1));
@@ -115,12 +155,10 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("atRemove")
   public static KlonObject atRemove(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    int index = KlonNumber.evalAsNumber(context, message, 0)
-      .intValue();
+    int index = KlonNumber.evalAsNumber(context, message, 0).intValue();
     validateIndex(receiver, index, message);
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     data.remove(index);
@@ -128,13 +166,11 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("at")
   public static KlonObject at(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject result;
-    int index = KlonNumber.evalAsNumber(context, message, 0)
-      .intValue();
+    int index = KlonNumber.evalAsNumber(context, message, 0).intValue();
     List<KlonObject> data = (List<KlonObject>) receiver.getData();
     if (data.isEmpty() || index < 0 || index >= data.size()) {
       result = KlonNil.newNil(receiver);
@@ -144,8 +180,7 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  @SuppressWarnings({"unchecked", "unused"})
-  @ExposedAs("pop")
+  @SuppressWarnings( { "unchecked", "unused" })
   public static KlonObject pop(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;
@@ -159,33 +194,28 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("push")
   public static KlonObject push(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     ((List) receiver.getData()).add(0, KlonMessage.evalArgument(message,
-      context, 0));
+        context, 0));
     return receiver;
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("isEmpty")
   public static KlonObject isEmpty(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return ((Collection) receiver.getData()).isEmpty()
-        ? receiver
-        : KlonNil.newNil(receiver);
+    return ((Collection) receiver.getData()).isEmpty() ? receiver : KlonNil
+        .newNil(receiver);
   }
 
-  @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      (double) ((Collection) receiver.getData()).size());
+    return KlonNumber.newNumber(receiver, (double) ((Collection) receiver
+        .getData()).size());
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("clear")
   public static KlonObject clear(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     ((List) receiver.getData()).clear();
@@ -193,23 +223,20 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("reverse")
   public static KlonObject reverse(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     Collections.reverse((List) receiver.getData());
     return receiver;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
-  @ExposedAs("sort")
+  @SuppressWarnings( { "unused", "unchecked" })
   public static KlonObject sort(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     Collections.sort((List) receiver.getData());
     return receiver;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
-  @ExposedAs("shuffle")
+  @SuppressWarnings( { "unused", "unchecked" })
   public static KlonObject shuffle(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     List data = (List) receiver.getData();
@@ -221,10 +248,11 @@ public class KlonList extends KlonObject {
         random = KlonMessage.evalArgument(message, receiver, 0);
       }
       KlonObject nextMessage = KlonMessage.newMessageFromString(receiver,
-        "next(" + data.size() + ")");
+          "next(" + data.size() + ")");
       for (int i = 0; i < data.size(); i++) {
-        int index = ((Double) KlonMessage.eval(nextMessage, random, context)
-          .getData()).intValue();
+        int index = ((Double) KlonMessage
+            .eval(nextMessage, random, context)
+              .getData()).intValue();
         Object tmp = data.get(index);
         data.set(index, data.get(i));
         data.set(i, tmp);
@@ -234,7 +262,6 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("random")
   public static KlonObject random(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;
@@ -249,16 +276,16 @@ public class KlonList extends KlonObject {
         random = KlonMessage.evalArgument(message, receiver, 0);
       }
       KlonObject nextMessage = KlonMessage.newMessageFromString(receiver,
-        "next(" + data.size() + ")");
-      int index = ((Double) KlonMessage.eval(nextMessage, random, context)
-        .getData()).intValue();
+          "next(" + data.size() + ")");
+      int index = ((Double) KlonMessage
+          .eval(nextMessage, random, context)
+            .getData()).intValue();
       result = data.get(index);
     }
     return result;
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -267,12 +294,10 @@ public class KlonList extends KlonObject {
     String index = null;
     if (KlonMessage.getArgumentCount(message) == 3) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
-        .getData();
+          KlonMessage.getArgument(message, arg++)).getData();
     }
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
+        KlonMessage.getArgument(message, arg++)).getData();
     KlonObject code = KlonMessage.getArgument(message, arg);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; i < list.size(); i++) {
@@ -286,7 +311,6 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("detect")
   public static KlonObject detect(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -296,12 +320,10 @@ public class KlonList extends KlonObject {
     String index = null;
     if (KlonMessage.getArgumentCount(message) == 3) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
-        .getData();
+          KlonMessage.getArgument(message, arg++)).getData();
     }
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
+        KlonMessage.getArgument(message, arg++)).getData();
     KlonObject code = KlonMessage.getArgument(message, arg);
     List<KlonObject> list = (List<KlonObject>) receiver.getData();
     for (int i = 0; nil.equals(result) && i < list.size(); i++) {
@@ -315,7 +337,6 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("select")
   public static KlonObject select(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -326,12 +347,10 @@ public class KlonList extends KlonObject {
     String index = null;
     if (KlonMessage.getArgumentCount(message) == 3) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
-        .getData();
+          KlonMessage.getArgument(message, arg++)).getData();
     }
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
+        KlonMessage.getArgument(message, arg++)).getData();
     KlonObject code = KlonMessage.getArgument(message, arg);
     for (int i = 0; i < list.size(); i++) {
       if (index != null) {
@@ -347,7 +366,6 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("collect")
   public static KlonObject collect(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -357,12 +375,10 @@ public class KlonList extends KlonObject {
     String index = null;
     if (KlonMessage.getArgumentCount(message) == 3) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
-        .getData();
+          KlonMessage.getArgument(message, arg++)).getData();
     }
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
+        KlonMessage.getArgument(message, arg++)).getData();
     KlonObject code = KlonMessage.getArgument(message, arg);
     for (int i = 0; i < list.size(); i++) {
       if (index != null) {
@@ -376,7 +392,6 @@ public class KlonList extends KlonObject {
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;
@@ -384,15 +399,15 @@ public class KlonList extends KlonObject {
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      KlonObject stringMessage = receiver.getState()
-        .getAsString();
+      KlonObject stringMessage = receiver.getState().getAsString();
       StringBuilder buffer = new StringBuilder();
       for (KlonObject current : (Iterable<KlonObject>) primitive) {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
-        buffer.append(KlonMessage.eval(stringMessage, current, context)
-          .getData());
+        buffer.append(KlonMessage
+            .eval(stringMessage, current, context)
+              .getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

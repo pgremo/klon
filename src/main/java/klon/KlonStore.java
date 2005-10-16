@@ -27,11 +27,17 @@ public class KlonStore extends KlonObject {
 
   @Override
   public void prototype() throws Exception {
-    super.prototype();
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("store", KlonNativeMethod.newNativeMethod(root, KlonStore.class
+        .getMethod("store", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("load", KlonNativeMethod.newNativeMethod(root, KlonStore.class
+        .getMethod("load", KlonNativeMethod.PARAMETER_TYPES)));
     setSlot("path", KlonString.newString(this, "klon.image"));
   }
 
-  @ExposedAs("store")
   public static KlonObject store(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     validate(receiver, message);
@@ -55,7 +61,6 @@ public class KlonStore extends KlonObject {
     }
   }
 
-  @ExposedAs("load")
   public static KlonObject load(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     validate(receiver, message);

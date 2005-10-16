@@ -52,6 +52,20 @@ public class KlonMessage extends KlonObject {
     super(state);
   }
 
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root,
+        KlonMessage.class.getMethod("asString",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("fromString", KlonNativeMethod.newNativeMethod(root,
+        KlonMessage.class.getMethod("fromString",
+            KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
   public void readExternal(ObjectInput in) throws IOException,
       ClassNotFoundException {
     super.readExternal(in);
@@ -154,7 +168,6 @@ public class KlonMessage extends KlonObject {
     }
   }
 
-  @ExposedAs("fromString")
   public static KlonObject fromString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -166,7 +179,6 @@ public class KlonMessage extends KlonObject {
     }
   }
 
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return KlonString.newString(receiver, String.valueOf(receiver.getData()));

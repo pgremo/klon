@@ -18,12 +18,19 @@ public class KlonVoid extends KlonObject {
   }
 
   @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    setSlot("forward", KlonNativeMethod.newNativeMethod(root, KlonVoid.class
+        .getMethod("forward", KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
+  @Override
   public KlonObject clone() {
     return this;
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return receiver;

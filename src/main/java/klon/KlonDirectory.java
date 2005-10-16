@@ -13,8 +13,7 @@ public class KlonDirectory extends KlonObject {
 
   public static KlonObject newDirectory(KlonObject root, File file)
       throws KlonObject {
-    KlonObject result = root.getSlot("Directory")
-      .clone();
+    KlonObject result = root.getSlot("Directory").clone();
     result.setData(file);
     return result;
   }
@@ -26,6 +25,32 @@ public class KlonDirectory extends KlonObject {
   public KlonDirectory(State state) {
     super(state);
     setData(new File("").getAbsoluteFile());
+  }
+
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("path", KlonNativeMethod.newNativeMethod(root, KlonFile.class
+        .getMethod("path", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("setPath", KlonNativeMethod.newNativeMethod(root, KlonFile.class
+        .getMethod("setPath", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("name", KlonNativeMethod.newNativeMethod(root, KlonFile.class
+        .getMethod("name", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("parent", KlonNativeMethod.newNativeMethod(root, KlonFile.class
+        .getMethod("parent", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("exists", KlonNativeMethod.newNativeMethod(root, KlonFile.class
+        .getMethod("exists", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("size", KlonNativeMethod.newNativeMethod(root, KlonDirectory.class
+        .getMethod("size", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("create", KlonNativeMethod.newNativeMethod(root,
+        KlonDirectory.class.getMethod("create",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root,
+        KlonDirectory.class.getMethod("forEach",
+            KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   public void readExternal(ObjectInput in) throws IOException,
@@ -47,59 +72,25 @@ public class KlonDirectory extends KlonObject {
     return result;
   }
 
-  @ExposedAs("path")
-  public static KlonObject path(KlonObject receiver, KlonObject context,
-      KlonObject message) throws KlonObject {
-    return KlonFile.path(receiver, context, message);
-  }
-
-  @ExposedAs("setPath")
-  public static KlonObject setPath(KlonObject receiver, KlonObject context,
-      KlonObject message) throws KlonObject {
-    return KlonFile.setPath(receiver, context, message);
-  }
-
-  @ExposedAs("name")
-  public static KlonObject name(KlonObject receiver, KlonObject context,
-      KlonObject message) throws KlonObject {
-    return KlonFile.name(receiver, context, message);
-  }
-
-  @ExposedAs("parent")
-  public static KlonObject parent(KlonObject receiver, KlonObject context,
-      KlonObject message) throws KlonObject {
-    return KlonFile.parent(receiver, context, message);
-  }
-
-  @ExposedAs("exists")
-  public static KlonObject exists(KlonObject receiver, KlonObject context,
-      KlonObject message) throws KlonObject {
-    return KlonFile.exists(receiver, context, message);
-  }
-
-  @ExposedAs("size")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver,
-      (double) ((File) receiver.getData()).list().length);
+    return KlonNumber.newNumber(receiver, (double) ((File) receiver.getData())
+        .list().length);
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("create")
   public static KlonObject create(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     ((File) receiver.getData()).mkdirs();
     return receiver;
   }
 
-  @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
     KlonObject result = KlonNil.newNil(receiver);
     String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, 0))
-      .getData();
+        KlonMessage.getArgument(message, 0)).getData();
     KlonObject code = KlonMessage.getArgument(message, 1);
     for (File current : ((File) receiver.getData()).listFiles()) {
       context.setSlot(value, KlonFile.newFile(receiver, current));

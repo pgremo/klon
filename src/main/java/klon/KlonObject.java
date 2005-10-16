@@ -35,7 +35,118 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   public void prototype() throws Exception {
-    Configurator.configure(getState().getRoot(), this);
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("and", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("&&", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("bind", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("bind", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("clone", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("clone", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("?", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("condition", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("do", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("doArgument", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("doFile", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("doFile", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("doString", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("doString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifTrue", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("brace", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("exit", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("exit", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("for", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("forLoop", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forward", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("forward", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("function", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("function", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("getSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("getSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot(">", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("greaterThan", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot(">=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("greaterThanEquals", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("hasSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("hasSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("if", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("ifBranch", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("inspect", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("inspect", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isBound", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("isBound", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("==", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("isEquals", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("!=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("isNotEquals", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("<", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("lessThan", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("<=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("lessThanEquals", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("list", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("bracket", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("method", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("method", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("or", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("||", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("else", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("elseIf", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifNil", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifFalse", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isNil", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("print", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("print", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("removeSlot", KlonNativeMethod.newNativeMethod(root,
+        KlonObject.class.getMethod("removeSlot",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("send", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("send", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("sendMessage", KlonNativeMethod.newNativeMethod(root,
+        KlonObject.class.getMethod("sendMessage",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("setSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("setSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("super", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("superSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("then", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("then", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("try", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("tryMessage", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("unbind", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("unbind", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("uniqueId", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("uniqueId", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("updateSlot", KlonNativeMethod.newNativeMethod(root,
+        KlonObject.class.getMethod("updateSlot",
+            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("while", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("whileLoop", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("write", KlonNativeMethod.newNativeMethod(root, KlonObject.class
+        .getMethod("write", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("writeLine", KlonNativeMethod.newNativeMethod(root,
+        KlonObject.class.getMethod("writeLine",
+            KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   @SuppressWarnings("unused")
@@ -241,7 +352,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   // Exposed Methods
   // ================
 
-  @ExposedAs("bind")
   public static KlonObject bind(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -249,7 +359,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("unbind")
   public static KlonObject unbind(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -257,7 +366,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("isBound")
   public static KlonObject isBound(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -265,7 +373,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         : KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("clone")
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result = receiver.clone();
@@ -273,7 +380,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("send")
   public static KlonObject send(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -288,7 +394,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonMessage.eval(target, receiver, context);
   }
 
-  @ExposedAs("sendMessage")
   public static KlonObject sendMessage(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -296,7 +401,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonMessage.eval(target, receiver, context);
   }
 
-  @ExposedAs("getSlot")
   public static KlonObject getSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -309,7 +413,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("hasSlot")
   public static KlonObject hasSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -318,7 +421,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         : receiver;
   }
 
-  @ExposedAs("setSlot")
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -327,7 +429,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonMessage.evalArgument(message, context, 1);
   }
 
-  @ExposedAs("updateSlot")
   public static KlonObject updateSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -341,7 +442,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return value;
   }
 
-  @ExposedAs("removeSlot")
   public static KlonObject removeSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -351,7 +451,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("forEach")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 3);
@@ -376,7 +475,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs( { "list", "bracket" })
   public static KlonObject list(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     int count = KlonMessage.getArgumentCount(message);
@@ -387,27 +485,23 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonList.newList(receiver, list);
   }
 
-  @ExposedAs("asString")
   public static KlonObject asString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return KlonString.newString(receiver, receiver.toString());
   }
 
-  @ExposedAs("uniqueId")
   public static KlonObject uniqueId(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return KlonNumber.newNumber(receiver, (double) System
         .identityHashCode(receiver));
   }
 
-  @ExposedAs("print")
   public static KlonObject print(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     inspect(receiver, context, message);
     return KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("write")
   public static KlonObject write(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject printMessage = receiver.getState().getAsString();
@@ -419,7 +513,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("writeLine")
   public static KlonObject writeLine(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     write(receiver, context, message);
@@ -427,7 +520,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("exit")
   public static KlonObject exit(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     int result = 0;
@@ -438,7 +530,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("function")
   public static KlonObject function(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result = method(receiver, context, message);
@@ -446,7 +537,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("method")
   public static KlonObject method(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     int count = KlonMessage.getArgumentCount(message) - 1;
@@ -464,7 +554,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         .getArgument(message, count));
   }
 
-  @ExposedAs("for")
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 3);
@@ -491,7 +580,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("while")
   public static KlonObject whileLoop(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
@@ -505,7 +593,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("if")
   public static KlonObject ifBranch(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -521,7 +608,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return result;
   }
 
-  @ExposedAs("then")
   public static KlonObject then(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -529,7 +615,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         context, 0));
   }
 
-  @ExposedAs( { "and", "&&" })
   public static KlonObject and(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -539,20 +624,17 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs( { "or", "||", "else", "elseIf", "ifNil" })
   public static KlonObject mirror(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return receiver;
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs( { "ifFalse", "isNil" })
   public static KlonObject nil(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     return KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("==")
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -560,7 +642,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         : KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("!=")
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -568,7 +649,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         : KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("<")
   public static KlonObject lessThan(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -577,7 +657,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         .newNil(receiver);
   }
 
-  @ExposedAs(">")
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -586,7 +665,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         .newNil(receiver);
   }
 
-  @ExposedAs("<=")
   public static KlonObject lessThanEquals(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -595,7 +673,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         .newNil(receiver);
   }
 
-  @ExposedAs(">=")
   public static KlonObject greaterThanEquals(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -604,7 +681,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         .newNil(receiver);
   }
 
-  @ExposedAs("super")
   public static KlonObject superSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -625,7 +701,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonMessage.eval(target, receiver, context);
   }
 
-  @ExposedAs("do")
   public static KlonObject doArgument(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     if (KlonMessage.getArgumentCount(message) > 0) {
@@ -634,7 +709,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("doString")
   public static KlonObject doString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -644,7 +718,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs("doFile")
   public static KlonObject doFile(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -657,7 +730,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return receiver;
   }
 
-  @ExposedAs( { "ifTrue", "", "brace" })
   public static KlonObject evaluate(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -665,7 +737,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unchecked")
-  @ExposedAs("forward")
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     throw KlonException.newException(receiver, "Object.doesNotRespond",
@@ -674,7 +745,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("try")
   public static KlonObject tryMessage(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
@@ -689,7 +759,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   }
 
   @SuppressWarnings("unused")
-  @ExposedAs("inspect")
   public static KlonObject inspect(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     State state = receiver.getState();
@@ -721,7 +790,6 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     return KlonNil.newNil(receiver);
   }
 
-  @ExposedAs("?")
   public static KlonObject condition(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);

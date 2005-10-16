@@ -21,22 +21,33 @@ public class KlonImporter extends KlonObject {
     return this;
   }
 
-  @ExposedAs("load")
+  @Override
+  public void prototype() throws Exception {
+    KlonObject root = getState().getRoot();
+
+    bind(root.getSlot("Object"));
+
+    setSlot("load", KlonNativeMethod.newNativeMethod(root, KlonImporter.class
+        .getMethod("load", KlonNativeMethod.PARAMETER_TYPES)));
+  }
+
   public static KlonObject load(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     try {
       KlonMessage.assertArgumentCount(message, 2);
       String typeName = KlonString.evalAsString(receiver, message, 1);
       Class type = Class.forName(typeName);
-      Constructor constructor = type.getDeclaredConstructor(new Class[]{State.class});
-      KlonObject prototype = (KlonObject) constructor.newInstance(new Object[]{receiver.getState()});
-      Configurator.configure(context, prototype);
+      Constructor constructor = type
+          .getDeclaredConstructor(new Class[] { State.class });
+      KlonObject prototype = (KlonObject) constructor
+          .newInstance(new Object[] { receiver.getState() });
+      prototype.prototype();
       return prototype;
     } catch (KlonObject e) {
       throw e;
     } catch (Exception e) {
-      throw KlonException.newException(receiver, e.getClass()
-        .getSimpleName(), e.getMessage(), message);
+      throw KlonException.newException(receiver, e.getClass().getSimpleName(),
+          e.getMessage(), message);
     }
   }
 }

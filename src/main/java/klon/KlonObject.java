@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-@ExposedAs("Object")
 public class KlonObject extends Exception implements Cloneable, Externalizable,
     Comparable<KlonObject> {
 

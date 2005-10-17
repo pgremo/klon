@@ -2,8 +2,6 @@ package klon;
 
 import java.lang.reflect.Constructor;
 
-@ExposedAs("Importer")
-@Bindings("Object")
 public class KlonImporter extends KlonObject {
 
   private static final long serialVersionUID = 1409329651434043476L;

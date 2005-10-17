@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-@ExposedAs("Directory")
-@Bindings("Object")
 public class KlonDirectory extends KlonObject {
 
   private static final long serialVersionUID = -1107185693710331200L;

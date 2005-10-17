@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-@ExposedAs("Buffer")
 public class KlonBuffer extends KlonObject {
 
   private static final long serialVersionUID = -5905250334048375486L;

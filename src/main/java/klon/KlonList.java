@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@ExposedAs("List")
-@Bindings("Object")
 public class KlonList extends KlonObject {
 
   private static final long serialVersionUID = -4331613935922113899L;

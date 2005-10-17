@@ -7,8 +7,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
-@ExposedAs("Number")
-@Bindings("Object")
 public class KlonNumber extends KlonObject {
 
   private static final long serialVersionUID = -3735761349600472088L;

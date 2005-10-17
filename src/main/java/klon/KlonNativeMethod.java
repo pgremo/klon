@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ExposedAs("NativeMethod")
-@Bindings("Object")
 public class KlonNativeMethod extends KlonObject {
 
   private static final long serialVersionUID = -5301150120413808899L;

@@ -5,8 +5,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StringReader;
 
-@ExposedAs("Message")
-@Bindings("Object")
 public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;

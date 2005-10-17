@@ -2,8 +2,6 @@ package klon;
 
 import java.util.ArrayList;
 
-@ExposedAs("Exception")
-@Bindings("Object")
 public class KlonException extends KlonObject {
 
   private static final long serialVersionUID = -6012596192533993069L;

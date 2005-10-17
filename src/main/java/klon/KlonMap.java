@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@ExposedAs("Map")
-@Bindings("Object")
 public class KlonMap extends KlonObject {
 
   private static final long serialVersionUID = 7294688679770243365L;

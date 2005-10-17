@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-@ExposedAs("Locals")
-@Bindings("Object")
 public class KlonLocals extends KlonObject {
 
   private static final long serialVersionUID = 1963856865914651978L;

@@ -5,8 +5,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Random;
 
-@ExposedAs("Random")
-@Bindings("Object")
 public class KlonRandom extends KlonObject {
 
   private static final long serialVersionUID = -7916992470486962761L;

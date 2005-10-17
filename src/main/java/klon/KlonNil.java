@@ -1,7 +1,5 @@
 package klon;
 
-@ExposedAs("Nil")
-@Bindings("Object")
 public class KlonNil extends KlonObject {
 
   private static final long serialVersionUID = -1742322624353726742L;

@@ -1,6 +1,5 @@
 package klon;
 
-@ExposedAs("Void")
 public class KlonVoid extends KlonObject {
 
   private static final long serialVersionUID = -2300471734654563252L;

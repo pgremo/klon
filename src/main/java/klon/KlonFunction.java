@@ -5,8 +5,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.List;
 
-@ExposedAs("Function")
-@Bindings("Object")
 public class KlonFunction extends KlonObject {
 
   private static final long serialVersionUID = -5339972783724473883L;

@@ -16,8 +16,6 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExposedAs("File")
-@Bindings("Object")
 public class KlonFile extends KlonObject {
 
   private static final long serialVersionUID = 3159106516324355579L;

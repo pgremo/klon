@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-@ExposedAs("Store")
-@Bindings("Object")
 public class KlonStore extends KlonObject {
 
   private static final long serialVersionUID = -4140594553364102878L;

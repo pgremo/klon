@@ -10,14 +10,16 @@ public class KlonMessage extends KlonObject {
   private static final long serialVersionUID = 7244365877217781727L;
 
   public static KlonMessage newMessage(KlonObject root) throws KlonObject {
-    KlonMessage result = (KlonMessage) root.getSlot("Message").clone();
+    KlonMessage result = (KlonMessage) root.getSlot("Message")
+      .clone();
     result.setData(new Message());
     return result;
   }
 
   public static KlonMessage newMessageWithLiteral(KlonObject root,
       KlonObject literal) throws KlonObject {
-    KlonMessage result = (KlonMessage) root.getSlot("Message").clone();
+    KlonMessage result = (KlonMessage) root.getSlot("Message")
+      .clone();
     result.setData(new Message());
     setLiteral(result, literal);
     return result;
@@ -32,11 +34,12 @@ public class KlonMessage extends KlonObject {
     } else {
       try {
         KlonParser parser = new KlonParser(new StringReader(message),
-            new MessageBuilder(root));
-        result = (KlonMessage) parser.parse().getValue(0);
+          new MessageBuilder(root));
+        result = (KlonMessage) parser.parse()
+          .getValue(0);
       } catch (Exception e) {
-        throw KlonException.newException(root, e.getClass().getSimpleName(), e
-            .getMessage(), null);
+        throw KlonException.newException(root, e.getClass()
+          .getSimpleName(), e.getMessage(), null);
       }
     }
     return result;
@@ -56,12 +59,12 @@ public class KlonMessage extends KlonObject {
 
     bind(root.getSlot("Object"));
 
-    setSlot("asString", KlonNativeMethod.newNativeMethod(root,
-        KlonMessage.class.getMethod("asString",
-            KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString",
+      KlonNativeMethod.newNativeMethod(root, KlonMessage.class.getMethod(
+        "asString", KlonNativeMethod.PARAMETER_TYPES)));
     setSlot("fromString", KlonNativeMethod.newNativeMethod(root,
-        KlonMessage.class.getMethod("fromString",
-            KlonNativeMethod.PARAMETER_TYPES)));
+      KlonMessage.class.getMethod("fromString",
+        KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   public void readExternal(ObjectInput in) throws IOException,
@@ -130,17 +133,17 @@ public class KlonMessage extends KlonObject {
   public static KlonObject eval(KlonObject message, KlonObject receiver,
       KlonObject context) throws KlonObject {
     KlonObject self = receiver;
-    for (KlonObject outer = message; outer != null; outer = KlonMessage
-        .getNext(outer)) {
-      for (KlonObject inner = outer; inner != null; inner = KlonMessage
-          .getAttached(inner)) {
-        KlonObject value = KlonMessage.getLiteral(inner);
+    KlonObject outer = message;
+    while (outer != null) {
+      for (KlonObject inner = outer; inner != null; inner = getAttached(inner)) {
+        KlonObject value = getLiteral(inner);
         if (value == null) {
           value = self.perform(context, inner);
         }
         self = value;
       }
-      if (KlonMessage.getNext(outer) != null) {
+      outer = getNext(outer);
+      if (outer != null) {
         self = context;
       }
     }
@@ -162,7 +165,7 @@ public class KlonMessage extends KlonObject {
       throws KlonObject {
     if (getArgumentCount(message) < count) {
       throw KlonException.newException(message, "Message.invalidArgumentCount",
-          "message must have " + count + " arguments", null);
+        "message must have " + count + " arguments", null);
     }
   }
 

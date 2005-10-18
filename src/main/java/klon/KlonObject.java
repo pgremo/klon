@@ -14,8 +14,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-public class KlonObject extends Exception implements Cloneable, Externalizable,
-    Comparable<KlonObject> {
+public class KlonObject extends Exception
+    implements
+      Cloneable,
+      Externalizable,
+      Comparable<KlonObject> {
 
   private static final long serialVersionUID = 5234708348712278569L;
 
@@ -38,122 +41,132 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
 
     bind(root.getSlot("Object"));
 
-    setSlot("and", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("&&", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("bind", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("bind", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("clone", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("clone", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("?", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("condition", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("do", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("doArgument", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("doFile", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("doFile", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("doString", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("doString", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("ifTrue", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("brace", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("exit", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("exit", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("forEach", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("for", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("forLoop", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("forward", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("forward", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("function", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("function", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("getSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("getSlot", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot(">", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("greaterThan", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot(">=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("greaterThanEquals", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("hasSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("hasSlot", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("if", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("ifBranch", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("inspect", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("inspect", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("isBound", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("isBound", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("==", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("isEquals", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("!=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("isNotEquals", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("<", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("lessThan", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("<=", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("lessThanEquals", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("list", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("bracket", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("method", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("method", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("or", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("||", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("else", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("elseIf", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("ifNil", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("ifFalse", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("isNil", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("print", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("print", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("removeSlot", KlonNativeMethod.newNativeMethod(root,
-        KlonObject.class.getMethod("removeSlot",
-            KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("send", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("send", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("and", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("&&", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("and", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("bind", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("bind", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("clone", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("clone", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("?",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "condition", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("do",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "doArgument", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("doFile", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("doFile", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("doString", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("doString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifTrue", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("brace", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("evaluate", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("exit", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("exit", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("for", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("forLoop", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forward", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("forward", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("function", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("function", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("getSlot", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("getSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot(">", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("greaterThan",
+        KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot(">=", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("greaterThanEquals",
+        KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("hasSlot", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("hasSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("if", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("ifBranch", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("inspect", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("inspect", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isBound", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("isBound", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("==", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("isEquals", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("!=", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("isNotEquals",
+        KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("<", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("lessThan", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("<=", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("lessThanEquals",
+        KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("list", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("bracket", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("list", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("method", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("method", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("or", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("||", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("else", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("elseIf", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifNil", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("mirror", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("ifFalse", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isNil", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("nil", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("print", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("print", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("removeSlot",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "removeSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("send", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("send", KlonNativeMethod.PARAMETER_TYPES)));
     setSlot("sendMessage", KlonNativeMethod.newNativeMethod(root,
-        KlonObject.class.getMethod("sendMessage",
-            KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("setSlot", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("setSlot", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("super", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("superSlot", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("then", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("then", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("try", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("tryMessage", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("unbind", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("unbind", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("uniqueId", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("uniqueId", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("updateSlot", KlonNativeMethod.newNativeMethod(root,
-        KlonObject.class.getMethod("updateSlot",
-            KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("while", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("whileLoop", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("write", KlonNativeMethod.newNativeMethod(root, KlonObject.class
-        .getMethod("write", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("writeLine", KlonNativeMethod.newNativeMethod(root,
-        KlonObject.class.getMethod("writeLine",
-            KlonNativeMethod.PARAMETER_TYPES)));
+      KlonObject.class.getMethod("sendMessage",
+        KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("setSlot", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("setSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("super",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "superSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("then", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("then", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("try",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "tryMessage", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("unbind", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("unbind", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("uniqueId", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("uniqueId", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("updateSlot",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "updateSlot", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("while",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "whileLoop", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("write", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("write", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("writeLine",
+      KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
+        "writeLine", KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   @SuppressWarnings("unused")
   public KlonObject activate(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject activate = getSlot("activate");
-    return activate == null ? mirror(this, context, message) : activate
-        .activate(this, context, message);
+    return activate == null
+        ? mirror(this, context, message)
+        : activate.activate(this, context, message);
   }
 
   public List<KlonObject> getBindings() {
@@ -248,7 +261,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   @SuppressWarnings("unchecked")
   public KlonObject perform(KlonObject context, KlonObject message)
       throws KlonObject {
-    String name = (String) KlonMessage.getSelector(message).getData();
+    String name = (String) KlonMessage.getSelector(message)
+      .getData();
     KlonObject slot = getSlot(name);
     if (slot == null) {
       slot = getSlot("forward");
@@ -338,7 +352,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
         result.append(name.getData());
         KlonObject description = getSlot("description");
         if (description != null) {
-          result.append(":").append(description.getData());
+          result.append(":")
+            .append(description.getData());
         }
       }
     } catch (Exception e) {
@@ -368,14 +383,16 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject isBound(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return receiver.isBound(KlonMessage.evalArgument(message, context, 0)) ? receiver
+    return receiver.isBound(KlonMessage.evalArgument(message, context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
   public static KlonObject clone(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result = receiver.clone();
-    KlonMessage.eval(result.getState().getInit(), result, context);
+    KlonMessage.eval(result.getState()
+      .getInit(), result, context);
     return result;
   }
 
@@ -383,8 +400,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject subject = KlonMessage.evalArgument(message, context, 0);
-    subject = KlonMessage.eval(subject.getState().getAsString(), subject,
-        context);
+    subject = KlonMessage.eval(subject.getState()
+      .getAsString(), subject, context);
     KlonObject target = KlonMessage.newMessage(receiver);
     KlonMessage.setSelector(target, subject);
     for (int i = 1; i < KlonMessage.getArgumentCount(message); i++) {
@@ -415,16 +432,16 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject hasSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return receiver.getSlot(KlonString.evalAsString(context, message, 0)) == null ? KlonNil
-        .newNil(receiver)
+    return receiver.getSlot(KlonString.evalAsString(context, message, 0)) == null
+        ? KlonNil.newNil(receiver)
         : receiver;
   }
 
   public static KlonObject setSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
-    receiver.setSlot(KlonString.evalAsString(context, message, 0), KlonMessage
-        .evalArgument(message, context, 1));
+    receiver.setSlot(KlonString.evalAsString(context, message, 0),
+      KlonMessage.evalArgument(message, context, 1));
     return KlonMessage.evalArgument(message, context, 1);
   }
 
@@ -455,15 +472,17 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonMessage.assertArgumentCount(message, 3);
     KlonObject result = KlonNil.newNil(receiver);
     String name = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 0)).getData();
+      KlonMessage.getArgument(message, 0))
+      .getData();
     String value = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 1)).getData();
+      KlonMessage.getArgument(message, 1))
+      .getData();
     KlonObject code = KlonMessage.getArgument(message, 2);
     Map<String, KlonObject> slots = receiver.getSlots();
     if (slots != null) {
       // this is to protect against concurrent modification exceptions
       List<Entry<String, KlonObject>> entries = new ArrayList<Entry<String, KlonObject>>(
-          slots.entrySet());
+        slots.entrySet());
       for (Map.Entry<String, KlonObject> current : entries) {
         context.setSlot(name, KlonString.newString(receiver, current.getKey()));
         context.setSlot(value, current.getValue());
@@ -491,8 +510,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
 
   public static KlonObject uniqueId(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) System
-        .identityHashCode(receiver));
+    return KlonNumber.newNumber(receiver,
+      (double) System.identityHashCode(receiver));
   }
 
   public static KlonObject print(KlonObject receiver, KlonObject context,
@@ -503,11 +522,14 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
 
   public static KlonObject write(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    KlonObject printMessage = receiver.getState().getAsString();
+    KlonObject asString = receiver.getState()
+      .getAsString();
     for (int i = 0; i < KlonMessage.getArgumentCount(message); i++) {
-      receiver.getState().write(
-          (String) KlonMessage.evalArgument(message, context, i).perform(
-              context, printMessage).getData());
+      receiver.getState()
+        .write(
+          KlonMessage.eval(asString,
+            KlonMessage.evalArgument(message, context, i), context)
+            .getData());
     }
     return receiver;
   }
@@ -515,7 +537,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject writeLine(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     write(receiver, context, message);
-    receiver.getState().write("\n");
+    receiver.getState()
+      .write("\n");
     return receiver;
   }
 
@@ -523,9 +546,11 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject message) throws KlonObject {
     int result = 0;
     if (KlonMessage.getArgumentCount(message) > 0) {
-      result = KlonNumber.evalAsNumber(context, message, 0).intValue();
+      result = KlonNumber.evalAsNumber(context, message, 0)
+        .intValue();
     }
-    receiver.getState().exit(result);
+    receiver.getState()
+      .exit(result);
     return KlonNil.newNil(receiver);
   }
 
@@ -542,15 +567,15 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     List<KlonObject> parameters = new ArrayList<KlonObject>(count);
     for (int i = 0; i < count; i++) {
       KlonObject current = KlonMessage.getSelector(KlonMessage.getArgument(
-          message, i));
+        message, i));
       if (current == null) {
         throw KlonException.newException(receiver, "Object.invalidArgument",
-            "argument must evaluate to a Symbol", message);
+          "argument must evaluate to a Symbol", message);
       }
       parameters.add(current);
     }
-    return KlonFunction.newFunction(receiver, parameters, KlonMessage
-        .getArgument(message, count));
+    return KlonFunction.newFunction(receiver, parameters,
+      KlonMessage.getArgument(message, count));
   }
 
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,
@@ -558,13 +583,17 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonMessage.assertArgumentCount(message, 3);
     KlonObject result = KlonNil.newNil(receiver);
     String counter = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 0)).getData();
-    double start = KlonNumber.evalAsNumber(context, message, 1).intValue();
-    double end = KlonNumber.evalAsNumber(context, message, 2).intValue();
+      KlonMessage.getArgument(message, 0))
+      .getData();
+    double start = KlonNumber.evalAsNumber(context, message, 1)
+      .intValue();
+    double end = KlonNumber.evalAsNumber(context, message, 2)
+      .intValue();
     double increment;
     KlonObject code;
     if (KlonMessage.getArgumentCount(message) == 5) {
-      increment = KlonNumber.evalAsNumber(context, message, 3).intValue();
+      increment = KlonNumber.evalAsNumber(context, message, 3)
+        .intValue();
       code = KlonMessage.getArgument(message, 4);
     } else {
       increment = end - start < 0 ? -1 : 1;
@@ -598,7 +627,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonObject result = KlonMessage.evalArgument(message, context, 0);
     int count = KlonMessage.getArgumentCount(message);
     if (count > 1) {
-      if (!KlonNil.newNil(receiver).equals(result)) {
+      if (!KlonNil.newNil(receiver)
+        .equals(result)) {
         result = KlonMessage.evalArgument(message, context, 1);
       } else if (count == 3) {
         result = KlonMessage.evalArgument(message, context, 2);
@@ -611,14 +641,15 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     return KlonVoid.newVoid(receiver, KlonMessage.evalArgument(message,
-        context, 0));
+      context, 0));
   }
 
   public static KlonObject and(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject nil = KlonNil.newNil(receiver);
-    return nil.equals(KlonMessage.evalArgument(message, context, 0)) ? nil
+    return nil.equals(KlonMessage.evalArgument(message, context, 0))
+        ? nil
         : receiver;
   }
 
@@ -637,14 +668,16 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject isEquals(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return receiver.equals(KlonMessage.evalArgument(message, context, 0)) ? receiver
+    return receiver.equals(KlonMessage.evalArgument(message, context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
   public static KlonObject isNotEquals(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return !receiver.equals(KlonMessage.evalArgument(message, context, 0)) ? receiver
+    return !receiver.equals(KlonMessage.evalArgument(message, context, 0))
+        ? receiver
         : KlonNil.newNil(receiver);
   }
 
@@ -652,41 +685,47 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject argument = KlonMessage.evalArgument(message, context, 0);
-    return receiver.compareTo(argument) < 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) < 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   public static KlonObject greaterThan(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject argument = KlonMessage.evalArgument(message, context, 0);
-    return receiver.compareTo(argument) > 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) > 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   public static KlonObject lessThanEquals(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject argument = KlonMessage.evalArgument(message, context, 0);
-    return receiver.compareTo(argument) <= 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) <= 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   public static KlonObject greaterThanEquals(KlonObject receiver,
       KlonObject context, KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject argument = KlonMessage.evalArgument(message, context, 0);
-    return receiver.compareTo(argument) >= 0 ? argument : KlonNil
-        .newNil(receiver);
+    return receiver.compareTo(argument) >= 0
+        ? argument
+        : KlonNil.newNil(receiver);
   }
 
   public static KlonObject superSlot(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject target = KlonMessage.getArgument(message, 0);
-    String name = (String) KlonMessage.getSelector(target).getData();
+    String name = (String) KlonMessage.getSelector(target)
+      .getData();
     KlonObject parent = null;
-    Iterator<KlonObject> iterator = receiver.getBindings().iterator();
+    Iterator<KlonObject> iterator = receiver.getBindings()
+      .iterator();
     while (iterator.hasNext() && parent == null) {
       KlonObject current = iterator.next();
       if (current.getSlot(name) != null) {
@@ -711,8 +750,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject doString(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    KlonObject target = KlonMessage.newMessageFromString(receiver, KlonString
-        .evalAsString(context, message, 0));
+    KlonObject target = KlonMessage.newMessageFromString(receiver,
+      KlonString.evalAsString(context, message, 0));
     KlonMessage.eval(target, receiver, context);
     return receiver;
   }
@@ -724,7 +763,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonObject file = KlonFile.newFile(receiver, new File(name));
     KlonObject string = KlonFile.asString(file, context, message);
     KlonObject target = KlonMessage.newMessageFromString(receiver,
-        (String) string.getData());
+      (String) string.getData());
     KlonMessage.eval(target, receiver, context);
     return receiver;
   }
@@ -739,8 +778,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
   public static KlonObject forward(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     throw KlonException.newException(receiver, "Object.doesNotRespond",
-        "Receiver does not respond to '"
-            + KlonMessage.getSelector(message).getData() + "'", message);
+      "Receiver does not respond to '" + KlonMessage.getSelector(message)
+        .getData() + "'", message);
   }
 
   @SuppressWarnings("unused")
@@ -750,7 +789,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonObject result;
     try {
       result = KlonVoid.newVoid(receiver, KlonMessage.evalArgument(message,
-          context, 0));
+        context, 0));
     } catch (KlonObject e) {
       result = e;
     }
@@ -767,7 +806,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
       state.write(" (");
       Iterator<KlonObject> iterator = bindings.iterator();
       while (iterator.hasNext()) {
-        state.write(iterator.next().toString());
+        state.write(iterator.next()
+          .toString());
         if (iterator.hasNext()) {
           state.write(", ");
         }
@@ -778,7 +818,7 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     Map<String, KlonObject> slots = receiver.getSlots();
     if (slots != null) {
       TreeMap<String, KlonObject> sortedSlots = new TreeMap<String, KlonObject>(
-          slots);
+        slots);
       for (Map.Entry<String, KlonObject> current : sortedSlots.entrySet()) {
         state.write(current.getKey());
         state.write(" := ");
@@ -797,9 +837,8 @@ public class KlonObject extends Exception implements Cloneable, Externalizable,
     KlonObject selector = KlonMessage.getSelector(target);
     if (selector != null
         && receiver.getSlot((String) selector.getData()) != null) {
-      result = receiver.perform(context, target);
+      result = KlonMessage.eval(target, receiver, context);
     }
     return result;
   }
-
 }

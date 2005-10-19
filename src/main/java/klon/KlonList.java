@@ -321,7 +321,7 @@ public class KlonList extends KlonObject {
       KlonMessage.getArgument(message, --arg))
       .getData();
     String index = null;
-    if (arg == 1) {
+    if (arg > 0) {
       index = (String) KlonMessage.getSelector(
         KlonMessage.getArgument(message, --arg))
         .getData();

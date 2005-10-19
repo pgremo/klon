@@ -26,33 +26,33 @@ public class KlonMap extends KlonObject {
 
     bind(root.getSlot("Object"));
 
-    setSlot("asString", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("at", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("at", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("atPut", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("atPut", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("atPutIfAbsent", KlonNativeMethod.newNativeMethod(root,
-        KlonMap.class.getMethod("atPutIfAbsent",
-            KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("atRemove", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("atRemove", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("clear", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("clear", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("forEach", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("hasKey", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("hasKey", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("hasValue", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("hasValue", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("isEmpty", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("isEmpty", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("keys", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("keys", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("size", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("size", KlonNativeMethod.PARAMETER_TYPES)));
-    setSlot("values", KlonNativeMethod.newNativeMethod(root, KlonMap.class
-        .getMethod("values", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("asString", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("asString", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("at", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("at", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("atPut", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("atPut", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("atPutIfAbsent",
+      KlonNativeMethod.newNativeMethod(root, KlonMap.class.getMethod(
+        "atPutIfAbsent", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("atRemove", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("atRemove", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("clear", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("clear", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("forEach", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("forEach", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("hasKey", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("hasKey", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("hasValue", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("hasValue", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("isEmpty", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("isEmpty", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("keys", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("keys", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("size", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("size", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("values", KlonNativeMethod.newNativeMethod(root,
+      KlonMap.class.getMethod("values", KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   public void readExternal(ObjectInput in) throws IOException,
@@ -72,7 +72,7 @@ public class KlonMap extends KlonObject {
     KlonObject result = new KlonMap(getState());
     result.bind(this);
     result.setData(new HashMap<KlonObject, KlonObject>(
-        (Map<KlonObject, KlonObject>) getData()));
+      (Map<KlonObject, KlonObject>) getData()));
     return result;
   }
 
@@ -104,8 +104,7 @@ public class KlonMap extends KlonObject {
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
     KlonObject key = KlonMessage.evalArgument(message, context, 0);
-    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData())
-        .get(key);
+    KlonObject result = ((Map<KlonObject, KlonObject>) receiver.getData()).get(key);
     if (result == null) {
       result = KlonNil.newNil(receiver);
     }
@@ -152,16 +151,17 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    KlonMessage.assertArgumentCount(message, 2);
+    KlonMessage.assertArgumentCount(message, 3);
     KlonObject result = KlonNil.newNil(receiver);
-    String name = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 0)).getData();
+    String key = (String) KlonMessage.getSelector(
+      KlonMessage.getArgument(message, 0))
+      .getData();
     String value = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, 1)).getData();
+      KlonMessage.getArgument(message, 1))
+      .getData();
     KlonObject code = KlonMessage.getArgument(message, 2);
-    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver
-        .getData()).entrySet()) {
-      context.setSlot(name, current.getKey());
+    for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) receiver.getData()).entrySet()) {
+      context.setSlot(key, current.getKey());
       context.setSlot(value, current.getValue());
       result = KlonMessage.eval(code, context, context);
     }
@@ -171,18 +171,19 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unused")
   public static KlonObject isEmpty(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return ((Map) receiver.getData()).isEmpty() ? receiver : KlonNil
-        .newNil(receiver);
+    return ((Map) receiver.getData()).isEmpty()
+        ? receiver
+        : KlonNil.newNil(receiver);
   }
 
   @SuppressWarnings("unchecked")
   public static KlonObject size(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonNumber.newNumber(receiver, (double) ((Map) receiver.getData())
-        .size());
+    return KlonNumber.newNumber(receiver,
+      (double) ((Map) receiver.getData()).size());
   }
 
-  @SuppressWarnings( { "unchecked", "unused" })
+  @SuppressWarnings({"unchecked", "unused"})
   public static KlonObject clear(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     ((Map) receiver.getData()).clear();
@@ -192,15 +193,15 @@ public class KlonMap extends KlonObject {
   @SuppressWarnings("unchecked")
   public static KlonObject keys(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .keySet()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).keySet()));
   }
 
   @SuppressWarnings("unchecked")
   public static KlonObject values(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    return KlonList.newList(receiver, new ArrayList(((Map) receiver.getData())
-        .values()));
+    return KlonList.newList(receiver, new ArrayList(
+      ((Map) receiver.getData()).values()));
   }
 
   @SuppressWarnings("unchecked")
@@ -211,20 +212,19 @@ public class KlonMap extends KlonObject {
     if (primitive == null) {
       result = KlonObject.asString(receiver, context, message);
     } else {
-      KlonObject stringMessage = receiver.getState().getAsString();
+      KlonObject stringMessage = receiver.getState()
+        .getAsString();
       StringBuilder buffer = new StringBuilder();
-      for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) primitive)
-          .entrySet()) {
+      for (Map.Entry<KlonObject, KlonObject> current : ((Map<KlonObject, KlonObject>) primitive).entrySet()) {
         if (buffer.length() > 0) {
           buffer.append(", ");
         }
         buffer.append(
-            KlonMessage
-                .eval(stringMessage, current.getKey(), context)
-                  .getData()).append("=").append(
-            KlonMessage
-                .eval(stringMessage, current.getValue(), context)
-                  .getData());
+          KlonMessage.eval(stringMessage, current.getKey(), context)
+            .getData())
+          .append("=")
+          .append(KlonMessage.eval(stringMessage, current.getValue(), context)
+            .getData());
       }
       result = KlonString.newString(receiver, buffer.toString());
     }

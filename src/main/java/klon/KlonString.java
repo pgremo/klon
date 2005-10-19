@@ -168,18 +168,18 @@ public class KlonString extends KlonObject {
   public static KlonObject forEach(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 2);
-    KlonObject result = KlonNil.newNil(receiver);
-    int arg = 0;
+    int arg = KlonMessage.getArgumentCount(message);
+    KlonObject code = KlonMessage.getArgument(message, --arg);
+    String value = (String) KlonMessage.getSelector(
+      KlonMessage.getArgument(message, --arg))
+      .getData();
     String index = null;
-    if (KlonMessage.getArgumentCount(message) == 3) {
+    if (arg > 0) {
       index = (String) KlonMessage.getSelector(
-        KlonMessage.getArgument(message, arg++))
+        KlonMessage.getArgument(message, --arg))
         .getData();
     }
-    String value = (String) KlonMessage.getSelector(
-      KlonMessage.getArgument(message, arg++))
-      .getData();
-    KlonObject code = KlonMessage.getArgument(message, arg);
+    KlonObject result = KlonNil.newNil(receiver);
     String string = (String) receiver.getData();
     for (int i = 0; i < string.length(); i++) {
       if (index != null) {

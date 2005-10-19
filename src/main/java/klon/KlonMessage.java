@@ -5,9 +5,21 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StringReader;
 
+import net.percederberg.grammatica.parser.ParserCreationException;
+
 public class KlonMessage extends KlonObject {
 
   private static final long serialVersionUID = 7244365877217781727L;
+  private static MessageBuilder builder = new MessageBuilder();
+  private static KlonParser parser;
+
+  static {
+    try {
+      parser = new KlonParser(new StringReader(""), builder);
+    } catch (ParserCreationException e) {
+      e.printStackTrace();
+    }
+  }
 
   public static KlonMessage newMessage(KlonObject root) throws KlonObject {
     KlonMessage result = (KlonMessage) root.getSlot("Message")
@@ -33,8 +45,10 @@ public class KlonMessage extends KlonObject {
       result = newMessageWithLiteral(root, KlonVoid.newVoid(root, message));
     } else {
       try {
-        KlonParser parser = new KlonParser(new StringReader(message),
-          new MessageBuilder(root));
+        builder.setRoot(root);
+        parser.getTokenizer()
+          .reset(new StringReader(value));
+        parser.reset();
         result = (KlonMessage) parser.parse()
           .getValue(0);
       } catch (Exception e) {

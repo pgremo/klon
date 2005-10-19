@@ -12,7 +12,10 @@ public class MessageBuilder extends KlonAnalyzer implements KlonConstants {
 
   private KlonObject root;
 
-  public MessageBuilder(KlonObject root) {
+  public MessageBuilder() {
+  }
+
+  public void setRoot(KlonObject root) {
     this.root = root;
   }
 

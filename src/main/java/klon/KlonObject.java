@@ -563,19 +563,19 @@ public class KlonObject extends Exception
 
   public static KlonObject method(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
-    int count = KlonMessage.getArgumentCount(message) - 1;
+    int count = KlonMessage.getArgumentCount(message);
+    KlonObject code = KlonMessage.getArgument(message, --count);
     List<KlonObject> parameters = new ArrayList<KlonObject>(count);
-    for (int i = 0; i < count; i++) {
+    while (count > 0) {
       KlonObject current = KlonMessage.getSelector(KlonMessage.getArgument(
-        message, i));
+        message, --count));
       if (current == null) {
         throw KlonException.newException(receiver, "Object.invalidArgument",
           "argument must evaluate to a Symbol", message);
       }
-      parameters.add(current);
+      parameters.add(0, current);
     }
-    return KlonFunction.newFunction(receiver, parameters,
-      KlonMessage.getArgument(message, count));
+    return KlonFunction.newFunction(receiver, parameters, code);
   }
 
   public static KlonObject forLoop(KlonObject receiver, KlonObject context,

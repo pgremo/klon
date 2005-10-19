@@ -36,7 +36,7 @@ public class State implements Serializable {
       if (specificationTitle == null) {
         specificationTitle = "unkown";
       }
-      currentProperties.put("klon.implementation.name", specificationTitle);
+      currentProperties.put("klon.specification.name", specificationTitle);
       String specificationVersion = spec.getSpecificationVersion();
       if (specificationVersion == null) {
         specificationVersion = "unkown";

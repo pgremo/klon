@@ -158,6 +158,8 @@ public class KlonObject extends Exception
     setSlot("writeLine",
       KlonNativeMethod.newNativeMethod(root, KlonObject.class.getMethod(
         "writeLine", KlonNativeMethod.PARAMETER_TYPES)));
+    setSlot("compare", KlonNativeMethod.newNativeMethod(root,
+      KlonObject.class.getMethod("compare", KlonNativeMethod.PARAMETER_TYPES)));
   }
 
   @SuppressWarnings("unused")
@@ -771,7 +773,7 @@ public class KlonObject extends Exception
   public static KlonObject evaluate(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonMessage.assertArgumentCount(message, 1);
-    return KlonMessage.evalArgument(message, context, 0);
+    return KlonMessage.evalArgument(message, receiver, 0);
   }
 
   @SuppressWarnings("unchecked")
@@ -840,5 +842,13 @@ public class KlonObject extends Exception
       result = KlonMessage.eval(target, receiver, context);
     }
     return result;
+  }
+
+  public static KlonObject compare(KlonObject receiver, KlonObject context,
+      KlonObject message) throws KlonObject {
+    KlonMessage.assertArgumentCount(message, 1);
+    return KlonNumber.newNumber(
+      receiver,
+      (double) receiver.compareTo(KlonMessage.evalArgument(message, context, 0)));
   }
 }

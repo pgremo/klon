@@ -140,6 +140,10 @@ public class KlonMessage extends KlonObject {
     ((Message) message.getData()).addArgument(argument);
   }
 
+  public static void setArgument(KlonObject message, int index, KlonObject argument) {
+    ((Message) message.getData()).setArgument(index, argument);
+  }
+
   public static KlonObject getArgument(KlonObject message, int index) {
     return ((Message) message.getData()).getArgument(index);
   }

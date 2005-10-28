@@ -34,6 +34,13 @@ public class Message implements Serializable, Cloneable {
     arguments.add(message);
   }
 
+  public void setArgument(int index, KlonObject message) {
+    if (arguments == null) {
+      arguments = new ArrayList<KlonObject>();
+    }
+    arguments.set(index, message);
+  }
+
   public KlonObject getArgument(int index) {
     return arguments == null ? null : arguments.get(index);
   }

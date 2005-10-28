@@ -95,17 +95,25 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
+  @SuppressWarnings({
+      "unused", "unchecked"
+  })
   @Override
   public int compareTo(KlonObject other) {
-    int result;
+    int result = 0;
     if (other instanceof KlonList) {
-      List<KlonObject> l1 = (List<KlonObject>) getData();
-      List<KlonObject> l2 = (List<KlonObject>) other.getData();
-      result = l1.size() - l2.size();
-      for (int i = 0; result == 0 && i < l1.size(); i++) {
-        result = l1.get(i)
-          .compareTo(l2.get(i));
+      try {
+        KlonObject compare = KlonMessage.newMessageFromString(this, "compare");
+        List<KlonObject> l1 = (List<KlonObject>) getData();
+        List<KlonObject> l2 = (List<KlonObject>) other.getData();
+        result = l1.size() - l2.size();
+        for (int i = 0; result == 0 && i < l1.size(); i++) {
+          KlonMessage.setArgument(compare, 0,
+            KlonMessage.newMessageWithLiteral(this, l2.get(i)));
+          result = ((Double) (KlonMessage.eval(compare, this, this).getData())).intValue();
+        }
+      } catch (KlonObject e) {
+        throw new RuntimeException(e);
       }
     } else {
       result = super.compareTo(other);
@@ -183,7 +191,9 @@ public class KlonList extends KlonObject {
     return result;
   }
 
-  @SuppressWarnings({"unchecked", "unused"})
+  @SuppressWarnings({
+      "unchecked", "unused"
+  })
   public static KlonObject pop(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     KlonObject result;
@@ -233,14 +243,18 @@ public class KlonList extends KlonObject {
     return receiver;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
+  @SuppressWarnings({
+      "unused", "unchecked"
+  })
   public static KlonObject sort(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     Collections.sort((List) receiver.getData());
     return receiver;
   }
 
-  @SuppressWarnings({"unused", "unchecked"})
+  @SuppressWarnings({
+      "unused", "unchecked"
+  })
   public static KlonObject shuffle(KlonObject receiver, KlonObject context,
       KlonObject message) throws KlonObject {
     List data = (List) receiver.getData();

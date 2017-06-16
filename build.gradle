@@ -1,0 +1,47 @@
+apply plugin: 'java'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+  flatDir {
+    dirs 'lib'
+  }
+}
+
+configurations {
+  grammatica
+  generated.extendsFrom grammatica
+  compile.extendsFrom grammatica
+}
+
+sourceSets {
+  generated {
+    java {
+      srcDir 'src/generated/java'
+    }
+    compileClasspath = compileClasspath + configurations.grammatica
+  }
+}
+
+dependencies {
+  grammatica 'net.percederberg.grammatica:grammatica:1.5.alpha2'
+  compile 'org.slf4j:slf4j-api:1.7.22'
+  testCompile 'junit:junit:4.12'
+}
+
+task grammatica {
+  doLast {
+    ant.taskdef(name: 'grammatica',
+      classname: 'net.percederberg.grammatica.ant.GrammaticaTask',
+      classpath: configurations.grammatica.asPath)
+    ant.grammatica(grammar: 'src/main/grammatica/klon.grammar') {
+      java(dir: sourceSets.generated.java.srcDirs[0], package: "klon", public: "true")
+    }
+  }
+}
+
+compileJava {
+  dependsOn grammatica
+  source += sourceSets.generated.java
+}
